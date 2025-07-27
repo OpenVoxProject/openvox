@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency('fast_gettext', '>= 2.1', '< 4')
   spec.add_runtime_dependency('getoptlong', '~> 0.2.0')
   spec.add_runtime_dependency('locale', '~> 2.1')
-  spec.add_runtime_dependency('multi_json', '~> 1.13')
+  spec.add_runtime_dependency('multi_json', '~> 1.13', '< 1.16') # 1.15 is what perforce used
   spec.add_runtime_dependency('openfact', '~> 5.0')
   spec.add_runtime_dependency('ostruct', '~> 0.6.0')
   spec.add_runtime_dependency('puppet-resource_api', '~> 1.5')
