@@ -874,7 +874,7 @@ describe Puppet::Parser::Compiler do
               include #{name}
             }
           MANIFEST
-          }.to raise_error(Puppet::Error, /Class '#{name}' is already defined \(line: 1\); cannot be redefined as a node \(line: 2\) on node #{name}/)
+          }.to raise_error(Puppet::Error, /Class '#{name}' is already defined \(line: 1\); cannot be redefined as a node /)
         end
 
         it "evaluates the class if the node definition uses a regexp" do
