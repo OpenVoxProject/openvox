@@ -81,7 +81,7 @@ module Puppet
       end
 
       def run_dir
-        which_dir("/var/run/puppetlabs", "~/.puppetlabs/var/run")
+        ENV.fetch('RUNTIME_DIRECTORY') { which_dir("/var/run/puppetlabs", "~/.puppetlabs/var/run") }
       end
 
       def log_dir
