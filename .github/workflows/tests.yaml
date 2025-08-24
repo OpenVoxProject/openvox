@@ -46,10 +46,10 @@ jobs:
           - {os: ubuntu-24.04, ruby: '3.3'} # openssl 3
           - {os: ubuntu-24.04, ruby: '3.4'} # openssl 3
           - {os: ubuntu-24.04, ruby: 'jruby-9.4'}
-          - {os: windows-2025, ruby: '3.1'}
-          - {os: windows-2025, ruby: '3.2'} # openssl 3
-          - {os: windows-2025, ruby: '3.3'} # openssl 3
-          - {os: windows-2025, ruby: '3.4'} # openssl 3
+          - {os: windows-2025-20250629, ruby: '3.1'}
+          - {os: windows-2025-20250629, ruby: '3.2'} # openssl 3
+          - {os: windows-2025-20250629, ruby: '3.3'} # openssl 3
+          - {os: windows-2025-20250629, ruby: '3.4'} # openssl 3
 
     runs-on: ${{ matrix.cfg.os }}
     steps:
