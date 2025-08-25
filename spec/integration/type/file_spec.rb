@@ -636,6 +636,15 @@ describe Puppet::Type.type(:file), :uses_checksums => true do
       catalog.apply
     end
 
+    it "should not give a deprecation warning when checksum are disabled in content" do
+      Puppet[:use_checksum_in_file_content] = false
+      expect(Puppet).not_to receive(:puppet_deprecation_warning)
+      file = described_class.new(:path => path, :content => '{ABCD}X')
+      catalog.add_resource file
+      catalog.apply
+      expect(File.read(file[:path])).to eq('{ABCD}X')
+    end
+
     with_digest_algorithms do
       it_should_behave_like "files are backed up", {} do
         let(:filebucket_digest) { method(:digest) }
