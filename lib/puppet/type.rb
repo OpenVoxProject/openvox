@@ -374,11 +374,9 @@ class Type
   # @see uniqueness_key
   # @return [Array<Puppet::Parameter>] WARNING: this return type is uncertain
   def self.key_attribute_parameters
-    @key_attribute_parameters ||= (
-      @parameters.find_all { |param|
-        param.isnamevar? or param.name == :name
-      }
-    )
+    @key_attribute_parameters ||= @parameters.find_all { |param|
+      param.isnamevar? or param.name == :name
+    }
   end
 
   # Returns cached {key_attribute_parameters} names.

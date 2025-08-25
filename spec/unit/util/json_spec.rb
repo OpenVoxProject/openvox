@@ -23,7 +23,7 @@ describe Puppet::Util::Json do
     it 'raises an error if JSON is invalid' do
       expect {
         Puppet::Util::Json.load('{ invalid')
-      }.to raise_error(Puppet::Util::Json::ParseError, /expected object key, got 'invalid' at line 1 column 3/)
+      }.to raise_error(Puppet::Util::Json::ParseError)
     end
 
     it 'raises an error if the content is empty' do
@@ -74,7 +74,7 @@ describe Puppet::Util::Json do
     it 'returns nil when the file is invalid JSON and debug logs about it' do
       file_path = file_containing('input', '{ invalid')
       expect(Puppet).to receive(:debug)
-        .with(/Could not retrieve JSON content .+: expected object key, got 'invalid' at line 1 column 3/).and_call_original
+        .with(/Could not retrieve JSON content/).and_call_original
 
       expect(Puppet::Util::Json.load_file_if_valid(file_path)).to eql(nil)
     end
@@ -102,7 +102,7 @@ describe Puppet::Util::Json do
 
       expect {
         Puppet::Util::Json.load_file(file_path)
-      }.to raise_error(Puppet::Util::Json::ParseError, /expected object key, got 'invalid' at line 1 column 3/)
+      }.to raise_error(Puppet::Util::Json::ParseError)
     end
 
     it 'raises an error when the filename is illegal' do

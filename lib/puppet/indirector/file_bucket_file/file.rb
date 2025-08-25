@@ -234,7 +234,7 @@ module Puppet::FileBucketFile
     # @api private
     def verify_identical_file(contents_file, bucket_file)
       (bucket_file.to_binary.bytesize == Puppet::FileSystem.size(contents_file)) &&
-        (bucket_file.stream() { |s| Puppet::FileSystem.compare_stream(contents_file, s) })
+        bucket_file.stream() { |s| Puppet::FileSystem.compare_stream(contents_file, s) }
     end
 
     # @param contents_file [Pathname] Opaque file path to intended backup

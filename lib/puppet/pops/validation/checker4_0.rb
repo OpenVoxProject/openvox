@@ -43,7 +43,7 @@ class Checker4_0 < Evaluator::LiteralEvaluator
     @acceptor = diagnostics_producer
 
     # Use null migration checker unless given in context
-    @migration_checker = (Puppet.lookup(:migration_checker) { Migration::MigrationChecker.new() })
+    @migration_checker = Puppet.lookup(:migration_checker) { Migration::MigrationChecker.new() }
   end
 
   # Validates the entire model by visiting each model element and calling `check`.

@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name = "openvox"
-  spec.version = "8.21.1"
+  spec.version = "8.22.0"
   spec.licenses = ['Apache-2.0']
 
   spec.required_rubygems_version = Gem::Requirement.new("> 1.3.1")

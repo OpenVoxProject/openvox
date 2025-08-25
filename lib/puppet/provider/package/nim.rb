@@ -274,7 +274,7 @@ Puppet::Type.type(:package).provide :nim, :parent => :aix, :source => :aix do
       [packages[package_name][version], nil]
     else
       versions = packages[package_name].keys
-      latest_version = (versions.sort { |a, b| Puppet::Util::Package.versioncmp(b, a) })[0]
+      latest_version = versions.sort { |a, b| Puppet::Util::Package.versioncmp(b, a) }[0]
       [packages[package_name][latest_version], latest_version]
     end
   end
