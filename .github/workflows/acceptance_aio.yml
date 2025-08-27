@@ -1,28 +1,20 @@
 ---
-name: Beaker OpenVox Acceptance Tests
+name: Beaker AIO Package Acceptance Tests
 run-name: |-
-  Beaker acceptance tests of openvox for
-  ${{ inputs.pre-release-build && 'pre-release' || 'release' }}
-  packages of openvox-agent
-  ${{ (inputs.pre-release-build && inputs.openvox-agent-version) ||
+  Beaker acceptance tests of openvox-agent AIO package for
+  ${{ inputs.pre-release-build && 'pre-release' || 'release' }} package
+  ${{ (inputs.pre-release-build && inputs.version) ||
       format(' collection: "{0}", version: "{1}" ',
              inputs.collection,
-             ((inputs.openvox-agent-version == '') && 'latest') ||
-              inputs.openvox-agent-version) }}
-  and openvox-server
-  ${{ (inputs.pre-release-build && inputs.openvox-server-version) ||
-      format(' collection: "{0}", version: "{1}" ',
-             inputs.collection,
-             ((inputs.openvox-server-version == '') && 'latest') ||
-              inputs.openvox-server-version) }}
+             ((inputs.version == '') && 'latest') || inputs.version) }}
 
 on:
   workflow_dispatch:
     inputs:
       ref:
         description: |-
-          (Ref) The git ref of openvox to run the Beaker test suite
-          from.
+          (Ref) The git ref of openvox-agent to run the Beaker test
+          suite from.
 
           If testing something from openvox8, this should be a ref off
           of main.
@@ -38,26 +30,21 @@ on:
           packages from the artifacts server, or released packages
           from the given collection.
 
-          If this is true, versions must be valid version numbers,
-          not latest, and collection is ignored. The workflow will
-          download and install the matching openvox package files from
-          the artifacts-url server.
+          If this is true, version must be a valid version, not
+          latest, and collection is ignored. The workflow will
+          download and install the matching openvox-agent package file
+          from the artifacts-url server.
 
           If this is false, version and collection must match, and the
           workflow will install the given openvox collection package
           and then let the system package manager install the latest
-          or version packages from the collection repository.
+          or version package from the collection repository.
         default: true
         type: boolean
-      openvox-agent-version:
+      version:
         description: |-
-          (OpenVox Agent Version) The openvox-agent package version to
-          test. (required if Pre-release Build is true)
-        type: string
-      openvox-server-version:
-        description: |-
-          (OpenVox Server Version) The openvox-server package version
-          to test. (required if Pre-release Build is true)
+          (Version) Package version to test. (required if Pre-release
+          Build is true)
         type: string
       collection:
         description: |-
@@ -83,21 +70,22 @@ jobs:
     uses: 'OpenVoxProject/shared-actions/.github/workflows/beaker_acceptance.yml@main'
     with:
       ref: ${{ inputs.ref }}
-      project-name: openvox
+      project-name: openvox-agent
+      os-add: |-
+        [
+          ["debian", "13", "amd64", "daily-latest"]
+        ]
       install-openvox: true
       openvox-collection: ${{ inputs.collection }}
-      openvox-agent-version: ${{ inputs.openvox-agent-version }}
+      openvox-agent-version: ${{ inputs.version }}
       openvox-agent-pre-release-build: ${{ inputs.pre-release-build }}
-      install-openvox-server: true
-      openvox-server-version: ${{ inputs.openvox-server-version }}
-      openvox-server-pre-release-build: ${{ inputs.pre-release-build }}
+      install-openvox-server: false
       install-openvoxdb: false
-      install-openvoxdb-termini: false
       artifacts-url: ${{ inputs.artifacts-url }}
-      acceptance-working-dir: 'acceptance'
+      acceptance-working-dir: 'packaging/acceptance'
       acceptance-pre-suite: |-
         [
-          "pre-suite"
+          "pre-suite/configure_type_defaults.rb"
         ]
       acceptance-tests: |-
         [
@@ -105,16 +93,15 @@ jobs:
         ]
       beaker-options: |-
         {
-          "helper":       "lib/helper.rb",
-          "options_file": "config/aio/options.rb"
+          "helper":       "lib/helper.rb"
         }
       vms: |-
         [
           {
-            "role": "primary",
+            "role": "agent",
             "count": 1,
-            "cpus": 4,
-            "mem_mb": 8192,
+            "cpus": 2,
+            "mem_mb": 4096,
             "cpu_mode": "host-model"
           }
         ]
