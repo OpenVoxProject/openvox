@@ -8,7 +8,7 @@ namespace :vox do
     abort "Could not find configs/components/#{component}.json" unless File.exist?("configs/components/#{component}.json")
     abort 'You must provide a ref.' if ref.nil? || ref.empty?
 
-    if ['puppet-runtime', 'pxp-agent'].include?(component)
+    if component == 'puppet-runtime'
       munged = ref.gsub('-', '.')
       data = <<~DATA
         {"location":"https://s3.osuosl.org/openvox-artifacts/#{component}/#{ref}/","version":"#{munged}"}
@@ -20,15 +20,17 @@ namespace :vox do
     end
 
     branch = run_command('git rev-parse --abbrev-ref HEAD')
-
-    puts "Writing #{component}.json"
-    File.write("configs/components/#{component}.json", data)
-    run_command("git add configs/components/#{component}.json")
-    puts 'Creating commit'
-    run_command("git commit -m 'Promote #{component} #{ref}'")
-    if ENV['NOPUSH'].nil?
-      puts 'Pushing to origin'
-      run_command("git push origin #{branch}")
+    
+    Dir.chdir('packaging') do
+      puts "Writing #{component}.json"
+      File.write("configs/components/#{component}.json", data)
+      run_command("git add configs/components/#{component}.json")
+      puts 'Creating commit'
+      run_command("git commit -m 'Promote #{component} #{ref}'")
+      if ENV['NOPUSH'].nil?
+        puts 'Pushing to origin'
+        run_command("git push origin #{branch}")
+      end
     end
   end
 end
