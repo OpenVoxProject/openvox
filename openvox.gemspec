@@ -1,6 +1,15 @@
+# When installed, this gemspec ends up the specifications dir and we should look for
+# the library at the installed path because Puppet ends up loading it when invoked.
+# When we are building the gem from source, we instead look relative to where this gemspec
+# file lives. This is a little jank, but prevents us from having to update the version in
+# two different places.
+installed_path = '/opt/puppetlabs/puppet/lib/ruby/vendor_ruby/puppet/version'
+version_path = File.exist?("#{installed_path}.rb") ? installed_path : 'lib/puppet/version'
+require_relative "#{version_path}"
+
 Gem::Specification.new do |spec|
   spec.name = "openvox"
-  spec.version = "8.22.0"
+  spec.version = Puppet.version
   spec.licenses = ['Apache-2.0']
 
   spec.required_rubygems_version = Gem::Requirement.new("> 1.3.1")

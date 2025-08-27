@@ -13,11 +13,5 @@ namespace :vox do
     warn 'Failed to update version in lib/puppet/version.rb' if data == new_data
 
     File.write('lib/puppet/version.rb', new_data)
-
-    data = File.read('openvox.gemspec')
-    new_data = data.sub(/spec.version = "\d+\.\d+\.\d+(\.rc\d+)?"/, "spec.version = \"#{version}\"")
-    warn 'Failed to update version in openvox.gemspec' if data == new_data
-
-    File.write('openvox.gemspec', new_data)
   end
 end

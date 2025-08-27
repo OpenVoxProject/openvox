@@ -1,6 +1,7 @@
+require_relative '../../../lib/puppet/version'
 component "puppet" do |pkg, settings, platform|
-  pkg.load_from_json("configs/components/puppet.json")
-
+  pkg.url 'file://../'
+  pkg.version Puppet.version
   pkg.build_requires "puppet-runtime" # Provides ruby and rubygem-win32-dir
 
   # Used to compile binary translation files
