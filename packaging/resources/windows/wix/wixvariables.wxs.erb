@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+  <!-- OpenVox Agent Specific Variables -->
+
+  <Fragment>
+
+    <ComponentGroup Id="FragmentVariables" />
+
+    <!-- Use FOSS logo for the moment - how to we make this configurable -->
+    <?define DialogBitmap="dlgbmp-foss.bmp" ?>
+
+    <!-- It is possible to override WixVariable's on the command line using the
+         -d flag to light when Overridable="yes". -->
+    <!-- These are all referenced from the wix/wixobj directory when running the light command -->
+    <WixVariable Id="WixUIBannerBmp" Value="..\ui\bitmaps\bannrbmp.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="..\ui\bitmaps\$(var.DialogBitmap)" />
+    <WixVariable Id="WixUIExclamationIco" Value="..\ui\bitmaps\exclamic.ico" />
+    <WixVariable Id="WixUIInfoIco" Value="..\ui\bitmaps\info.ico" />
+    <WixVariable Id="WixUINewIco" Value="..\ui\bitmaps\new.ico" />
+    <WixVariable Id="WixUIUpIco" Value="..\ui\bitmaps\up.ico" />
+
+  </Fragment>
+</Wix>

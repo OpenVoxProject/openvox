@@ -1,0 +1,54 @@
+function set_answers(){
+  if [ -z "${HOME}" ] ; then
+    HOME="/var/root"
+  fi
+
+  if [ -z "${answers_dir}" ] ; then
+    answers_dir="${HOME}/Library/Caches/puppet-agent-installer"
+  fi
+
+  if [ -z "${answers}" ] ; then
+    answers="${answers_dir}/PuppetagentInterviewConfiguration.txt"
+  fi
+}
+
+function remove_answers(){
+  if [ -d "${answers_dir}" ] ; then
+    /bin/rm -rf "${answers_dir}"
+  fi
+}
+
+function setup_puppet(){
+  if [ -f "${answers}" ] && [ -r "${answers}" ] ; then
+    echo "Setting up puppet"
+    source "${answers}"
+
+    if [ -n "${PUPPET_MASTER_HOSTNAME}" ] ; then
+      /opt/puppetlabs/bin/puppet config set server "${PUPPET_MASTER_HOSTNAME}"
+    else
+      echo "No value to set for Puppet Master (server)...skipping. This is default on first time command line installs."
+    fi
+    if [ -n "${PUPPET_AGENT_CERTNAME}" ] ; then
+      /opt/puppetlabs/bin/puppet config set certname "${PUPPET_AGENT_CERTNAME}"
+    else
+      echo "No value to set for Puppet Agent Certname (certname)...skipping. This is the default on first time command line installs."
+    fi
+  else
+    echo "No interview configuration file found, skipping initial setup of puppet.conf. This is the default on first time command line installs."
+  fi
+}
+
+function reload_services(){
+  for service in "puppet" "pxp-agent" ; do
+    if [ -f "/tmp/.puppet-agent.upgrade/${service}" ] ; then
+      /bin/launchctl load -F "/Library/LaunchDaemons/com.puppetlabs.${service}.plist"
+    fi
+  done
+}
+
+if [ -d "/tmp/.puppet-agent.upgrade" ]; then
+  set_answers
+  setup_puppet
+  remove_answers
+  reload_services
+fi

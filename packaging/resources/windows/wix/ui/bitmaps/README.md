@@ -1,0 +1,1 @@
+The font used in these assets is Raleway Bold (https://fonts.google.com/specimen/Raleway)

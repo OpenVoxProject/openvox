@@ -1,0 +1,34 @@
+---
+name: Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  rake_checks:
+    name: Rake Checks
+    runs-on: ubuntu-24.04
+    steps:
+      # needs fetch-depth because the packaging dem reads old git tags
+      - name: Checkout current PR
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Install Ruby version 3.3
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3
+          bundler-cache: true
+      - name: Validate code
+        run: |
+          bundle exec rake rubocop
+          bundle exec rake -T | grep vox:build
+          bundle exec rake -T | grep vox:promote
+          bundle exec rake -T | grep vox:upload
+          bundle exec rake config:print

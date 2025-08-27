@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi' xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <!--
+    Enivornment table for installation.
+
+  -->
+  <Fragment>
+    <ComponentGroup Id="FragmentEnvironment">
+      <Component
+        Id="PuppetInstallDirBinToPath"
+        Guid="F46FA9A8-43A2-4379-8933-EAAE2D0E5D72"
+        Directory="TARGETDIR"
+        Win64="<%= settings[:win64] %>">
+        <Environment
+          Id="PuppetBinPath"
+          Name="PATH"
+          Value="[INSTALLDIR]bin"
+          Permanent="no"
+          Part="last"
+          Action="set"
+          System="yes" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

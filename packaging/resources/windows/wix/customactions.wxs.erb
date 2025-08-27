@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+  <Fragment>
+    <ComponentGroup Id="FragmentCustomActions" />
+
+    <!-- Properties for existing Ini Values - expanding the remembered properties pattern just a bit -->
+
+    <CustomAction
+      Id="SetIniPropertyValues"
+      Script="vbscript"
+      Execute="firstSequence"
+      Return="ignore">
+      <![CDATA[
+On Error Resume Next
+Function SetPropertyFromIni (keyName, propertyName, textToSearch)
+  Set iniValueRegex = New RegExp
+  iniValueRegex.IgnoreCase = true
+  iniValueRegex.Multiline = true
+  iniValueRegex.Global = false
+  iniValueRegex.Pattern = "^" & keyName & "=(.*[^\s\r\n]*)$"
+  Set matches = iniValueRegex.Execute(textToSearch)
+  dim iniValue
+  iniValue = ""
+  If (matches.Count <> 0) Then
+    If (matches.Item(0).SubMatches.Count <> 0) Then
+      iniValue = matches.Item(0).SubMatches(0)
+      iniValue = Replace(Replace(Replace(iniValue, Chr(13), ""), vbNewLine, ""), vbLf, "")
+    End If
+  End If
+  If (iniValue <> "") Then
+    Session.Property(propertyName) = iniValue
+  End If
+End Function
+Dim fso, wshShell, iniPath
+Set wshShell = CreateObject("WScript.Shell")
+iniPath = wshShell.ExpandEnvironmentStrings("%ALLUSERSPROFILE%\PuppetLabs\puppet\etc\puppet.conf")
+Set fso = CreateObject("Scripting.FileSystemObject")
+If (fso.FileExists(iniPath)) Then
+  Set iniFile = fso.OpenTextFile(iniPath, 1, false)
+  iniFileText = iniFile.ReadAll()
+  iniFile.Close
+  Set iniFile = Nothing
+  SetPropertyFromIni "server", "INI_PUPPET_MASTER_SERVER", iniFileText
+  SetPropertyFromIni "masterport", "INI_PUPPET_MASTER_PORT", iniFileText
+  SetPropertyFromIni "serverport", "INI_PUPPET_SERVER_PORT", iniFileText
+  SetPropertyFromIni "environment", "INI_PUPPET_AGENT_ENVIRONMENT", iniFileText
+  SetPropertyFromIni "certname", "INI_PUPPET_AGENT_CERTNAME", iniFileText
+  SetPropertyFromIni "ca_server", "INI_PUPPET_CA_SERVER", iniFileText
+End If
+      ]]>
+    </CustomAction>
+
+    <!-- Custom action to get the localised name for the "Everyone" (or World) user as
+         WixUtil:OSInfo Custom action doesn't return this value.
+         Equivalent of     (Get-WmiObject Win32_Account | where { $_.SID -eq "S-1-1-0" }).name
+      -->
+    <CustomAction
+      Id="GetLocalisedAccountNames"
+      Script="vbscript"
+      Execute="immediate"
+      Return="check">
+        <![CDATA[
+      On Error Resume Next
+      Dim ojbLocator:  set objLocator = CreateObject("WbemScripting.SWbemLocator")
+      Dim objWMI:      set objWMI = objLocator.ConnectServer(".", "root/cimv2")
+      Dim sidEveryone: sidEveryone = "S-1-1-0"
+      Dim sidAdmins:   sidAdmins   = "S-1-5-32-544"
+      Dim objSIDEveryone: set objSIDEveryone = objWMI.Get("Win32_SID='" & sidEveryone & "'")
+      Dim objSIDAdmins:   set objSIDAdmins = objWMI.Get("Win32_SID='" & sidAdmins & "'")
+      Session.Property("PUP_LCL_ACCOUNT_EVERYONE") = objSIDEveryone.AccountName
+      Session.Property("PUP_LCL_ACCOUNT_ADMINISTRATORS") = objSIDAdmins.AccountName
+        ]]>
+    </CustomAction>
+
+    <!-- Custom Actions to handle command line property values that override
+         remembered property values -->
+    <!-- INSTALLDIR -->
+    <CustomAction
+      Id="SaveCmdLineInstallDir"
+      Property="CMDLINE_INSTALLDIR"
+      Value="[INSTALLDIR]"
+      Execute="firstSequence" />
+    <CustomAction
+      Id="SetFromCmdLineInstallDir"
+      Property="INSTALLDIR"
+      Value="[CMDLINE_INSTALLDIR]"
+      Execute="firstSequence" />
+
+    <!-- PUPPET_SERVER -->
+    <CustomAction
+      Id="SaveCmdLinePuppetServer"
+      Property="CMDLINE_PUPPET_SERVER"
+      Value="[PUPPET_SERVER]"
+      Execute="firstSequence" />
+    <CustomAction
+      Id="SetFromCmdLinePuppetServer"
+      Property="PUPPET_MASTER_SERVER"
+      Value="[CMDLINE_PUPPET_SERVER]"
+      Execute="firstSequence" />
+
+    <!-- PUPPET_MASTER_SERVER -->
+    <CustomAction
+      Id="SetFromIniPuppetMasterServer"
+      Property="PUPPET_MASTER_SERVER"
+      Value="[INI_PUPPET_MASTER_SERVER]"
+      Execute="firstSequence" />
+    <CustomAction
+      Id="SaveCmdLinePuppetMasterServer"
+      Property="CMDLINE_PUPPET_MASTER_SERVER"
+      Value="[PUPPET_MASTER_SERVER]"
+      Execute="firstSequence" />
+    <CustomAction
+      Id="SetFromCmdLinePuppetMasterServer"
+      Property="PUPPET_MASTER_SERVER"
+      Value="[CMDLINE_PUPPET_MASTER_SERVER]"
+      Execute="firstSequence" />
+    <CustomAction
+      Id="SetDefaultPuppetMasterServer"
+      Property="PUPPET_MASTER_SERVER"
+      Value="puppet"
+      Execute="firstSequence" />
+     <CustomAction
+      Id="SetFromIniPuppetMasterPort"
+      Property="MASTER_PORT"
+      Value="[INI_PUPPET_MASTER_PORT]"
+      Execute="firstSequence" />
+    <CustomAction
+       Id="SetFromCmdLinePuppetMasterPort"
+       Property="MASTER_PORT"
+       Value="[PUPPET_MASTER_PORT]"
+       Execute="firstSequence" />
+     <CustomAction
+      Id="SetFromIniPuppetServerPort"
+      Property="SERVER_PORT"
+      Value="[INI_PUPPET_SERVER_PORT]"
+      Execute="firstSequence" />
+    <CustomAction
+       Id="SetFromCmdLinePuppetServerPort"
+       Property="SERVER_PORT"
+       Value="[PUPPET_SERVER_PORT]"
+       Execute="firstSequence" />
+
+    <!-- PUPPET_AGENT_ENVIRONMENT -->
+    <CustomAction
+      Id="SetFromIniPuppetAgentEnvironment"
+      Property="PUPPET_AGENT_ENVIRONMENT"
+      Value="[INI_PUPPET_AGENT_ENVIRONMENT]"
+      Execute="firstSequence" />
+    <CustomAction
+      Id="SaveCmdLinePuppetAgentEnvironment"
+      Property="CMDLINE_PUPPET_AGENT_ENVIRONMENT"
+      Value="[PUPPET_AGENT_ENVIRONMENT]"
+      Execute="firstSequence" />
+    <CustomAction
+      Id="SetFromCmdLinePuppetAgentEnvironment"
+      Property="PUPPET_AGENT_ENVIRONMENT"
+      Value="[CMDLINE_PUPPET_AGENT_ENVIRONMENT]"
+      Execute="firstSequence" />
+
+    <!-- PUPPET_AGENT_CERTNAME -->
+    <CustomAction
+      Id="SetFromIniPuppetAgentCertname"
+      Property="PUPPET_AGENT_CERTNAME"
+      Value="[INI_PUPPET_AGENT_CERTNAME]"
+      Execute="firstSequence" />
+    <CustomAction
+      Id="SaveCmdLinePuppetAgentCertname"
+      Property="CMDLINE_PUPPET_AGENT_CERTNAME"
+      Value="[PUPPET_AGENT_CERTNAME]"
+      Execute="firstSequence" />
+    <CustomAction
+      Id="SetFromCmdLinePuppetAgentCertname"
+      Property="PUPPET_AGENT_CERTNAME"
+      Value="[CMDLINE_PUPPET_AGENT_CERTNAME]"
+      Execute="firstSequence" />
+
+    <!-- PUPPET_CA_SERVER -->
+    <CustomAction
+      Id="SetFromIniPuppetCaServer"
+      Property="PUPPET_CA_SERVER"
+      Value="[INI_PUPPET_CA_SERVER]"
+      Execute="firstSequence" />
+    <CustomAction
+      Id="SaveCmdLinePuppetCaServer"
+      Property="CMDLINE_PUPPET_CA_SERVER"
+      Value="[PUPPET_CA_SERVER]"
+      Execute="firstSequence" />
+    <CustomAction
+      Id="SetFromCmdLinePuppetCaServer"
+      Property="PUPPET_CA_SERVER"
+      Value="[CMDLINE_PUPPET_CA_SERVER]"
+      Execute="firstSequence" />
+
+    <!-- PUPPET_AGENT_STARTUP_MODE -->
+    <CustomAction
+      Id="SaveCmdLinePuppetAgentStartupMode"
+      Property="CMDLINE_PUPPET_AGENT_STARTUP_MODE"
+      Value="[PUPPET_AGENT_STARTUP_MODE]"
+      Execute="firstSequence" />
+    <CustomAction
+      Id="SetFromCmdLinePuppetAgentStartupMode"
+      Property="PUPPET_AGENT_STARTUP_MODE"
+      Value="[CMDLINE_PUPPET_AGENT_STARTUP_MODE]"
+      Execute="firstSequence" />
+
+    <!-- PUPPET_AGENT_ACCOUNT_DOMAIN -->
+    <CustomAction
+      Id="SetDomainToLocalComputer"
+      Property="PUPPET_AGENT_ACCOUNT_DOMAIN"
+      Value="[ComputerName]"
+      Execute="firstSequence"/>
+    <CustomAction
+      Id="SetDomainToNtAuthority"
+      Property="PUPPET_AGENT_ACCOUNT_DOMAIN"
+      Value="NT AUTHORITY"
+      Execute="firstSequence"/>
+
+    <%- if @platform.architecture == "x86" -%>
+    <!-- If these fail, we don't want to fail the installer -->
+    <!-- We can't do a registry search for powershell's installed location because it will turn up the WOW64Node version due to not being able to bypass redirection in RegistrySearch
+         So we will assume the default install location and if it fails, we will ignore the error.
+         this is the only way to grab path without expanding variables
+         [Microsoft.Win32.Registry]::LocalMachine.OpenSubKey("SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment\\").GetValue("PATH", "", [Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames).ToString();
+         [System.Text.RegularExpressions.Regex]::Replace([Microsoft.Win32.Registry]::LocalMachine.OpenSubKey("SYSTEM\CurrentControlSet\Control\Session Manager\Environment\").GetValue("PATH", "", [Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames).ToString(), "c:\\Program files\\Puppet Labs\\Puppet\\bin(?>;)?", "", [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+         "c:\windows\System32\WindowsPowerShell\v1.0\powershell.exe" -NoLogo -NonInteractive -InputFormat None -NoProfile -ExecutionPolicy Bypass -Command "[System.Text.RegularExpressions.Regex]::Replace([Microsoft.Win32.Registry]::LocalMachine.OpenSubKey('SYSTEM\CurrentControlSet\Control\Session Manager\Environment\').GetValue('PATH', '', [Microsoft.Win32.RegistryValueOptions]::DoNotExpandEnvironmentNames).ToString(),  [System.Text.RegularExpressions.Regex]::Escape('c:\Program Files\Puppet Labs\Puppet\bin') + '(?>;)?', '', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase) | %{[System.Environment]::SetEnvironmentVariable('PATH',$_,'Machine')}"
+         &quot;[%WINDIR]\System32\WindowsPowerShell\v1.0\powershell.exe&quot; -NoLogo -NonInteractive -InputFormat None -NoProfile -ExecutionPolicy Bypass -Command &quot;[\[]System.Text.RegularExpressions.Regex[\]]::Replace([\[]Microsoft.Win32.Registry[\]]::LocalMachine.OpenSubKey(&apos;SYSTEM\CurrentControlSet\Control\Session Manager\Environment\&apos;).GetValue(&apos;PATH&apos;, &apos;&apos;, [\[]Microsoft.Win32.RegistryValueOptions[\]]::DoNotExpandEnvironmentNames).ToString(),  [\[]System.Text.RegularExpressions.Regex[\]]::Escape(&apos;[ProgramFiles64Folder]$(var.OurCompanyName)\Puppet\bin&apos;) + &apos;([\?]&gt;;)[\?]&apos;, &apos;&apos;, [\[]System.Text.RegularExpressions.RegexOptions[\]]::IgnoreCase) | %[\{][\[]System.Environment[\]]::SetEnvironmentVariable(&apos;PATH&apos;,$_, &apos;Machine&apos;)[\}]&quot;
+    -->
+    <CustomAction
+      Id="Remove64BitPath_SetProp"
+      Property="Remove64BitPath"
+      Value="&quot;[%WINDIR]\System32\WindowsPowerShell\v1.0\powershell.exe&quot; -NoLogo -NonInteractive -InputFormat None -NoProfile -ExecutionPolicy Bypass -Command &quot;[\[]System.Text.RegularExpressions.Regex[\]]::Replace([\[]Microsoft.Win32.Registry[\]]::LocalMachine.OpenSubKey(&apos;SYSTEM\CurrentControlSet\Control\Session Manager\Environment\&apos;).GetValue(&apos;PATH&apos;, &apos;&apos;, [\[]Microsoft.Win32.RegistryValueOptions[\]]::DoNotExpandEnvironmentNames).ToString(),  [\[]System.Text.RegularExpressions.Regex[\]]::Escape(&apos;[ProgramFiles64Folder]<%= settings[:pl_company_name] %>\Puppet\bin&apos;) + &apos;([\?]&gt;;)[\?]&apos;, &apos;&apos;, [\[]System.Text.RegularExpressions.RegexOptions[\]]::IgnoreCase) | %[\{][\[]System.Environment[\]]::SetEnvironmentVariable(&apos;PATH&apos;,$_, &apos;Machine&apos;)[\}]&quot;"
+      Execute="immediate" />
+    <CustomAction
+      Id="Remove64BitPath"
+      BinaryKey="WixCA"
+      DllEntry="CAQuietExec64"
+      Execute="deferred"
+      Return="ignore" />
+    <CustomAction
+      Id="Remove64BitProgramFiles_SetProp"
+      Property="Remove64BitProgramFiles"
+      Value="&quot;[%WINDIR]\System32\cmd.exe&quot; /c IF EXIST &quot;[ProgramFiles64Folder]<%= settings[:pl_company_name] %>\&quot; rmdir /s /q &quot;[ProgramFiles64Folder]<%= settings[:pl_company_name] %>&quot;"
+      Execute="immediate" />
+    <CustomAction
+      Id="Remove64BitProgramFiles"
+      BinaryKey="WixCA"
+      DllEntry="CAQuietExec64"
+      Execute="deferred"
+      Return="ignore" />
+    <%-end-%>
+
+    <%-if @platform.architecture == "x86"-%>
+    <Property Id="WixQuietExecCmdLine" Value="&quot;[%WINDIR]\System32\WindowsPowerShell\v1.0\powershell.exe&quot; -NoLogo -NonInteractive -InputFormat None -NoProfile -ExecutionPolicy Bypass -Command &quot;if (Test-Path -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components') { Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components' -Recurse | foreach { foreach ($prop in $_.Property) { if($_.GetValue($prop) -like '*service\nssm.exe*') { Set-ItemProperty -Path $_.PSPath -Name $prop -Value '' -ErrorAction Stop } } }; Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components' -Recurse | foreach { foreach ($prop in $_.Property) { if($_.GetValue($prop) -like '*puppet\bin\nssm.exe*') { Set-ItemProperty -Path $_.PSPath -Name $prop -Value '' -ErrorAction Stop } } } }&quot;"/>
+    <CustomAction Id="RemoveLegacyNssmRegistryKey" BinaryKey="WixCA" DllEntry="WixQuietExec" Execute="immediate" Return="check"/>
+    <Property Id="WixSilentExecCmdLine"  Value="&quot;[%WINDIR]\System32\WindowsPowerShell\v1.0\powershell.exe&quot; try {$check_long_path_enabled = Get-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem&quot; | Select-Object -ExpandProperty  &quot;LongPathsEnabled&quot; -ErrorAction Stop;if($check_long_path_enabled -ne 1 ){throw  &quot;Value needs to be 1&quot;}} catch { New-ItemProperty -Path  &quot;HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem&quot; -Name  &quot;LongPathsEnabled&quot; -Value 1 -PropertyType DWORD -Force }"/>
+    <CustomAction Id="EnableLongPathName"
+            BinaryKey="WixCA"
+            DllEntry="WixSilentExec"
+            Execute="immediate"
+            Impersonate="yes" />
+    <%-else-%>
+    <Property Id="WixQuietExec64CmdLine" Value="&quot;[%WINDIR]\System32\WindowsPowerShell\v1.0\powershell.exe&quot; -NoLogo -NonInteractive -InputFormat None -NoProfile -ExecutionPolicy Bypass -Command &quot;if (Test-Path -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components') { Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components' -Recurse | foreach { foreach ($prop in $_.Property) { if($_.GetValue($prop) -like '*service\nssm.exe*') { Set-ItemProperty -Path $_.PSPath -Name -Value '' $prop -ErrorAction Stop } } }; Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components' -Recurse | foreach { foreach ($prop in $_.Property) { if($_.GetValue($prop) -like '*puppet\bin\nssm.exe*') { Set-ItemProperty -Path $_.PSPath -Name $prop -Value '' -ErrorAction Stop } } } }&quot;"/>
+    <CustomAction Id="RemoveLegacyNssmRegistryKey" BinaryKey="WixCA" DllEntry="WixQuietExec64" Execute="immediate" Return="check"/>
+    <Property Id="WixSilentExec64CmdLine"  Value="&quot;[%WINDIR]\System32\WindowsPowerShell\v1.0\powershell.exe&quot; try{$check_long_path_enabled = Get-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem&quot; | Select-Object -ExpandProperty  &quot;LongPathsEnabled&quot; -ErrorAction Stop;if($check_long_path_enabled -ne 1 ){throw  &quot;Value needs to be 1&quot;}} catch { New-ItemProperty -Path  &quot;HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem&quot; -Name  &quot;LongPathsEnabled&quot; -Value 1 -PropertyType DWORD -Force }"/>
+    <CustomAction Id="EnableLongPathName"
+            BinaryKey="WixCA"
+            DllEntry="WixSilentExec64"
+            Execute="immediate"
+            Impersonate="yes" />
+
+        <!-- Fips is only supported in 64-bit -->
+        <%-if @platform.is_fips?-%>
+            <!--
+                 The FipsInstall custom action depends on the user-specified
+                 INSTALLDIR, so it can't be an immediate action. Also, "custom
+                 actions that change the system directly, or call another system
+                 service, must be deferred to the time when the installation
+                 script is executed."
+                 https://learn.microsoft.com/en-us/windows/win32/msi/deferred-execution-custom-actions
+
+                 To create a deferred action, first the "SetProperty" custom
+                 action interpolates the values *Before* the "FipsInstall"
+                 custom action runs. And "the property Id used in the
+                 SetProperty custom action must match the Id value used in the
+                 deferred custom action"
+                 https://wixtoolset.org/docs/v3/customactions/qtexec/#deferred-execution
+
+                 The action runs "openssl fipsinstall" and copies openssl-fips.cnf
+                 to openssl.cnf If you modify the following code, update the rpm
+                 postinstall action in configs/components/openssl-fips.rb too!
+            -->
+        <SetProperty Id="FipsInstall"
+                     Value="&quot;[%WINDIR]\system32\cmd.exe&quot; /c set OPENSSL_CONF=&quot;[INSTALLDIR]\puppet\ssl\openssl.cnf.dist&quot; &amp; &quot;[INSTALLDIR]\puppet\bin\openssl.exe&quot; fipsinstall -module &quot;[INSTALLDIR]\puppet\lib\ossl-modules\fips.dll&quot; -provider_name fips -out &quot;[INSTALLDIR]\puppet\ssl\fipsmodule.cnf&quot; &amp; copy /y &quot;[INSTALLDIR]\puppet\ssl\openssl-fips.cnf&quot; &quot;[INSTALLDIR]\puppet\ssl\openssl.cnf&quot;"
+                     Before="FipsInstall"
+                     Sequence="execute" />
+        <CustomAction Id="FipsInstall"
+                      BinaryKey="WixCA"
+                      DllEntry="WixSilentExec64"
+                      Execute="deferred"
+                      Impersonate="no" />
+    <%-end-%>
+    <%-end-%>
+
+    <!-- Due to PUP-6729, system may not have permission to modify DACL, so first take ownership -->
+    <CustomAction
+      Id="ResetDataPermissions"
+      Script="vbscript"
+      Execute="deferred"
+      Return="check"
+      Impersonate="no">
+      <![CDATA[
+On Error Resume Next
+
+' Globals
+' https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/windows-scripting/aew9yb99%28v%3dvs.84%29
+Dim wshShell : Set wshShell = CreateObject("WScript.Shell")
+' https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/windows-scripting/z9ty6h50%28v%3dvs.84%29
+Dim fso : Set fso = CreateObject("Scripting.FileSystemObject")
+' https://docs.microsoft.com/en-us/windows/desktop/msi/session-message
+Const msiMessageTypeError   = &H01000000
+Const msiMessageTypeWarning = &H02000000
+Const msiMessageTypeInfo    = &H04000000
+
+' SDDL Decoder Ring
+'
+' O:SY => owner system
+' G:SY => group system
+' D:   => DACL
+'   Flags
+'     P  => protected
+'     AI => automatic inheritance has been computed
+' ACES (ace1)(ace2)...
+'   Type
+'     A => allow
+'   Inheritance Flags
+'     OI => object inherit (affects child files)
+'     CI => container inherit (affects child directories)
+'     ID => inherited from a parent
+'   Access Right
+'     FA       => file all 0x1f01ff
+'     0x1200a9 => file read (0x00120089) | file execute (0x001200A0)
+'   Trustee SID
+'     SY => system
+'     BA => builtin local admins
+'     WD => world (everyone)
+'
+Const SDDL_DIR_INHERITED_ADMIN_ONLY = "O:SYG:SYD:AI(A;OICIID;FA;;;SY)(A;OICIID;FA;;;BA)"
+Const SDDL_DIR_INHERITED_ADMIN_ONLY_ADMINS_OWNER = "O:BAG:SYD:AI(A;OICIID;FA;;;SY)(A;OICIID;FA;;;BA)"
+Const SDDL_DIR_INHERITED_EVERYONE = "O:SYG:SYD:AI(A;OICIID;0x1200a9;;;WD)(A;OICIID;FA;;;SY)(A;OICIID;FA;;;BA)"
+
+Sub Log (Message, IsError)
+
+  ' Logs through cscript
+  If IsObject(WScript) Then
+    If IsObject(WScript.StdErr) And IsError = True Then
+      WScript.StdErr.WriteLine(Message)
+    ElseIf IsObject(WScript.StdOut) Then
+      WScript.StdOut.WriteLine(Message)
+    End If
+  End If
+
+  ' Logs through MSI
+  If IsObject(Session) Then
+    ' https://docs.microsoft.com/en-us/windows/desktop/msi/installer-createrecord
+    Dim logRecord : Set logRecord = Installer.CreateRecord(1) ' 1 entry
+    logRecord.StringData(1) = Message ' Set Index 1
+    Dim kind : kind = msiMessageTypeInfo
+    If IsError = True Then kind = msiMessageTypeError
+    Session.Message kind, logRecord
+  End If
+End Sub
+
+Function GetSDDL (Path)
+  ' omit root\cimv2 as local machine is default
+  Dim wmiService : Set wmiService = GetObject("winmgmts:")
+  ' https://docs.microsoft.com/en-us/previous-versions/windows/desktop/secrcw32prov/win32-securitydescriptorhelper
+  Dim sdHelper : Set sdHelper = GetObject("winmgmts:Win32_SecurityDescriptorHelper" )
+  Dim fileSecuritySettings : Set fileSecuritySettings = wmiService.Get("Win32_LogicalFileSecuritySetting='" & Path & "'")
+
+  Dim securityDescriptor
+  ' https://docs.microsoft.com/en-us/previous-versions/windows/desktop/secrcw32prov/win32-securitydescriptor
+  Dim succeeded : succeeded = fileSecuritySettings.GetSecurityDescriptor(securityDescriptor)
+
+  If succeeded <> 0 Then
+    Return
+  End If
+
+  Dim sddlString
+  succeeded = sdHelper.Win32SDToSDDL(securityDescriptor, sddlString)
+  If succeeded <> 0 Then
+    Return
+  End If
+
+  ' Win32_SecurityDescriptorHelper omits inheritance ID flag, and cacls omits O: and G: info
+  ' cacls output formatted like : C:\ProgramData\PuppetLabs\puppet "D:P(A;OICIID;FA;;;SY)(A;OICIID;FA;;;BA)"
+  ' sddlString formatted like : O:SYG:SYD:AI(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)
+  Dim caclsOutput : caclsOutput = ExecuteCommand(comspec & " /C " & cacls & "  """ & Path & """ /S")
+
+  ' Replace the DACL D: from SDDL string with the D: from cacls if different
+  Dim regEx : Set regEx = new RegExp
+  regEx.IgnoreCase = True
+  regEx.Pattern = "(D:(P){0,1}(AI){0,1}\(.*\))\n{0,1}"
+  Dim caclsMatches : Set caclsMatches = regEx.Execute(caclsOutput)
+  Dim sddlMatches : Set sddlMatches = regEx.Execute(sddlString)
+  If caclsMatches.Count > 0 And sddlMatches.Count > 0 And (sddlMatches.Item(0) <> caclsMatches.Item(0)) Then
+    Log "Replacing SDDL DACL " & sddlMatches.Item(0) & " with cacls output " & caclsMatches.Item(0), False
+    sddlString = Replace(sddlString, sddlMatches.Item(0), caclsMatches.Item(0))
+  End If
+
+  GetSDDL = sddlString
+End Function
+
+' Executes command, sending its stdout / stderr to the WScript host
+Function ExecuteCommand (Command)
+
+  ExecuteCommand = ""
+  Log "Executing Command : " & Command, False
+
+  Dim tempFilePath : tempFilePath = fso.GetTempName()
+  ' https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/windows-scripting/d5fk67ky%28v%3dvs.84%29
+  ' intWindows Style - 0 - Hides the window and activates another window.
+  ' bWaitOnReturn - True - waits for program termination
+  Dim exitCode : exitCode = wshShell.Run(Command & " > """ & tempFilePath & """ 2>&1", 0, True)
+
+  Dim outFile : Set outFile = fso.OpenTextFile(tempFilePath)
+  Do While Not outFile.AtEndOfStream
+    ExecuteCommand = ExecuteCommand & outFile.ReadLine() & vbCRLF
+  Loop
+  outFile.Close()
+
+  If exitCode <> 0 Then
+    Log "Execution Failed With Code: " & exitCode, True
+  End If
+
+  fso.DeleteFile(tempFilePath)
+End Function
+
+Sub ResetPermissionsIfNotMatches (PathToCheck, PathToReset, SDDL, GrantAdmins)
+
+  If (fso.FolderExists(PathToCheck)) Then
+    Log "Inspecting found directory : " & PathToCheck, False
+
+    Dim checkSDDL : checkSDDL = GetSDDL(PathToCheck)
+    If checkSDDL <> SDDL Then
+      Log "Resetting " & PathToReset & " based on unexpected SDDL for " & PathToCheck & " with " & checkSDDL & " expected to be " & SDDL, False
+      If GrantAdmins = True Then
+        ' while it is possible to call takeown directly, we avoid a WshShell stream problem with stderr this way
+        ' https://machine-cycle.blogspot.com/2008/06/pipe-dreams-or-vbscript-spawned.html
+        Log ExecuteCommand(comspec & " /C " & takeown & " /F """ & PathToReset & "\*"" /R /A /D N"), False
+        Log ExecuteCommand(comspec & " /C " & icacls & "  """ & PathToReset & "\*"" /grant ""*S-1-5-32-544:(F)"" ""*S-1-5-18:(F)"" /T /C"), False
+      End If
+
+      Log ExecuteCommand(comspec & " /C " & icacls & "  """ & PathToReset & "\*"" /reset /T /C"), False
+    Else
+      Log "Nothing to reset, Found expected SDDL : " & SDDL, False
+    End If
+  Else
+    Log "Nothing to reset, directory not found : " & PathToCheck, False
+  End If
+
+End Sub
+
+
+' Main Code Starts Here
+Dim comspec : comspec = wshShell.ExpandEnvironmentStrings("%comspec%")
+
+' https://docs.microsoft.com/en-us/windows/desktop/api/Shldisp/ne-shldisp-shellspecialfolderconstants
+Const CommonAppData = &H23&  ' second & means long integer '
+Const System = &H25&
+
+' https://docs.microsoft.com/en-us/windows/desktop/shell/shell
+Dim shellApplication : Set shellApplication = CreateObject("Shell.Application")
+Dim systemPath : systemPath = (shellApplication.Namespace(System)).Self.Path
+Dim takeown : takeown = systemPath & "\takeown.exe"
+Dim icacls : icacls = systemPath & "\icacls.exe"
+Dim cacls : cacls = systemPath & "\cacls.exe"
+Dim appDataPath : appDataPath = (shellApplication.Namespace(CommonAppData)).Self.Path
+
+' Leave root APPDATADIR as-is
+
+' Due to PUP-6729, now that we can modify the DACL
+' ensure admins and system have full control
+ResetPermissionsIfNotMatches appDataPath & "\PuppetLabs\puppet\etc", appDataPath & "\PuppetLabs\puppet", SDDL_DIR_INHERITED_ADMIN_ONLY_ADMINS_OWNER, True
+ResetPermissionsIfNotMatches appDataPath & "\PuppetLabs\code\environments", appDataPath & "\PuppetLabs\code", SDDL_DIR_INHERITED_ADMIN_ONLY, False
+ResetPermissionsIfNotMatches appDataPath & "\PuppetLabs\facter\facts.d", appDataPath & "\PuppetLabs\facter", SDDL_DIR_INHERITED_EVERYONE, False
+ResetPermissionsIfNotMatches appDataPath & "\PuppetLabs\pxp-agent\etc", appDataPath & "\PuppetLabs\pxp-agent", SDDL_DIR_INHERITED_ADMIN_ONLY, False
+      ]]>
+    </CustomAction>
+  </Fragment>
+</Wix>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+  <TextStyle Id="VoxPupuli_Font_Normal_White" FaceName="Tahoma" Size="8" Red="255" Green="255" Blue="255" />
+  <TextStyle Id="VoxPupuli_Font_Bigger_White" FaceName="Tahoma" Size="12" Red="255" Green="255" Blue="255" />
+  <TextStyle Id="VoxPupuli_Font_Title_White" FaceName="Tahoma" Size="9" Bold="yes" Red="255" Green="255" Blue="255" />
+</Include>

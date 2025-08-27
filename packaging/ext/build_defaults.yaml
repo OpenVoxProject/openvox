@@ -1,0 +1,145 @@
+---
+project: 'puppet-agent'
+# The packaging repo uses the `foss_platforms` hash to determine which repos
+# to retrieve and deploy, see https://github.com/puppetlabs/packaging/blob/0.110.0/tasks/nightly_repos.rake#L149
+# Only add a platform to this list if it has already been added as a BUILD_TARGET
+foss_platforms:
+  - amazon-2023-x86_64
+  - amazon-2023-aarch64
+  - amazon-2-aarch64
+  - debian-10-amd64
+  - debian-11-amd64
+  - debian-11-aarch64
+  - debian-12-amd64
+  - debian-12-aarch64
+  - el-7-x86_64
+  - el-8-x86_64
+  - el-8-ppc64le
+  - el-8-aarch64
+  - el-9-x86_64
+  - el-9-aarch64
+  - el-9-ppc64le
+  - fedora-36-x86_64
+  - fedora-40-x86_64
+  - osx-11-x86_64
+  - osx-12-arm64
+  - osx-13-arm64
+  - osx-12-x86_64
+  - osx-13-x86_64
+  - osx-14-x86_64
+  - osx-14-arm64
+  - sles-12-x86_64
+  - sles-15-x86_64
+  - ubuntu-18.04-amd64
+  - ubuntu-18.04-aarch64
+  - ubuntu-20.04-amd64
+  - ubuntu-20.04-aarch64
+  - ubuntu-22.04-amd64
+  - ubuntu-22.04-aarch64
+  - ubuntu-24.04-amd64
+  - ubuntu-24.04-aarch64
+  - ubuntu-25.04-amd64
+  - ubuntu-25.04-aarch64
+  - windows-2012-x86
+  - windows-2012-x64
+# The packaging repo uses the `platform_repos` hash to determine which repos
+# to create when shipping and when creating the all repos tarball, see
+# https://github.com/puppetlabs/packaging/blob/0.110.0/lib/packaging/repo.rb#L92
+platform_repos:
+  - name: aix-7.2-power
+    repo_location: repos/aix/7.2/**/ppc
+  - name: amazon-2023-x86_64
+    repo_location: repos/amazon/2023/**/x86_64
+  - name: amazon-2023-aarch64
+    repo_location: repos/amazon/2023/**/aarch64
+  - name: amazon-2-aarch64
+    repo_location: repos/amazon/2/**/aarch64
+  - name: el-7-x86_64
+    repo_location: repos/el/7/**/x86_64
+  - name: el-8-x86_64
+    repo_location: repos/el/8/**/x86_64
+  - name: el-8-ppc64le
+    repo_location: repos/el/8/**/ppc64le
+  - name: el-8-aarch64
+    repo_location: repos/el/8/**/aarch64
+  - name: el-9-x86_64
+    repo_location: repos/el/9/**/x86_64
+  - name: el-9-aarch64
+    repo_location: repos/el/9/**/aarch64
+  - name: el-9-ppc64le
+    repo_location: repos/el/9/**/ppc64le
+  - name: redhatfips-7-x86_64
+    repo_location: repos/redhatfips/7/**/x86_64
+  - name: redhatfips-8-x86_64
+    repo_location: repos/redhatfips/8/**/x86_64
+  - name: redhatfips-9-x86_64
+    repo_location: repos/redhatfips/9/**/x86_64
+  - name: sles-12-x86_64
+    repo_location: repos/sles/12/**/x86_64
+  - name: sles-15-x86_64
+    repo_location: repos/sles/15/**/x86_64
+  - name: fedora-36-x86_64
+    repo_location: repos/fedora/36/**/x86_64
+  - name: fedora-40-x86_64
+    repo_location: repos/fedora/40/**/x86_64
+  - name: debian-10-amd64
+    repo_location: repos/apt/buster
+  - name: debian-11-amd64
+    repo_location: repos/apt/bullseye
+  - name: debian-11-aarch64
+    repo_location: repos/apt/bullseye
+  - name: debian-12-amd64
+    repo_location: repos/apt/bookworm
+  - name: debian-12-aarch64
+    repo_location: repos/apt/bookworm
+  - name: ubuntu-18.04-amd64
+    repo_location: repos/apt/bionic
+  - name: ubuntu-18.04-aarch64
+    repo_location: repos/apt/bionic
+  - name: ubuntu-20.04-amd64
+    repo_location: repos/apt/focal
+  - name: ubuntu-20.04-aarch64
+    repo_location: repos/apt/focal
+  - name: ubuntu-22.04-amd64
+    repo_location: repos/apt/jammy
+  - name: ubuntu-22.04-aarch64
+    repo_location: repos/apt/jammy
+  - name: ubuntu-24.04-amd64
+    repo_location: repos/apt/noble
+  - name: ubuntu-24.04-aarch64
+    repo_location: repos/apt/noble
+  - name: ubuntu-25.04-amd64
+    repo_location: repos/apt/plucky
+  - name: ubuntu-25.04-aarch64
+    repo_location: repos/apt/plucky
+  - name: osx-11-x86_64
+    repo_location: repos/apple/11/**/x86_64/*.dmg
+  - name: osx-12-arm64
+    repo_location: repos/apple/12/**/arm64/*.dmg
+  - name: osx-12-x86_64
+    repo_location: repos/apple/12/**/x86_64/*.dmg
+  - name: osx-13-arm64
+    repo_location: repos/apple/13/**/arm64/*.dmg
+  - name: osx-13-x86_64
+    repo_location: repos/apple/13/**/x86_64/*.dmg
+  - name: osx-14-x86_64
+    repo_location: repos/apple/14/**/x86_64/*.dmg
+  - name: osx-14-arm64
+    repo_location: repos/apple/14/**/arm64/*.dmg
+  - name: solaris-11-i386
+    repo_location: repos/solaris/11/**/*.i386.p5p
+  - name: solaris-11-sparc
+    repo_location: repos/solaris/11/**/*.sparc.p5p
+deb_targets: 'xenial-amd64 bionic-amd64 focal-amd64 jammy-amd64'
+rpm_targets: 'el-7-x86_64 el-8-x86_64 el-9-x86_64 redhatfips-7-x86_64 redhatfips-8-x86_64 sles-12-x86_64 sles-15-x86_64'
+sign_tar: FALSE
+osx_signing_cert: "Developer ID Installer: PUPPET LABS, INC. (VKGLGN2B6Y)"
+osx_signing_keychain: "/Users/jenkins/Library/Keychains/signing.keychain"
+osx_signing_server: 'osx-signer-prod-3.delivery.puppetlabs.net'
+vanagon_project: TRUE
+apt_repo_name: 'puppet8'
+yum_repo_name: 'puppet8'
+repo_name: 'puppet8'
+nonfinal_repo_name: 'puppet8-nightly'
+build_tar: FALSE
+build_gem: TRUE

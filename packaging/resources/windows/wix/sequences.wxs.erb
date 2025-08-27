@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Fragment>
+
+
+    <ComponentGroup Id="FragmentSequences" />
+    <!-- First, save off properties specified on the command line Second,
+         restore the properties set by the command line overriding the recalled
+         value from the registry -->
+    <InstallUISequence>
+      <!-- INSTALLDIR -->
+      <Custom Action='SaveCmdLineInstallDir' Before='AppSearch' />
+      <Custom Action='SetFromCmdLineInstallDir' After='AppSearch'>
+        CMDLINE_INSTALLDIR
+      </Custom>
+      <Custom Action='SetIniPropertyValues' After='AppSearch' />
+      <!-- PUPPET_MASTER_SERVER -->
+      <Custom Action='SetFromIniPuppetMasterServer' Before='FileCost'>
+        INI_PUPPET_MASTER_SERVER
+      </Custom>
+      <Custom Action='SaveCmdLinePuppetMasterServer' Before='AppSearch' />
+      <Custom Action='SaveCmdLinePuppetServer' Before='AppSearch' />
+      <Custom Action='SetFromCmdLinePuppetMasterServer' After='FileCost'>
+        CMDLINE_PUPPET_MASTER_SERVER
+      </Custom>
+      <Custom Action='SetFromCmdLinePuppetServer' After='FileCost'>
+        CMDLINE_PUPPET_SERVER
+      </Custom>
+      <Custom Action='SetDefaultPuppetMasterServer' Before='CostFinalize'>
+        PUPPET_MASTER_SERVER=""
+      </Custom>
+      <!-- PUPPET_AGENT_ENVIRONMENT -->
+      <Custom Action='SetFromIniPuppetAgentEnvironment' Before='FileCost'>
+        INI_PUPPET_AGENT_ENVIRONMENT
+      </Custom>
+      <Custom Action='SaveCmdLinePuppetAgentEnvironment' Before='AppSearch' />
+      <Custom Action='SetFromCmdLinePuppetAgentEnvironment' After='FileCost'>
+        CMDLINE_PUPPET_AGENT_ENVIRONMENT
+      </Custom>
+      <!-- PUPPET_AGENT_CERTNAME -->
+      <Custom Action='SetFromIniPuppetAgentCertname' Before='FileCost'>
+        INI_PUPPET_AGENT_CERTNAME
+      </Custom>
+      <Custom Action='SaveCmdLinePuppetAgentCertname' Before='AppSearch' />
+      <Custom Action='SetFromCmdLinePuppetAgentCertname' After='FileCost'>
+        CMDLINE_PUPPET_AGENT_CERTNAME
+      </Custom>
+      <!-- PUPPET_CA_SERVER -->
+      <Custom Action='SetFromIniPuppetCaServer' Before='FileCost'>
+        INI_PUPPET_CA_SERVER
+      </Custom>
+      <Custom Action='SaveCmdLinePuppetCaServer' Before='AppSearch' />
+      <Custom Action='SetFromCmdLinePuppetCaServer' After='FileCost'>
+        CMDLINE_PUPPET_CA_SERVER
+      </Custom>
+      <!-- PUPPET_AGENT_STARTUP_MODE -->
+      <Custom Action='SaveCmdLinePuppetAgentStartupMode' Before='AppSearch' />
+      <Custom Action='SetFromCmdLinePuppetAgentStartupMode' After='AppSearch'>
+        CMDLINE_PUPPET_AGENT_STARTUP_MODE
+      </Custom>
+      <!-- PUPPET_AGENT_ACCOUNT_DOMAIN -->
+      <Custom Action='SetDomainToLocalComputer' After='AppSearch'>
+        PUPPET_AGENT_ACCOUNT_DOMAIN = "."
+      </Custom>
+      <Custom Action='SetDomainToNtAuthority' After='SetDomainToLocalComputer'>
+        (PUPPET_AGENT_ACCOUNT_USER ~= "LocalService") OR (PUPPET_AGENT_ACCOUNT_USER ~= "NetworkService")
+      </Custom>
+      <Custom Action='SetFromCmdLinePuppetMasterPort' After='FileCost'>
+        PUPPET_MASTER_PORT
+      </Custom>
+      <Custom Action='SetFromIniPuppetMasterPort' Before='FileCost'>
+        INI_PUPPET_MASTER_PORT AND NOT PUPPET_MASTER_PORT
+      </Custom>
+      <Custom Action='SetFromCmdLinePuppetServerPort' After='FileCost'>
+        PUPPET_SERVER_PORT
+      </Custom>
+      <Custom Action='SetFromIniPuppetServerPort' Before='FileCost'>
+        INI_PUPPET_SERVER_PORT AND NOT PUPPET_SERVER_PORT
+      </Custom>
+    </InstallUISequence>
+
+    <InstallExecuteSequence>
+      <Custom Action='SetIniPropertyValues' After='AppSearch' />
+      <Custom Action='GetLocalisedAccountNames' After='AppSearch' />
+      <!-- INSTALLDIR -->
+      <Custom Action='SaveCmdLineInstallDir' Before='AppSearch' />
+      <Custom Action='SetFromCmdLineInstallDir' After='AppSearch'>
+        CMDLINE_INSTALLDIR
+      </Custom>
+      <!-- PUPPET_MASTER_SERVER -->
+      <Custom Action='SetFromIniPuppetMasterServer' Before='FileCost'>
+        INI_PUPPET_MASTER_SERVER
+      </Custom>
+      <Custom Action='SaveCmdLinePuppetMasterServer' Before='AppSearch' />
+      <Custom Action='SaveCmdLinePuppetServer' Before='AppSearch' />
+      <Custom Action='SetFromCmdLinePuppetMasterServer' After='FileCost'>
+        CMDLINE_PUPPET_MASTER_SERVER
+      </Custom>
+      <Custom Action='SetFromCmdLinePuppetServer' After='FileCost'>
+        CMDLINE_PUPPET_SERVER
+      </Custom>
+      <Custom Action='SetDefaultPuppetMasterServer' Before='CostFinalize'>
+        PUPPET_MASTER_SERVER=""
+      </Custom>
+      <!-- PUPPET_AGENT_ENVIRONMENT -->
+      <Custom Action='SetFromIniPuppetAgentEnvironment' Before='FileCost'>
+        INI_PUPPET_AGENT_ENVIRONMENT
+      </Custom>
+      <Custom Action='SaveCmdLinePuppetAgentEnvironment' Before='AppSearch' />
+      <Custom Action='SetFromCmdLinePuppetAgentEnvironment' After='FileCost'>
+        CMDLINE_PUPPET_AGENT_ENVIRONMENT
+      </Custom>
+      <!-- PUPPET_AGENT_CERTNAME -->
+      <Custom Action='SetFromIniPuppetAgentCertname' Before='FileCost'>
+        INI_PUPPET_AGENT_CERTNAME
+      </Custom>
+      <Custom Action='SaveCmdLinePuppetAgentCertname' Before='AppSearch' />
+      <Custom Action='SetFromCmdLinePuppetAgentCertname' After='FileCost'>
+        CMDLINE_PUPPET_AGENT_CERTNAME
+      </Custom>
+      <!-- PUPPET_CA_SERVER -->
+      <Custom Action='SetFromIniPuppetCaServer' Before='FileCost'>
+        INI_PUPPET_CA_SERVER
+      </Custom>
+      <Custom Action='SaveCmdLinePuppetCaServer' Before='AppSearch' />
+      <Custom Action='SetFromCmdLinePuppetCaServer' After='FileCost'>
+        CMDLINE_PUPPET_CA_SERVER
+      </Custom>
+      <!-- PUPPET_AGENT_STARTUP_MODE -->
+      <Custom Action='SaveCmdLinePuppetAgentStartupMode' Before='AppSearch' />
+      <Custom Action='SetFromCmdLinePuppetAgentStartupMode' After='AppSearch'>
+        CMDLINE_PUPPET_AGENT_STARTUP_MODE
+      </Custom>
+      <!-- PUPPET_AGENT_ACCOUNT_DOMAIN -->
+      <Custom Action='SetDomainToLocalComputer' After='AppSearch'>
+        PUPPET_AGENT_ACCOUNT_DOMAIN = "."
+      </Custom>
+      <Custom Action='SetDomainToNtAuthority' After='SetDomainToLocalComputer'>
+        (PUPPET_AGENT_ACCOUNT_USER ~= "LocalService") OR (PUPPET_AGENT_ACCOUNT_USER ~= "NetworkService")
+      </Custom>
+      <Custom Action='SetFromCmdLinePuppetMasterPort' After='FileCost'>
+        PUPPET_MASTER_PORT
+      </Custom>
+      <Custom Action='SetFromIniPuppetMasterPort' Before='FileCost'>
+        INI_PUPPET_MASTER_PORT AND NOT PUPPET_MASTER_PORT
+      </Custom>
+      <Custom Action='SetFromCmdLinePuppetServerPort' After='FileCost'>
+        PUPPET_SERVER_PORT
+      </Custom>
+      <Custom Action='SetFromIniPuppetServerPort' Before='FileCost'>
+        INI_PUPPET_SERVER_PORT AND NOT PUPPET_SERVER_PORT
+      </Custom>
+      <Custom Action='EnableLongPathName' Before='InstallFiles'>
+          ENABLE_LONG_PATHS
+      </Custom>
+      <%- if @platform.is_fips? -%>
+        <Custom Action='FipsInstall' After='InstallFiles'>
+          NOT REMOVE
+        </Custom>
+      <%-end %>
+      <!-- Due to PUP-6729, make sure admins and system have permision to reset permissions -->
+      <!-- Also resets permissions for children beneath each appdir -->
+      <Custom Action='ResetDataPermissions' After='InstallFiles'>
+          NOT REMOVE
+      </Custom>
+
+      <%- if @platform.architecture == "x86" -%>
+      <Custom Action='Remove64BitPath_SetProp' After='CostFinalize' />
+      <Custom Action='Remove64BitProgramFiles_SetProp' After='CostFinalize' />
+      <Custom Action='Remove64BitProgramFiles' After='InstallFiles'>
+        <![CDATA[VersionNT64 >= 100 AND <%= settings[:win64] %> = no AND NOT (&<%= settings[:product_id] %>Runtime = 2)]]>
+      </Custom>
+      <Custom Action='Remove64BitPath' After='InstallFiles'>
+        <![CDATA[VersionNT64 >= 100 AND <%= settings[:win64] %> = no AND NOT (&<%= settings[:product_id] %>Runtime = 2)]]>
+      </Custom>
+      <%-end-%>
+
+      <Custom Action='RemoveLegacyNssmRegistryKey' Before='RemoveExistingProducts' >
+        NOT SKIP_NSSM_REGISTRY_CLEANUP
+      </Custom>
+
+    </InstallExecuteSequence>
+
+    <SetProperty Id="ARPINSTALLLOCATION" Value="[INSTALLDIR]" After="CostFinalize" />
+
+  </Fragment>
+</Wix>

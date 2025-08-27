@@ -1,0 +1,107 @@
+---
+name: Beaker Acceptance Tests
+run-name: |-
+  Beaker acceptance tests of openvox-agent for
+  ${{ inputs.pre-release-build && 'pre-release' || 'release' }} package
+  ${{ (inputs.pre-release-build && inputs.version) ||
+      format(' collection: "{0}", version: "{1}" ',
+             inputs.collection,
+             ((inputs.version == '') && 'latest') || inputs.version) }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: |-
+          (Ref) The git ref of openvox-agent to run the Beaker test
+          suite from.
+
+          If testing something from openvox8, this should be a ref off
+          of main.
+
+          If testing something from openvox7, this should be a ref off
+          of the 7.x branch.
+        required: true
+        type: string
+        default: main
+      pre-release-build:
+        description: |-
+          (Pre-release Build) Whether to test unreleased version
+          packages from the artifacts server, or released packages
+          from the given collection.
+
+          If this is true, version must be a valid version, not
+          latest, and collection is ignored. The workflow will
+          download and install the matching openvox-agent package file
+          from the artifacts-url server.
+
+          If this is false, version and collection must match, and the
+          workflow will install the given openvox collection package
+          and then let the system package manager install the latest
+          or version package from the collection repository.
+        default: true
+        type: boolean
+      version:
+        description: |-
+          (Version) Package version to test. (required if Pre-release
+          Build is true)
+        type: string
+      collection:
+        description: |-
+          (Collection) OpenVox collection to use. (ignored if
+          Pre-release Build is true)
+
+          If testing something from main, this should be openvox8.
+          If testing something from 7.x, this should be openvox7.
+        default: 'openvox8'
+        type: string
+      artifacts-url:
+        description: |-
+          URL to the artifacts server. (used if Pre-release Build is
+          true)
+        default: 'https://s3.osuosl.org/openvox-artifacts'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  acceptance:
+    uses: 'OpenVoxProject/shared-actions/.github/workflows/beaker_acceptance.yml@main'
+    with:
+      ref: ${{ inputs.ref }}
+      project-name: openvox-agent
+      os-add: |-
+        [
+          ["debian", "13", "amd64", "daily-latest"]
+        ]
+      install-openvox: true
+      openvox-collection: ${{ inputs.collection }}
+      openvox-agent-version: ${{ inputs.version }}
+      openvox-agent-pre-release-build: ${{ inputs.pre-release-build }}
+      install-openvox-server: false
+      install-openvoxdb: false
+      artifacts-url: ${{ inputs.artifacts-url }}
+      acceptance-working-dir: 'acceptance'
+      acceptance-pre-suite: |-
+        [
+          "pre-suite/configure_type_defaults.rb"
+        ]
+      acceptance-tests: |-
+        [
+          "tests"
+        ]
+      beaker-options: |-
+        {
+          "helper":       "lib/helper.rb"
+        }
+      vms: |-
+        [
+          {
+            "role": "agent",
+            "count": 1,
+            "cpus": 2,
+            "mem_mb": 4096,
+            "cpu_mode": "host-model"
+          }
+        ]
