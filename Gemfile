@@ -12,7 +12,7 @@ def location_for(place, fake_version = nil)
   end
 end
 
-# Make sure these gem requirements are in sync with the gempspec. Specifically,
+# Make sure these gem requirements are in sync with the gemspec. Specifically,
 # the runtime_dependencies in openvox.gemspec match the runtime dependencies here
 # (like openfact, semantic_puppet, and puppet-resource_api)
 
@@ -69,7 +69,11 @@ group(:development, optional: true) do
 end
 
 group(:packaging) do
-  gem 'packaging', *location_for(ENV['PACKAGING_LOCATION'] || '~> 0.99')
+  gem 'packaging', *location_for(ENV['PACKAGING_LOCATION'] || '~> 0.105')
+  gem 'vanagon', *location_for(ENV['VANAGON_LOCATION'] || 'https://github.com/openvoxproject/vanagon#main')
+  gem 'artifactory'
+  gem 'json'
+  gem 'octokit'
 end
 
 group(:documentation, optional: true) do
