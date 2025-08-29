@@ -1,0 +1,16 @@
+## This works around an issue with the OSX service names in
+## puppet-agent. We're using a short service name intead of
+## the fully qualified name (puppet instead of com.puppetlabs.puppet)
+
+## Putting this workaround here until we can fix the service names in
+## the next major version, at which point the more generic logic in
+## vanagon will do the right thing
+
+if [ -n "$foundpkg" ]; then
+  for service in "puppet" "pxp-agent" ; do
+    if /bin/launchctl list "${service}" &> /dev/null; then
+      touch "/tmp/.puppet-agent.upgrade/${service}"
+      /bin/launchctl unload "/Library/LaunchDaemons/com.puppetlabs.${service}.plist"
+    fi
+  done
+fi

@@ -1,0 +1,29 @@
+---
+name: Build openvox-agent
+
+permissions:
+  contents: read
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Tag to build'
+        required: true
+      project_name:
+        description: 'The vanagon project to build'
+        required: false
+        default: 'openvox-agent'
+      platform_list:
+        description: 'A comma-separated list of platforms to build for. Do not include spaces. If not provided, will use the default list of platform supported by OpenVox.'
+        required: false
+        type: string
+
+jobs:
+  build:
+    uses: 'openvoxproject/shared-actions/.github/workflows/build_vanagon.yml@main'
+    with:
+      ref: ${{ inputs.ref }}
+      project_name: ${{ inputs.project_name }}
+      platform_list: ${{ inputs.platform_list }}
+    secrets: inherit

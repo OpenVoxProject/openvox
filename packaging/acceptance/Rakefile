@@ -1,0 +1,121 @@
+require 'beaker-puppet'
+Beaker::DSL::Helpers::RakeHelpers.load_tasks
+
+DEFAULT_INTERNAL_DOWNLOAD_URL = "http://builds.delivery.puppetlabs.net"
+DEFAULT_NIGHTLIES_DOWNLOAD_URL = "http://nightlies.puppet.com"
+
+
+def set_environment_variables_for_install(install_released_packages)
+  if ENV['SHA'].nil?
+    fail "Required environment variable SHA is not set. Try `rake help` for usage."
+  end
+
+  ENV['AGENT_DOWNLOAD_URL'] ||= DEFAULT_INTERNAL_DOWNLOAD_URL
+
+  # If this is a test of public / final release packages,
+  # TESTING_RELEASED_PACKAGES is a string value we use to tell the
+  # puppet agent pre-suite that we're testing public release packages, not dev
+  # packages. This is not part of the 'public' configuration.
+  if install_released_packages
+    ENV['TESTING_RELEASED_PACKAGES'] = 'true'
+  end
+end
+
+
+USAGE = <<-EOS
+rake acceptance
+
+USAGE
+  Required Settings or Environment Variables
+    SHA='sha'
+       Supply git ref (sha or tag) of packages of puppet-agent to be put under test.
+       Also supports the literal string 'latest' which references the latest
+       build on #{DEFAULT_NIGHTLIES_DOWNLOAD_URL}.
+       If setting SHA to 'latest', you must also set ENV['AGENT_DOWNLOAD_URL'] to
+       #{DEFAULT_NIGHTLIES_DOWNLOAD_URL}.
+
+  Optional Settings or Environment Variables
+    BEAKER_HOSTS=config/nodes/foo.yaml
+      Supply the path to a yaml file in the format of a beaker hosts file containing
+      the test targets, roles, etc., or specify it in a beaker options.rb file.
+
+    TEST_TARGET='beaker-hostgenerator target'
+      Supply a test target in the form beaker-hostgenerator accepts, e.g.
+      ubuntu1504-64a. Defaults to #{DEFAULT_TEST_TARGETS}.
+
+    AGENT_DOWNLOAD_URL='http://example.com'
+      Supply the url of the host serving packages of puppet-agent to test matching
+      `SHA`. Ignored by `rake acceptance:released` which always downloads from
+      public production Puppet repositories.
+      Valid values are:
+        * #{DEFAULT_INTERNAL_DOWNLOAD_URL} (Puppet internal builds)
+        * #{DEFAULT_NIGHTLIES_DOWNLOAD_URL} (Puppet public nightly builds)
+
+      Default: #{DEFAULT_INTERNAL_DOWNLOAD_URL}.
+
+    TESTS='path/to/test,and/more/tests'
+      Supply a comma-separated string (no spaces) of specific test(s) to run.
+      All pre-suites will be run, unless a specific pre-suite file is supplied as the
+      value to this option, in which case test exercise will terminate after the
+      supplied pre-suite file.
+
+    OPTIONS='--more --options'
+      Supply additional options to pass to the beaker invocation
+
+If there is a Beaker options hash in a ./local_options.rb, it will be included.
+Commandline options set through the above environment variables will override
+settings in this file.
+EOS
+
+namespace :acceptance do
+  desc <<-EOS
+  Run acceptance tests against released packages from public production Puppet repos with Beaker
+  #{USAGE}
+  EOS
+  task :released do
+    set_environment_variables_for_install(true)
+    Rake.invoke_task('ci:test:aio')
+  end
+
+  desc <<-EOS
+  Run acceptance tests against development unreleased packages from testing repos with Beaker
+  #{USAGE}
+  EOS
+  task :development => 'ci:test:aio'
+
+desc  <<-EOS
+Rake task to generate a .json file with facts from a platform using a specific SHA
+Generated file will be available in file in ./output/facts/<facter_version>/{platform}.facts
+
+`bundle exec rake acceptance:facts[<SHA>,<ship>=false]`
+
+USAGE
+  Required Settings
+    SHA='sha'
+       Supply git ref (sha or tag) of packages of puppet-agent to be put under test.
+       Also supports the literal string 'latest' which references the latest
+       build on #{DEFAULT_NIGHTLIES_DOWNLOAD_URL}.
+       If setting SHA to 'latest', you must also set ENV['AGENT_DOWNLOAD_URL'] to
+       #{DEFAULT_NIGHTLIES_DOWNLOAD_URL}.
+  Optional Settings
+    <ship> = 'false'
+      If set to 'true' it will ship the json files to builds.delivery.puppetlabs.net
+
+EXAMPLE
+`bundle exec beaker-hostgenerator ubuntu2004-64a --hypervisor abs > hosts.yaml && bundle exec rake acceptance:facts[7.12.1] BEAKER_HOSTS=hosts.yaml`
+will generate a the .json file in output/facts/4.2.5/ubuntu-20.04-amd64.facts
+
+EOS
+  task :facts, [:sha, :ship] do |t, args|
+    args.with_defaults(:ship => false)
+
+    ENV['SHA'] = args[:sha]
+    ENV['TESTS'] = 'util/puppet_facts_output.rb'
+    ENV['OPTIONS'] = '--preserve-hosts=always'
+    Rake::Task['ci:test:aio'].invoke
+    if args[:ship]
+      system("/usr/bin/ssh  -t builds.delivery.puppetlabs.net 'set -e;mkdir --mode=775 --parents /opt/jenkins-builds/puppet-facts/#{args[:sha]}'")
+      system("/usr/bin/rsync -avz output/ builds.delivery.puppetlabs.net:/opt/jenkins-builds/puppet-facts/#{args[:sha]}/")
+    end
+  end
+end

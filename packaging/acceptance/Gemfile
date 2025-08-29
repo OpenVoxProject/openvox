@@ -1,0 +1,32 @@
+# Specifies a gem mirror; duplicated in acceptance setup 
+# to ensure a similar environment on acceptance hosts.
+source ENV['GEM_SOURCE'] || 'https://rubygems.org'
+
+def location_for(place, fake_version = nil)
+  if place =~ /^((?:git[:@]|https:)[^#]*)#(.*)/
+    [fake_version, { :git => $1, :branch => $2, :require => false }].compact
+  elsif place =~ /^file:\/\/(.*)/
+    ['>= 0', { :path => File.expand_path($1), :require => false }]
+  else
+    [place, { :require => false }]
+  end
+end
+
+gem "beaker", *location_for(ENV['BEAKER_VERSION'] || "~> 6")
+gem "beaker-puppet", *location_for(ENV['BEAKER_PUPPET_VERSION'] || "~> 4")
+gem "beaker-hostgenerator", *location_for(ENV['BEAKER_HOSTGENERATOR_VERSION'] || "~> 2")
+gem "beaker-abs", *location_for(ENV['BEAKER_ABS_VERSION'] || "~> 1")
+gem "beaker-vagrant", *location_for(ENV['BEAKER_VAGRANT_VERSION'] || "~> 0")
+gem "beaker-vmpooler", *location_for(ENV['BEAKER_VMPOOLER_VERSION'] || "~> 1")
+gem "beaker-vcloud", *location_for(ENV['BEAKER_VCLOUD_VERSION'] || "~> 1")
+gem "rake", ">= 12.3.3"
+gem "httparty", :require => false
+gem 'uuidtools', :require => false
+
+group(:test) do
+  gem "rspec", "~> 2.14.0", :require => false
+  gem "mocha", "~> 0.10.5", :require => false
+end
+if File.exist? "#{__FILE__}.local"
+  eval(File.read("#{__FILE__}.local"), binding)
+end
