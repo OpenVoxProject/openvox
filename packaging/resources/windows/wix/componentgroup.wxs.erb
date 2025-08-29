@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+  <!-- OpenVox Agent Specific Component Group File -->
+
+  <Fragment>
+    <ComponentGroup Id="MainComponentGroup">
+      <!-- We can add all components by referencing this one thing -->
+      <ComponentGroupRef Id="AppComponentGroup" />
+      <ComponentGroupRef Id="AppDataComponentGroup" />
+      <ComponentGroupRef Id="RegistryComponentGroup" />
+      <ComponentGroupRef Id="ShortCutsComponentGroup" />
+      <%- get_services.each do |service| -%>
+      <ComponentGroupRef Id="<%= service.component_group_id %>" />
+      <%- end -%>
+      <!-- All of these Include refs are expected to be present -->
+      <ComponentGroupRef Id="FragmentProperties" />
+      <ComponentGroupRef Id="FragmentSequences" />
+      <ComponentGroupRef Id="FragmentCustomActions" />
+      <ComponentGroupRef Id="FragmentEnvironment" />
+      <ComponentGroupRef Id="FragmentIcon" />
+      <ComponentGroupRef Id="FragmentVariables" />
+      <ComponentGroupRef Id="FragmentCondition" />
+      <!-- Ensure User Account Component is loaded -->
+      <ComponentRef Id="PuppetServiceUser" />
+    </ComponentGroup>
+
+    <UI>
+      <UIRef Id="WixUI_PuppetInstallDir"/>
+    </UI>
+
+  </Fragment>
+</Wix>
