@@ -1,0 +1,1 @@
+/opt/puppetlabs/bin/puppet -s puppet -u root -a 'agent --no-daemonize'

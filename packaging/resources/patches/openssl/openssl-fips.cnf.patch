@@ -1,0 +1,36 @@
+--- a/openssl-fips.cnf	2023-05-02 16:52:22.883933027 +0000
++++ b/openssl-fips.cnf	2023-05-02 16:52:16.213933118 +0000
+@@ -48,17 +48,18 @@
+ # fips provider. It contains a named section e.g. [fips_sect] which is
+ # referenced from the [provider_sect] below.
+ # Refer to the OpenSSL security policy for more information.
+-# .include fipsmodule.cnf
++.include /opt/puppetlabs/puppet/ssl/fipsmodule.cnf
+ 
+ [openssl_init]
+ providers = provider_sect
++alg_section = evp_properties
+ 
+ # List of providers to load
+ [provider_sect]
+ default = default_sect
+ # The fips section name should match the section name inside the
+ # included fipsmodule.cnf.
+-# fips = fips_sect
++fips = fips_sect
+ 
+ # If no providers are activated explicitly, the default one is activated implicitly.
+ # See man 7 OSSL_PROVIDER-default for more details.
+@@ -69,8 +70,11 @@
+ # OpenSSL may not work correctly which could lead to significant system
+ # problems including inability to remotely access the system.
+ [default_sect]
+-# activate = 1
++activate = 1
+ 
++# IMPORTANT: This ensures only FIPS algorithms are used, e.g. not MD5
++[evp_properties]
++default_properties = "fips=yes"
+ 
+ ####################################################################
+ [ ca ]

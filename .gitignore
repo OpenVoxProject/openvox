@@ -23,6 +23,22 @@ puppet-acceptance/
 /acceptance/junit
 /acceptance/log
 /acceptance/.beaker
+/packaging/acceptance/junit
+/packaging/acceptance/log
+/packaging/acceptance/.beaker
+/packaging/.bundle
+/packaging/ext/build_metadata.*
+/packaging/output
+/packaging/vendor/*
+/packaging/.vendor/*
+/packaging/*.log
+/packaging/pkg/*
+/packaging/acceptance/junit/*
+/packaging/acceptance/log/*
+/packaging/acceptance/tmp/*
+/packaging/acceptance/merged_options.rb
+/packaging/acceptance/.beaker/*
+/packaging/ext/smoke/*output.txt
 # emacs backup files
 *~
 /*.samples

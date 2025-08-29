@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi' xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+  <Fragment>
+
+    <ComponentGroup Id="<%= get_service("puppet").component_group_id %>">
+      <Component Id='PuppetServiceAutomatic'
+                 Guid="639ECD7F-6186-43D5-9E1A-FC0278DBEE15"
+                 Directory="<%= get_service("puppet").bindir_id %>"
+                 Win64="<%= settings[:win64] %>">
+        <Condition>
+          <![CDATA[ (PUPPET_AGENT_STARTUP_MODE ~<> "manual") AND (PUPPET_AGENT_STARTUP_MODE ~<> "disabled") ]]>
+        </Condition>
+        <File Id="RubyExeAutomatic"
+              KeyPath="yes"
+              Source="SourceDir\<%= settings[:base_dir] %>\<%= settings[:pl_company_id] %>\<%= settings[:pl_product_id] %>\puppet\bin\ruby.exe" />
+
+        <ServiceInstall Id="ServiceInstaller"
+                        Account="[PUPPET_AGENT_ACCOUNT_DOMAIN]\[PUPPET_AGENT_ACCOUNT_USER]"
+                        Password="[PUPPET_AGENT_ACCOUNT_PASSWORD]"
+                        Description="Periodically fetches and applies configurations from an OpenVox server."
+                        DisplayName="OpenVox Agent"
+                        Interactive="no"
+                        Name="<%= settings[:puppet_service_name] %>"
+                        Start="auto"
+                        Type="ownProcess"
+                        ErrorControl="normal"
+                        Vital="yes"
+                        Arguments="&quot;[INSTALLDIR]service\daemon.rb&quot;" />
+        <ServiceControl Id="ServiceControlOptions"
+                        Start="install"
+                        Stop="both"
+                        Remove="uninstall"
+                        Name="<%= settings[:puppet_service_name] %>"
+                        Wait="yes" />
+      </Component>
+
+      <Component Id='PuppetServiceManual'
+                 Guid="752A5A25-9619-4EBA-AA8B-12D8C8688236"
+                 Directory="<%= get_service("puppet").bindir_id %>"
+                 Win64="<%= settings[:win64] %>">
+        <Condition>
+          <![CDATA[PUPPET_AGENT_STARTUP_MODE ~= "manual"]]>
+        </Condition>
+        <File Id="RubyExeManual"
+              KeyPath="yes"
+              Source="SourceDir\<%= settings[:base_dir] %>\<%= settings[:pl_company_id] %>\<%= settings[:pl_product_id] %>\puppet\bin\ruby.exe" />
+
+        <ServiceInstall Id="ServiceInstallerManual"
+                        Account="[PUPPET_AGENT_ACCOUNT_DOMAIN]\[PUPPET_AGENT_ACCOUNT_USER]"
+                        Password="[PUPPET_AGENT_ACCOUNT_PASSWORD]"
+                        Description="Periodically fetches and applies configurations from an OpenVox server."
+                        DisplayName="OpenVox Agent"
+                        Interactive="no"
+                        Name="<%= settings[:puppet_service_name] %>"
+                        Start="demand"
+                        Type="ownProcess"
+                        ErrorControl="normal"
+                        Vital="yes"
+                        Arguments="&quot;[INSTALLDIR]service\daemon.rb&quot;" />
+        <ServiceControl Id="ServiceControlOptionsManual"
+                        Stop="both"
+                        Remove="uninstall"
+                        Name="<%= settings[:puppet_service_name] %>"
+                        Wait="yes" />
+      </Component>
+
+      <Component Id='PuppetServiceDisabled'
+                 Guid="4D3A8CAF-C675-46AC-B3AD-75F00581D0DB"
+                 Directory="<%= get_service("puppet").bindir_id %>"
+                 Win64="<%= settings[:win64] %>">
+        <Condition>
+          <![CDATA[PUPPET_AGENT_STARTUP_MODE ~= "disabled"]]>
+        </Condition>
+        <File Id="RubyExeDisabled"
+              KeyPath="yes"
+              Source="SourceDir\<%= settings[:base_dir] %>\<%= settings[:pl_company_id] %>\<%= settings[:pl_product_id] %>\puppet\bin\ruby.exe" />
+
+        <ServiceInstall Id="ServiceInstallerDisabled"
+                        Account="[PUPPET_AGENT_ACCOUNT_DOMAIN]\[PUPPET_AGENT_ACCOUNT_USER]"
+                        Password="[PUPPET_AGENT_ACCOUNT_PASSWORD]"
+                        Description="Periodically fetches and applies configurations from an OpenVox server."
+                        DisplayName="OpenVox Agent"
+                        Interactive="no"
+                        Name="<%= settings[:puppet_service_name] %>"
+                        Start="disabled"
+                        Type="ownProcess"
+                        ErrorControl="normal"
+                        Vital="yes"
+                        Arguments="&quot;[INSTALLDIR]service\daemon.rb&quot;" />
+        <ServiceControl Id="ServiceControlOptionsDisabled"
+                        Stop="both"
+                        Remove="uninstall"
+                        Name="<%= settings[:puppet_service_name] %>" Wait="yes" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

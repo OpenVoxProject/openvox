@@ -1,5 +1,5 @@
 ---
-name: Beaker Acceptance Tests
+name: Beaker OpenVox Acceptance Tests
 run-name: |-
   Beaker acceptance tests of openvox for
   ${{ inputs.pre-release-build && 'pre-release' || 'release' }}

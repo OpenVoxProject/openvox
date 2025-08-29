@@ -1,0 +1,30 @@
+---
+name: Create GitHub Release Page
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-24.04
+    # Optional but recommended to use a specific environment
+    environment: release
+    # Prevent releases from forked repositories
+    if: github.repository_owner == 'OpenVoxProject'
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout current PR
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Create Release Page
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create ${{ github.ref_name }} --generate-notes
