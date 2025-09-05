@@ -327,7 +327,7 @@ shared_examples "RHEL package provider" do |provider_class, provider_name|
     describe "executing #{provider_name} check-update" do
       it "passes repos to enable to '#{provider_name} check-update'" do
         expect(Puppet::Util::Execution).to receive(:execute).with(
-          %W[/usr/bin/#{provider_name} check-update --enablerepo=updates --enablerepo=centosplus],
+          %W[/usr/bin/#{provider_name} -y check-update --enablerepo=updates --enablerepo=centosplus],
           any_args
         ).and_return(double(:exitstatus => 0))
         described_class.check_updates([], %W[updates centosplus], [])
@@ -335,7 +335,7 @@ shared_examples "RHEL package provider" do |provider_class, provider_name|
 
       it "passes repos to disable to '#{provider_name} check-update'" do
         expect(Puppet::Util::Execution).to receive(:execute).with(
-          %W[/usr/bin/#{provider_name} check-update --disablerepo=updates --disablerepo=centosplus],
+          %W[/usr/bin/#{provider_name} -y check-update --disablerepo=updates --disablerepo=centosplus],
           any_args
         ).and_return(double(:exitstatus => 0))
         described_class.check_updates(%W[updates centosplus], [], [])
@@ -343,7 +343,7 @@ shared_examples "RHEL package provider" do |provider_class, provider_name|
 
       it "passes a combination of repos to enable and disable to '#{provider_name} check-update'" do
         expect(Puppet::Util::Execution).to receive(:execute).with(
-          %W[/usr/bin/#{provider_name} check-update --disablerepo=updates --disablerepo=centosplus --enablerepo=os --enablerepo=contrib ],
+          %W[/usr/bin/#{provider_name} -y check-update --disablerepo=updates --disablerepo=centosplus --enablerepo=os --enablerepo=contrib ],
           any_args
         ).and_return(double(:exitstatus => 0))
         described_class.check_updates(%W[updates centosplus], %W[os contrib], [])
@@ -351,7 +351,7 @@ shared_examples "RHEL package provider" do |provider_class, provider_name|
 
       it "passes disableexcludes to '#{provider_name} check-update'" do
         expect(Puppet::Util::Execution).to receive(:execute).with(
-          %W[/usr/bin/#{provider_name} check-update --disableexcludes=main --disableexcludes=centosplus],
+          %W[/usr/bin/#{provider_name} -y check-update --disableexcludes=main --disableexcludes=centosplus],
           any_args
         ).and_return(double(:exitstatus => 0))
         described_class.check_updates([], [], %W[main centosplus])
@@ -359,7 +359,7 @@ shared_examples "RHEL package provider" do |provider_class, provider_name|
 
       it "passes all options to '#{provider_name} check-update'" do
         expect(Puppet::Util::Execution).to receive(:execute).with(
-          %W[/usr/bin/#{provider_name} check-update --disablerepo=a --disablerepo=b --enablerepo=c --enablerepo=d --disableexcludes=e --disableexcludes=f],
+          %W[/usr/bin/#{provider_name} -y check-update --disablerepo=a --disablerepo=b --enablerepo=c --enablerepo=d --disableexcludes=e --disableexcludes=f],
           any_args
         ).and_return(double(:exitstatus => 0))
         described_class.check_updates(%W[a b], %W[c d], %W[e f])
