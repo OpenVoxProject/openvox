@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [8.23.0](https://github.com/openvoxproject/openvox/tree/8.23.0) (2025-09-06)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.22.0...8.23.0)
+
+**Implemented enhancements:**
+
+- \[Feature request\]: Package PDK [\#166](https://github.com/OpenVoxProject/openvox/issues/166)
+- Respect systemd's RUNTIME\_DIRECTORY environment variable [\#165](https://github.com/OpenVoxProject/openvox/pull/165) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- treat windows service accounts as case insensitive [\#172](https://github.com/OpenVoxProject/openvox/pull/172) ([binford2k](https://github.com/binford2k))
+- Ensure confdir exists [\#171](https://github.com/OpenVoxProject/openvox/pull/171) ([binford2k](https://github.com/binford2k))
+
+**Merged pull requests:**
+
+- Promote puppet-runtime 2025.09.04.1 [\#191](https://github.com/OpenVoxProject/openvox/pull/191) ([nmburgan](https://github.com/nmburgan))
+- Merge openvox-agent vanagon repo [\#186](https://github.com/OpenVoxProject/openvox/pull/186) ([austb](https://github.com/austb))
+
+## [8.22.0](https://github.com/openvoxproject/openvox/tree/8.22.0) (2025-08-23)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.21.1...8.22.0)
+
 ## [8.21.1](https://github.com/openvoxproject/openvox/tree/8.21.1) (2025-07-23)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/8.21.0...8.21.1)
