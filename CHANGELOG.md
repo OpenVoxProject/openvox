@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## [8.23.0](https://github.com/openvoxproject/openvox/tree/8.23.0) (2025-09-06)
 
+Beyond the changes noted below, this release contains the following:
+- This is our first release where MacOS and Windows agents are built entirely in GitHub Actions!
+- MacOS x86_64 is now supported
+- The MacOS agents now work on all currently supported MacOS versions (13, 14, and 15). No need for separate packages!
+- The openvox-agent repo, which was the repo used for building the openvox-agent packages, has now been integrated into this openvox repo under the 'packaging' directory. This will allow us to have fewer steps in the build process and tag changes more cleanly, rather than having to tag two separate repos. Note that for releases prior to this one, the changelog in this file refers only to the changes to openvox itself and not packaging changes. For example, 8.22.1 was released to fix an unintentional service renaming issue and details are in the openvox-agent repo. At some point, we may try to integrate the two changelogs.
+- This release contains a large number of dependencies bumps. Most are not security related, but many dependencies were lagging for a long time. See [this PR](https://github.com/OpenVoxProject/puppet-runtime/pull/35) for details.
+- A patch for Augeas to address [CVE-2025-2588](https://github.com/advisories/GHSA-hxwj-c5vw-fwgp)
+
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/8.22.0...8.23.0)
 
 **Implemented enhancements:**
