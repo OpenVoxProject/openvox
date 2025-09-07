@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file.
 
+## [8.23.0](https://github.com/openvoxproject/openvox/tree/8.23.0) (2025-09-07)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.22.0...8.23.0)
+
+- This is our first release where MacOS and Windows agents are built entirely in GitHub Actions!
+- MacOS x86_64 is now supported
+- The MacOS agents now work on all currently supported MacOS versions (13, 14, and 15). No need for separate packages!
+- The openvox-agent repo, which was the repo used for building the openvox-agent packages, has now been integrated into this openvox repo under the 'packaging' directory. This will allow us to have fewer steps in the build process and tag changes more cleanly, rather than having to tag two separate repos. Note that for releases prior to this one, the changelog in this file refers only to the changes to openvox itself and not packaging changes. For example, 8.22.1 was released to fix an unintentional service renaming issue and details are in the openvox-agent repo. At some point, we may try to integrate the two changelogs.
+- This release contains a large number of dependencies bumps. Most are not security related, but many dependencies were lagging for a long time. See [this PR](https://github.com/OpenVoxProject/puppet-runtime/pull/35) for details.
+- A patch for Augeas to address [CVE-2025-2588](https://github.com/advisories/GHSA-hxwj-c5vw-fwgp)
+
+**Implemented enhancements:**
+
+- \[Feature request\]: Package PDK [\#166](https://github.com/OpenVoxProject/openvox/issues/166)
+- Respect systemd's RUNTIME\_DIRECTORY environment variable [\#165](https://github.com/OpenVoxProject/openvox/pull/165) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- treat windows service accounts as case insensitive [\#172](https://github.com/OpenVoxProject/openvox/pull/172) ([binford2k](https://github.com/binford2k))
+- Ensure confdir exists [\#171](https://github.com/OpenVoxProject/openvox/pull/171) ([binford2k](https://github.com/binford2k))
+
+**Merged pull requests:**
+
+- Promote puppet-runtime 2025.09.04.1 [\#191](https://github.com/OpenVoxProject/openvox/pull/191) ([nmburgan](https://github.com/nmburgan))
+- Merge openvox-agent vanagon repo [\#186](https://github.com/OpenVoxProject/openvox/pull/186) ([austb](https://github.com/austb))
+
+## [8.22.0](https://github.com/openvoxproject/openvox/tree/8.22.0) (2025-08-23)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.21.1...8.22.0)
+
 ## [8.21.1](https://github.com/openvoxproject/openvox/tree/8.21.1) (2025-07-23)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/8.21.0...8.21.1)
