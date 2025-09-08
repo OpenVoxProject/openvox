@@ -12,7 +12,7 @@ def location_for(place, fake_version = nil)
   end
 end
 
-# Make sure these gem requirements are in sync with the gempspec. Specifically,
+# Make sure these gem requirements are in sync with the gemspec. Specifically,
 # the runtime_dependencies in openvox.gemspec match the runtime dependencies here
 # (like openfact, semantic_puppet, and puppet-resource_api)
 
@@ -69,7 +69,13 @@ group(:development, optional: true) do
 end
 
 group(:packaging) do
-  gem 'packaging', *location_for(ENV['PACKAGING_LOCATION'] || '~> 0.99')
+  gem 'packaging', *location_for(ENV['PACKAGING_LOCATION'] || '~> 0.105')
+  if RUBY_VERSION >= '3.2'
+    gem 'vanagon', *location_for(ENV['VANAGON_LOCATION'] || 'https://github.com/openvoxproject/vanagon#main')
+  end
+  gem 'artifactory'
+  gem 'json'
+  gem 'octokit'
 end
 
 group(:documentation, optional: true) do
@@ -81,7 +87,7 @@ end
 
 group :release, optional: true do
   gem 'faraday-retry', require: false
-  gem 'github_changelog_generator', require: false
+  gem 'github_changelog_generator', require: false, git: 'https://github.com/voxpupuli/github-changelog-generator', branch: 'avoid-processing-a-single-commit-multiple-time'
 end
 
 if File.exist? "#{__FILE__}.local"

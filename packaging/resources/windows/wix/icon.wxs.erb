@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi' xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <!--
+    OpenVox Agent Specific Application data
+    These directories and files need to be special cased
+    in order to manage the application data for the OpenVox
+    agent. The specific special case is that all files
+    and folders here need to be persistent across multiple
+    installs and uninstalls. We can do so by specifying
+    Permanent="yes" on each file/folder component.
+  -->
+  <Fragment>
+    <ComponentGroup Id="FragmentIcon" />
+    <Icon
+      Id="<%= settings[:company_id] %>.ico"
+      SourceFile="wix\icon\voxpupuli.ico"/>
+  </Fragment>
+</Wix>

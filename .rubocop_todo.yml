@@ -729,3 +729,8 @@ Style/ZeroLengthPredicate:
 # URISchemes: http, https
 Layout/LineLength:
   Max: 582
+
+Performance/DoubleStartEndWith:
+  Exclude:
+    - 'lib/puppet/ssl/certificate_request.rb'
+

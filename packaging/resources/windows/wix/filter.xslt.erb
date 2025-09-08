@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0"
+ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+ xmlns:wix="http://schemas.microsoft.com/wix/2006/wi">
+  <!-- https://ahordijk.wordpress.com/2013/03/26/automatically-add-references-and-content-to-the-wix-installer/ -->
+  <!-- http://www.chriskonces.com/using-xslt-with-heat-exe-wix-to-create-windows-service-installs/ -->
+  <xsl:output method="xml" indent="yes" />
+  <!--<xsl:strip-space elements="*"/>-->
+  <xsl:template match="@*|node()">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:copy>
+  </xsl:template>
+  <!-- Filter out all Service File Executables from the Harvest (heat) run as these are specified in the transformed service.components.wxs file -->
+  <!-- The list of component service files are collected in an array so that a set of unique names can be extracted -->
+  <!-- we have to substitue the SourceDir\\etc. etc. for $(var.ProjectSourcePath) in order to facilitate heat -->
+  <!--   being run in two different places, specifically it no longer runs from SourceDir so we needed to pass -->
+  <!--   in ProjectSourcePath to the heat runs. Thus when this filter does its work the source attribute will -->
+  <!--   look like $(var.ProjectSourcePath)/puppet/bin/rubyw.exe for example, not  -->
+  <!--   SourceDir/Program64FilesFolder/Puppet/puppet/bin/ruby.exe -->
+  <%- service_files = Array.new -%>
+  <%- get_services.each do |service| -%>
+
+    <%- service_files << service.service_file.sub("SourceDir\\#{self.settings[:base_dir]}\\#{self.settings[:pl_company_id]}\\#{self.settings[:pl_product_id]}", "$(var.AppSourcePath)") -%>
+  <%- end -%>
+  <%- service_files.uniq.each do |service_file| -%>
+    <xsl:template match="wix:Component[wix:File[@Source='<%= service_file %>']]" />
+  <%- end -%>
+
+  <!-- Above directly copies Vanagons default filter.xslt.erb as Vanagon does not provide a
+       way to perform additional transforms against heat harvested file list -->
+
+</xsl:stylesheet>

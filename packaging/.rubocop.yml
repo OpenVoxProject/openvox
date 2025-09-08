@@ -1,0 +1,115 @@
+AllCops:
+  NewCops: enable
+  Include:
+    - 'bin/**/*.rb'
+    - 'configs/**/*.rb'
+  Exclude:
+    - 'acceptance/**/*'
+    - 'resources/**/*.rb'
+    - 'ext/**/*'
+    - 'vendor/**/*'
+    - '.vendor/**/*'
+    - 'bundle/**/*'
+    - 'resources/files/execution_wrapper'
+
+plugins:
+  - rubocop-rake
+
+Layout/ArgumentAlignment:
+  Enabled: false
+
+Layout/BlockAlignment:
+  Enabled: false
+
+Layout/ClosingHeredocIndentation:
+  Enabled: false
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
+Layout/EmptyLines:
+  Enabled: false
+
+Layout/EmptyLinesAroundBlockBody:
+  Enabled: false
+
+Layout/FirstArrayElementIndentation:
+  Enabled: false
+
+Layout/FirstHashElementIndentation:
+  Enabled: false
+
+Layout/HeredocIndentation:
+  Enabled: false
+
+Layout/LeadingCommentSpace:
+  Enabled: false
+
+Layout/MultilineArrayBraceLayout:
+  Enabled: false
+
+Layout/TrailingEmptyLines:
+  Enabled: false
+
+Lint/UnusedBlockArgument:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/BlockNesting:
+  Enabled: false
+
+Naming/FileName:
+  Enabled: false
+
+Style/CaseLikeIf:
+  Enabled: false
+
+Style/CommentAnnotation:
+  Enabled: false
+
+Style/ConditionalAssignment:
+  Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/HashSyntax:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  Enabled: false
+
+Style/RedundantInterpolation:
+  Enabled: false
+
+Style/RedundantLineContinuation:
+  Enabled: false
+
+Style/SignalException:
+  Enabled: false
+
+Style/StringLiterals:
+  Enabled: false
+
+Style/SymbolProc:
+  Enabled: false
+
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+
+Style/WordArray:
+  Enabled: false
+
+Layout/LineLength:
+  Enabled: false

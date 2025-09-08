@@ -1,0 +1,360 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi' xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <!--
+    OpenVox Agent Specific Application data
+    These directories and files need to be special cased
+    in order to manage the application data for the OpenVox
+    agent. The specific special case is that all files
+    and folders here need to be persistent across multiple
+    installs and uninstalls. We can do so by specifying
+    Permanent="yes" on each file/folder component.
+  -->
+  <Fragment>
+
+    <DirectoryRef Id="TARGETDIR">
+      <Directory Id="CommonAppDataFolder" Name="CommonAppData">
+        <Directory Id="APPDATADIR" Name="PuppetLabs">
+          <Directory Id="pxpAgentDataFolder" Name="pxp-agent">
+            <Directory Id="pxpAgentDataFolderVar" Name="var">
+              <Directory Id="pxpAgentDataFolderLog" Name="log" />
+              <Directory Id="pxpAgentDataFolderRun" Name="run" />
+              <Directory Id="pxpAgentDataFolderSpool" Name="spool" />
+            </Directory>
+            <Directory Id="pxpAgentDataFolderEtc" Name="etc">
+              <Directory Id="pxpAgentDataFolderModules" Name="modules"/>
+            </Directory>
+          </Directory>
+          <Directory Id="PuppetAppData" Name="puppet">
+            <Directory Id="PuppetConfDir" Name="etc"/>
+            <Directory Id="PuppetVarDir" Name="var"/>
+            <Directory Id="PuppetPublicDir" Name="public"/>
+          </Directory>
+          <Directory Id="FacterAppData" Name="facter">
+            <Directory Id="FactsDotD" Name="facts.d"/>
+          </Directory>
+          <Directory Id="CodeDir" Name="code">
+            <Directory Id="CodeModulesDir" Name="modules"/>
+            <Directory Id="EnvironmentsDir" Name="environments">
+              <Directory Id="ProductionDir" Name="production">
+                <Directory Id="ManifestsDir" Name="manifests"/>
+                <Directory Id="ModulesDir" Name="modules"/>
+                <Directory Id="Hiera5DataDir" Name="data"/>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+      </Directory>
+    </DirectoryRef>
+    <ComponentGroup Id="AppDataComponentGroup" >
+      <Component
+        Id="PuppetLabsDataDir"
+        Guid="EA55AEDB-3A9E-454E-9389-828341BEB4FC"
+        Permanent="yes"
+        Directory="APPDATADIR" >
+        <CreateFolder>
+          <!-- Allow Everyone Read and Execute -->
+          <PermissionEx Sddl="O:SYG:SYD:P(A;OICI;0x1200a9;;;WD)(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)" />
+        </CreateFolder>
+      </Component>
+      <Component
+        Id="PXPAgentDataDir"
+        Guid="DCF4D483-7B40-41C7-AF93-3C036F04354E"
+        Permanent="yes"
+        Directory="pxpAgentDataFolder" >
+        <CreateFolder>
+          <PermissionEx Sddl="O:SYG:SYD:P(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)" />
+        </CreateFolder>
+      </Component>
+      <Component
+        Id="PXPAgentLogDir"
+        Guid="DF0D0E2A-F069-4933-8AE9-5E779C8E93B9"
+        Permanent="yes"
+        Directory="pxpAgentDataFolderLog" >
+        <CreateFolder/>
+      </Component>
+      <Component
+        Id="PXPAgentRunDir"
+        Guid="4AD77345-D8AE-40E4-B41C-706EC51FE63F"
+        Permanent="yes"
+        Directory="pxpAgentDataFolderRun" >
+        <CreateFolder/>
+      </Component>
+      <Component
+        Id="PXPAgentSpoolDir"
+        Guid="F265A518-A7B7-4FA8-85D8-7306A10E1659"
+        Permanent="yes"
+        Directory="pxpAgentDataFolderSpool" >
+        <CreateFolder/>
+      </Component>
+      <Component
+        Id="PXPAgentModulesDir"
+        Guid="EC0FC78E-CCC5-42EB-AF09-378274AC7530"
+        Permanent="yes"
+        Directory="pxpAgentDataFolderModules" >
+        <CreateFolder/>
+      </Component>
+      <Component
+        Id="PuppetAppDir"
+        Guid="73AAE7BD-6597-4A19-AAED-92EDF2618DA9"
+        Permanent="yes"
+        Directory="PuppetAppData" >
+        <CreateFolder>
+          <PermissionEx Sddl="O:SYG:SYD:P(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)" />
+        </CreateFolder>
+      </Component>
+      <Component
+        Id="PuppetConditionalSettings"
+        Guid="DEEB3D70-7613-488C-A1CF-E7EF952EB4F5"
+        Transitive = "yes"
+        Directory="PuppetConfDir" >
+        <CreateFolder />
+        <Condition><![CDATA[(MASTER_PORT <> ".") AND (MASTER_PORT <> "")]]></Condition>
+        <IniFile
+          Id="PuppetConfPort" Name="puppet.conf"
+          Action="addLine"
+          Section="main"
+          Key="masterport" Value="[MASTER_PORT]"
+          Directory="PuppetConfDir" />
+      </Component>
+      <Component
+        Id="PuppetConditionalSettingsClean"
+        Guid="96D97BD8-E70C-4949-98B6-5387B428B8DD"
+        Transitive = "yes"
+        Directory="PuppetConfDir" >
+        <CreateFolder />
+        <Condition><![CDATA[(MASTER_PORT = ".") OR (MASTER_PORT = "")]]></Condition>
+        <IniFile
+          Id="PuppetConfPort" Name="puppet.conf"
+          Action="removeLine"
+          Section="main"
+          Key="masterport"
+          Directory="PuppetConfDir" />
+      </Component>
+      <Component
+        Id="PuppetServerPortSetting"
+        Guid="D9CBF5C4-06DE-11EB-ADC1-0242AC120002"
+        Transitive = "yes"
+        Directory="PuppetConfDir" >
+        <CreateFolder />
+        <Condition><![CDATA[(SERVER_PORT <> ".") AND (SERVER_PORT <> "")]]></Condition>
+        <IniFile
+          Id="PuppetConfServerPort" Name="puppet.conf"
+          Action="addLine"
+          Section="main"
+          Key="serverport" Value="[SERVER_PORT]"
+          Directory="PuppetConfDir" />
+      </Component>
+      <Component
+        Id="PuppetServerPortSettingClean"
+        Guid="296650AC-06DF-11EB-ADC1-0242AC120002"
+        Transitive = "yes"
+        Directory="PuppetConfDir" >
+        <CreateFolder />
+        <Condition><![CDATA[(SERVER_PORT = ".") OR (SERVER_PORT = "")]]></Condition>
+        <IniFile
+          Id="PuppetConfServerPort" Name="puppet.conf"
+          Action="removeLine"
+          Section="main"
+          Key="serverport"
+          Directory="PuppetConfDir" />
+      </Component>
+      <!-- This is a permanent directory, do not remove on uninstall -->
+      <Component
+        Id="PuppetConfUnconditionalSettings"
+        Permanent="yes"
+        Guid="6753F049-CA11-43E2-854E-B467026F9A2F"
+        Directory="PuppetConfDir">
+        <CreateFolder />
+        <IniFile
+          Id="PuppetConfServer" Name="puppet.conf"
+          Action="addLine"
+          Section="main"
+          Key="server" Value="[PUPPET_MASTER_SERVER]"
+          Directory="PuppetConfDir" />
+        <IniFile
+          Id="RemovePuppetConfPluginSync" Name="puppet.conf"
+          Action="removeLine"
+          Section="main"
+          Key="pluginsync"
+          Directory="PuppetConfDir" />
+        <IniFile
+          Id="PuppetConfAutoflush" Name="puppet.conf"
+          Action="createLine"
+          Section="main"
+          Key="autoflush" Value="true"
+          Directory="PuppetConfDir" />
+        <IniFile
+          Id="PuppetManageInternalFilePermissions" Name="puppet.conf"
+          Action="addLine"
+          Section="main"
+          Key="manage_internal_file_permissions" Value="false"
+          Directory="PuppetConfDir" />
+      </Component>
+      <Component
+        Id="PuppetConfWithAgentEnvironment"
+        Permanent="yes"
+        Guid="EC56FB39-A176-42BA-BB1C-10C8DE76AE67"
+        Directory="PuppetConfDir">
+        <Condition>PUPPET_AGENT_ENVIRONMENT</Condition>
+        <CreateFolder />
+        <!-- The agent environment setting will only be managed if the
+              PUPPET_AGENT_ENVIRONMENT is not an empty string -->
+        <!-- Manage the entry itself -->
+        <IniFile
+          Id="PuppetConfAgentEnvironment" Name="puppet.conf"
+          Action="addLine"
+          Section="main"
+          Key="environment" Value="[PUPPET_AGENT_ENVIRONMENT]"
+          Directory="PuppetConfDir" />
+      </Component>
+      <Component
+        Id="PuppetConfWithCertname"
+        Permanent="yes"
+        Guid="5D1813E1-0AEB-4965-B504-354D7F10DCEA"
+        Directory="PuppetConfDir">
+        <Condition>PUPPET_AGENT_CERTNAME</Condition>
+        <CreateFolder />
+        <!-- The certname setting will only be managed if the
+              PUPPET_AGENT_CERTNAME is not an empty string -->
+        <!-- Manage the entry itself -->
+        <IniFile
+          Id="PuppetConfCertname" Name="puppet.conf"
+          Action="addLine"
+          Section="main"
+          Key="certname" Value="[PUPPET_AGENT_CERTNAME]"
+          Directory="PuppetConfDir" />
+      </Component>
+      <Component
+        Id="PuppetConfWithCaServer"
+        Permanent="yes"
+        Guid="CE676CF1-2E12-4CDC-B87F-D4BC4E71FF85"
+        Directory="PuppetConfDir">
+        <Condition>PUPPET_CA_SERVER</Condition>
+        <CreateFolder />
+        <!-- The certname setting will only be managed if the
+              PUPPET_CA_SERVER is not an empty string -->
+        <IniFile
+          Id="PuppetConfCaServer" Name="puppet.conf"
+          Action="addLine"
+          Section="main"
+          Key="ca_server" Value="[PUPPET_CA_SERVER]"
+          Directory="PuppetConfDir" />
+      </Component>
+      <Component
+        Id="PuppetConfHiera"
+        Permanent="yes"
+        NeverOverwrite="yes"
+        Guid="998A7670-BF42-4F03-B144-4528EADD0CE3"
+        Directory="PuppetConfDir">
+        <CreateFolder />
+        <File
+          Id="HieraConf"
+          KeyPath="yes"
+          Source="SourceDir\CommonAppDataFolder\PuppetLabs\puppet\etc\hiera.yaml" />
+        <Condition>NOT PUP_PREEXISTING_CODE_HIERA AND NOT PUP_PREEXISTING_CONF_HIERA</Condition>
+      </Component>
+      <Component
+        Id="PuppetProductionHiera"
+        Permanent="yes"
+        NeverOverwrite="yes"
+        Guid="8384543A-F693-45B3-92E3-E0CB879A78E0"
+        Directory="ProductionDir">
+        <CreateFolder />
+        <File
+          Id="HieraProductionConf"
+          KeyPath="yes"
+          Source="SourceDir\CommonAppDataFolder\PuppetLabs\code\environments\production\hiera.yaml" />
+        <Condition>NOT PUP_PREEXISTING_CODE_HIERA AND NOT PUP_PREEXISTING_CONF_HIERA</Condition>
+      </Component>
+      <Component
+        Id="PuppetVarDir"
+        Permanent="yes"
+        Guid="B95A17F3-CF5E-4EC7-859E-F10C0965645F"
+        Directory="PuppetVarDir">
+        <CreateFolder />
+      </Component>
+      <Component
+        Id="PuppetPublicDir"
+        Permanent="yes"
+        Guid="B1A31F2F-D759-4444-B4E6-8EF9A353B47A"
+        Directory="PuppetPublicDir">
+        <CreateFolder>
+          <!-- allow everyone read & execute -->
+          <PermissionEx Sddl="O:SYG:SYD:P(A;OICI;0x1200a9;;;WD)(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)" />
+        </CreateFolder>
+      </Component>
+      <Component
+        Id="FacterAppDir"
+        Permanent="yes"
+        Guid="74FF6071-4F6B-4F44-BF1E-C9B3F973322E"
+        Directory="FacterAppData">
+        <CreateFolder>
+          <!-- allow everyone read & execute -->
+          <PermissionEx Sddl="O:SYG:SYD:P(A;OICI;0x1200a9;;;WD)(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)" />
+        </CreateFolder>
+      </Component>
+      <Component
+        Id="PuppetInstallerFacts"
+        Permanent="yes"
+        Guid="4E7C234B-2837-4459-A20E-9503A922FCB9"
+        Directory="FactsDotD">
+        <CreateFolder />
+      </Component>
+      <Component
+        Id="CodeDir"
+        Permanent="yes"
+        Guid="0D29EB1B-604D-4FE1-A75C-F18CC230BEED"
+        Directory="CodeDir">
+        <CreateFolder>
+          <PermissionEx Sddl="O:SYG:SYD:P(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)" />
+        </CreateFolder>
+      </Component>
+      <Component
+        Id="Hiera5DataDir"
+        Permanent="yes"
+        Guid="2438387C-BEA5-47C1-8B43-46FE30E14BEA"
+        Directory="Hiera5DataDir">
+        <CreateFolder />
+      </Component>
+      <Component
+        Id="CodeModulesDir"
+        Permanent="yes"
+        Guid="ae4a85a4-a305-4c95-b254-c2f06c586482"
+        Directory="CodeModulesDir">
+        <CreateFolder />
+      </Component>
+      <Component
+        Id="EnvironmentsDir"
+        Permanent="yes"
+        Guid="6a6a390a-8783-40b6-b49d-9e2b368e069d"
+        Directory="EnvironmentsDir">
+        <CreateFolder />
+      </Component>
+      <Component
+        Id="ProductionDir"
+        Permanent="yes"
+        Guid="b902efcd-756e-4340-8f13-5a79d46b93c7"
+        Directory="ProductionDir">
+        <CreateFolder />
+        <File
+          Id="EnvironmentConf"
+          KeyPath="yes"
+          Source="SourceDir\CommonAppDataFolder\PuppetLabs\code\environments\production\environment.conf" />
+      </Component>
+      <Component
+        Id="ManifestsDir"
+        Permanent="yes"
+        Guid="5484fadf-6d5e-4053-83fc-ea68918d6f2e"
+        Directory="ManifestsDir">
+        <CreateFolder />
+      </Component>
+      <Component
+        Id="ModulesDir"
+        Permanent="yes"
+        Guid="cbe9cc8d-3a38-4c4c-9f16-39e42093481a"
+        Directory="ModulesDir">
+        <CreateFolder />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

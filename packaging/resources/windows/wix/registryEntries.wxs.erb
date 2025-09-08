@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi' xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <!--
+    Puppet Agent Specific Registry Entries
+    This overrides the generic file in the vanagon directory
+  -->
+  <Fragment>
+    <ComponentGroup Id="RegistryComponentGroup">
+      <Component Id="RegistryEntries"
+        Guid="68F5D91C-49C8-43F7-940A-481007689E79"
+        Directory="TARGETDIR"
+        Win64="no">
+
+        <RegistryKey
+          Root="HKLM"
+          Key="SOFTWARE\<%= settings[:pl_company_name] %>\<%= settings[:common_product_id] %>"
+          Action="create" >
+          <!-- This is the default (aka 'unnamed') key value of this path -->
+          <RegistryValue
+            Type="integer"
+            Value="0"/>
+          <!-- This is the specified value of a key at this path -->
+          <RegistryValue
+            Name="InstalledFlag"
+            Value="1"
+            Type="integer"
+            KeyPath="yes"/>
+          <!-- Store properties for later recall during uninstall, upgrade, repair -->
+          <RegistryValue
+            Name="RememberedPuppetMasterServer"
+            Type="string"
+            Value="[PUPPET_MASTER_SERVER]" />
+          <RegistryValue
+            Name="RememberedPuppetServer"
+            Type="string"
+            Value="[PUPPET_SERVER]" />
+          <RegistryValue
+            Name="RememberedPuppetAgentEnvironment"
+            Type="string"
+            Value="[PUPPET_AGENT_ENVIRONMENT]" />
+          <RegistryValue
+            Name="RememberedPuppetCaServer"
+            Type="string"
+            Value="[PUPPET_CA_SERVER]" />
+          <RegistryValue
+            Name="RememberedPuppetAgentCertname"
+            Type="string"
+            Value="[PUPPET_AGENT_CERTNAME]" />
+          <RegistryValue
+            Name="RememberedPuppetAgentStartupMode"
+            Type="string"
+            Value="[PUPPET_AGENT_STARTUP_MODE]" />
+        </RegistryKey>
+      </Component>
+
+      <Component Id="EventLogRegistryEntries"
+        Guid="3A4E2A16-1919-4BAF-A4CF-9FA3543BB27C"
+        Directory="TARGETDIR"
+        Win64="no"
+        Permanent="yes">
+
+        <RegistryKey
+            Root="HKLM"
+            Key="SYSTEM\CurrentControlSet\services\eventlog\Application\Puppet"
+            Action="createAndRemoveOnUninstall">
+          <RegistryValue
+            Type="string"
+            Name="EventMessageFile"
+            Value="%SystemRoot%\System32\EventCreate.exe"/>
+          <RegistryValue
+            Type="integer"
+            Name="TypesSupported"
+            Value="7"/>
+        </RegistryKey>
+      </Component>
+
+      <Component Id="PXPAgentEventLogRegistryEntries"
+        Guid="450339B3-56AB-4E53-8B07-29E18E01076E"
+        Directory="TARGETDIR"
+        Win64="no"
+        Permanent="yes">
+
+        <RegistryKey
+            Root="HKLM"
+            Key="SYSTEM\CurrentControlSet\services\eventlog\Application\pxp-agent"
+            Action="createAndRemoveOnUninstall">
+          <RegistryValue
+            Type="string"
+            Name="EventMessageFile"
+            Value="%SystemRoot%\System32\EventCreate.exe"/>
+          <RegistryValue
+            Type="integer"
+            Name="TypesSupported"
+            Value="7"/>
+        </RegistryKey>
+      </Component>
+
+      <Component
+        Id="RegistryEntriesArchitectureDependent"
+        Directory="TARGETDIR"
+        Guid="E6D5AF4F-ACC4-4D11-AFCE-299A9ED2152C"
+        Win64="<%= settings[:win64] %>"
+        Permanent="yes">
+
+        <RegistryKey
+          Root="HKLM"
+          Key="SOFTWARE\<%= settings[:pl_company_name] %>\<%= settings[:pl_product_id] %>"
+          ForceCreateOnInstall="yes" >
+
+          <RegistryValue
+            Type="integer"
+            Value="0"/>
+          <!-- Platform specific registry keys -->
+          <%- if @platform.architecture == "x64" -%>
+            <RegistryValue
+              Name="RememberedInstallDir"
+              Type="string"
+              Value="[INSTALLDIR_X86]" />
+            <RegistryValue
+              Name="RememberedInstallDir64"
+              Type="string"
+              Value="[INSTALLDIR]"
+              KeyPath="yes" />
+          <%- else %>
+            <RegistryValue
+              Name="RememberedInstallDir"
+              Type="string"
+              Value="[INSTALLDIR]"
+              KeyPath="yes" />
+          <%- end -%>
+        </RegistryKey>
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+  <!-- OpenVox Agent Specific Component Group File -->
+
+  <Fragment>
+    <!--
+      If OpenVox is configured to run as someone other than LocalSystem
+      and we are installing or upgrading, then allow the account to
+      logon as a service and add the account to the local Administrators
+      account. If the account doesn't exist, the install will fail.
+    -->
+    <util:Group Id="AdminGroup" Name="[PUP_LCL_ACCOUNT_ADMINISTRATORS]"/>
+
+    <Component
+      Id="PuppetServiceUser"
+      Guid="0CCA1CDC-CD25-43A5-BE8A-0D455C63D1BE"
+      Directory="TARGETDIR"
+      Win64="<%= settings[:win64] %>">
+      <Condition><![CDATA[NOT Installed AND PUPPET_AGENT_ACCOUNT_USER <> "LocalSystem"]]></Condition>
+      <util:User
+        Id="puppetServiceUser"
+        Domain="[PUPPET_AGENT_ACCOUNT_DOMAIN]"
+        Name="[PUPPET_AGENT_ACCOUNT_USER]"
+        Password="[PUPPET_AGENT_ACCOUNT_PASSWORD]"
+        LogonAsService="yes"
+        CreateUser="no"
+        UpdateIfExists="yes"
+        RemoveOnUninstall="no">
+        <util:GroupRef Id="AdminGroup"/>
+      </util:User>
+    </Component>
+
+  </Fragment>
+</Wix>

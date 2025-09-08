@@ -24,6 +24,7 @@ AllCops:
     - 'lib/puppet/pops/parser/eparser.rb'
     - 'vendor/**/*'
     - '.vendor/**/*'
+    - 'packaging/resources/files/execution_wrapper'
 
 # The formatting of defaults is unusual, so let's skip layout cops.
 Layout:
