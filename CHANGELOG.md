@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [8.23.1](https://github.com/openvoxproject/openvox/tree/8.23.1) (2025-09-08)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.23.0...8.23.1)
+
+**Fixed bugs:**
+
+- Fix how we find the version library [\#203](https://github.com/OpenVoxProject/openvox/pull/203) ([nmburgan](https://github.com/nmburgan))
+
+**Closed issues:**
+
+- [Bug]: /opt/puppetlabs/puppet/bin/ruby: /lib64/libm.so.6: version `GLIBC\_2.38' not found [\#199](https://github.com/OpenVoxProject/openvox/issues/199)
+
+**Merged pull requests:**
+
+- Promote puppet-runtime 2025.09.08.1 [\#204](https://github.com/OpenVoxProject/openvox/pull/204) ([nmburgan](https://github.com/nmburgan))
+- Test for r10k failure condition [\#202](https://github.com/OpenVoxProject/openvox/pull/202) ([nmburgan](https://github.com/nmburgan))
+
 ## [8.23.0](https://github.com/openvoxproject/openvox/tree/8.23.0) (2025-09-07)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/8.22.0...8.23.0)
