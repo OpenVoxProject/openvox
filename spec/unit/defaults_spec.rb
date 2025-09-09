@@ -8,6 +8,20 @@ describe "Defaults" do
     end
   end
 
+  describe 'server' do
+    it 'should default to `puppet` when root' do
+      allow(Puppet.features).to receive(:root?).and_return(true)
+      Puppet.initialize_settings
+      expect(Puppet.settings[:server]).to eq('puppet')
+    end
+
+    it 'should default to empty value when non-root' do
+      expect(Puppet).to receive(:deprecation_warning)
+      Puppet.initialize_settings
+      expect(Puppet.settings[:server]).to eq('')
+    end
+  end
+
   describe 'strict' do
     it 'should accept the valid value :off' do
       expect {Puppet.settings[:strict] = 'off'}.to_not raise_exception
@@ -146,7 +160,7 @@ describe "Defaults" do
 
   describe "deprecated settings" do
     it 'does not issue a deprecation warning by default' do
-      expect(Puppet).to receive(:deprecation_warning).never
+      expect(Puppet).to receive(:deprecation_warning).with(/"server" must be specified when running as a non-privileged user/)
 
       Puppet.initialize_settings
     end
