@@ -3,6 +3,10 @@ require 'spec_helper'
 require 'puppet/indirector/file_bucket_file/rest'
 
 describe Puppet::FileBucketFile::Rest do
+  before :each do
+    Puppet[:server] = 'puppet'
+  end
+
   let(:rest_path) {"filebucket://xanadu:8141/"}
   let(:file_bucket_file) {Puppet::FileBucket::File.new('file contents', :bucket_path => '/some/random/path')}
   let(:files_original_path) {'/path/to/file'}

@@ -41,6 +41,7 @@ describe Puppet::Application::Filebucket do
 
   describe "during setup" do
     before :each do
+      Puppet[:server] = 'puppet'
       allow(Puppet::Log).to receive(:newdestination)
       allow(Puppet::FileBucket::Dipper).to receive(:new)
       allow(@filebucket.options).to receive(:[])
@@ -157,6 +158,7 @@ describe Puppet::Application::Filebucket do
 
   describe "when running" do
     before :each do
+      Puppet[:server] = 'puppet'
       allow(Puppet::Log).to receive(:newdestination)
       allow(Puppet::FileBucket::Dipper).to receive(:new)
       allow(@filebucket.options).to receive(:[])
@@ -177,6 +179,7 @@ describe Puppet::Application::Filebucket do
 
     describe "the command get" do
       before :each do
+        Puppet[:server] = 'puppet'
         allow(@filebucket).to receive(:print)
         allow(@filebucket).to receive(:args).and_return([])
       end

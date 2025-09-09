@@ -28,6 +28,7 @@ describe Puppet::SSL::StateMachine, unless: Puppet::Util::Platform.jruby? do
 
   before(:each) do
     Puppet[:daemonize] = false
+    Puppet[:server] = 'puppet'
     Puppet[:ssl_lockfile] = tmpfile('ssllock')
     allow(Kernel).to receive(:sleep)
     future = Time.now + (5 * 60)

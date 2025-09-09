@@ -2,6 +2,10 @@ require 'spec_helper'
 require 'puppet/http'
 
 describe Puppet::HTTP::Session do
+  before :each do
+    Puppet[:server] = 'puppet'
+  end
+
   let(:ssl_context) { Puppet::SSL::SSLContext.new }
   let(:client) { Puppet::HTTP::Client.new(ssl_context: ssl_context) }
   let(:uri) { URI.parse('https://www.example.com') }
