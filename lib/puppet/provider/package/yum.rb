@@ -111,7 +111,7 @@ Puppet::Type.type(:package).provide :yum, :parent => :rpm, :source => :rpm do
   # @return [Hash<String, Array<Hash<String, String>>>] All packages that were
   #   found with a list of found versions for each package.
   def self.check_updates(disablerepo, enablerepo, disableexcludes)
-    args = [command(:cmd), 'check-update']
+    args = [command(:cmd), '-y', 'check-update']
     args.concat(disablerepo.map { |repo| ["--disablerepo=#{repo}"] }.flatten)
     args.concat(enablerepo.map { |repo| ["--enablerepo=#{repo}"] }.flatten)
     args.concat(disableexcludes.map { |repo| ["--disableexcludes=#{repo}"] }.flatten)
