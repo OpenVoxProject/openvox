@@ -1650,8 +1650,19 @@ EOT
       :desc     => "The root directory of devices' $confdir.",
     },
     :server => {
-      :default => "puppet",
-      :desc => "The primary Puppet server to which the Puppet agent should connect.",
+      :default   => '', # use an empty string so dependent settings can resolve without crashing
+      :desc      => "The primary Puppet server to which the Puppet agent should connect.",
+      :call_hook => :on_initialize_and_write,
+      :hook      => proc do |value|
+        if value.empty?
+          if Puppet.features.root?
+            Puppet.deprecation_warning('OpenVox will not default to `server=puppet` as of version 9.0. Please update your configuration appropriately.')
+            Puppet.settings[:server] = 'puppet'
+          else
+            Puppet.deprecation_warning('"server" must be specified when running as a non-privileged user. (Did you mean to run as root?)')
+          end
+        end
+      end
     },
     :server_list => {
       :default => [],
