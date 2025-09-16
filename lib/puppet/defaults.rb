@@ -1650,8 +1650,8 @@ EOT
       :desc     => "The root directory of devices' $confdir.",
     },
     :server => {
-      :default   => Puppet.features.root? ? 'puppet': '', # use an empty string so dependent settings can resolve without crashing
-      :desc      => "The primary Puppet server to which the Puppet agent should connect.",
+      :default => Puppet.features.root? ? 'puppet': '', # use an empty string so dependent settings can resolve without crashing
+      :desc => "The primary Puppet server to which the Puppet agent should connect.",
     },
     :server_list => {
       :default => [],
