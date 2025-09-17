@@ -32,6 +32,12 @@ on:
         required: true
         type: string
         default: main
+      fork:
+        description: |-
+          (Fork) The fork of openvox to run the Beaker test suite from.
+        required: true
+        type: string
+        default: openvoxproject
       pre-release-build:
         description: |-
           (Pre-release Build) Whether to test unreleased version
@@ -80,41 +86,20 @@ permissions:
 
 jobs:
   acceptance:
+    strategy:
+      fail-fast: false
+      matrix:
+        suite-name:
+          - openvox
+          - openvox-agent
     uses: 'OpenVoxProject/shared-actions/.github/workflows/beaker_acceptance.yml@main'
     with:
+      suite-name: ${{ matrix.suite-name }}
       ref: ${{ inputs.ref }}
-      project-name: openvox
-      install-openvox: true
+      fork: ${{ inputs.fork }}
       openvox-collection: ${{ inputs.collection }}
       openvox-agent-version: ${{ inputs.openvox-agent-version }}
       openvox-agent-pre-release-build: ${{ inputs.pre-release-build }}
-      install-openvox-server: true
       openvox-server-version: ${{ inputs.openvox-server-version }}
       openvox-server-pre-release-build: ${{ inputs.pre-release-build }}
-      install-openvoxdb: false
-      install-openvoxdb-termini: false
       artifacts-url: ${{ inputs.artifacts-url }}
-      acceptance-working-dir: 'acceptance'
-      acceptance-pre-suite: |-
-        [
-          "pre-suite"
-        ]
-      acceptance-tests: |-
-        [
-          "tests"
-        ]
-      beaker-options: |-
-        {
-          "helper":       "lib/helper.rb",
-          "options_file": "config/aio/options.rb"
-        }
-      vms: |-
-        [
-          {
-            "role": "primary",
-            "count": 1,
-            "cpus": 4,
-            "mem_mb": 8192,
-            "cpu_mode": "host-model"
-          }
-        ]

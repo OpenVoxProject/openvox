@@ -23,6 +23,11 @@ on:
         required: false
         type: string
         default: 'main'
+      upload_to_s3:
+        description: 'Whether to upload the built artifacts to S3. If false, the artifacts will only be uploaded as workflow artifacts.'
+        required: false
+        type: boolean
+        default: true
       use_dev:
         description: 'Use the "dev" branch of the shared-actions repo'
         required: false
@@ -38,6 +43,7 @@ jobs:
       project_name: ${{ inputs.project_name }}
       platform_list: ${{ inputs.platform_list }}
       vanagon_branch: ${{ inputs.vanagon_branch }}
+      upload_to_s3: ${{ inputs.upload_to_s3 }}
       working_directory: 'packaging'
     secrets: inherit
   build_dev:
@@ -48,5 +54,6 @@ jobs:
       project_name: ${{ inputs.project_name }}
       platform_list: ${{ inputs.platform_list }}
       vanagon_branch: ${{ inputs.vanagon_branch }}
+      upload_to_s3: ${{ inputs.upload_to_s3 }}
       working_directory: 'packaging'
     secrets: inherit
