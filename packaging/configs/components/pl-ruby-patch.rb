@@ -8,11 +8,6 @@
 # This component should also be present in the puppet-runtime project
 component "pl-ruby-patch" do |pkg, settings, platform|
   if platform.is_cross_compiled?
-    if platform.is_macos?
-      pkg.build_requires 'gnu-sed'
-      pkg.environment "PATH", "/usr/local/opt/gnu-sed/libexec/gnubin:$(PATH)"
-    end
-
     ruby_api_version = settings[:ruby_version].gsub(/\.\d*$/, '.0')
     ruby_version_y = settings[:ruby_version].gsub(/(\d+)\.(\d+)\.(\d+)/, '\1.\2')
 
@@ -26,8 +21,6 @@ component "pl-ruby-patch" do |pkg, settings, platform|
                       "powerpc64le-linux"
                     elsif platform.name == 'solaris-11-sparc'
                       "sparc-solaris-2.11"
-                    elsif platform.is_macos?
-                      "aarch64-darwin"
                     else
                       "#{platform.architecture}-linux"
                     end
