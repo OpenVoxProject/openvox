@@ -63,7 +63,12 @@ jobs:
           bundler-cache: true
       - name: Output Ruby Environment
         run: bundle env
-
+      - name: Build gem for all platforms
+        run: bundle exec rake pl_ci:gem_build
+      # Windows tests fail if the gem is in the filesystem
+      - name: Cleanup builds
+        if: runner.os == 'Windows'
+        run: Remove-Item -Path *.gem
       - name: Run tests on Windows
         if: runner.os == 'Windows'
         run: |
@@ -85,7 +90,7 @@ jobs:
           ruby -ropenssl -e 'puts "OpenSSL Version - #{OpenSSL::OPENSSL_VERSION}"; puts "OpenSSL Library Version - #{OpenSSL::OPENSSL_LIBRARY_VERSION}"'
 
           # Run tests
-          bundle exec rake parallel:spec[2]
+          bundle exec rake parallel:spec
 
       - name: Run tests on Linux
         if: runner.os == 'Linux'
@@ -102,11 +107,34 @@ jobs:
 
           bundle exec rake parallel:spec
 
+  rake_checks:
+    name: AIO Package Rake Checks
+    runs-on: ubuntu-24.04
+    steps:
+      # needs fetch-depth because the packaging dem reads old git tags
+      - name: Checkout current PR
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Install Ruby version 3.3
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3
+          bundler-cache: true
+      - name: Validate code
+        run: |
+          bundle exec rake rubocop
+          bundle exec rake -T | grep vox:build
+          bundle exec rake -T | grep vox:promote
+          bundle exec rake -T | grep vox:upload
+        working-directory: packaging
+
   tests:
     if: always()
     needs:
       - checks
       - rspec_tests
+      - rake_checks
     runs-on: ubuntu-24.04
     name: Test suite
     steps:
