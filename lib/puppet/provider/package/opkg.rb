@@ -3,12 +3,12 @@
 require_relative '../../../puppet/provider/package'
 
 Puppet::Type.type(:package).provide :opkg, :source => :opkg, :parent => Puppet::Provider::Package do
-  desc "Opkg packaging support. Common on OpenWrt and OpenEmbedded platforms"
+  desc "Opkg packaging support. Common on OpenWrt, TurrisOS, and OpenEmbedded platforms"
 
   commands :opkg => "opkg"
 
-  confine     'os.name' => :openwrt
-  defaultfor  'os.name' => :openwrt
+  confine     'os.name' => [:openwrt, :turrisos]
+  defaultfor  'os.name' => [:openwrt, :turrisos]
 
   def self.instances
     packages = []
@@ -41,7 +41,7 @@ Puppet::Type.type(:package).provide :opkg, :source => :opkg, :parent => Puppet::
   end
 
   def install
-    # OpenWrt package lists are ephemeral, make sure we have at least
+    # OpenWrt and TurrisOS package lists are ephemeral, make sure we have at least
     # some entries in the list directory for opkg to use
     opkg('update') if package_lists.size <= 2
 
