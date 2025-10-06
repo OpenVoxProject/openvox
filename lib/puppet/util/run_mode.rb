@@ -15,6 +15,8 @@ module Puppet
         @run_modes ||= {}
         if Puppet::Util::Platform.windows?
           @run_modes[name] ||= WindowsRunMode.new(name)
+        elsif Puppet::Util::Platform.linux?
+          @run_modes[name] ||= LinuxRunMode.new(name)
         else
           @run_modes[name] ||= UnixRunMode.new(name)
         end
