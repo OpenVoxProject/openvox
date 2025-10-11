@@ -107,27 +107,27 @@ module Puppet
 
     class WindowsRunMode < RunMode
       def conf_dir
-        which_dir(File.join(windows_common_base("puppet/etc")), "~/.puppetlabs/etc/puppet")
+        which_dir("puppet/etc", "etc/puppet")
       end
 
       def code_dir
-        which_dir(File.join(windows_common_base("code")), "~/.puppetlabs/etc/code")
+        which_dir("code", "etc/code")
       end
 
       def var_dir
-        which_dir(File.join(windows_common_base("puppet/cache")), "~/.puppetlabs/opt/puppet/cache")
+        which_dir("puppet/cache", "opt/puppet/cache")
       end
 
       def public_dir
-        which_dir(File.join(windows_common_base("puppet/public")), "~/.puppetlabs/opt/puppet/public")
+        which_dir("puppet/public", "opt/puppet/public")
       end
 
       def run_dir
-        which_dir(File.join(windows_common_base("puppet/var/run")), "~/.puppetlabs/var/run")
+        which_dir("puppet/var/run", "var/run")
       end
 
       def log_dir
-        which_dir(File.join(windows_common_base("puppet/var/log")), "~/.puppetlabs/var/log")
+        which_dir("puppet/var/log", "var/log")
       end
 
       def pkg_config_path
@@ -151,6 +151,10 @@ module Puppet
       end
 
       private
+
+      def which_dir(system, user)
+        super(File.join(windows_common_base(system)), File.join('~/.puppetlabs', user))
+      end
 
       def installdir
         ENV.fetch('FACTER_env_windows_installdir', nil)
