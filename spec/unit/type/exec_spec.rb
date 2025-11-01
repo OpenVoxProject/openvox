@@ -648,6 +648,39 @@ RSpec.describe Puppet::Type.type(:exec) do
       @test = Puppet::Type.type(:exec).new(:name => @executable)
     end
 
+    describe "enable_idempotency_check" do
+
+      [:true, :false].each do |value|
+        it "should accept '#{value}'" do
+          @test[:enable_idempotency_check] = value
+          expect(@test[:enable_idempotency_check]).to eq(value)
+        end
+      end
+
+      [1, 0, "1", "0", "yes", "y", "no", "n"].each do |value|
+        it "should reject '#{value}'" do
+          expect { @test[:enable_idempotency_check] = value }.
+            to raise_error(Puppet::Error,
+              /Invalid value #{value.inspect}\. Valid values are true, false/
+            )
+        end
+      end
+
+      context "without an idempotency check" do
+        it "should raise error" do
+          type = Puppet::Type.type(:exec).new(:name => @command, :enable_idempotency_check => true)
+          expect(type[:enable_idempotency_check]).to eq(:true)
+        end
+      end
+
+      context "with an idempotency check" do
+        it "should not fail" do
+          type = Puppet::Type.type(:exec).new(:name => @command, :enable_idempotency_check => true, :refreshonly => true)
+          expect(type).to be
+        end
+      end
+    end
+
     describe ":refreshonly" do
       { :true => false, :false => true }.each do |input, result|
         it "should return '#{result}' when given '#{input}'" do
