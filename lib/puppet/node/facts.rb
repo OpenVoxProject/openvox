@@ -27,11 +27,12 @@ class Puppet::Node::Facts
 
   attr_accessor :name, :values, :timestamp
 
-  def add_local_facts
-    values["implementation"] = Puppet.implementation
-    values["clientcert"] = Puppet.settings[:certname]
-    values["clientversion"] = Puppet.version.to_s
-    values["clientnoop"] = Puppet.settings[:noop]
+  def add_local_facts(query = [])
+    query = Array(query) # some use cases result in a nil being passed in
+    values["implementation"] = Puppet.implementation if query.empty? or query.include? 'implementation'
+    values["clientcert"] = Puppet.settings[:certname] if query.empty? or query.include? 'clientcert'
+    values["clientversion"] = Puppet.version.to_s if query.empty? or query.include? 'clientversion'
+    values["clientnoop"] = Puppet.settings[:noop] if query.empty? or query.include? 'clientnoop'
   end
 
   def initialize(name, values = {})

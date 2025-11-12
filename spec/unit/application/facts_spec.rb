@@ -55,7 +55,11 @@ describe Puppet::Application::Facts do
     let(:expected) { <<~END }
       {
         "filesystems": "apfs,autofs,devfs",
-        "macaddress": "64:52:11:22:03:2e"
+        "macaddress": "64:52:11:22:03:2e",
+        "implementation": "#{Puppet.implementation}",
+        "clientcert": "#{Puppet.settings[:certname]}",
+        "clientversion": "#{Puppet.version}",
+        "clientnoop": false
       }
     END
 
@@ -81,7 +85,7 @@ describe Puppet::Application::Facts do
     end
 
     it "warns and ignores value-only when multiple fact names are specified" do
-      app.command_line.args << 'filesystems' << 'macaddress' << '--value-only'
+      app.command_line.args << 'filesystems' << 'macaddress' << 'implementation' << 'clientcert' << 'clientversion' << 'clientnoop' << '--value-only'
       expect {
         app.run
       }.to exit_with(0)
@@ -121,6 +125,10 @@ describe Puppet::Application::Facts do
       ---
       filesystems: apfs,autofs,devfs
       macaddress: 64:52:11:22:03:2e
+      implementation: #{Puppet.implementation}
+      clientcert: #{Puppet.settings[:certname]}
+      clientversion: #{Puppet.version}
+      clientnoop: false
     END
 
     before :each do
