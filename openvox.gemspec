@@ -24,13 +24,13 @@ Gem::Specification.new do |spec|
   spec.executables = ["puppet"]
   spec.files = Dir['[A-Z]*'] + Dir['install.rb'] + Dir['bin/*'] + Dir['lib/**/*'] + Dir['conf/*'] + Dir['man/**/*'] + Dir['tasks/*'] + Dir['locales/**/*'] + Dir['ext/**/*'] + Dir['examples/**/*']
   spec.license = "Apache-2.0"
-  spec.homepage = "https://github.com/OpenVoxProject/puppet"
+  spec.homepage = "https://github.com/OpenVoxProject/openvox"
   spec.rdoc_options = ["--title", "OpenVox - Configuration Management", "--main", "README", "--line-numbers"]
   spec.require_paths = ["lib"]
   spec.summary = "OpenVox, a community implementation of Puppet -- an automated configuration management tool"
   spec.specification_version = 4
   spec.add_runtime_dependency('base64', '>= 0.1', '< 0.4')
-  spec.add_runtime_dependency('benchmark', '>= 0.3', '< 0.5')
+  spec.add_runtime_dependency('benchmark', '>= 0.3', '< 0.6')
   spec.add_runtime_dependency('concurrent-ruby', '~> 1.0')
   spec.add_runtime_dependency('deep_merge', '~> 1.0')
   spec.add_runtime_dependency('fast_gettext', '>= 2.1', '< 5')
