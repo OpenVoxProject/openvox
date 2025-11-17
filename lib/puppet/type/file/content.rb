@@ -54,27 +54,6 @@ module Puppet
         if @actual_content || resource.parameter(:source)
           # Actual content is already set, value contains it's checksum
           value
-        elsif Puppet[:use_checksum_in_file_content]
-          # The value passed in the "content" attribute of this file looks like
-          # a checksum, and this is intended by the user.
-          # Display a warning as this behavior is deprecated.
-          Puppet.puppet_deprecation_warning([
-            # TRANSLATORS "content" is an attribute and should not be translated
-            _('Using a checksum in a file\'s "content" property is deprecated.'),
-            # TRANSLATORS "filebucket" is a resource type and should not be translated. The quoted occurrence of "content" is an attribute and should not be translated.
-            _('The ability to use a checksum to retrieve content from the filebucket using the "content" property will be removed in a future release.'),
-            # TRANSLATORS "content" is an attribute and should not be translated.
-            _('The literal value of the "content" property will be written to the file.'),
-            # TRANSLATORS "static catalogs" should not be translated.
-            _('The checksum retrieval functionality is being replaced by the use of static catalogs.'),
-            _('See https://puppet.com/docs/puppet/latest/static_catalogs.html for more information.')
-          ].join(" "),
-                                            :file => @resource.file,
-                                            :line => @resource.line) if !@actual_content && !resource.parameter(:source)
-          # We return the value assuming it really is the checksum of the
-          # actual content we want. It should be fetched from filebucket
-          # later on.
-          value
         else
           # The content only happens to look like a checksum by chance.
           @actual_content = value.is_a?(Puppet::Pops::Types::PBinaryType::Binary) ? value.binary_buffer : value
@@ -172,17 +151,11 @@ module Puppet
     def each_chunk_from
       if actual_content.is_a?(String)
         yield actual_content
-      elsif content_is_really_a_checksum? && actual_content.nil?
+      elsif actual_content.nil?
         yield read_file_from_filebucket
       elsif actual_content.nil?
         yield ''
       end
-    end
-
-    def content_is_really_a_checksum?
-      return false unless Puppet[:use_checksum_in_file_content]
-
-      checksum?(should)
     end
 
     def read_file_from_filebucket

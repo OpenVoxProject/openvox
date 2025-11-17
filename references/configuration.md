@@ -1,6 +1,6 @@
 ---
 layout: default
-built_from_commit: 9ef8d3ec9d10d535a5c341464415dd55e44b5588
+built_from_commit: 812d7420ea5d7e19e8003b26486a7c8847afdb25
 title: Configuration Reference
 toc: columns
 canonical: "/puppet/latest/configuration.html"
@@ -8,7 +8,7 @@ canonical: "/puppet/latest/configuration.html"
 
 # Configuration Reference
 
-> **NOTE:** This page was generated from the Puppet source code on 2025-08-21 17:25:10 +0200
+> **NOTE:** This page was generated from the Puppet source code on 2024-10-18 17:22:26 +0000
 
 
 
@@ -2142,14 +2142,6 @@ does not contact the primary server for a new catalog, it also does not upload f
 the beginning of the Puppet run.
 
 - *Default*: `false`
-
-### use_checksum_in_file_content
-
-Whether to allow specifying checksums in file content attributes; this is
-deprecated, the checksum retrieval functionality is being replaced by the use of
-static catalogs.
-
-- *Default*: `true`
 
 ### use_last_environment
 
