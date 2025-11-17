@@ -1114,13 +1114,6 @@ EOT
       # Sure would be nice to set the Puppet::Util::Log destination here in an :on_initialize_and_write hook,
       # unfortunately we have a large number of tests that rely on the logging not resetting itself when the
       # settings are initialized as they test what gets logged during settings initialization.
-    },
-    :use_checksum_in_file_content => {
-      :default => true,
-      :type    => :boolean,
-      :desc    => "Whether to allow specifying checksums in file content attributes; this is
-      deprecated, the checksum retrieval functionality is being replaced by the use of
-      static catalogs."
     }
   )
 
