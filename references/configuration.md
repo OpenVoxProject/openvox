@@ -1,6 +1,6 @@
 ---
 layout: default
-built_from_commit: 37d76465f12159a7ef5b81447871c22f00f8a185
+built_from_commit: ac49e313d52da074fb7ff445c3e5021597940e53
 title: Configuration Reference
 toc: columns
 canonical: "/openvox/latest/configuration.html"
@@ -8,7 +8,7 @@ canonical: "/openvox/latest/configuration.html"
 
 # Configuration Reference
 
-> **NOTE:** This page was generated from the OpenVox source code on 2026-08-03 08:24:32 -0500
+> **NOTE:** This page was generated from the OpenVox source code on 2026-08-03 08:25:19 -0500
 
 
 
@@ -2097,14 +2097,6 @@ does not contact the primary server for a new catalog, it also does not upload f
 the beginning of the OpenVox run.
 
 - *Default*: `false`
-
-### use_checksum_in_file_content
-
-Whether to allow specifying checksums in file content attributes; this is
-deprecated, the checksum retrieval functionality is being replaced by the use of
-static catalogs.
-
-- *Default*: `true`
 
 ### use_last_environment
 
