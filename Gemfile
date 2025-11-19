@@ -18,7 +18,7 @@ end
 
 gem "openfact", *location_for(ENV['OPENFACT_LOCATION'] || ["~> 5.0"])
 gem "semantic_puppet", *location_for(ENV['SEMANTIC_PUPPET_LOCATION'] || ["~> 1.0"])
-gem "puppet-resource_api", *location_for(ENV['RESOURCE_API_LOCATION'] || ["~> 1.5"])
+gem "puppet-resource_api", *location_for(ENV['RESOURCE_API_LOCATION'] || ["~> 2.0"])
 
 group(:features) do
   gem 'diff-lcs', '~> 1.3', require: false
@@ -27,7 +27,7 @@ group(:features) do
   gem 'hocon', '~> 1.0', require: false
   # requires native libshadow headers/libs
   #gem 'ruby-shadow', '~> 2.5', require: false, platforms: [:ruby]
-  gem 'minitar', '~> 0.9', require: false
+  gem 'minitar', '~> 1.0', require: false
   gem 'msgpack', '~> 1.2', require: false
   gem 'rdoc', ['~> 6.0', '< 6.4.0'], require: false, platforms: [:ruby]
   # requires native augeas headers/libs
@@ -41,7 +41,7 @@ end
 
 group(:test) do
   # 1.16.0 - 1.16.2 are broken on Windows
-  gem 'ffi', '>= 1.15.5', '< 1.17.0', '!= 1.16.0', '!= 1.16.1', '!= 1.16.2', require: false
+  gem 'ffi', '>= 1.15.5', '< 2', '!= 1.16.0', '!= 1.16.1', '!= 1.16.2', require: false
   gem "json-schema", '>= 2', '< 6', require: false
   gem "rake", *location_for(ENV['RAKE_LOCATION'] || '~> 13.0')
   gem "rspec", "~> 3.1", require: false
