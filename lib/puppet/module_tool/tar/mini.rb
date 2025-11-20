@@ -3,17 +3,11 @@
 class Puppet::ModuleTool::Tar::Mini
   def unpack(sourcefile, destdir, _)
     Zlib::GzipReader.open(sourcefile) do |reader|
-      # puppet doesn't have a hard dependency on minitar, so we
-      # can't be certain which version is installed. If it's 0.9
-      # or above then we can prevent minitar from fsync'ing each
-      # extracted file and directory, otherwise fallback to the
-      # old behavior
       args = [reader, destdir, find_valid_files(reader)]
-      spec = Gem::Specification.find_by_name('minitar')
-      if spec && spec.version >= Gem::Version.new('0.9')
-        args << { :fsync => false }
-      end
-      Archive::Tar::Minitar.unpack(*args) do |action, name, stats|
+      # With minitar >= 0.9, we can prevent minitar from fsync'ing
+      # each extracted file and directory
+      args << { :fsync => false }
+      Minitar.unpack(*args) do |action, name, stats|
         case action
         when :dir
           validate_entry(destdir, name)
@@ -33,7 +27,7 @@ class Puppet::ModuleTool::Tar::Mini
 
   def pack(sourcedir, destfile)
     Zlib::GzipWriter.open(destfile) do |writer|
-      Archive::Tar::Minitar.pack(sourcedir, writer) do |step, name, stats|
+      Minitar.pack(sourcedir, writer) do |step, name, stats|
         # TODO smcclellan 2017-10-31 Set permissions here when this yield block
         # executes before the header is written. As it stands, the `stats`
         # argument isn't mutable in a way that will effect the desired mode for
@@ -93,7 +87,7 @@ class Puppet::ModuleTool::Tar::Mini
   # tar format info: https://pic.dhe.ibm.com/infocenter/zos/v1r13/index.jsp?topic=%2Fcom.ibm.zos.r13.bpxa500%2Ftaf.htm
   # pax format info: https://pic.dhe.ibm.com/infocenter/zos/v1r13/index.jsp?topic=%2Fcom.ibm.zos.r13.bpxa500%2Fpxarchfm.htm
   def find_valid_files(tarfile)
-    Archive::Tar::Minitar.open(tarfile).collect do |entry|
+    Minitar.open(tarfile).collect do |entry|
       flag = entry.typeflag
       if flag.nil? || flag =~ /[[:digit:]]/ && (0..7).cover?(flag.to_i)
         entry.full_name
