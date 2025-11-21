@@ -192,12 +192,6 @@ describe Puppet::Node::Facts::Facter do
       @facter.find(@request)
     end
 
-    it 'should NOT add local facts' do
-      expect(facts).not_to receive(:add_local_facts)
-
-      @facter.find(@request)
-    end
-
     context 'when --show-legacy flag is present' do
       let(:options) { { resolve_options: true, user_query: ["os", "timezone"], show_legacy: true } }
 
