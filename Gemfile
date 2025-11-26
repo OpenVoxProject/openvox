@@ -33,7 +33,7 @@ group(:features) do
   #gem 'ruby-shadow', '~> 2.5', require: false, platforms: [:ruby]
   gem 'minitar', '~> 1.0', require: false
   gem 'msgpack', '~> 1.2', require: false
-  gem 'rdoc', ['~> 6.0', '< 6.4.0'], require: false, platforms: [:ruby]
+  gem 'rdoc', '~> 6.16', require: false, platforms: [:ruby]
   # requires native augeas headers/libs
   # gem 'ruby-augeas', require: false, platforms: [:ruby]
   # requires native ldap headers/libs
