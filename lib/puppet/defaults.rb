@@ -1651,13 +1651,14 @@ EOT
     },
     :server => {
       :default => "puppet",
-      :desc => "The primary Puppet server to which the Puppet agent should connect.",
+      :desc => "The primary Puppet server to which the Puppet agent should connect. This setting is ignored when `server_list` is specified.",
     },
     :server_list => {
       :default => [],
       :type => :server_list,
       :desc => "The list of primary Puppet servers to which the Puppet agent should connect,
-        in the order that they will be tried. Each value should be a fully qualified domain name, followed by an optional ':' and port number. If a port is omitted, Puppet uses masterport for that host.",
+        in the order that they will be tried. Each value should be a fully qualified domain name, followed by an optional ':' and port number.
+        If a port is omitted, Puppet uses masterport for that host. This setting takes precedence over `server`.",
     },
     :use_srv_records => {
       :default    => false,
