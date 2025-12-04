@@ -33,6 +33,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.branch }}
+          token: ${{ secrets.OPENVOXBOT_COMMIT_AND_PRS }}
 
       - name: Add SSH key
         run: |
