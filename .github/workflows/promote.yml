@@ -1,0 +1,94 @@
+name: Promote Component
+
+on:
+  workflow_dispatch:
+    inputs:
+      component:
+        description: 'Component name to promote'
+        required: true
+        type: string
+      ref:
+        description: 'Git ref/tag to promote. For puppet-runtime, use the tag that has been built and uploaded to openvox-artifacts.'
+        required: true
+        type: string
+      branch:
+        description: 'Branch to promote to (defaults to main)'
+        required: false
+        default: 'main'
+        type: string
+
+permissions:
+  contents: write
+
+env:
+  GIT_AUTHOR_NAME: OpenVoxProjectBot
+  GIT_AUTHOR_EMAIL: 215568489+OpenVoxProjectBot@users.noreply.github.com
+  GIT_COMMITTER_NAME: OpenVoxProjectBot
+  GIT_COMMITTER_EMAIL: 215568489+OpenVoxProjectBot@users.noreply.github.com
+  SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Add SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.OPENVOXBOT_SSH_PRIVATE_KEY }}" > ~/.ssh/github_actions
+          chmod 600 ~/.ssh/github_actions
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add ~/.ssh/github_actions
+
+      - name: Setup git
+        run: |
+          git config --global user.email "$GIT_AUTHOR_EMAIL"
+          git config --global user.name "$GIT_AUTHOR_NAME"
+          git config --global gpg.format ssh
+          git config --global user.signingkey ~/.ssh/github_actions
+          git config --global commit.gpgsign true
+          git config --global tag.gpgsign true
+
+      - name: Validate component exists
+        run: |
+          component="${{ inputs.component }}"
+          if [[ ! -f "packaging/configs/components/${component}.json" ]]; then
+            echo "::error::Could not find packaging/configs/components/${component}.json"
+            exit 1
+          fi
+
+      - name: Generate component JSON
+        id: generate
+        run: |
+          component="${{ inputs.component }}"
+          ref="${{ inputs.ref }}"
+
+          if [[ "${component}" == "puppet-runtime" ]]; then
+            # Munge the ref: replace - with .
+            munged="${ref//-/.}"
+            json="{\"location\":\"https://s3.osuosl.org/openvox-artifacts/${component}/${ref}/\",\"version\":\"${munged}\"}"
+          else
+            json="{\"url\":\"https://github.com/openvoxproject/${component}.git\",\"ref\":\"${ref}\"}"
+          fi
+
+          echo "json=${json}" >> "$GITHUB_OUTPUT"
+          echo "Generated JSON: ${json}"
+
+      - name: Write component JSON
+        run: |
+          component="${{ inputs.component }}"
+          echo '${{ steps.generate.outputs.json }}' > "packaging/configs/components/${component}.json"
+          echo "Wrote packaging/configs/components/${component}.json:"
+          cat "packaging/configs/components/${component}.json"
+
+      - name: Commit component promotion
+        uses: stefanzweifel/git-auto-commit-action@v6
+        with:
+          commit_user_name: ${{ env.GIT_COMMITTER_NAME }}
+          commit_user_email: ${{ env.GIT_COMMITTER_EMAIL }}
+          commit_author: '${{ env.GIT_AUTHOR_NAME }} <${{ env.GIT_AUTHOR_EMAIL }}>'
+          commit_message: "Promote ${{ inputs.component }} ${{ inputs.ref }}"
+          branch: ${{ inputs.branch }}
+          file_pattern: "packaging/configs/components/${{ inputs.component }}.json"
