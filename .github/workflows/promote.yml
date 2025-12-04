@@ -17,8 +17,7 @@ on:
         default: 'main'
         type: string
 
-permissions:
-  contents: write
+permissions: {}
 
 env:
   GIT_AUTHOR_NAME: OpenVoxProjectBot
@@ -86,12 +85,17 @@ jobs:
           echo "Wrote packaging/configs/components/${component}.json:"
           cat "packaging/configs/components/${component}.json"
 
-      - name: Commit component promotion
-        uses: stefanzweifel/git-auto-commit-action@v6
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
         with:
-          commit_user_name: ${{ env.GIT_COMMITTER_NAME }}
-          commit_user_email: ${{ env.GIT_COMMITTER_EMAIL }}
-          commit_author: '${{ env.GIT_AUTHOR_NAME }} <${{ env.GIT_AUTHOR_EMAIL }}>'
-          commit_message: "Promote ${{ inputs.component }} ${{ inputs.ref }}"
-          branch: ${{ inputs.branch }}
-          file_pattern: "packaging/configs/components/${{ inputs.component }}.json"
+          commit-message: "Promote ${{ inputs.component }} ${{ inputs.ref }}"
+          branch: "promote/${{ inputs.component }}/${{ inputs.ref }}"
+          delete-branch: true
+          title: "Promote ${{ inputs.component }} ${{ inputs.ref }}"
+          token: ${{ secrets.OPENVOXBOT_COMMIT_AND_PRS }}
+          assignees: '${{ github.triggering_actor }}'
+          author: '${{ env.GIT_AUTHOR_NAME }} <${{ env.GIT_AUTHOR_EMAIL }}>'
+          committer: '${{ env.GIT_COMMITTER_NAME }} <${{ env.GIT_COMMITTER_EMAIL }}>'
+          base: ${{ inputs.branch }}
+          body: |
+            Automated promotion of ${{ inputs.component }} to ref ${{ inputs.ref }}.
