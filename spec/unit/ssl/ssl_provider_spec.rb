@@ -159,19 +159,37 @@ describe Puppet::SSL::SSLProvider do
       expect(sslctx.private_key).to be_nil
     end
 
-    it 'warns if the client cert does not exist' do
+    it 'warns if the client cert does not exist when in non-user mode' do
       Puppet[:certname] = 'missingcert'
       Puppet[:hostprivkey] = fixtures('ssl/signed-key.pem')
+      Puppet.settings.preferred_run_mode = 'server'
 
       expect(Puppet).to receive(:warning).with("Client certificate for 'missingcert' does not exist")
       subject.create_system_context(cacerts: [], include_client_cert: true)
     end
 
-    it 'warns if the private key does not exist' do
+    it 'warns if the private key does not exist when in non-user mode' do
+      Puppet[:certname] = 'missingkey'
+      Puppet[:hostcert] = fixtures('ssl/signed.pem')
+      Puppet.settings.preferred_run_mode = 'server'
+
+      expect(Puppet).to receive(:warning).with("Private key for 'missingkey' does not exist")
+      subject.create_system_context(cacerts: [], include_client_cert: true)
+    end
+
+    it 'shows info message if the client cert does not exist when in user mode' do
+      Puppet[:certname] = 'missingcert'
+      Puppet[:hostprivkey] = fixtures('ssl/signed-key.pem')
+
+      expect(Puppet).to receive(:info).with("Client certificate for 'missingcert' does not exist")
+      subject.create_system_context(cacerts: [], include_client_cert: true)
+    end
+
+    it 'shows info message if the private key does not exist when in user mode' do
       Puppet[:certname] = 'missingkey'
       Puppet[:hostcert] = fixtures('ssl/signed.pem')
 
-      expect(Puppet).to receive(:warning).with("Private key for 'missingkey' does not exist")
+      expect(Puppet).to receive(:info).with("Private key for 'missingkey' does not exist")
       subject.create_system_context(cacerts: [], include_client_cert: true)
     end
 
