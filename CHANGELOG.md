@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file.
 
+## [8.24.0](https://github.com/openvoxproject/openvox/tree/8.24.0) (2025-12-04)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.23.1...8.24.0)
+
+**Implemented enhancements:**
+
+- Loosen some gem dependencies for new versions and update minitar usage [\#242](https://github.com/OpenVoxProject/openvox/pull/242) ([nmburgan](https://github.com/nmburgan))
+- Create execution\_wrapper.bat to allow Choria to work with Windows [\#222](https://github.com/OpenVoxProject/openvox/pull/222) ([magarvo](https://github.com/magarvo))
+- feat: add opkg package management support for TurrisOS [\#221](https://github.com/OpenVoxProject/openvox/pull/221) ([VILJkid](https://github.com/VILJkid))
+- Add jruby-9.4.14.0 to CI matrix [\#210](https://github.com/OpenVoxProject/openvox/pull/210) ([bastelfreak](https://github.com/bastelfreak))
+
+**Fixed bugs:**
+
+- \[Bug\]: `implementation` is just a local fact [\#220](https://github.com/OpenVoxProject/openvox/issues/220)
+- \[Bug\]: puppet apply warns about missing client certificates [\#21](https://github.com/OpenVoxProject/openvox/issues/21)
+
+**Merged pull requests:**
+
+- Promote openfact 5.2.0 [\#258](https://github.com/OpenVoxProject/openvox/pull/258) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Promote openfact 6a26ce51cf65f7cc325330c40922e9556651cf35 [\#257](https://github.com/OpenVoxProject/openvox/pull/257) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Use PR for promotion action [\#255](https://github.com/OpenVoxProject/openvox/pull/255) ([nmburgan](https://github.com/nmburgan))
+- Use token when checking out repo [\#254](https://github.com/OpenVoxProject/openvox/pull/254) ([nmburgan](https://github.com/nmburgan))
+- Add promote action [\#253](https://github.com/OpenVoxProject/openvox/pull/253) ([nmburgan](https://github.com/nmburgan))
+- Update release automation [\#252](https://github.com/OpenVoxProject/openvox/pull/252) ([nmburgan](https://github.com/nmburgan))
+- add note about server\_list precedence [\#251](https://github.com/OpenVoxProject/openvox/pull/251) ([binford2k](https://github.com/binford2k))
+- Fix description of `source` since `yum` allows it now [\#249](https://github.com/OpenVoxProject/openvox/pull/249) ([binford2k](https://github.com/binford2k))
+- include "local" facts in facts output [\#240](https://github.com/OpenVoxProject/openvox/pull/240) ([binford2k](https://github.com/binford2k))
+- Correct homepage in gemspec [\#223](https://github.com/OpenVoxProject/openvox/pull/223) ([ekohl](https://github.com/ekohl))
+- CI: Build gem for each PR & Move packaging checks to global config & Windows: Run one spec file per CPU core [\#216](https://github.com/OpenVoxProject/openvox/pull/216) ([bastelfreak](https://github.com/bastelfreak))
+- Add switch for uploading to S3 [\#212](https://github.com/OpenVoxProject/openvox/pull/212) ([nmburgan](https://github.com/nmburgan))
+- Update acceptance workflow for changed beaker acceptance [\#209](https://github.com/OpenVoxProject/openvox/pull/209) ([jpartlow](https://github.com/jpartlow))
+- `yum` package provider: add `assumeyes` to `yum check-update` [\#188](https://github.com/OpenVoxProject/openvox/pull/188) ([SvenVD-be](https://github.com/SvenVD-be))
+- Prevents spurious clientcert warnings in serverless mode [\#22](https://github.com/OpenVoxProject/openvox/pull/22) ([binford2k](https://github.com/binford2k))
+
 ## [8.23.1](https://github.com/openvoxproject/openvox/tree/8.23.1) (2025-09-08)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/8.23.0...8.23.1)
