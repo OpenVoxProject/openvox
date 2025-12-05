@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [8.24.1](https://github.com/openvoxproject/openvox/tree/8.24.1) (2025-12-05)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.24.0...8.24.1)
+
+**Fixed bugs:**
+
+- \[Bug\]: sysctl augeas broken after upgrade to Version 8.24.0 [\#264](https://github.com/OpenVoxProject/openvox/issues/264)
+- \[Bug\]: Augeas broken since openvox 8.24.0, missing augeas/facade [\#263](https://github.com/OpenVoxProject/openvox/issues/263)
+
+**Merged pull requests:**
+
+- Promote puppet-runtime 2025.12.05.1 [\#266](https://github.com/OpenVoxProject/openvox/pull/266) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Update augeas test to detect provider failure [\#265](https://github.com/OpenVoxProject/openvox/pull/265) ([nmburgan](https://github.com/nmburgan))
+- Add dbus feature [\#261](https://github.com/OpenVoxProject/openvox/pull/261) ([ananace](https://github.com/ananace))
+
 ## [8.24.0](https://github.com/openvoxproject/openvox/tree/8.24.0) (2025-12-04)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/8.23.1...8.24.0)
