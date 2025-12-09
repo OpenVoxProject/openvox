@@ -159,6 +159,7 @@ RSpec.configure do |config|
   # Facter EC2 endpoint
   PUPPET_FACTER_EC2_METADATA = 'http://169.254.169.254/latest/meta-data/'
   PUPPET_FACTER_EC2_USERDATA = 'http://169.254.169.254/latest/user-data/'
+  PUPPET_FACTER_EC2_API_TOKEN = 'http://169.254.169.254/latest/api/token' # see https://github.com/puppetlabs/facter/issues/2690
 
   config.around :each do |example|
     # Ignore requests from Facter to external services
@@ -167,6 +168,7 @@ RSpec.configure do |config|
     stub_request(:get, PUPPET_FACTER_AZ_URL)
     stub_request(:get, PUPPET_FACTER_EC2_METADATA)
     stub_request(:get, PUPPET_FACTER_EC2_USERDATA)
+    stub_request(:put, PUPPET_FACTER_EC2_API_TOKEN)
 
     # Enable VCR if the example is tagged with `:vcr` metadata.
     if example.metadata[:vcr]
