@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [8.24.2](https://github.com/openvoxproject/openvox/tree/8.24.2) (2025-12-15)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.24.1...8.24.2)
+
+**Fixed bugs:**
+
+- \[Bug\]: Version 8.24.0 fails with Error: Could not find a suitable provider for augeas [\#262](https://github.com/OpenVoxProject/openvox/issues/262)
+
+**Merged pull requests:**
+
+- Promote openfact 5.2.1 [\#277](https://github.com/OpenVoxProject/openvox/pull/277) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Relax version requirements for some default gems [\#275](https://github.com/OpenVoxProject/openvox/pull/275) ([nmburgan](https://github.com/nmburgan))
+
 ## [8.24.1](https://github.com/openvoxproject/openvox/tree/8.24.1) (2025-12-05)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/8.24.0...8.24.1)
