@@ -86,7 +86,7 @@ jobs:
           cat "packaging/configs/components/${component}.json"
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           commit-message: "Promote ${{ inputs.component }} ${{ inputs.ref }}"
           branch: "promote/${{ inputs.component }}/${{ inputs.ref }}"
