@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.summary = "OpenVox, a community implementation of Puppet -- an automated configuration management tool"
   spec.specification_version = 4
   spec.add_runtime_dependency('base64', '>= 0.1', '< 0.4')
-  spec.add_runtime_dependency('benchmark', '>= 0.3', '< 0.6')
+  spec.add_runtime_dependency('benchmark', '>= 0.2', '< 0.6')
   spec.add_runtime_dependency('concurrent-ruby', '~> 1.0')
   spec.add_runtime_dependency('deep_merge', '~> 1.0')
   spec.add_runtime_dependency('fast_gettext', '>= 2.1', '< 5')
@@ -38,7 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency('locale', '~> 2.1')
   spec.add_runtime_dependency('multi_json', '~> 1.13')
   spec.add_runtime_dependency('openfact', '~> 5.0')
-  spec.add_runtime_dependency('ostruct', '~> 0.6.0')
+  spec.add_runtime_dependency('ostruct', '>= 0.5.5', '< 0.7')
   spec.add_runtime_dependency('puppet-resource_api', '~> 2.0')
   spec.add_runtime_dependency('racc', '~> 1.5')
   spec.add_runtime_dependency('scanf', '~> 1.0')
