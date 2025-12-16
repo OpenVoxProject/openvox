@@ -23,7 +23,7 @@ gem "puppet-resource_api", *location_for(ENV['RESOURCE_API_LOCATION'] || ["~> 2.
 # for all platforms.
 # https://www.rubyonmac.dev/certificate-verify-failed-unable-to-get-certificate-crl-openssl-ssl-sslerror
 # openssl 4 raises some errors that need to be investigated
-gem 'openssl', '~> 3' unless `uname -o`.chomp == 'Cygwin'
+gem 'openssl', '~> 4' unless `uname -o`.chomp == 'Cygwin'
 
 group(:features) do
   gem 'diff-lcs', '~> 1.3', require: false
