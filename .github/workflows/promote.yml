@@ -67,7 +67,7 @@ jobs:
           component="${{ inputs.component }}"
           ref="${{ inputs.ref }}"
 
-          if [[ "${component}" == "puppet-runtime" ]]; then
+          if [[ "${component}" =~ ^(puppet-runtime|openssl-fips)$ ]]; then
             # Munge the ref: replace - with .
             munged="${ref//-/.}"
             json="{\"location\":\"https://s3.osuosl.org/openvox-artifacts/${component}/${ref}/\",\"version\":\"${munged}\"}"
