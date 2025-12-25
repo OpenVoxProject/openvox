@@ -19,8 +19,8 @@ jobs:
     strategy:
       matrix:
         cfg:
-          - {check: rubocop, os: ubuntu-latest, ruby: '3.3'}
-          - {check: warnings, os: ubuntu-latest, ruby: '3.3'}
+          - {check: rubocop, os: ubuntu-latest, ruby: '4.0'}
+          - {check: warnings, os: ubuntu-latest, ruby: '4.0'}
 
     runs-on: ${{ matrix.cfg.os }}
     steps:
@@ -45,11 +45,13 @@ jobs:
           - {os: ubuntu-24.04, ruby: '3.2'}
           - {os: ubuntu-24.04, ruby: '3.3'}
           - {os: ubuntu-24.04, ruby: '3.4'}
+          - {os: ubuntu-24.04, ruby: '4.0'}
           - {os: ubuntu-24.04, ruby: 'jruby-9.4.8.0'}
           - {os: ubuntu-24.04, ruby: 'jruby-9.4.14.0'}
           - {os: windows-2025, ruby: '3.2'}
           - {os: windows-2025, ruby: '3.3'}
           - {os: windows-2025, ruby: '3.4'}
+          - {os: windows-2025, ruby: '4.0'}
 
     runs-on: ${{ matrix.cfg.os }}
     steps:
@@ -116,10 +118,10 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - name: Install Ruby version 3.3
+      - name: Install Ruby version 4.0
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.3
+          ruby-version: 4.0
           bundler-cache: true
       - name: Validate code
         run: |
