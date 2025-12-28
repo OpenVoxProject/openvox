@@ -2,6 +2,10 @@
 
 config = Puppet::Util::Reference.newreference(:configuration, :depth => 1, :doc => "A reference for all settings") do
   str = +''
+  unix_runmode_root = Puppet::Util::UnixRunMode.new(:server, true, false)
+  unix_runmode_user = Puppet::Util::UnixRunMode.new(:server, false, false)
+  windows_runmode = Puppet::Util::WindowsRunMode.new(:server, true, false)
+
   Puppet.settings.sort_by { |name, _| name.to_s }.each do |name, object|
     # Make each name an anchor
     header = name.to_s
@@ -18,17 +22,17 @@ config = Puppet::Util::Reference.newreference(:configuration, :depth => 1, :doc 
     # Now print the data about the item.
     val = case name.to_s
           when 'vardir'
-            'Unix/Linux: /opt/puppetlabs/puppet/cache -- Windows: C:\ProgramData\PuppetLabs\puppet\cache -- Non-root user: ~/.puppetlabs/opt/puppet/cache'
+            "Unix/Linux: #{unix_runmode_root.var_dir} -- Windows: #{windows_runmode.var_dir} -- Non-root user: #{unix_runmode_user.var_dir}"
           when 'publicdir'
-            'Unix/Linux: /opt/puppetlabs/puppet/public -- Windows: C:\ProgramData\PuppetLabs\puppet\public -- Non-root user: ~/.puppetlabs/opt/puppet/public'
+            "Unix/Linux: #{unix_runmode_root.public_dir} -- Windows: #{windows_runmode.public_dir} -- Non-root user: #{unix_runmode_user.public_dir}"
           when 'confdir'
-            'Unix/Linux: /etc/puppetlabs/puppet -- Windows: C:\ProgramData\PuppetLabs\puppet\etc -- Non-root user: ~/.puppetlabs/etc/puppet'
+            "Unix/Linux: #{unix_runmode_root.conf_dir} -- Windows: #{windows_runmode.conf_dir} -- Non-root user: #{unix_runmode_user.conf_dir}"
           when 'codedir'
-            'Unix/Linux: /etc/puppetlabs/code -- Windows: C:\ProgramData\PuppetLabs\code -- Non-root user: ~/.puppetlabs/etc/code'
+            "Unix/Linux: #{unix_runmode_root.code_dir} -- Windows: #{windows_runmode.code_dir} -- Non-root user: #{unix_runmode_user.code_dir}"
           when 'rundir'
-            'Unix/Linux: /var/run/puppetlabs -- Windows: C:\ProgramData\PuppetLabs\puppet\var\run -- Non-root user: ~/.puppetlabs/var/run'
+            "Unix/Linux: #{unix_runmode_root.run_dir} -- Windows: #{windows_runmode.run_dir} -- Non-root user: #{unix_runmode_user.run_dir}"
           when 'logdir'
-            'Unix/Linux: /var/log/puppetlabs/puppet -- Windows: C:\ProgramData\PuppetLabs\puppet\var\log -- Non-root user: ~/.puppetlabs/var/log'
+            "Unix/Linux: #{unix_runmode_root.log_dir} -- Windows: #{windows_runmode.log_dir} -- Non-root user: #{unix_runmode_user.log_dir}"
           when 'hiera_config'
             '$confdir/hiera.yaml. However, for backwards compatibility, if a file exists at $codedir/hiera.yaml, Puppet uses that instead.'
           when 'certname'
