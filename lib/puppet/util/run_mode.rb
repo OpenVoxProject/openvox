@@ -160,7 +160,7 @@ module Puppet
       end
 
       def windows_common_base(*extra)
-        [ENV.fetch('ALLUSERSPROFILE', nil), "PuppetLabs"] + extra
+        [ENV.fetch('ALLUSERSPROFILE', 'C:\ProgramData'), "PuppetLabs"] + extra
       end
     end
   end
