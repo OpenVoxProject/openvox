@@ -76,4 +76,19 @@ Puppet::Type.type(:user).provide :openbsd, :parent => :useradd do
     end
     cmd
   end
+
+  def password=(value)
+    user = @resource.name
+    begin
+      cmd = [command(:modify), '-p', value, user]
+      execute_options = {
+        :failonfail => true,
+        :combine => true,
+        :sensitive => has_sensitive_data?
+      }
+      execute(cmd, execute_options)
+    rescue => detail
+      raise Puppet::Error, "Could not set password on #{@resource.class.name}[#{@resource.name}]: #{detail}", detail.backtrace
+    end
+  end
 end
