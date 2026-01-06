@@ -29,12 +29,18 @@ class Puppet::Node::Facts
 
   def add_local_facts(query = [])
     query = Array(query) # some use cases result in a nil being passed in
-    return if query.empty?
+    local_facts = {
+      'implementation' => Puppet.implementation,
+      'clientcert'     => Puppet.settings[:certname],
+      'clientversion'  => Puppet.version.to_s,
+      'clientnoop'     => Puppet.settings[:noop],
+    }
 
-    values["implementation"] = Puppet.implementation if query.include? 'implementation'
-    values["clientcert"] = Puppet.settings[:certname] if query.include? 'clientcert'
-    values["clientversion"] = Puppet.version.to_s if query.include? 'clientversion'
-    values["clientnoop"] = Puppet.settings[:noop] if query.include? 'clientnoop'
+    return values.merge!(local_facts) if query.empty?
+
+    local_facts.each do |name, val|
+      values[name] = val if query.include? name
+    end
   end
 
   def initialize(name, values = {})
