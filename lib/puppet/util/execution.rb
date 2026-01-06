@@ -57,31 +57,19 @@ module Puppet::Util::Execution
   # @see Kernel#open for `mode` values
   # @api public
   def self.execpipe(command, failonfail = true)
-    # Paste together an array with spaces.  We used to paste directly
-    # together, no spaces, which made for odd invocations; the user had to
-    # include whitespace between arguments.
-    #
-    # Having two spaces is really not a big drama, since this passes to the
-    # shell anyhow, while no spaces makes for a small developer cost every
-    # time this is invoked. --daniel 2012-02-13
-    command_str = command.respond_to?(:join) ? command.join(' ') : command
-
     if respond_to? :debug
-      debug "Executing '#{command_str}'"
+      debug "Executing #{command.inspect}"
     else
-      Puppet.debug { "Executing '#{command_str}'" }
+      Puppet.debug { "Executing #{command.inspect}" }
     end
 
-    # force the run of the command with
-    # the user/system locale to "C" (via environment variables LANG and LC_*)
-    # it enables to have non localized output for some commands and therefore
-    # a predictable output
-    english_env = ENV.to_hash.merge({ 'LANG' => 'C', 'LC_ALL' => 'C' })
-    output = Puppet::Util.withenv(english_env) do
-      # We are intentionally using 'pipe' with open to launch a process
-      open("| #{command_str} 2>&1") do |pipe| # rubocop:disable Security/Open
+    begin
+      output = IO.popen({ 'LANG' => 'C', 'LC_ALL' => 'C' }, command, err: :out) do |pipe|
         yield pipe
       end
+    rescue Errno::ENOENT => e
+      output = e.message
+      raise Puppet::ExecutionFailure, output if failonfail
     end
 
     if failonfail && exitstatus != 0
