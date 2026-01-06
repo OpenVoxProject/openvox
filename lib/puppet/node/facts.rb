@@ -31,9 +31,9 @@ class Puppet::Node::Facts
     query = Array(query) # some use cases result in a nil being passed in
     local_facts = {
       'implementation' => Puppet.implementation,
-      'clientcert'     => Puppet.settings[:certname],
-      'clientversion'  => Puppet.version.to_s,
-      'clientnoop'     => Puppet.settings[:noop],
+      'clientcert' => Puppet.settings[:certname],
+      'clientversion' => Puppet.version.to_s,
+      'clientnoop' => Puppet.settings[:noop],
     }
 
     return values.merge!(local_facts) if query.empty?
