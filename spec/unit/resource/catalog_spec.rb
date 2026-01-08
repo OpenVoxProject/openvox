@@ -21,6 +21,11 @@ describe Puppet::Resource::Catalog, "when compiling" do
   # audit only resources are unmanaged
   # as are resources without properties with should values
   it "should write its managed resources' types, namevars" do
+    if Puppet.features.selinux?
+      selinux = class_double('selinux', is_selinux_enabled: 0)
+      stub_const('Selinux', selinux)
+    end
+
     catalog = Puppet::Resource::Catalog.new("host")
 
     resourcefile = tmpfile('resourcefile')
