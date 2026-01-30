@@ -58,7 +58,7 @@ group(:test) do
   gem 'webrick', '~> 1.7', require: false
   gem 'yard', require: false
 
-  gem 'rubocop', '~> 1.81.6', require: false, platforms: [:ruby]
+  gem 'rubocop', '~> 1.84.0', require: false, platforms: [:ruby]
   gem 'rubocop-i18n', '~> 3.0', require: false, platforms: [:ruby]
   gem 'rubocop-performance', '~> 1.0', require: false, platforms: [:ruby]
   gem 'rubocop-rake', '~> 0.6', require: false, platforms: [:ruby]
