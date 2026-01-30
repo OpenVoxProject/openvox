@@ -22,15 +22,6 @@ module RDoc
   end
 end
 
-class Object
-  # ActiveSupport 2.3.x mixes in a dangerous method
-  # that can cause rspec to fork bomb
-  # and other strange things like that.
-  def daemonize
-    raise NotImplementedError, "Kernel.daemonize is too dangerous, please don't try to use it."
-  end
-end
-
 unless Dir.singleton_methods.include?(:exists?)
   class Dir
     def self.exists?(file_name)
