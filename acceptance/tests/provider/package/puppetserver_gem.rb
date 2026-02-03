@@ -14,6 +14,9 @@ test_name "puppetserver_gem provider should install and uninstall" do
     # Ensure the gem is uninstalled if anything goes wrong
     # TODO maybe execute this only if something fails, as it takes time
     on(master, "puppetserver gem uninstall #{package}")
+    on(master, "puppetserver gem env")
+    on(master, "puppetserver gem list --local")
+    on(master, "/opt/puppetlabs/puppet/bin/gem list --local")
   end
 
   step "Installing a gem executes without error" do
