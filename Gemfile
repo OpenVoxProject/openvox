@@ -40,7 +40,7 @@ group(:features) do
   # requires native ldap headers/libs
   # gem 'ruby-ldap', '~> 0.9', require: false, platforms: [:ruby]
   gem 'openvoxserver-ca', '~> 3.0', require: false
-  gem 'syslog', '>= 0.1.1', '< 1', require: false, platforms: [:ruby]
+  gem 'syslog', '>= 0.1.1', '< 1', require: false
   gem 'CFPropertyList', ['>= 3.0.6', '< 4'], require: false
 end
 
