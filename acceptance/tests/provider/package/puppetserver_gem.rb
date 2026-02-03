@@ -18,7 +18,7 @@ test_name "puppetserver_gem provider should install and uninstall" do
 
   step "Installing a gem executes without error" do
     package_manifest = resource_manifest('package', package, { ensure: 'present', provider: 'puppetserver_gem' } )
-    apply_manifest_on(master, package_manifest, catch_failures: true) do
+    apply_manifest_on(master, package_manifest, catch_failures: true, trace: true, debug: true) do
       list = on(master, "puppetserver gem list").stdout
       assert_match(/#{package} \(/, list)
     end
