@@ -163,6 +163,8 @@ Puppet::Type.type(:package).provide :puppetserver_gem, :parent => :gem do
 
     # Remove the 'gem' from the command_options
     command_options.shift
+    Puppet.debug("puppetserver_gem provider: command_options: #{command_options}")
+    Puppet.debug("puppetserver_gem provider: gem_env: #{gem_env}")
     gem_out = execute_gem_command(Puppet::Type::Package::ProviderPuppet_gem.provider_command, command_options, gem_env)
 
     # There is no method exclude default gems from the local gem list,
