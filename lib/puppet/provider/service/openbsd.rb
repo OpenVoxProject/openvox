@@ -25,32 +25,6 @@ Puppet::Type.type(:service).provide :openbsd, :parent => :init do
     [command(:rcctl), :check, @resource[:name]]
   end
 
-  # @api private
-  # When storing the name, take into account not everything has
-  # '_flags', like 'multicast_host' and 'pf'.
-  def self.instances
-    instances = []
-
-    begin
-      execpipe([command(:rcctl), :getall]) do |process|
-        process.each_line do |line|
-          match = /^(.*?)(?:_flags)?=(.*)$/.match(line)
-          attributes_hash = {
-            :name => match[1],
-            :flags => match[2],
-            :hasstatus => true,
-            :provider => :openbsd,
-          }
-
-          instances << new(attributes_hash);
-        end
-      end
-      instances
-    rescue Puppet::ExecutionFailure
-      nil
-    end
-  end
-
   def enabled?
     output = execute([command(:rcctl), "get", @resource[:name], "status"],
                      :failonfail => false, :combine => false, :squelch => false)
