@@ -57,13 +57,12 @@ Puppet::Type.type(:service).provide :openbsd, :parent => :init do
     true if output =~ /\(ok\)/
   end
 
-  # Uses the wrapper to prevent failure when the service is not running;
-  # rcctl(8) return non-zero in that case.
+  # Disabled services always have 'NO' flags.
   def flags
     output = execute([command(:rcctl), "get", @resource[:name], "flags"],
                      :failonfail => false, :combine => false, :squelch => false).chomp
     debug("Flags are: \"#{output}\"")
-    output
+    output unless %w[YES NO].include?(output)
   end
 
   def flags=(value)
