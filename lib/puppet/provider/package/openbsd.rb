@@ -15,8 +15,8 @@ Puppet::Type.type(:package).provide :openbsd, :parent => Puppet::Provider::Packa
     These options should be specified as an array where each element is either a
      string or a hash."
 
-  commands :pkgadd => "pkg_add",
-           :pkginfo => "pkg_info",
+  commands :pkginfo => "pkg_info",
+           :pkgadd => "pkg_add",
            :pkgdelete => "pkg_delete"
 
   defaultfor 'os.name' => :openbsd
@@ -38,7 +38,7 @@ Puppet::Type.type(:package).provide :openbsd, :parent => Puppet::Provider::Packa
 
         # now turn each returned line into a package object
         process.each_line { |line|
-          match = regex.match(line.split("\n")[0])
+          match = regex.match(line.split[0])
           if match
             fields.zip(match.captures) { |field, value|
               hash[field] = value
@@ -88,9 +88,9 @@ Puppet::Type.type(:package).provide :openbsd, :parent => Puppet::Provider::Packa
 
   def get_full_name
     # In case of a real update (i.e., the package already exists) then
-    # pkg_add(8) can handle the flavors. However, if we're actually
+    # pkg_add(1) can handle the flavors. However, if we're actually
     # installing with 'latest', we do need to handle the flavors. This is
-    # done so we can feed pkg_add(8) the full package name to install to
+    # done so we can feed pkg_add(1) the full package name to install to
     # prevent ambiguity.
 
     name_branch_regex = /^(\S*)(%\w*)$/
