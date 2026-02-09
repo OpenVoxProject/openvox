@@ -18,7 +18,7 @@ Puppet::Type.type(:service).provide :openbsd, :parent => :init do
   end
 
   def restartcmd
-    (@resource[:hasrestart] == :true) && [command(:rcctl), '-f', :restart, @resource[:name]]
+    [command(:rcctl), '-f', :restart, @resource[:name]]
   end
 
   def statuscmd
