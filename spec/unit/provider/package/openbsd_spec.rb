@@ -38,7 +38,7 @@ describe Puppet::Type.type(:package).provider(:openbsd) do
       fixture = File.read(my_fixture('pkginfo.list'))
       expect(described_class).to receive(:execpipe).with(%w{/bin/pkg_info -a -z}).and_yield(fixture)
       expect(described_class.instances.map(&:name).sort).to eq(
-        %w{autoconf%2.13 autoconf%2.56 bash postfix%stable puppet%8 zstd}.sort
+        %w{autoconf%2.13 autoconf%2.56 bash postfix%stable openvox%8 zstd}.sort
       )
     end
 
@@ -52,7 +52,7 @@ describe Puppet::Type.type(:package).provider(:openbsd) do
       expect(instances[1]).to eq({:name => 'autoconf%2.56', :flavor => :absent, :branch => '%2.56'})
       expect(instances[2]).to eq({:name => 'bash', :flavor => :absent, :branch => :absent})
       expect(instances[3]).to eq({:name => 'postfix%stable', :flavor => 'ldap', :branch => '%stable'})
-      expect(instances[4]).to eq({:name => 'puppet%8', :flavor => :absent, :branch => '%8'})
+      expect(instances[4]).to eq({:name => 'openvox%8', :flavor => :absent, :branch => '%8'})
       expect(instances[5]).to eq({:name => 'zstd', :flavor => :absent, :branch => :absent})
     end
   end
@@ -78,8 +78,8 @@ describe Puppet::Type.type(:package).provider(:openbsd) do
     end
 
     it "should return the full unversioned package name when installing without a flavor" do
-        provider.resource[:name] = 'puppet'
-        expect(provider.get_full_name).to eq('puppet--')
+        provider.resource[:name] = 'openvox'
+        expect(provider.get_full_name).to eq('openvox--')
     end
 
     it "should return unversioned package name when installing without flavor or branch" do

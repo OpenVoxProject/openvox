@@ -2,5 +2,5 @@ autoconf--%2.13
 autoconf--%2.56
 bash--
 postfix--ldap%stable
-puppet--%8
+openvox--%8
 zstd--
