@@ -48,11 +48,7 @@ unless Puppet::Util::Platform.jruby_fips?
 
     def initialize(*args)
       __original_initialize(*args)
-      params = {
-        :options => DEFAULT_PARAMS[:options],
-        :ciphers => DEFAULT_PARAMS[:ciphers],
-      }
-      set_params(params)
+      set_params
     end
   end
 end
