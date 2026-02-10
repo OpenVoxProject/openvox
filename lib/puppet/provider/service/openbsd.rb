@@ -18,37 +18,11 @@ Puppet::Type.type(:service).provide :openbsd, :parent => :init do
   end
 
   def restartcmd
-    (@resource[:hasrestart] == :true) && [command(:rcctl), '-f', :restart, @resource[:name]]
+    [command(:rcctl), '-f', :restart, @resource[:name]]
   end
 
   def statuscmd
     [command(:rcctl), :check, @resource[:name]]
-  end
-
-  # @api private
-  # When storing the name, take into account not everything has
-  # '_flags', like 'multicast_host' and 'pf'.
-  def self.instances
-    instances = []
-
-    begin
-      execpipe([command(:rcctl), :getall]) do |process|
-        process.each_line do |line|
-          match = /^(.*?)(?:_flags)?=(.*)$/.match(line)
-          attributes_hash = {
-            :name => match[1],
-            :flags => match[2],
-            :hasstatus => true,
-            :provider => :openbsd,
-          }
-
-          instances << new(attributes_hash);
-        end
-      end
-      instances
-    rescue Puppet::ExecutionFailure
-      nil
-    end
   end
 
   def enabled?
@@ -83,13 +57,12 @@ Puppet::Type.type(:service).provide :openbsd, :parent => :init do
     true if output =~ /\(ok\)/
   end
 
-  # Uses the wrapper to prevent failure when the service is not running;
-  # rcctl(8) return non-zero in that case.
+  # Disabled services always have 'NO' flags.
   def flags
     output = execute([command(:rcctl), "get", @resource[:name], "flags"],
                      :failonfail => false, :combine => false, :squelch => false).chomp
     debug("Flags are: \"#{output}\"")
-    output
+    output unless %w[YES NO].include?(output)
   end
 
   def flags=(value)
