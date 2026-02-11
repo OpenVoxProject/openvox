@@ -188,7 +188,7 @@ else
           ensure
             groups.each do |file|
               # Only delete files that actually exist (Ruby 4 on Windows compatibility)
-              File.unlink(file) if File.exist?(file)
+              FileUtils.rm_f(file)
             end
           end
           result
