@@ -103,7 +103,7 @@ Puppet::Type.type(:package).provide :dpkg, :parent => Puppet::Provider::Package 
 
     unhold if properties[:mark] == :hold
     begin
-      dpkg(*args)
+      with_environment { dpkg(*args) }
     ensure
       hold if @resource[:mark] == :hold
     end
@@ -166,11 +166,11 @@ Puppet::Type.type(:package).provide :dpkg, :parent => Puppet::Provider::Package 
   end
 
   def uninstall
-    dpkg "-r", @resource[:name]
+    with_environment { dpkg "-r", @resource[:name] }
   end
 
   def purge
-    dpkg "--purge", @resource[:name]
+    with_environment { dpkg "--purge", @resource[:name] }
   end
 
   def hold
