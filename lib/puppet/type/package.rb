@@ -533,6 +533,30 @@ module Puppet
       defaultto false
     end
 
+    newparam(:environment) do
+      desc <<-EOT
+        An array of additional environment variables to set for package
+        commands, such as `[ 'HOME=/root', 'DISABLE_TELEMETRY=1']`.
+
+            package { 'opensearch':
+              ensure      => installed,
+              environment => [ 'OPENSEARCH_INITIAL_ADMIN_PASSWORD=myStrongP@ss!' ],
+            }
+
+        These variables are applied to all package management commands
+        (install, update, uninstall, purge) executed by the provider.
+      EOT
+
+      validate do |values|
+        values = [values] unless values.is_a? Array
+        values.each do |value|
+          unless value =~ /\w+=/
+            raise ArgumentError, _("Invalid environment setting '%{value}'") % { value: value }
+          end
+        end
+      end
+    end
+
     newparam(:install_options, :parent => Puppet::Parameter::PackageOptions, :required_features => :install_options) do
       desc <<-EOT
         An array of additional options to pass when installing a package. These

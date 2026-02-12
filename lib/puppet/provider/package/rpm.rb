@@ -135,7 +135,7 @@ Puppet::Type.type(:package).provide :rpm, :source => :rpm, :parent => Puppet::Pr
     flag = ["-i"]
     flag = ["-U", "--oldpackage"] if version && (version != :absent && version != :purged)
     flag += install_options if resource[:install_options]
-    rpm flag, source
+    with_environment { rpm flag, source }
   end
 
   def uninstall
@@ -171,7 +171,7 @@ Puppet::Type.type(:package).provide :rpm, :source => :rpm, :parent => Puppet::Pr
 
     flag = ['-e']
     flag += uninstall_options if resource[:uninstall_options]
-    rpm flag, identifier
+    with_environment { rpm flag, identifier }
   end
 
   def update
