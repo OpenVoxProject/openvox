@@ -92,7 +92,7 @@ jobs:
         suite-name:
           - openvox
           - openvox-agent
-    uses: 'OpenVoxProject/shared-actions/.github/workflows/beaker_acceptance.yml@main'
+    uses: 'OpenVoxProject/shared-actions/.github/workflows/beaker_acceptance.yml@ci'
     with:
       suite-name: ${{ matrix.suite-name }}
       ref: ${{ inputs.ref }}
