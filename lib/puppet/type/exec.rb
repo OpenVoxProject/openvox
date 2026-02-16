@@ -21,6 +21,10 @@ module Puppet
         command only when some other resource is changed. (See the notes on refreshing
         below.)
 
+      The `enable_idempotency_check` attribute is used to check if one of the above mentioned
+      attributes has been set. The parameter defaults to `false` and raises an error if
+      enabled and no idempotency attributes has been set.
+
       The state managed by an `exec` resource represents whether the specified command
       _needs to be_ executed during the catalog run. The target state is always that
       the command does not need to be executed. If the initial state is that the
@@ -579,6 +583,39 @@ module Puppet
         end
 
         status.exitstatus == 0
+      end
+    end
+
+    newcheck(:enable_idempotency_check) do
+      desc <<-'EOT'
+        Warning: disabling idempotency validation might result in changes
+        in EVERY Puppet run!
+
+        Idempotency is ensured by setting either one of the following
+        attributes:
+
+        - `creates`
+        - `onlyif`
+        - `unless`
+        - `refreshonly`
+      EOT
+
+      defaultto :false
+      newvalues(:true, :false)
+
+      def check(value)
+        if value == :true
+          result = true
+          param = [:onlyif, :unless, :refreshonly, :creates]
+          result = false unless (resource.to_hash.keys & param).any?
+          unless result
+            raise ArgumentError, _("Missing idempotency. Set at least one of 'onlyif', 'unless', 'refreshonly', 'creates' or disable check by adding 'enable_idempotency_check => false' ")
+          end
+
+          result
+        else
+          true
+        end
       end
     end
 
