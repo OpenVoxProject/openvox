@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
+## [8.25.0](https://github.com/openvoxproject/openvox/tree/8.25.0) (2026-02-16)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.24.2...8.25.0)
+
+**Implemented enhancements:**
+
+- Add Ubuntu 26.04 support [\#315](https://github.com/OpenVoxProject/openvox/pull/315) ([bastelfreak](https://github.com/bastelfreak))
+- Reduce OpenSSL monkey patch to only calling set\_params [\#308](https://github.com/OpenVoxProject/openvox/pull/308) ([ekohl](https://github.com/ekohl))
+- Remove monkey patch to remove daemonize [\#307](https://github.com/OpenVoxProject/openvox/pull/307) ([ekohl](https://github.com/ekohl))
+- Add SLES 16 ARM64 support [\#306](https://github.com/OpenVoxProject/openvox/pull/306) ([bastelfreak](https://github.com/bastelfreak))
+- Add SLES16 [\#302](https://github.com/OpenVoxProject/openvox/pull/302) ([sbernhard](https://github.com/sbernhard))
+- Drop multi\_json support [\#293](https://github.com/OpenVoxProject/openvox/pull/293) ([ekohl](https://github.com/ekohl))
+- Do not explicitly disable SSLv3 [\#287](https://github.com/OpenVoxProject/openvox/pull/287) ([smortex](https://github.com/smortex))
+- feat: add `{debian13,ubuntu24.04,ubuntu25.04}-armhf` platform configs [\#286](https://github.com/OpenVoxProject/openvox/pull/286) ([Gitii](https://github.com/Gitii))
+
+**Fixed bugs:**
+
+- \[Bug\]: OpenVox Agent fails/gets deactivated after update with theforeman-puppet [\#279](https://github.com/OpenVoxProject/openvox/issues/279)
+- Include missing EC2 stub request [\#272](https://github.com/OpenVoxProject/openvox/pull/272) ([eciii](https://github.com/eciii))
+
+**Merged pull requests:**
+
+- Promote puppet-runtime 2026.02.16.1 [\#324](https://github.com/OpenVoxProject/openvox/pull/324) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Promote openfact 5.4.0 [\#322](https://github.com/OpenVoxProject/openvox/pull/322) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Promote puppet-runtime 2026.02.06.1 [\#313](https://github.com/OpenVoxProject/openvox/pull/313) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- puppet-runtime: Update 2025.12.05.1-\>2026.01.30.1 [\#305](https://github.com/OpenVoxProject/openvox/pull/305) ([bastelfreak](https://github.com/bastelfreak))
+- Promote openssl-fips 2025.12.17.1 [\#284](https://github.com/OpenVoxProject/openvox/pull/284) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Update promotion action [\#283](https://github.com/OpenVoxProject/openvox/pull/283) ([nmburgan](https://github.com/nmburgan))
+
 ## [8.24.2](https://github.com/openvoxproject/openvox/tree/8.24.2) (2025-12-15)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/8.24.1...8.24.2)
