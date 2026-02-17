@@ -550,7 +550,7 @@ module Puppet
       validate do |values|
         values = [values] unless values.is_a? Array
         values.each do |value|
-          unless value =~ /\w+=/
+          unless value =~ /\A\w+=/
             raise ArgumentError, _("Invalid environment setting '%{value}'") % { value: value }
           end
         end
