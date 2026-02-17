@@ -51,7 +51,7 @@ class Puppet::Provider::Package < Puppet::Provider
 
     envlist = [envlist] unless envlist.is_a? Array
     envlist.each do |setting|
-      unless (match = /^(\w+)=((.|\n)*)$/.match(setting))
+      unless (match = /\A(\w+)=((.|\n)*)\z/.match(setting))
         warning _("Cannot understand environment setting %{setting}") % { setting: setting.inspect }
         next
       end
