@@ -29,6 +29,11 @@ describe Puppet::Transaction::ResourceHarness do
 
   describe "when evaluating a resource" do
     it "produces a resource state that describes what happened with the resource" do
+      if Puppet.features.selinux?
+        selinux = class_double('selinux', is_selinux_enabled: 0)
+        stub_const('Selinux', selinux)
+      end
+
       status = @harness.evaluate(@resource)
 
       expect(status.resource).to eq(@resource.ref)
