@@ -35,6 +35,19 @@ class Puppet::FileServing::HttpMetadata < Puppet::FileServing::Metadata
       end
     end
 
+    etag = http_response['etag']
+    if etag && !etag.start_with?('W/')
+      etag_value = etag.delete('"').strip
+      case etag_value
+      when /\A[0-9a-f]{64}\z/i
+        @checksums[:sha256] ||= "{sha256}#{etag_value.downcase}"
+      when /\A[0-9a-f]{40}\z/i
+        @checksums[:sha1] ||= "{sha1}#{etag_value.downcase}"
+      when /\A[0-9a-f]{32}\z/i
+        @checksums[:md5] ||= "{md5}#{etag_value.downcase}"
+      end
+    end
+
     last_modified = http_response['last-modified']
     if last_modified
       mtime = DateTime.httpdate(last_modified).to_time

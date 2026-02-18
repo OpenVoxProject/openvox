@@ -80,6 +80,40 @@ describe Puppet::Indirector::FileMetadata::Http do
       expect(result.checksum).to eq("{mtime}2020-01-01 08:00:00 UTC")
     end
 
+    it "uses ETag as md5 when it contains a hex digest" do
+      etag_md5 = "f5ffec8d8d16b43d5e9ac6ad4330c445"
+      stub_request(:head, key)
+        .to_return(status: 200, headers: DEFAULT_HEADERS.merge("ETag" => %("#{etag_md5}")))
+
+      result = model.indirection.find(key)
+      expect(result.checksum_type).to eq(:md5)
+      expect(result.checksum).to eq("{md5}#{etag_md5}")
+    end
+
+    it "prefers explicit X-Checksum-Sha256 over ETag" do
+      sha256 = "a3eda98259c30e1e75039c2123670c18105e1c46efb672e42ca0e4cbe77b002a"
+      etag_md5 = "f5ffec8d8d16b43d5e9ac6ad4330c445"
+      stub_request(:head, key)
+        .to_return(status: 200, headers: DEFAULT_HEADERS.merge(
+          "X-Checksum-Sha256" => sha256,
+          "ETag" => %("#{etag_md5}")
+        ))
+
+      result = model.indirection.find(key)
+      expect(result.checksum_type).to eq(:sha256)
+      expect(result.checksum).to eq("{sha256}#{sha256}")
+    end
+
+    it "ignores weak ETags" do
+      stub_request(:head, key)
+        .to_return(status: 200, headers: DEFAULT_HEADERS.merge(
+          "ETag" => 'W/"f5ffec8d8d16b43d5e9ac6ad4330c445"'
+        ))
+
+      result = model.indirection.find(key)
+      expect(result.checksum_type).to eq(:mtime)
+    end
+
     it "leniently parses base64" do
       # Content-MD5 header is missing '==' padding
       stub_request(:head, key)
