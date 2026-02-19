@@ -45,11 +45,13 @@ jobs:
           - {os: ubuntu-24.04, ruby: '3.2'}
           - {os: ubuntu-24.04, ruby: '3.3'}
           - {os: ubuntu-24.04, ruby: '3.4'}
+          - {os: ubuntu-24.04, ruby: '4.0'}
           - {os: ubuntu-24.04, ruby: 'jruby-9.4.8.0'}
           - {os: ubuntu-24.04, ruby: 'jruby-9.4.14.0'}
           - {os: windows-2025, ruby: '3.2'}
           - {os: windows-2025, ruby: '3.3'}
           - {os: windows-2025, ruby: '3.4'}
+          - {os: windows-2025, ruby: '4.0'}
 
     runs-on: ${{ matrix.cfg.os }}
     steps:

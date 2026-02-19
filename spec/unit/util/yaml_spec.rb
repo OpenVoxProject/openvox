@@ -128,7 +128,7 @@ FACTS
     it 'raises an error when the filename is illegal' do
       expect {
         Puppet::Util::Yaml.safe_load_file("not\0allowed")
-      }.to raise_error(ArgumentError, /pathname contains null byte/)
+      }.to raise_error(ArgumentError, /path ?name contains null byte/)
     end
 
     it 'raises an error when the file does not exist' do
@@ -156,7 +156,7 @@ FACTS
 
     it 'returns nil when the filename is illegal and debug logs about it' do
       expect(Puppet).to receive(:debug)
-        .with(/Could not retrieve YAML content .+: pathname contains null byte/).and_call_original
+        .with(/Could not retrieve YAML content .+: path ?name contains null byte/).and_call_original
 
       expect(Puppet::Util::Yaml.safe_load_file_if_valid("not\0allowed")).to eql(nil)
     end
