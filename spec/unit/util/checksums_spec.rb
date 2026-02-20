@@ -10,7 +10,7 @@ describe Puppet::Util::Checksums do
   end
 
   content_sums = [:md5, :md5lite, :sha1, :sha1lite, :sha256, :sha256lite, :sha512, :sha384, :sha224]
-  file_only = [:ctime, :mtime, :none]
+  file_only = [:ctime, :mtime, :none, :etag]
 
   content_sums.each do |sumtype|
     it "should be able to calculate #{sumtype} sums from strings" do

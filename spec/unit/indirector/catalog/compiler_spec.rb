@@ -226,7 +226,7 @@ describe Puppet::Resource::Catalog::Compiler do
       allow(node.environment).to receive(:static_catalogs?).and_return(true)
 
       expect { compiler.find(@request) }.to raise_error Puppet::Error,
-        "Unable to find a common checksum type between agent 'atime.md2' and master '[:sha256, :sha256lite, :md5, :md5lite, :sha1, :sha1lite, :sha512, :sha384, :sha224, :mtime, :ctime, :none]'."
+        "Unable to find a common checksum type between agent 'atime.md2' and master '[:sha256, :sha256lite, :md5, :md5lite, :sha1, :sha1lite, :sha512, :sha384, :sha224, :mtime, :ctime, :none, :etag]'."
     end
 
     it "errors if checksum_type contains no shared checksum types" do
@@ -237,7 +237,7 @@ describe Puppet::Resource::Catalog::Compiler do
       allow(node.environment).to receive(:static_catalogs?).and_return(true)
 
       expect { compiler.find(@request) }.to raise_error Puppet::Error,
-        "Unable to find a common checksum type between agent '' and master '[:sha256, :sha256lite, :md5, :md5lite, :sha1, :sha1lite, :sha512, :sha384, :sha224, :mtime, :ctime, :none]'."
+        "Unable to find a common checksum type between agent '' and master '[:sha256, :sha256lite, :md5, :md5lite, :sha1, :sha1lite, :sha512, :sha384, :sha224, :mtime, :ctime, :none, :etag]'."
     end
 
     it "prevents the environment from being evicted during compilation" do
