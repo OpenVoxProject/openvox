@@ -48,23 +48,19 @@ module Puppet
       if value == :absent
         value
       elsif value.is_a?(String) && checksum?(value)
-        # XXX This is potentially dangerous because it means users can't write a file whose
-        # entire contents are a plain checksum unless it is a Binary content.
-        Puppet.puppet_deprecation_warning([
-          # TRANSLATORS "content" is an attribute and should not be translated
-          _('Using a checksum in a file\'s "content" property is deprecated.'),
-          # TRANSLATORS "filebucket" is a resource type and should not be translated. The quoted occurrence of "content" is an attribute and should not be translated.
-          _('The ability to use a checksum to retrieve content from the filebucket using the "content" property will be removed in a future release.'),
-          # TRANSLATORS "content" is an attribute and should not be translated.
-          _('The literal value of the "content" property will be written to the file.'),
-          # TRANSLATORS "static catalogs" should not be translated.
-          _('The checksum retrieval functionality is being replaced by the use of static catalogs.'),
-          _('See https://puppet.com/docs/puppet/latest/static_catalogs.html for more information.')
-        ].join(" "),
-                                          :file => @resource.file,
-                                          :line => @resource.line) if !@actual_content && !resource.parameter(:source)
-        value
+        # Our argument looks like a checksum. Is it the value of the content
+        # attribute in Puppet code, that happens to look like a checksum, or is
+        # it an actual checksum computed on the actual content?
+        if @actual_content || resource.parameter(:source)
+          # Actual content is already set, value contains it's checksum
+          value
+        else
+          # The content only happens to look like a checksum by chance.
+          @actual_content = value.is_a?(Puppet::Pops::Types::PBinaryType::Binary) ? value.binary_buffer : value
+          resource.parameter(:checksum).sum(@actual_content)
+        end
       else
+        # Our argument is definitely not a checksum: set actual_value and return calculated checksum.
         @actual_content = value.is_a?(Puppet::Pops::Types::PBinaryType::Binary) ? value.binary_buffer : value
         resource.parameter(:checksum).sum(@actual_content)
       end
@@ -155,15 +151,11 @@ module Puppet
     def each_chunk_from
       if actual_content.is_a?(String)
         yield actual_content
-      elsif content_is_really_a_checksum? && actual_content.nil?
+      elsif actual_content.nil?
         yield read_file_from_filebucket
       elsif actual_content.nil?
         yield ''
       end
-    end
-
-    def content_is_really_a_checksum?
-      checksum?(should)
     end
 
     def read_file_from_filebucket
