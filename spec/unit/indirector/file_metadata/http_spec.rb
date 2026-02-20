@@ -80,17 +80,26 @@ describe Puppet::Indirector::FileMetadata::Http do
       expect(result.checksum).to eq("{mtime}2020-01-01 08:00:00 UTC")
     end
 
-    it "uses ETag as md5 when it contains a hex digest" do
+    it "does not auto-activate ETag without checksum_type => etag" do
       etag_md5 = "f5ffec8d8d16b43d5e9ac6ad4330c445"
       stub_request(:head, key)
         .to_return(status: 200, headers: DEFAULT_HEADERS.merge("ETag" => %("#{etag_md5}")))
 
       result = model.indirection.find(key)
+      expect(result.checksum_type).to eq(:mtime)
+    end
+
+    it "uses ETag as md5 when checksum_type is etag" do
+      etag_md5 = "f5ffec8d8d16b43d5e9ac6ad4330c445"
+      stub_request(:head, key)
+        .to_return(status: 200, headers: DEFAULT_HEADERS.merge("ETag" => %("#{etag_md5}")))
+
+      result = model.indirection.find(key, checksum_type: :etag)
       expect(result.checksum_type).to eq(:md5)
       expect(result.checksum).to eq("{md5}#{etag_md5}")
     end
 
-    it "prefers explicit X-Checksum-Sha256 over ETag" do
+    it "prefers explicit X-Checksum-Sha256 over ETag when not using etag checksum" do
       sha256 = "a3eda98259c30e1e75039c2123670c18105e1c46efb672e42ca0e4cbe77b002a"
       etag_md5 = "f5ffec8d8d16b43d5e9ac6ad4330c445"
       stub_request(:head, key)
@@ -104,13 +113,13 @@ describe Puppet::Indirector::FileMetadata::Http do
       expect(result.checksum).to eq("{sha256}#{sha256}")
     end
 
-    it "ignores weak ETags" do
+    it "ignores weak ETags even with checksum_type => etag" do
       stub_request(:head, key)
         .to_return(status: 200, headers: DEFAULT_HEADERS.merge(
           "ETag" => 'W/"f5ffec8d8d16b43d5e9ac6ad4330c445"'
         ))
 
-      result = model.indirection.find(key)
+      result = model.indirection.find(key, checksum_type: :etag)
       expect(result.checksum_type).to eq(:mtime)
     end
 
