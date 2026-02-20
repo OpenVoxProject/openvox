@@ -13,7 +13,7 @@ Puppet::Type.type(:file).newparam(:checksum) do
     The default checksum type is sha256."
 
   # The values are defined in Puppet::Util::Checksums.known_checksum_types
-  newvalues(:sha256, :sha256lite, :md5, :md5lite, :sha1, :sha1lite, :sha512, :sha384, :sha224, :mtime, :ctime, :none)
+  newvalues(:sha256, :sha256lite, :md5, :md5lite, :sha1, :sha1lite, :sha512, :sha384, :sha224, :mtime, :ctime, :none, :etag)
 
   defaultto do
     Puppet[:digest_algorithm].to_sym
@@ -47,8 +47,18 @@ Puppet::Type.type(:file).newparam(:checksum) do
   private
 
   # Return the appropriate digest algorithm with fallbacks in case puppet defaults have not
-  # been initialized.
+  # been initialized. When the checksum type is :etag, resolve to the actual
+  # hash algorithm that the HTTP server's ETag represents.
   def digest_algorithm
-    value || Puppet[:digest_algorithm].to_sym
+    type = value || Puppet[:digest_algorithm].to_sym
+    return type unless type == :etag
+
+    source = resource.parameter(:source)
+    resolved = source&.metadata&.checksum_type
+    if resolved && ![:etag, :mtime, :ctime, :none].include?(resolved)
+      return resolved
+    end
+
+    :md5
   end
 end

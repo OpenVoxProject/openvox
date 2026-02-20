@@ -115,111 +115,130 @@ describe Puppet::FileServing::HttpMetadata do
     end
 
     context "with an ETag header" do
-      context "containing an MD5 hash" do
+      context "without checksum => etag" do
         let(:md5) { "f5ffec8d8d16b43d5e9ac6ad4330c445" }
 
-        it "uses the ETag as an md5 checksum" do
+        it "does not auto-activate ETag and falls back to mtime" do
           http_response.add_field('ETag', %("#{md5}"))
-          metadata = described_class.new(http_response)
-          metadata.collect
-          expect( metadata.checksum_type ).to eq :md5
-          expect( metadata.checksum ).to eq "{md5}#{md5}"
-        end
-
-        it "normalizes uppercase hex to lowercase" do
-          http_response.add_field('ETag', %("#{md5.upcase}"))
-          metadata = described_class.new(http_response)
-          metadata.collect
-          expect( metadata.checksum ).to eq "{md5}#{md5}"
-        end
-      end
-
-      context "containing a SHA1 hash" do
-        let(:sha1) { "01e4d15746f4274b84d740a93e04b9fd2882e3ea" }
-
-        it "uses the ETag as a sha1 checksum" do
-          http_response.add_field('ETag', %("#{sha1}"))
-          metadata = described_class.new(http_response)
-          metadata.collect
-          expect( metadata.checksum_type ).to eq :sha1
-          expect( metadata.checksum ).to eq "{sha1}#{sha1}"
-        end
-      end
-
-      context "containing a SHA256 hash" do
-        let(:sha256) { "a3eda98259c30e1e75039c2123670c18105e1c46efb672e42ca0e4cbe77b002a" }
-
-        it "uses the ETag as a sha256 checksum" do
-          http_response.add_field('ETag', %("#{sha256}"))
-          metadata = described_class.new(http_response)
-          metadata.collect
-          expect( metadata.checksum_type ).to eq :sha256
-          expect( metadata.checksum ).to eq "{sha256}#{sha256}"
-        end
-      end
-
-      context "that is a weak ETag" do
-        it "ignores the ETag and falls back to mtime" do
-          http_response.add_field('ETag', 'W/"f5ffec8d8d16b43d5e9ac6ad4330c445"')
           metadata = described_class.new(http_response)
           metadata.collect
           expect( metadata.checksum_type ).to eq :mtime
         end
       end
 
-      context "that is not a recognizable hash" do
-        it "ignores the ETag and falls back to mtime" do
-          http_response.add_field('ETag', '"5e8c5-27a-3e8b8840"')
+      context "with checksum_type => etag" do
+        context "containing an MD5 hash" do
+          let(:md5) { "f5ffec8d8d16b43d5e9ac6ad4330c445" }
+
+          it "resolves to md5" do
+            http_response.add_field('ETag', %("#{md5}"))
+            metadata = described_class.new(http_response)
+            metadata.checksum_type = :etag
+            metadata.collect
+            expect( metadata.checksum_type ).to eq :md5
+            expect( metadata.checksum ).to eq "{md5}#{md5}"
+          end
+
+          it "normalizes uppercase hex to lowercase" do
+            http_response.add_field('ETag', %("#{md5.upcase}"))
+            metadata = described_class.new(http_response)
+            metadata.checksum_type = :etag
+            metadata.collect
+            expect( metadata.checksum ).to eq "{md5}#{md5}"
+          end
+        end
+
+        context "containing a SHA1 hash" do
+          let(:sha1) { "01e4d15746f4274b84d740a93e04b9fd2882e3ea" }
+
+          it "resolves to sha1" do
+            http_response.add_field('ETag', %("#{sha1}"))
+            metadata = described_class.new(http_response)
+            metadata.checksum_type = :etag
+            metadata.collect
+            expect( metadata.checksum_type ).to eq :sha1
+            expect( metadata.checksum ).to eq "{sha1}#{sha1}"
+          end
+        end
+
+        context "containing a SHA256 hash" do
+          let(:sha256) { "a3eda98259c30e1e75039c2123670c18105e1c46efb672e42ca0e4cbe77b002a" }
+
+          it "resolves to sha256" do
+            http_response.add_field('ETag', %("#{sha256}"))
+            metadata = described_class.new(http_response)
+            metadata.checksum_type = :etag
+            metadata.collect
+            expect( metadata.checksum_type ).to eq :sha256
+            expect( metadata.checksum ).to eq "{sha256}#{sha256}"
+          end
+        end
+
+        context "that is a weak ETag" do
+          it "ignores the ETag and falls back to mtime" do
+            http_response.add_field('ETag', 'W/"f5ffec8d8d16b43d5e9ac6ad4330c445"')
+            metadata = described_class.new(http_response)
+            metadata.checksum_type = :etag
+            metadata.collect
+            expect( metadata.checksum_type ).to eq :mtime
+          end
+        end
+
+        context "that is not a recognizable hash" do
+          it "ignores the ETag and falls back to mtime" do
+            http_response.add_field('ETag', '"5e8c5-27a-3e8b8840"')
+            metadata = described_class.new(http_response)
+            metadata.checksum_type = :etag
+            metadata.collect
+            expect( metadata.checksum_type ).to eq :mtime
+          end
+        end
+
+        context "when explicit checksum headers are also present" do
+          let(:explicit_md5) { "c58989e9740a748de4f5054286faf99b" }
+          let(:etag_md5) { "f5ffec8d8d16b43d5e9ac6ad4330c445" }
+
+          it "prefers the ETag over X-Checksum-Md5" do
+            http_response.add_field('X-Checksum-Md5', explicit_md5)
+            http_response.add_field('ETag', %("#{etag_md5}"))
+            metadata = described_class.new(http_response)
+            metadata.checksum_type = :etag
+            metadata.collect
+            expect( metadata.checksum_type ).to eq :md5
+            expect( metadata.checksum ).to eq "{md5}#{etag_md5}"
+          end
+        end
+
+        context "with ETag and Last-Modified" do
+          let(:md5) { "f5ffec8d8d16b43d5e9ac6ad4330c445" }
+          let(:time) { Time.now.utc }
+
+          it "prefers ETag-derived md5 over mtime" do
+            http_response.add_field('ETag', %("#{md5}"))
+            http_response.add_field('last-modified', time.strftime("%a, %d %b %Y %T GMT"))
+            metadata = described_class.new(http_response)
+            metadata.checksum_type = :etag
+            metadata.collect
+            expect( metadata.checksum_type ).to eq :md5
+            expect( metadata.checksum ).to eq "{md5}#{md5}"
+          end
+        end
+
+        it "skips ETag-derived md5 on FIPS platforms and falls back" do
+          allow(Puppet::Util::Platform).to receive(:fips_enabled?).and_return(true)
+          http_response.add_field('ETag', '"f5ffec8d8d16b43d5e9ac6ad4330c445"')
           metadata = described_class.new(http_response)
+          metadata.checksum_type = :etag
           metadata.collect
           expect( metadata.checksum_type ).to eq :mtime
         end
-      end
 
-      context "when explicit checksum headers are also present" do
-        let(:explicit_md5) { "c58989e9740a748de4f5054286faf99b" }
-        let(:etag_md5) { "f5ffec8d8d16b43d5e9ac6ad4330c445" }
-
-        it "prefers X-Checksum-Md5 over ETag" do
-          http_response.add_field('X-Checksum-Md5', explicit_md5)
-          http_response.add_field('ETag', %("#{etag_md5}"))
+        it "falls back to other checksums when no ETag is present" do
           metadata = described_class.new(http_response)
+          metadata.checksum_type = :etag
           metadata.collect
-          expect( metadata.checksum_type ).to eq :md5
-          expect( metadata.checksum ).to eq "{md5}#{explicit_md5}"
+          expect( metadata.checksum_type ).to eq :mtime
         end
-
-        it "prefers Content-MD5 over ETag" do
-          base64 = [etag_md5].pack("H*").then { |bin| [bin].pack("m0") }
-          http_response.add_field('Content-MD5', base64)
-          http_response.add_field('ETag', '"0000000000000000000000000000dead"')
-          metadata = described_class.new(http_response)
-          metadata.collect
-          expect( metadata.checksum ).to start_with "{md5}"
-          expect( metadata.checksum ).not_to include "dead"
-        end
-      end
-
-      context "with ETag and Last-Modified" do
-        let(:md5) { "f5ffec8d8d16b43d5e9ac6ad4330c445" }
-        let(:time) { Time.now.utc }
-
-        it "prefers ETag-derived md5 over mtime" do
-          http_response.add_field('ETag', %("#{md5}"))
-          http_response.add_field('last-modified', time.strftime("%a, %d %b %Y %T GMT"))
-          metadata = described_class.new(http_response)
-          metadata.collect
-          expect( metadata.checksum_type ).to eq :md5
-          expect( metadata.checksum ).to eq "{md5}#{md5}"
-        end
-      end
-
-      it "skips ETag-derived md5 on FIPS platforms" do
-        allow(Puppet::Util::Platform).to receive(:fips_enabled?).and_return(true)
-        http_response.add_field('ETag', '"f5ffec8d8d16b43d5e9ac6ad4330c445"')
-        metadata = described_class.new(http_response)
-        metadata.collect
-        expect( metadata.checksum_type ).to eq :mtime
       end
     end
   end
