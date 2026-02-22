@@ -107,30 +107,6 @@ module Pal
     Puppet[:code] = previous_code_value
   end
 
-  # Evaluates a Puppet Language script string.
-  # @param code_string [String] a snippet of Puppet Language source code
-  # @return [Object] what the Puppet Language code_string evaluates to
-  # @deprecated Use {#with_script_compiler} and then evaluate_string on the given compiler - to be removed in 1.0 version
-  #
-  def self.evaluate_script_string(code_string)
-    # prevent the default loading of Puppet[:manifest] which is the environment's manifest-dir by default settings
-    # by setting code_string to 'undef'
-    with_script_compiler do |compiler|
-      compiler.evaluate_string(code_string)
-    end
-  end
-
-  # Evaluates a Puppet Language script (.pp) file.
-  # @param manifest_file [String] a file with Puppet Language source code
-  # @return [Object] what the Puppet Language manifest_file contents evaluates to
-  # @deprecated Use {#with_script_compiler} and then evaluate_file on the given compiler - to be removed in 1.0 version
-  #
-  def self.evaluate_script_manifest(manifest_file)
-    with_script_compiler do |compiler|
-      compiler.evaluate_file(manifest_file)
-    end
-  end
-
   # Defines a context in which multiple operations in an env with a catalog producing compiler can be performed
   # in a given block.
   # The calls that takes place to PAL inside of the given block are all with the same instance of the compiler.

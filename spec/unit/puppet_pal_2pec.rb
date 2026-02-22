@@ -51,23 +51,6 @@ describe 'Puppet Pal' do
   context 'in general - without code in modules or env' do
     let(:modulepath) { [] }
 
-    context 'deprecated PAL API methods work and' do
-      it '"evaluate_script_string" evaluates a code string in a given tmp environment' do
-        result = Puppet::Pal.in_tmp_environment('pal_env', modulepath: modulepath, facts: node_facts) do |ctx|
-          ctx.evaluate_script_string('1+2+3')
-        end
-        expect(result).to eq(6)
-      end
-
-      it '"evaluate_script_manifest" evaluates a manifest file in a given tmp environment' do
-        result = Puppet::Pal.in_tmp_environment('pal_env', modulepath: modulepath, facts: node_facts) do |ctx|
-          manifest = file_containing('testing.pp', "1+2+3+4")
-          ctx.evaluate_script_manifest(manifest)
-        end
-        expect(result).to eq(10)
-      end
-    end
-
     context "with a script compiler" do
       it 'errors if given both configured_by_env and manifest_file' do
         expect {
