@@ -4,7 +4,7 @@
 # @api private
 class Puppet::Settings::EnvironmentConf
   ENVIRONMENT_CONF_ONLY_SETTINGS = [:modulepath, :manifest, :config_version].freeze
-  VALID_SETTINGS = (ENVIRONMENT_CONF_ONLY_SETTINGS + [:environment_timeout, :environment_data_provider, :static_catalogs, :rich_data]).freeze
+  VALID_SETTINGS = (ENVIRONMENT_CONF_ONLY_SETTINGS + [:environment_timeout, :static_catalogs, :rich_data]).freeze
 
   # Given a path to a directory environment, attempts to load and parse an
   # environment.conf in ini format, and return an EnvironmentConf instance.
@@ -41,7 +41,7 @@ class Puppet::Settings::EnvironmentConf
   # without interpolation.  This is a special case for the default configured
   # environment returned by the Puppet::Environments::StaticPrivate loader.
   def self.static_for(environment, environment_timeout = 0, static_catalogs = false, rich_data = false)
-    Static.new(environment, environment_timeout, static_catalogs, nil, rich_data)
+    Static.new(environment, environment_timeout, static_catalogs, rich_data)
   end
 
   attr_reader :section, :path_to_env, :global_modulepath
@@ -88,12 +88,6 @@ class Puppet::Settings::EnvironmentConf
       # its ability to munge "4s, 3m, 5d, and 'unlimited' into seconds - if already munged into
       # numeric form, the TTLSetting handles that.
       Puppet::Settings::TTLSetting.munge(ttl, 'environment_timeout')
-    end
-  end
-
-  def environment_data_provider
-    get_setting(:environment_data_provider, Puppet.settings.value(:environment_data_provider)) do |value|
-      value
     end
   end
 
@@ -197,15 +191,13 @@ class Puppet::Settings::EnvironmentConf
   # @api private
   class Static
     attr_reader :environment_timeout
-    attr_reader :environment_data_provider
     attr_reader :rich_data
     attr_reader :static_catalogs
 
-    def initialize(environment, environment_timeout, static_catalogs, environment_data_provider = nil, rich_data = false)
+    def initialize(environment, environment_timeout, static_catalogs, rich_data = false)
       @environment = environment
       @environment_timeout = environment_timeout
       @static_catalogs = static_catalogs
-      @environment_data_provider = environment_data_provider
       @rich_data = rich_data
     end
 
