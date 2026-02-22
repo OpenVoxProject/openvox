@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-require 'puppet/ssl/certificate'
+require 'puppet/ssl/certificate_request'
 
 class TestCertificate < Puppet::SSL::Base
-    wraps(Puppet::SSL::Certificate)
+    wraps(OpenSSL::X509::Certificate)
 end
 
-describe Puppet::SSL::Certificate do
+describe Puppet::SSL::Base do
   before :each do
     @base = TestCertificate.new("name")
     @class = TestCertificate
@@ -46,7 +46,9 @@ describe Puppet::SSL::Certificate do
   describe "when initializing wrapped class from a file with #read" do
     it "should open the file with ASCII encoding" do
       path = '/foo/bar/cert'
+      cert = double('cert')
       expect(Puppet::FileSystem).to receive(:read).with(path, {:encoding => Encoding::ASCII}).and_return("bar")
+      allow(OpenSSL::X509::Certificate).to receive(:new).with("bar").and_return(cert)
       @base.read(path)
     end
   end

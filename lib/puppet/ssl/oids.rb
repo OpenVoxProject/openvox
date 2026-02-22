@@ -196,4 +196,43 @@ module Puppet::SSL::Oids
   rescue OpenSSL::ASN1::ASN1Error, TypeError
     false
   end
+
+  # Extract custom Puppet certificate extensions from an OpenSSL::X509::Certificate.
+  #
+  # @param cert [OpenSSL::X509::Certificate]
+  # @return [Array<Hash>] array of hashes with 'oid' and 'value' keys
+  def self.custom_extensions_for(cert)
+    exts_seq = extensions_sequence(cert)
+
+    cert.extensions.select do |ext|
+      subtree_of?('ppRegCertExt', ext.oid) ||
+        subtree_of?('ppPrivCertExt', ext.oid) ||
+        subtree_of?('ppAuthCertExt', ext.oid)
+    end.map do |ext|
+      { 'oid' => ext.oid, 'value' => extension_value(exts_seq, ext.oid) }
+    end
+  end
+
+  # @api private
+  def self.extensions_sequence(cert)
+    extensions_tag = 3
+    OpenSSL::ASN1.decode(cert.to_der).value[0].value.find do |data|
+      (data.tag == extensions_tag) && (data.tag_class == :CONTEXT_SPECIFIC)
+    end.value[0]
+  end
+  private_class_method :extensions_sequence
+
+  # @api private
+  def self.extension_value(exts_seq, oid)
+    ext_obj = exts_seq.value.find do |ext_seq|
+      ext_seq.value[0].value == oid
+    end
+    raw_val = ext_obj.value.last.value
+    begin
+      OpenSSL::ASN1.decode(raw_val).value
+    rescue OpenSSL::ASN1::ASN1Error
+      raw_val
+    end
+  end
+  private_class_method :extension_value
 end

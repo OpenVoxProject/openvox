@@ -390,7 +390,7 @@ class Puppet::Application::Lookup < Puppet::Application
             _, x509 = cert.get_certificate(node)
             cert = OpenSSL::X509::Certificate.new(x509)
             Puppet::SSL::Oids.register_puppet_oids
-            trusted = Puppet::Context::TrustedInformation.remote(true, facts.values['certname'] || node, Puppet::SSL::Certificate.from_instance(cert))
+            trusted = Puppet::Context::TrustedInformation.remote(true, facts.values['certname'] || node, cert)
             Puppet.override(trusted_information: trusted) do
               node = ni.find(node, facts: facts, environment: Puppet[:environment])
             end
