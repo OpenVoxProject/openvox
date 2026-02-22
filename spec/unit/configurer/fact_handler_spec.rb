@@ -79,36 +79,6 @@ describe Puppet::Configurer::FactHandler do
       { :hash => { 'afact' => "A\u06FF\u16A0\u{2070E}" }, :encoded => '%22values%22%3A%7B%22afact%22%3A%22' + 'A%DB%BF%E1%9A%A0%F0%A0%9C%8E' + '%22%7D' },
     ]
 
-    context "as pson", if: Puppet.features.pson? do
-      before :each do
-        Puppet[:preferred_serialization_format] = 'pson'
-      end
-
-      it "should serialize and CGI escape the fact values for uploading" do
-        facts = Puppet::Node::Facts.new(Puppet[:node_name_value], 'my_name_fact' => 'other_node_name')
-        Puppet::Node::Facts.indirection.save(facts)
-        text = Puppet::Util.uri_query_encode(facthandler.find_facts.render(:pson))
-
-        expect(text).to include('%22values%22%3A%7B%22my_name_fact%22%3A%22other_node_name%22%7D')
-        expect(facthandler.facts_for_uploading).to eq({:facts_format => :pson, :facts => text})
-      end
-
-      facts_with_special_characters.each do |test_fact|
-        it "should properly accept the fact #{test_fact[:hash]}" do
-          facts = Puppet::Node::Facts.new(Puppet[:node_name_value], test_fact[:hash])
-          Puppet::Node::Facts.indirection.save(facts)
-          text = Puppet::Util.uri_query_encode(facthandler.find_facts.render(:pson))
-
-          to_upload = facthandler.facts_for_uploading
-          expect(to_upload).to eq({:facts_format => :pson, :facts => text})
-          expect(text).to include(test_fact[:encoded])
-
-          # this is not sufficient to test whether these values are sent via HTTP GET or HTTP POST in actual catalog request
-          expect(JSON.parse(Puppet::Util.uri_unescape(to_upload[:facts]))['values']).to eq(test_fact[:hash])
-        end
-      end
-    end
-
     context "as json" do
       it "should serialize and CGI escape the fact values for uploading" do
         facts = Puppet::Node::Facts.new(Puppet[:node_name_value], 'my_name_fact' => 'other_node_name')

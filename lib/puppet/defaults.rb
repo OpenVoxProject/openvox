@@ -1744,21 +1744,6 @@ EOT
       instances will be serialized using this method, since not all classes
       can be guaranteed to support this format, but it will be used for all
       classes that support it.",
-      :hook => proc { |value|
-        if value == "pson" && !Puppet.features.pson?
-          raise(Puppet::Settings::ValidationError, "The 'puppet-pson' gem must be installed to use the PSON serialization format.")
-        end
-      }
-    },
-    :allow_pson_serialization => {
-      :default    => false,
-      :type       => :boolean,
-      :desc => "Whether to allow PSON serialization. When unable to serialize to
-        JSON or other formats, Puppet falls back to PSON. This option affects the
-        configuration management service responses of Puppet Server and the process by
-        which the agent saves its cached catalog. With a default value of `false`, this
-        option is useful in preventing the loss of data because rich data cannot be
-        serialized via PSON.",
     },
     :agent_catalog_run_lockfile => {
       :default    => "$statedir/agent_catalog_run.lock",
