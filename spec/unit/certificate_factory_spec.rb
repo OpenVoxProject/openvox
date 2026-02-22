@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'puppet/test_ca'
 
 require 'puppet/certificate_factory'
+require 'puppet/ssl/oids'
 
 describe Puppet::CertificateFactory, :unless => RUBY_PLATFORM == 'java' do
   let :serial    do OpenSSL::BN.new('12') end
@@ -136,13 +137,13 @@ describe Puppet::CertificateFactory, :unless => RUBY_PLATFORM == 'java' do
 
       cert = subject.build(:client, csr, issuer, serial)
 
-      # The cert must be signed before being later DER-decoding
+      # The cert must be signed before being later DER-decoded
       signer = Puppet::SSL::CertificateSigner.new
       signer.sign(cert, key)
-      wrapped_cert = Puppet::SSL::Certificate.from_instance cert
+      exts = Puppet::SSL::Oids.custom_extensions_for(cert)
 
-      priv_ext = wrapped_cert.custom_extensions.find {|ext| ext['oid'] == '1.3.6.1.4.1.34380.1.2.1'}
-      uuid_ext = wrapped_cert.custom_extensions.find {|ext| ext['oid'] == 'pp_uuid'}
+      priv_ext = exts.find {|ext| ext['oid'] == '1.3.6.1.4.1.34380.1.2.1'}
+      uuid_ext = exts.find {|ext| ext['oid'] == 'pp_uuid'}
 
       # The expected results should be DER encoded, the Puppet cert wrapper will turn
       # these into normal strings.
