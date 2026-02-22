@@ -134,6 +134,7 @@ describe Puppet::Application::Lookup do
                           'name'=>'Hierarchy entry "Common"'
                         }
                       ],
+                    'configuration_path'=>"#{environmentpath}/production/hiera.yaml",
                     'type'=>'data_provider',
                     'name'=>'Environment Data Provider (hiera configuration version 5)'
                   }
@@ -169,6 +170,7 @@ describe Puppet::Application::Lookup do
                           'name'=>'Hierarchy entry "Common"'
                         }
                       ],
+                    'configuration_path'=>"#{environmentpath}/production/hiera.yaml",
                     'type'=>'data_provider',
                     'name'=>'Environment Data Provider (hiera configuration version 5)'
                   }
@@ -212,6 +214,7 @@ describe Puppet::Application::Lookup do
                         :name=>'Hierarchy entry "Common"'
                       }
                   ],
+                  :configuration_path=>"#{environmentpath}/production/hiera.yaml",
                   :type=>:data_provider,
                   :name=>'Environment Data Provider (hiera configuration version 5)'
                 }
@@ -247,6 +250,7 @@ describe Puppet::Application::Lookup do
                         :name=>'Hierarchy entry "Common"'
                       }
                     ],
+                  :configuration_path=>"#{environmentpath}/production/hiera.yaml",
                   :type=>:data_provider,
                   :name=>'Environment Data Provider (hiera configuration version 5)'
                 }
@@ -279,6 +283,7 @@ Searching for "lookup_options"
   Global Data Provider (hiera configuration version 5)
     No such key: "lookup_options"
   Environment Data Provider (hiera configuration version 5)
+    Using configuration "#{environmentpath}/production/hiera.yaml"
     Hierarchy entry "Common"
       Path "#{environmentpath}/production/data/common.yaml"
         Original path: "common.yaml"
@@ -289,6 +294,7 @@ Searching for "a"
   Global Data Provider (hiera configuration version 5)
     No such key: "a"
   Environment Data Provider (hiera configuration version 5)
+    Using configuration "#{environmentpath}/production/hiera.yaml"
     Hierarchy entry "Common"
       Path "#{environmentpath}/production/data/common.yaml"
         Original path: "common.yaml"
@@ -329,6 +335,7 @@ Searching for "lookup_options"
   Global Data Provider (hiera configuration version 5)
     No such key: "lookup_options"
   Environment Data Provider (hiera configuration version 5)
+    Using configuration "#{environmentpath}/production/hiera.yaml"
     Hierarchy entry "Common"
       Path "#{environmentpath}/production/data/common.yaml"
         Original path: "common.yaml"
@@ -339,6 +346,7 @@ Searching for "a"
   Global Data Provider (hiera configuration version 5)
     No such key: "a"
   Environment Data Provider (hiera configuration version 5)
+    Using configuration "#{environmentpath}/production/hiera.yaml"
     Hierarchy entry "Common"
       Path "#{environmentpath}/production/data/common.yaml"
         Original path: "common.yaml"
@@ -352,6 +360,7 @@ Lookup of 'a'
     Global Data Provider (hiera configuration version 5)
       No such key: "lookup_options"
     Environment Data Provider (hiera configuration version 5)
+      Using configuration "#{environmentpath}/production/hiera.yaml"
       Hierarchy entry "Common"
         Path "#{environmentpath}/production/data/common.yaml"
           Original path: "common.yaml"
@@ -362,6 +371,7 @@ Lookup of 'a'
     Global Data Provider (hiera configuration version 5)
       No such key: "a"
     Environment Data Provider (hiera configuration version 5)
+      Using configuration "#{environmentpath}/production/hiera.yaml"
       Hierarchy entry "Common"
         Path "#{environmentpath}/production/data/common.yaml"
           Original path: "common.yaml"
@@ -377,6 +387,7 @@ Merge strategy hash
   Global Data Provider (hiera configuration version 5)
     No such key: "lookup_options"
   Environment Data Provider (hiera configuration version 5)
+    Using configuration "#{environmentpath}/production/hiera.yaml"
     Hierarchy entry "Common"
       Path "#{environmentpath}/production/data/common.yaml"
         Original path: "common.yaml"
@@ -400,6 +411,7 @@ Merge strategy hash
   Global Data Provider (hiera configuration version 5)
     No such key: "lookup_options"
   Environment Data Provider (hiera configuration version 5)
+    Using configuration "#{environmentpath}/production/hiera.yaml"
     Hierarchy entry "Common"
       Path "#{environmentpath}/production/data/common.yaml"
         Original path: "common.yaml"
@@ -417,6 +429,7 @@ Lookup of '__global__'
     Global Data Provider (hiera configuration version 5)
       No such key: "lookup_options"
     Environment Data Provider (hiera configuration version 5)
+      Using configuration "#{environmentpath}/production/hiera.yaml"
       Hierarchy entry "Common"
         Path "#{environmentpath}/production/data/common.yaml"
           Original path: "common.yaml"
@@ -440,6 +453,7 @@ Searching for "lookup_options"
   Global Data Provider (hiera configuration version 5)
     No such key: "lookup_options"
   Environment Data Provider (hiera configuration version 5)
+    Using configuration "#{environmentpath}/production/hiera.yaml"
     Hierarchy entry "Common"
       Path "#{environmentpath}/production/data/common.yaml"
         Original path: "common.yaml"
@@ -450,6 +464,7 @@ Searching for "a"
   Global Data Provider (hiera configuration version 5)
     No such key: "a"
   Environment Data Provider (hiera configuration version 5)
+    Using configuration "#{environmentpath}/production/hiera.yaml"
     Hierarchy entry "Common"
       Path "#{environmentpath}/production/data/common.yaml"
         Original path: "common.yaml"

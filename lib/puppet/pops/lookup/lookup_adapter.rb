@@ -124,27 +124,9 @@ class LookupAdapter < DataAdapter
   end
 
   def lookup_global(key, lookup_invocation, merge_strategy)
-    # hiera_xxx will always use global_provider regardless of data_binding_terminus setting
-    terminus = lookup_invocation.hiera_xxx_call? ? :hiera : Puppet[:data_binding_terminus]
-    case terminus
-    when :hiera, 'hiera'
-      provider = global_provider(lookup_invocation)
-      throw :no_such_key if provider.nil?
-      provider.key_lookup(key, lookup_invocation, merge_strategy)
-    when :none, 'none', '', nil
-      # If global lookup is disabled, immediately report as not found
-      lookup_invocation.report_not_found(key)
-      throw :no_such_key
-    else
-      lookup_invocation.with(:global, terminus) do
-        catch(:no_such_key) do
-          return lookup_invocation.report_found(key, Puppet::DataBinding.indirection.find(key.root_key,
-                                                                                          { :environment => environment, :variables => lookup_invocation.scope, :merge => merge_strategy }))
-        end
-        lookup_invocation.report_not_found(key)
-        throw :no_such_key
-      end
-    end
+    provider = global_provider(lookup_invocation)
+    throw :no_such_key if provider.nil?
+    provider.key_lookup(key, lookup_invocation, merge_strategy)
   rescue Puppet::DataBinding::LookupError => detail
     raise detail unless detail.issue_code.nil?
 
@@ -468,55 +450,14 @@ class LookupAdapter < DataAdapter
     env_conf = environment.configuration
     return nil if env_conf.nil? || env_conf.path_to_env.nil?
 
-    # Get the name of the data provider from the environment's configuration
-    provider_name = env_conf.environment_data_provider
     env_path = Pathname(env_conf.path_to_env)
     config_path = env_path + HieraConfig::CONFIG_FILE_NAME
 
-    ep = nil
-    if config_path.exist?
-      ep = EnvironmentDataProvider.new
-      # A version 5 hiera.yaml trumps any data provider setting in the environment.conf
-      ep_config = ep.config(lookup_invocation)
-      if ep_config.nil?
-        ep = nil
-      elsif ep_config.version >= 5
-        unless provider_name.nil? || Puppet[:strict] == :off
-          Puppet.warn_once('deprecations', 'environment.conf#data_provider',
-                           _("Defining environment_data_provider='%{provider_name}' in environment.conf is deprecated") % { provider_name: provider_name }, env_path + 'environment.conf')
+    return nil unless config_path.exist?
 
-          unless provider_name == 'hiera'
-            Puppet.warn_once('deprecations', 'environment.conf#data_provider_overridden',
-                             _("The environment_data_provider='%{provider_name}' setting is ignored since '%{config_path}' version >= 5") % { provider_name: provider_name, config_path: config_path }, env_path + 'environment.conf')
-          end
-        end
-        provider_name = nil
-      end
-    end
-
-    if provider_name.nil?
-      ep
-    else
-      unless Puppet[:strict] == :off
-        msg = _("Defining environment_data_provider='%{provider_name}' in environment.conf is deprecated.") % { provider_name: provider_name }
-        msg += " " + _("A '%{hiera_config}' file should be used instead") % { hiera_config: HieraConfig::CONFIG_FILE_NAME } if ep.nil?
-        Puppet.warn_once('deprecations', 'environment.conf#data_provider', msg, env_path + 'environment.conf')
-      end
-
-      case provider_name
-      when 'none'
-        nil
-      when 'hiera'
-        # Use hiera.yaml or default settings if it is missing
-        ep || EnvironmentDataProvider.new
-      when 'function'
-        ep = EnvironmentDataProvider.new
-        ep.config = HieraConfigV5.v4_function_config(env_path, 'environment::data', ep)
-        ep
-      else
-        raise Puppet::Error, _("Environment '%{env}', cannot find environment_data_provider '%{provider}'") % { env: environment.name, provider: provider_name }
-      end
-    end
+    ep = EnvironmentDataProvider.new
+    ep_config = ep.config(lookup_invocation)
+    ep_config.nil? ? nil : ep
   end
 
   # @return [Puppet::Node::Environment] the environment of the compiler that this adapter is associated with

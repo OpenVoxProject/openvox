@@ -231,6 +231,7 @@ Searching for "lookup_options"
   Global Data Provider (hiera configuration version 5)
     No such key: "lookup_options"
   Environment Data Provider (hiera configuration version 5)
+    Using configuration "#{environmentpath}/hiera_misc/hiera.yaml"
     Hierarchy entry "Common"
       Path "#{environmentpath}/hiera_misc/data/common.yaml"
         Original path: "common.yaml"
@@ -275,6 +276,7 @@ Searching for "one::loptsm_test::hash"
     Global Data Provider (hiera configuration version 5)
       No such key: "one::loptsm_test::hash"
     Environment Data Provider (hiera configuration version 5)
+      Using configuration "#{environmentpath}/hiera_misc/hiera.yaml"
       Hierarchy entry "Common"
         Path "#{environmentpath}/hiera_misc/data/common.yaml"
           Original path: "common.yaml"
@@ -321,6 +323,7 @@ Merge strategy hash
   Global Data Provider (hiera configuration version 5)
     No such key: "lookup_options"
   Environment Data Provider (hiera configuration version 5)
+    Using configuration "#{environmentpath}/hiera_misc/hiera.yaml"
     Hierarchy entry "Common"
       Path "#{environmentpath}/hiera_misc/data/common.yaml"
         Original path: "common.yaml"
