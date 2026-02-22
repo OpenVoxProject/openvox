@@ -1,8 +1,9 @@
 require 'spec_helper'
+require 'puppet/application/config'
 
 describe "directory environments" do
-  let(:args) { ['--configprint', 'modulepath', '--environment', 'direnv'] }
-  let(:puppet) { Puppet::Application[:apply] }
+  let(:args) { ['print', 'modulepath', '--environment', 'direnv'] }
+  let(:puppet) { Puppet::Application[:config] }
 
   context "with a single directory environmentpath" do
     before(:each) do
@@ -12,7 +13,8 @@ describe "directory environments" do
     end
 
     it "config prints the environments modulepath" do
-      Puppet.settings.initialize_global_settings(args)
+      puppet.command_line.args = args
+      Puppet.initialize_settings(args)
       expect {
         puppet.run
       }.to exit_with(0)
@@ -20,8 +22,9 @@ describe "directory environments" do
     end
 
     it "config prints the cli --modulepath despite environment" do
-      args << '--modulepath' << '/completely/different'
-      Puppet.settings.initialize_global_settings(args)
+      args.push('--modulepath', '/completely/different')
+      puppet.command_line.args = args
+      Puppet.initialize_settings(args)
       expect {
         puppet.run
       }.to exit_with(0)
@@ -38,7 +41,8 @@ describe "directory environments" do
       Puppet[:environmentpath] = shortened
       expect(Puppet[:environmentpath]).to match(/~/)
 
-      Puppet.settings.initialize_global_settings(args)
+      puppet.command_line.args = args
+      Puppet.initialize_settings(args)
       expect {
         puppet.run
       }.to exit_with(0)
@@ -47,7 +51,7 @@ describe "directory environments" do
   end
 
   context "with an environmentpath having multiple directories" do
-    let(:args) { ['--configprint', 'modulepath', '--environment', 'otherdirenv'] }
+    let(:args) { ['print', 'modulepath', '--environment', 'otherdirenv'] }
 
     before(:each) do
       envdir1 = File.join(Puppet[:confdir], 'env1')
@@ -57,7 +61,8 @@ describe "directory environments" do
     end
 
     it "config prints a directory environment modulepath" do
-      Puppet.settings.initialize_global_settings(args)
+      puppet.command_line.args = args
+      Puppet.initialize_settings(args)
       expect {
         puppet.run
       }.to exit_with(0)
