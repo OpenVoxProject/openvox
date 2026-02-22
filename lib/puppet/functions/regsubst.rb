@@ -19,11 +19,7 @@ Puppet::Functions.create_function(:regsubst) do
   #        - *I*         Ignore case in regexps
   #        - *M*         Multiline regexps
   #        - *G*         Global replacement; all occurrences of the regexp in each target string will be replaced.  Without this, only the first occurrence will be replaced.
-  # @param encoding [Enum['N','E','S','U']]
-  #      Deprecated and ignored parameter, included only for compatibility.
   # @return [Array[String], String] The result of the substitution. Result type is the same as for the target parameter.
-  # @deprecated
-  #   This method has the optional encoding parameter, which is ignored.
   # @example Get the third octet from the node's IP address:
   #   ```puppet
   #   $i3 = regsubst($ipaddress,'^(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)$','\\3')
@@ -33,7 +29,6 @@ Puppet::Functions.create_function(:regsubst) do
     param          'String',                              :pattern
     param          'Variant[String,Hash[String,String]]', :replacement
     optional_param 'Optional[Pattern[/^[GEIM]*$/]]',      :flags
-    optional_param "Enum['N','E','S','U']",               :encoding
   end
 
   # @param target [String, Array[String]]
@@ -65,14 +60,7 @@ Puppet::Functions.create_function(:regsubst) do
     optional_param 'Pattern[/^G?$/]',                     :flags
   end
 
-  def regsubst_string(target, pattern, replacement, flags = nil, encoding = nil)
-    if encoding
-      Puppet.warn_once(
-        'deprecations', 'regsubst_function_encoding',
-        _("The regsubst() function's encoding argument has been ignored since Ruby 1.9 and will be removed in a future release")
-      )
-    end
-
+  def regsubst_string(target, pattern, replacement, flags = nil)
     re_flags = 0
     operation = :sub
     unless flags.nil?
