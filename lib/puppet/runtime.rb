@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../puppet/http'
+require_relative '../puppet/network/http_pool'
 require_relative '../puppet/facter_impl'
 require 'singleton'
 
@@ -14,7 +15,7 @@ class Puppet::Runtime
     @runtime_services = {
       http: proc do
         klass = Puppet::Network::HttpPool.http_client_class
-        if klass == Puppet::Network::HTTP::Connection
+        if klass.nil?
           Puppet::HTTP::Client.new
         else
           Puppet::HTTP::ExternalClient.new(klass)
