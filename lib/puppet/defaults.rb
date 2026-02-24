@@ -26,8 +26,8 @@ module Puppet
 
   def self.valid_file_checksum_types
     Puppet::Util::Platform.fips_enabled? ?
-      %w[sha256 sha256lite sha384 sha512 sha224 sha1 sha1lite mtime ctime] :
-      %w[sha256 sha256lite sha384 sha512 sha224 sha1 sha1lite md5 md5lite mtime ctime]
+      %w[sha256 sha256lite sha384 sha512 sha224 sha1 sha1lite mtime ctime etag] :
+      %w[sha256 sha256lite sha384 sha512 sha224 sha1 sha1lite md5 md5lite mtime ctime etag]
   end
 
   def self.default_cadir

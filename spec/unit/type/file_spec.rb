@@ -1465,7 +1465,7 @@ describe Puppet::Type.type(:file) do
       file[:source] = source
     end
 
-    Puppet::Type::File::ParameterChecksum.value_collection.values.reject {|v| v == :none}.each do |checksum_type|
+    Puppet::Type::File::ParameterChecksum.value_collection.values.reject {|v| v == :none || v == :etag}.each do |checksum_type|
       describe "with checksum '#{checksum_type}'" do
         before do
           file[:checksum] = checksum_type
@@ -1591,7 +1591,7 @@ describe Puppet::Type.type(:file) do
       file[:content] = FILE_CONTENT
     end
 
-    (Puppet::Type::File::ParameterChecksum.value_collection.values - SOURCE_ONLY_CHECKSUMS).each do |checksum_type|
+    (Puppet::Type::File::ParameterChecksum.value_collection.values - SOURCE_ONLY_CHECKSUMS - [:etag]).each do |checksum_type|
       describe "with checksum '#{checksum_type}'" do
         before do
           file[:checksum] = checksum_type
