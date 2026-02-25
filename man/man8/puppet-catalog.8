@@ -24,7 +24,8 @@ Whether to log debug information\.
 \-\-terminus _TERMINUS
 Indirector faces expose indirected subsystems of Puppet\. These subsystems are each able to retrieve and alter a specific type of data (with the familiar actions of \fBfind\fR, \fBsearch\fR, \fBsave\fR, and \fBdestroy\fR) from an arbitrary number of pluggable backends\. In Puppet parlance, these backends are called terminuses\.
 .IP
-Almost all indirected subsystems have a \fBrest\fR terminus that interacts with the puppet master's data\. Most of them have additional terminuses for various local data models, which are in turn used by the indirected subsystem on the puppet master whenever it receives a remote request\.
+Almost all indirected subsystems have a \fBrest\fR terminus that interacts with the OpenVox server\'s data\. Most of them have additional terminuses for various local data models, which are in turn used by the indirected subsystem on the OpenVox server whenever it receives a remote request\.
+.
 .IP
 The terminus for an action is often determined by context, but occasionally needs to be set explicitly\. See the "Notes" section of this face's manpage for more details\.
 .SH "ACTIONS"
@@ -55,14 +56,15 @@ Compiles a catalog locally for a node, requiring access to modules, node classif
 .IP
 A serialized catalog\.
 .TP
-\fBdownload\fR \- Download this node's catalog from the puppet master server\.
+\fBdownload\fR \- Download this node\'s catalog from the OpenVox server server\.
 \fBSYNOPSIS\fR
 .IP
 puppet catalog download [\-\-terminus _TERMINUS]
 .IP
 \fBDESCRIPTION\fR
 .IP
-Retrieves a catalog from the puppet master and saves it to the local yaml cache\. This action always contacts the puppet master and will ignore alternate termini\.
+Retrieves a catalog from the OpenVox server and saves it to the local yaml cache\. This action always contacts the OpenVox server and will ignore alternate termini\.
+.
 .IP
 The saved catalog can be used in any subsequent catalog action by specifying '\-\-terminus yaml' for that action\.
 .IP
@@ -122,7 +124,8 @@ A list of resource references ("Type[title]")\. When used from the API, returns 
 .IP
 \fBNOTES\fR
 .IP
-By default, this action will retrieve a catalog from Puppet's compiler subsystem; you must call the action with \fB\-\-terminus rest\fR if you wish to retrieve a catalog from the puppet master\.
+By default, this action will retrieve a catalog from OpenVox\'s compiler subsystem; you must call the action with \fB\-\-terminus rest\fR if you wish to retrieve a catalog from the OpenVox server\.
+.
 .IP
 FORMATTING ISSUES: This action cannot currently render useful yaml; instead, it returns an entire catalog\. Use json instead\.
 .SH "EXAMPLES"
@@ -132,7 +135,8 @@ Apply the locally cached catalog:
 .P
 $ puppet catalog apply \-\-terminus yaml
 .P
-Retrieve a catalog from the master and apply it, in one step:
+Retrieve a catalog from the server and apply it, in one step:
+.
 .P
 $ puppet catalog apply \-\-terminus rest
 .P
@@ -172,7 +176,8 @@ Puppet::Face[:catalog, '0\.0\.1']\.download
 .P
 \fBselect\fR
 .P
-Ask the puppet master for a list of managed file resources for a node:
+Ask the OpenVox server for a list of managed file resources for a node:
+.
 .P
 $ puppet catalog select \-\-terminus rest somenode\.magpie\.lan file
 .SH "NOTES"
