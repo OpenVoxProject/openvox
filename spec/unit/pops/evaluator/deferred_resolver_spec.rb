@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'puppet_spec/compiler'
+require 'puppet_spec/files'
 
 Puppet::Type.newtype(:test_deferred) do
   newparam(:name)
@@ -8,8 +9,14 @@ end
 
 describe Puppet::Pops::Evaluator::DeferredResolver do
   include PuppetSpec::Compiler
+  include PuppetSpec::Files
 
-  let(:environment) { Puppet::Node::Environment.create(:testing, []) }
+  let(:env_dir) do
+    dir_containing('testing', 'modules' => {
+      'testmod' => { 'functions' => { 'test.pp' => 'function testmod::test($x) { "Got: ${x}" }' } }
+    })
+  end
+  let(:environment) { Puppet::Node::Environment.create(:testing, [File.join(env_dir, 'modules')]) }
   let(:facts) { Puppet::Node::Facts.new('node.example.com') }
 
   def compile_and_resolve_catalog(code, preprocess = false)
@@ -94,5 +101,15 @@ describe Puppet::Pops::Evaluator::DeferredResolver do
 
     resource = catalog.resource(:test_deferred, 'deferred')
     expect(resource.sensitive_parameters).to eq([:value])
+  end
+
+  it 'resolves deferred values that call Puppet language functions' do
+    catalog = compile_and_resolve_catalog(<<~END, true)
+      notify { "deferred":
+        message => Deferred("testmod::test", ["hello"])
+      }
+    END
+
+    expect(catalog.resource(:notify, 'deferred')[:message]).to eq('Got: hello')
   end
 end
