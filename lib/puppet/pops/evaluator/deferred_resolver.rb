@@ -48,7 +48,10 @@ class DeferredResolver
     #    # Server facts are always about the local node's version etc.
     #    @scope.set_server_facts(node.server_facts)
 
-    resolver.resolve_futures(catalog)
+    # Must be wrapped in with_context_overrides to ensure global_scope is valid for Puppet-language functions
+    compiler.with_context_overrides do
+      resolver.resolve_futures(catalog)
+    end
     nil
   end
 
