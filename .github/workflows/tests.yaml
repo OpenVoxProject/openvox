@@ -125,7 +125,6 @@ jobs:
         run: |
           bundle exec rake rubocop
           bundle exec rake -T | grep vox:build
-          bundle exec rake -T | grep vox:promote
           bundle exec rake -T | grep vox:upload
         working-directory: packaging
 

@@ -1,6 +1,5 @@
 require 'benchmark'
 require 'tmpdir'
-require 'csv'
 require 'objspace'
 
 namespace :benchmark do
@@ -37,6 +36,8 @@ namespace :benchmark do
 
       desc "Run the #{name} scenario."
       task :run, [*run_args] =>  :generate do |_, args|
+        require 'csv'
+
         report = []
         details = []
         Benchmark.benchmark(Benchmark::CAPTION, 10, Benchmark::FORMAT, "> total:", "> avg:") do |b|

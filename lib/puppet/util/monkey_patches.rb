@@ -22,15 +22,6 @@ module RDoc
   end
 end
 
-class Object
-  # ActiveSupport 2.3.x mixes in a dangerous method
-  # that can cause rspec to fork bomb
-  # and other strange things like that.
-  def daemonize
-    raise NotImplementedError, "Kernel.daemonize is too dangerous, please don't try to use it."
-  end
-end
-
 unless Dir.singleton_methods.include?(:exists?)
   class Dir
     def self.exists?(file_name)
@@ -52,22 +43,12 @@ end
 require_relative '../../puppet/ssl/openssl_loader'
 unless Puppet::Util::Platform.jruby_fips?
   class OpenSSL::SSL::SSLContext
-    if DEFAULT_PARAMS[:options]
-      DEFAULT_PARAMS[:options] |= OpenSSL::SSL::OP_NO_SSLv3
-    else
-      DEFAULT_PARAMS[:options] = OpenSSL::SSL::OP_NO_SSLv3
-    end
-
     alias __original_initialize initialize
     private :__original_initialize
 
     def initialize(*args)
       __original_initialize(*args)
-      params = {
-        :options => DEFAULT_PARAMS[:options],
-        :ciphers => DEFAULT_PARAMS[:ciphers],
-      }
-      set_params(params)
+      set_params
     end
   end
 end

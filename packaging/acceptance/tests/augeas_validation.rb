@@ -32,7 +32,7 @@ augeas { 'test_ssh':
   ]
 }
 EOF
-      assert_equal(on(agent, "puppet apply -e \"#{file}\"").exit_code, 0, 'Puppet apply of the augeas resource returned a non-zero exit code')
+      on(agent, "puppet apply -e \"#{file}\" --detailed-exitcodes", acceptable_exit_codes: [2])
     end
   end
 end

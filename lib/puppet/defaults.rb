@@ -26,8 +26,8 @@ module Puppet
 
   def self.valid_file_checksum_types
     Puppet::Util::Platform.fips_enabled? ?
-      %w[sha256 sha256lite sha384 sha512 sha224 sha1 sha1lite mtime ctime] :
-      %w[sha256 sha256lite sha384 sha512 sha224 sha1 sha1lite md5 md5lite mtime ctime]
+      %w[sha256 sha256lite sha384 sha512 sha224 sha1 sha1lite mtime ctime etag] :
+      %w[sha256 sha256lite sha384 sha512 sha224 sha1 sha1lite md5 md5lite mtime ctime etag]
   end
 
   def self.default_cadir
@@ -1651,13 +1651,14 @@ EOT
     },
     :server => {
       :default => "puppet",
-      :desc => "The primary Puppet server to which the Puppet agent should connect.",
+      :desc => "The primary Puppet server to which the Puppet agent should connect. This setting is ignored when `server_list` is specified.",
     },
     :server_list => {
       :default => [],
       :type => :server_list,
       :desc => "The list of primary Puppet servers to which the Puppet agent should connect,
-        in the order that they will be tried. Each value should be a fully qualified domain name, followed by an optional ':' and port number. If a port is omitted, Puppet uses masterport for that host.",
+        in the order that they will be tried. Each value should be a fully qualified domain name, followed by an optional ':' and port number.
+        If a port is omitted, Puppet uses masterport for that host. This setting takes precedence over `server`.",
     },
     :use_srv_records => {
       :default    => false,

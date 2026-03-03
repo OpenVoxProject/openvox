@@ -71,17 +71,6 @@ describe Symbol do
 end
 
 describe OpenSSL::SSL::SSLContext do
-  it 'disables SSLv3 via the SSLContext#options bitmask' do
-    expect(subject.options & OpenSSL::SSL::OP_NO_SSLv3).to eq(OpenSSL::SSL::OP_NO_SSLv3)
-  end
-
-  it 'does not exclude SSLv3 ciphers shared with TLSv1' do
-    cipher_str = OpenSSL::SSL::SSLContext::DEFAULT_PARAMS[:ciphers]
-    if cipher_str
-      expect(cipher_str.split(':')).not_to include('!SSLv3')
-    end
-  end
-
   it 'sets parameters on initialization' do
     expect_any_instance_of(described_class).to receive(:set_params)
     subject

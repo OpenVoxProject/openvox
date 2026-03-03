@@ -49,7 +49,7 @@ class Puppet::Node::Facts::Facter < Puppet::Indirector::Code
                Puppet::Node::Facts.new(request.key, facts.to_h)
              end
 
-    result.add_local_facts unless request.options[:resolve_options]
+    result.add_local_facts(request.options[:user_query])
     result.sanitize
     result
   end

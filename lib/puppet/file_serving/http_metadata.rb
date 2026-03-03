@@ -35,6 +35,19 @@ class Puppet::FileServing::HttpMetadata < Puppet::FileServing::Metadata
       end
     end
 
+    etag = http_response['etag']
+    if etag && !etag.start_with?('W/')
+      etag_value = etag.delete('"').strip
+      case etag_value
+      when /\A[0-9a-f]{64}\z/i
+        @checksums[:etag] = "{sha256}#{etag_value.downcase}"
+      when /\A[0-9a-f]{40}\z/i
+        @checksums[:etag] = "{sha1}#{etag_value.downcase}"
+      when /\A[0-9a-f]{32}\z/i
+        @checksums[:etag] = "{md5}#{etag_value.downcase}"
+      end
+    end
+
     last_modified = http_response['last-modified']
     if last_modified
       mtime = DateTime.httpdate(last_modified).to_time
@@ -51,6 +64,18 @@ class Puppet::FileServing::HttpMetadata < Puppet::FileServing::Metadata
     # Prefer the checksum_type from the indirector request options
     # but fall back to the alternative otherwise
     [@checksum_type, :sha256, :sha1, :md5, :mtime].each do |type|
+      if type == :etag
+        if @checksums[:etag]
+          @checksum = @checksums[:etag]
+          resolved = sumtype(@checksum).to_sym
+          next if resolved == :md5 && Puppet::Util::Platform.fips_enabled?
+
+          @checksum_type = resolved
+          break
+        end
+        next
+      end
+
       next if type == :md5 && Puppet::Util::Platform.fips_enabled?
 
       @checksum_type = type

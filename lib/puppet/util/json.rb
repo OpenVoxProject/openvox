@@ -16,17 +16,7 @@ module Puppet::Util
       end
     end
 
-    begin
-      require 'multi_json'
-      # Force backend detection before attempting to use the library
-      # or load any other JSON libraries
-      MultiJson.default_adapter
-
-      # Preserve core type monkey-patching done by the built-in JSON gem
-      require 'json'
-    rescue LoadError
-      require 'json'
-    end
+    require 'json'
 
     # Load the content from a file as JSON if
     # contents are in valid format. This method does not
@@ -49,46 +39,20 @@ module Puppet::Util
     # when using the built-in JSON backend, to ensure consistent behavior
     # whether or not MultiJson can be loaded.
     def self.load(string, options = {})
-      if defined? MultiJson
-        begin
-          # This ensures that JrJackson and Oj will parse very large or very small
-          # numbers as floats rather than BigDecimals, which are serialized as
-          # strings by the built-in JSON gem and therefore can cause schema errors,
-          # for example, when we are rendering reports to JSON using `to_pson` in
-          # PuppetDB.
-          case MultiJson.adapter.name
-          when "MultiJson::Adapters::JrJackson"
-            options[:use_bigdecimal] = false
-          when "MultiJson::Adapters::Oj"
-            options[:bigdecimal_load] = :float
-          end
+      string = string.read if string.respond_to?(:read)
 
-          MultiJson.load(string, options)
-        rescue MultiJson::ParseError => e
-          raise Puppet::Util::Json::ParseError.build(e, string)
-        end
-      else
-        begin
-          string = string.read if string.respond_to?(:read)
-
-          options[:symbolize_names] = true if options.delete(:symbolize_keys)
-          ::JSON.parse(string, options)
-        rescue JSON::ParserError => e
-          raise Puppet::Util::Json::ParseError.build(e, string)
-        end
-      end
+      options[:symbolize_names] = true if options.delete(:symbolize_keys)
+      ::JSON.parse(string, options)
+    rescue JSON::ParserError => e
+      raise Puppet::Util::Json::ParseError.build(e, string)
     end
 
     def self.dump(object, options = {})
-      if defined? MultiJson
-        MultiJson.dump(object, options)
-      elsif options.is_a?(JSON::State)
-        # we're being called recursively
-        object.to_json(options)
-      else
-        options.merge!(::JSON::PRETTY_STATE_PROTOTYPE.to_h) if options.delete(:pretty)
-        object.to_json(options)
+      # Options is a state when we're being called recursively
+      if !options.is_a?(JSON::State) && options.delete(:pretty)
+        options.merge!(::JSON::PRETTY_STATE_PROTOTYPE.to_h)
       end
+      object.to_json(options)
     end
   end
 end

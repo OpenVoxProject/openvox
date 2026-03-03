@@ -4,9 +4,8 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to be released.'
-        required: false
-        default: ''
+        description: 'Version to be released (e.g., 8.24.0)'
+        required: true
         type: string
       base-branch:
         description: 'The branch that will be used as the origin for the release branch.'
@@ -20,9 +19,8 @@ jobs:
   prepare_release:
     uses: OpenVoxProject/shared-actions/.github/workflows/prepare_release.yml@main
     with:
-      allowed_owner: 'OpenVoxProject'
-      base-branch: ${{ github.event.inputs.base-branch }}
-      version: ${{ github.event.inputs.version }}
+      version: ${{ inputs.version }}
+      base-branch: ${{ inputs.base-branch }}
     secrets:
       github_pat: ${{ secrets.OPENVOXBOT_COMMIT_AND_PRS }}
       ssh_private_key: ${{ secrets.OPENVOXBOT_SSH_PRIVATE_KEY }}

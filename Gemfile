@@ -22,7 +22,8 @@ gem "puppet-resource_api", *location_for(ENV['RESOURCE_API_LOCATION'] || ["~> 2.
 # Need to update the openssl gem on MacOS to avoid SSL errors. Doesn't hurt to have the newest
 # for all platforms.
 # https://www.rubyonmac.dev/certificate-verify-failed-unable-to-get-certificate-crl-openssl-ssl-sslerror
-gem 'openssl' unless `uname -o`.chomp == 'Cygwin'
+# openssl 4 raises some errors that need to be investigated
+gem 'openssl', '~> 3' unless `uname -o`.chomp == 'Cygwin'
 
 group(:features) do
   gem 'diff-lcs', '~> 1.3', require: false
