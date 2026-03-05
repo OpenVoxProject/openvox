@@ -90,9 +90,13 @@ group(:documentation, optional: true) do
   gem 'pandoc-ruby', require: false, platforms: [:ruby]
 end
 
-group :release, optional: true do
-  gem 'faraday-retry', require: false
-  gem 'github_changelog_generator', require: false, git: 'https://github.com/voxpupuli/github-changelog-generator', branch: 'avoid-processing-a-single-commit-multiple-time'
+# exlude the windows platform, faraday doesn't install properly on it
+# and we only generate the changelog in github linux runners
+platforms :ruby do
+  group :release, optional: true do
+    gem 'faraday-retry', require: false
+    gem 'github_changelog_generator', require: false, git: 'https://github.com/voxpupuli/github-changelog-generator', branch: 'avoid-processing-a-single-commit-multiple-time'
+  end
 end
 
 if File.exist? "#{__FILE__}.local"
