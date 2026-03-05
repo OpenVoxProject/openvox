@@ -84,7 +84,7 @@ end
 group(:documentation, optional: true) do
   gem 'gettext-setup', '~> 1.0', require: false, platforms: [:ruby]
   gem 'ronn-ng', '~> 0.10.1', require: false, platforms: [:ruby]
-  gem 'puppet-strings', require: false, platforms: [:ruby]
+  gem 'openvox-strings', require: false, platforms: [:ruby]
   gem 'pandoc-ruby', require: false, platforms: [:ruby]
 end
 
