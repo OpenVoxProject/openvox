@@ -81,7 +81,7 @@ describe Puppet::Util::Json do
 
     it 'returns nil when the filename is illegal and debug logs about it' do
       expect(Puppet).to receive(:debug)
-        .with(/Could not retrieve JSON content .+: pathname contains null byte/).and_call_original
+        .with(/Could not retrieve JSON content .+: path ?name contains null byte/).and_call_original
 
       expect(Puppet::Util::Json.load_file_if_valid("not\0allowed")).to eql(nil)
     end
