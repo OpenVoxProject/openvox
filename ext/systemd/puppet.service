@@ -9,7 +9,7 @@
 # then running systemctl show puppet | grep LimitNOFILE
 #
 [Unit]
-Description=Puppet agent
+Description=Puppet agent daemon provided by OpenVox
 Documentation=man:puppet-agent(8)
 Wants=basic.target
 After=basic.target network.target network-online.target
