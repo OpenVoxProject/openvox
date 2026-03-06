@@ -69,7 +69,7 @@ class Puppet::Application::Apply < Puppet::Application
       differences. When combined with scheduling and an automated system for
       pushing manifests, this can be used to implement a serverless site.
 
-      Most users should use 'puppet agent' and 'puppet master' for site-wide
+      Most users should use 'puppet agent' and 'puppet server' for site-wide
       manifests.
 
 
@@ -143,7 +143,7 @@ class Puppet::Application::Apply < Puppet::Application
         Print extra information.
 
       * --catalog:
-        Apply a JSON catalog (such as one generated with 'puppet master --compile'). You can
+        Apply a JSON catalog (such as one generated with 'puppet catalog compile'). You can
         either specify a JSON file or pipe in JSON from standard input.
 
       * --write-catalog-summary

@@ -24,7 +24,7 @@ Whether to log verbosely\.
 Whether to log debug information\.
 .SH "ACTIONS"
 .TP
-\fBdownload\fR \- Download plugins from the puppet master\.
+\fBdownload\fR \- Download plugins from the Puppet server\.
 \fBSYNOPSIS\fR
 .IP
 puppet plugin download
@@ -39,11 +39,13 @@ A list of the files downloaded, or a confirmation that no files were downloaded\
 .SH "EXAMPLES"
 \fBdownload\fR
 .P
-Retrieve plugins from the puppet master:
+Retrieve plugins from the OpenVox server:
+.
 .P
 $ puppet plugin download
 .P
-Retrieve plugins from the puppet master (API example):
+Retrieve plugins from the OpenVox server (API example):
+.
 .P
 $ Puppet::Face[:plugin, '0\.0\.1']\.download
 .SH "COPYRIGHT AND LICENSE"
