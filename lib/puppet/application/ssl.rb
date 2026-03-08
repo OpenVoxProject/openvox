@@ -71,6 +71,9 @@ class Puppet::Application::Ssl < Puppet::Application
         for subsequent requests. If there is already an existing certificate, it
         will be overwritten.
 
+      * renew_cert
+        Renew an existing and non-expired client certificate.
+
       * verify:
         Verify the private key and certificate are present and match, verify the
         certificate is issued by a trusted CA, and check revocation status.
@@ -148,6 +151,8 @@ class Puppet::Application::Ssl < Puppet::Application
       unless cert
         raise Puppet::Error, _("The certificate for '%{name}' has not yet been signed") % { name: certname }
       end
+    when 'renew_cert'
+      renew_cert(certname)
     when 'generate_request'
       generate_request(certname)
     when 'verify'
@@ -237,6 +242,30 @@ class Puppet::Application::Ssl < Puppet::Application
     )
     @cert_provider.save_client_cert(Puppet[:certname], cert)
     @cert_provider.delete_request(Puppet[:certname])
+    cert
+  rescue Puppet::HTTP::ResponseError => e
+    if e.response.code == 404
+      nil
+    else
+      raise Puppet::Error.new(_("Failed to download certificate: %{message}") % { message: e.message }, e)
+    end
+  rescue => e
+    raise Puppet::Error.new(_("Failed to download certificate: %{message}") % { message: e.message }, e)
+  end
+
+  def renew_cert(certname)
+    ssl_context = @ssl_provider.load_context(certname: certname)
+    route = create_route(ssl_context)
+    _, x509 = route.post_certificate_renewal(ssl_context)
+    cert = OpenSSL::X509::Certificate.new(x509)
+    Puppet.notice _("Downloaded certificate '%{name}' with fingerprint %{fingerprint}") % { name: Puppet[:certname], fingerprint: fingerprint(cert) }
+
+    # verify client cert before saving
+    @ssl_provider.create_context(
+      cacerts: ssl_context.cacerts, crls: ssl_context.crls, private_key: ssl_context.private_key, client_cert: cert
+    )
+    @cert_provider.save_client_cert(certname, cert)
+    @cert_provider.delete_request(certname)
     cert
   rescue Puppet::HTTP::ResponseError => e
     if e.response.code == 404

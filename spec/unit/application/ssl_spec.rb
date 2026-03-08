@@ -262,6 +262,40 @@ describe Puppet::Application::Ssl, unless: Puppet::Util::Platform.jruby? do
     end
   end
 
+  context 'when renewing a certificate' do
+    let(:renewed) do
+      # Create a new cert with the same private key ("renew" an existing certificate)
+      @ca.create_cert('ssl-client', @ca.ca_cert, @ca.key, reuse_key: @host[:private_key])
+    end
+
+    before do
+      ssl.command_line.args << 'renew_cert'
+      # This command requires an existing certificate
+      File.write(Puppet[:hostcert], @host[:cert].to_pem)
+    end
+
+    it 'renews a new cert' do
+      stub_request(:post, %r{puppet-ca/v1/certificate_renewal}).to_return(status: 200, body: renewed[:cert].to_pem)
+
+      expects_command_to_pass(%r{Downloaded certificate '#{name}' with fingerprint .*})
+
+      expect(File.read(Puppet[:hostcert])).to eq(renewed[:cert].to_pem)
+    end
+
+    it "reports an error if the downloaded cert's public key doesn't match our private key" do
+      # generate a new host key, whose public key doesn't match the cert
+      private_key = OpenSSL::PKey::RSA.new(512)
+      File.write(Puppet[:hostprivkey], private_key.to_pem)
+      File.write(Puppet[:hostpubkey], private_key.public_key.to_pem)
+
+      stub_request(:post, %r{puppet-ca/v1/certificate_renewal}).to_return(status: 200, body: renewed[:cert].to_pem)
+
+      expects_command_to_fail(
+        %r{^Failed to download certificate: The certificate for 'CN=ssl-client' does not match its private key}
+      )
+    end
+  end
+  
   context 'when verifying' do
     before do
       ssl.command_line.args << 'verify'
