@@ -282,6 +282,34 @@ describe Puppet::Application::Ssl, unless: Puppet::Util::Platform.jruby? do
       expect(File.read(Puppet[:hostcert])).to eq(renewed[:cert].to_pem)
     end
 
+    context 'with --if-expiring-in=100y specified' do
+      before do
+        ssl.command_line.args << '--if-expiring-in' << '100y'
+        ssl.parse_options
+      end
+
+      it 'renews a cert' do
+        stub_request(:post, %r{puppet-ca/v1/certificate_renewal}).to_return(status: 200, body: renewed[:cert].to_pem)
+
+        expects_command_to_pass(%r{Downloaded certificate '#{name}' with fingerprint .*})
+
+        expect(File.read(Puppet[:hostcert])).to eq(renewed[:cert].to_pem)
+      end
+    end
+
+    context 'with --if-expiring-in=0 specified' do
+      before do
+        ssl.command_line.args << '--if-expiring-in' << '0y'
+        ssl.parse_options
+      end
+
+      it 'does not renew a cert' do
+        expects_command_to_pass(%r{Certificate '#{name}' is still valid until .*})
+
+        expect(File.read(Puppet[:hostcert])).to eq(@host[:cert].to_pem)
+      end
+    end
+
     it "reports an error if the downloaded cert's public key doesn't match our private key" do
       # generate a new host key, whose public key doesn't match the cert
       private_key = OpenSSL::PKey::RSA.new(512)

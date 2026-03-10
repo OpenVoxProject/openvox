@@ -43,6 +43,11 @@ class Puppet::Application::Ssl < Puppet::Application
       * --target CERTNAME
         Clean the specified device certificate instead of this host's certificate.
 
+      * --if-expiring-in DURATION
+        When renewing a certificate only renew if the certificate is valid for
+        less than this amount of time. Duration can be specified as a time
+        interval, such as 30s, 5m, 1h.
+
       ACTIONS
       -------
 
@@ -72,7 +77,9 @@ class Puppet::Application::Ssl < Puppet::Application
         will be overwritten.
 
       * renew_cert
-        Renew an existing and non-expired client certificate.
+        Renew an existing and non-expired client certificate. When
+        `--if-expiring-in` option is specified, then renew the certificate only
+        if it's going to expire in the amount of time given.
 
       * verify:
         Verify the private key and certificate are present and match, verify the
@@ -101,6 +108,28 @@ class Puppet::Application::Ssl < Puppet::Application
   option('--localca')
   option('--verbose', '-v')
   option('--debug', '-d')
+  option('--if-expiring-in DURATION') do |arg|
+    options[:expiring_in_sec] = parse_duration(arg)
+  end
+
+  def parse_duration(value)
+    unit_map = {
+      "y" => 365 * 24 * 60 * 60,
+      "d" => 24 * 60 * 60,
+      "h" => 60 * 60,
+      "m" => 60,
+      "s" => 1
+    }
+    format = /^(\d+)(y|d|h|m|s)?$/
+
+    v = (value.is_a?(Integer) ? "#{value}s" : value)
+
+    if v =~ format
+      Regexp.last_match(1).to_i * unit_map[::Regexp.last_match(2) || 's']
+    else
+      raise ArgumentError, "Invalid duration format: #{value}"
+    end
+  end
 
   def initialize(command_line = Puppet::Util::CommandLine.new)
     super(command_line)
@@ -152,7 +181,7 @@ class Puppet::Application::Ssl < Puppet::Application
         raise Puppet::Error, _("The certificate for '%{name}' has not yet been signed") % { name: certname }
       end
     when 'renew_cert'
-      renew_cert(certname)
+      renew_cert(certname, options[:expiring_in_sec])
     when 'generate_request'
       generate_request(certname)
     when 'verify'
@@ -253,12 +282,20 @@ class Puppet::Application::Ssl < Puppet::Application
     raise Puppet::Error.new(_("Failed to download certificate: %{message}") % { message: e.message }, e)
   end
 
-  def renew_cert(certname)
+  def renew_cert(certname, expiring_in_sec_maybe)
     ssl_context = @ssl_provider.load_context(certname: certname)
+
+    if expiring_in_sec_maybe && (ssl_context[:client_cert].not_after - Time.now) > expiring_in_sec_maybe
+      Puppet.info("Expiring in #{expiring_in_sec_maybe}")
+      Puppet.info _("Certificate '%{name}' is still valid until %{date}") % { name: certname, date: ssl_context[:client_cert].not_after }
+      return ssl_context[:client_cert]
+    end
+
+    Puppet.debug _("Renewing certificate '%{name}'") % { name: certname }
     route = create_route(ssl_context)
     _, x509 = route.post_certificate_renewal(ssl_context)
     cert = OpenSSL::X509::Certificate.new(x509)
-    Puppet.notice _("Downloaded certificate '%{name}' with fingerprint %{fingerprint}") % { name: Puppet[:certname], fingerprint: fingerprint(cert) }
+    Puppet.info _("Downloaded certificate '%{name}' with fingerprint %{fingerprint}") % { name: Puppet[:certname], fingerprint: fingerprint(cert) }
 
     # verify client cert before saving
     @ssl_provider.create_context(
