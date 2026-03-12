@@ -16,6 +16,8 @@ module Puppet::ModuleTool
       end
 
       def self.harmonize_ownership(source, target)
+        return unless Puppet[:manage_internal_file_permissions]
+
         unless Puppet::Util::Platform.windows?
           source = Pathname.new(source) unless source.respond_to?(:stat)
           target = Pathname.new(target) unless target.respond_to?(:stat)
