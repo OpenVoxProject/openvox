@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'uri'
 require_relative '../../../puppet/indirector/rest'
 require_relative '../../../puppet/file_bucket/file'
 
@@ -9,7 +10,8 @@ module Puppet::FileBucketFile
 
     def head(request)
       session = Puppet.lookup(:http_session)
-      api = session.route_to(:puppet)
+      url = URI::HTTPS.build(host: request.server, port: request.port) if request.server
+      api = session.route_to(:puppet, url: url)
       api.head_filebucket_file(
         request.key,
         environment: request.environment.to_s,
@@ -23,7 +25,8 @@ module Puppet::FileBucketFile
 
     def find(request)
       session = Puppet.lookup(:http_session)
-      api = session.route_to(:puppet)
+      url = URI::HTTPS.build(host: request.server, port: request.port) if request.server
+      api = session.route_to(:puppet, url: url)
       _, filebucket_file = api.get_filebucket_file(
         request.key,
         environment: request.environment.to_s,
@@ -40,7 +43,8 @@ module Puppet::FileBucketFile
 
     def save(request)
       session = Puppet.lookup(:http_session)
-      api = session.route_to(:puppet)
+      url = URI::HTTPS.build(host: request.server, port: request.port) if request.server
+      api = session.route_to(:puppet, url: url)
       api.put_filebucket_file(
         request.key,
         body: request.instance.render,
