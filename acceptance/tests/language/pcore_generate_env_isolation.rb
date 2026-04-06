@@ -50,8 +50,8 @@ tag 'audit:high',
     create_sitepp(master, tmp_environment2, site_pp2)
   end
 
-  on master, "chmod -R 755 /tmp/#{tmp_environment}"
-  on master, "chmod -R 755 /tmp/#{tmp_environment2}"
+  on master, "chmod -R 755 #{test_tmpdir}/#{tmp_environment}"
+  on master, "chmod -R 755 #{test_tmpdir}/#{tmp_environment2}"
 
   with_puppet_running_on(master,{}) do
     agents.each do |agent|

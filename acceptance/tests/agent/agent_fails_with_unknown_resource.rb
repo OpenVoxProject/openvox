@@ -32,7 +32,7 @@ test_name "agent run should fail if it finds an unknown resource type" do
         mycustomtype{'foobar':}
       }
     SITEPP
-    manifests_path = "/tmp/#{tmp_environment}/manifests"
+    manifests_path = "#{test_tmpdir}/#{tmp_environment}/manifests"
     on(master, "mkdir -p '#{manifests_path}'")
     create_remote_file(master, "#{manifests_path}/site.pp", site_pp_content)
 
@@ -52,8 +52,8 @@ test_name "agent run should fail if it finds an unknown resource type" do
     on(master, "mkdir -p '#{type_path}'")
     create_remote_file(master, "#{type_path}/mycustomtype.rb", custom_type_content)
 
-    on(master, "chmod -R 750 '#{vendor_modules_path}' '/tmp/#{tmp_environment}'")
-    on(master, "chown -R #{master.puppet['user']}:#{master.puppet['group']} '#{vendor_modules_path}' '/tmp/#{tmp_environment}'")
+    on(master, "chmod -R 750 '#{vendor_modules_path}' '#{test_tmpdir}/#{tmp_environment}'")
+    on(master, "chown -R #{master.puppet['user']}:#{master.puppet['group']} '#{vendor_modules_path}' '#{test_tmpdir}/#{tmp_environment}'")
 
     master_opts = {
       'main' => {
