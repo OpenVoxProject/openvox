@@ -51,3 +51,4 @@ spec_order.txt
 /vendor
 /.vendor
 /*.gem
+.DS_Store
