@@ -19,8 +19,8 @@ test_name 'C100575: puppet agent with different modules in different environment
   app_type_2        = File.basename(__FILE__, '.*') + "_env_2"
   tmp_environment_1 = mk_tmp_environment_with_teardown(master, app_type_1)
   tmp_environment_2 = mk_tmp_environment_with_teardown(master, app_type_2)
-  full_path_env_1 = File.join('/tmp', tmp_environment_1)
-  full_path_env_2 = File.join('/tmp', tmp_environment_2)
+  full_path_env_1 = File.join(test_tmpdir, tmp_environment_1)
+  full_path_env_2 = File.join(test_tmpdir, tmp_environment_2)
   tmp_po_file = master.tmpfile('tmp_po_file')
 
   disable_i18n_default_master = master.puppet['disable_i18n']

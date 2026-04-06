@@ -43,7 +43,7 @@ test_name 'C100296: can auto-load defined types using a Resource statement' do
     create_sitepp(master, tmp_environment, site_pp)
   end
 
-  on(master, "chmod -R 755 /tmp/#{tmp_environment}")
+  on(master, "chmod -R 755 #{test_tmpdir}/#{tmp_environment}")
 
   with_puppet_running_on(master, {}) do
     agents.each do |agent|
