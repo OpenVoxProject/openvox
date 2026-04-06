@@ -17,7 +17,8 @@ module Puppet::Util::Checksums
     :sha512,
     :sha384,
     :sha224,
-    :mtime, :ctime, :none
+    :mtime, :ctime, :none,
+    :etag
   ].freeze
 
   # It's not a good idea to use some of these in some contexts: for example, I
@@ -337,6 +338,25 @@ module Puppet::Util::Checksums
     noop_digest = FakeChecksum.new
     yield noop_digest
     ""
+  end
+
+  # ETag-based checksum delegates to md5 for local file computation.
+  # The actual algorithm is determined at runtime by HttpMetadata#collect
+  # based on the ETag header length.
+  def etag(content)
+    md5(content)
+  end
+
+  def etag?(string)
+    string =~ /^\h{32,64}$/
+  end
+
+  def etag_file(filename, lite = false)
+    md5_file(filename, lite)
+  end
+
+  def etag_stream(lite = false, &block)
+    md5_stream(lite, &block)
   end
 
   class DigestLite
