@@ -34,6 +34,14 @@ describe Puppet::Type.type(:package).provider(:apt) do
     provider.uninstall
   end
 
+  it "should apply environment variables during uninstall" do
+    resource[:environment] = ['MY_PKG_VAR=value']
+    expect(provider).to receive(:properties).and_return({:mark => :none})
+    expect(Puppet::Util).to receive(:withenv).with({ 'MY_PKG_VAR' => 'value' }).and_call_original
+    allow(provider).to receive(:aptget)
+    provider.uninstall
+  end
+
   it "should use 'apt-get purge' and 'dpkg purge' to purge" do
     expect(provider).to receive(:aptget).with("-y", "-q", :remove, "--purge", name)
     expect(provider).to receive(:dpkg).with("--purge", name)
@@ -275,6 +283,14 @@ Version table:
       expect(provider).to receive(:aptget).with('-q', '-y', '-o', 'DPkg::Options::=--force-confold', '--foo', '--bar=baz', '--baz=foo', :install, name)
       expect(provider).to receive(:properties).and_return({:mark => :none})
 
+      provider.install
+    end
+
+    it "should apply environment variables during install" do
+      resource[:environment] = ['MY_PKG_VAR=value']
+      expect(provider).to receive(:properties).and_return({:mark => :none})
+      expect(Puppet::Util).to receive(:withenv).with({ 'MY_PKG_VAR' => 'value' }).and_call_original
+      allow(provider).to receive(:aptget)
       provider.install
     end
 
