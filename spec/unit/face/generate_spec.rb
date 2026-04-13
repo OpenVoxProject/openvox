@@ -181,11 +181,10 @@ describe Puppet::Face[:generate, :current] do
       end
 
       it 'overwrites if files exists that are not up to date while keeping up to date files' do
-        # Backdate input files so the generated output will have unambiguously newer mtimes
-        past = Time.now - 10
-        File.utime(past, past,
-                   File.join(m1, 'lib', 'puppet', 'type', 'test1.rb'),
-                   File.join(m2, 'lib', 'puppet', 'type', 'test2.rb'))
+        # Sleep before the first run so the generated output files will have
+        # unambiguously newer mtimes than the input files, even on filesystems
+        # with 2-second timestamp granularity (e.g. Windows/FAT).
+        sleep(2)
         # create them (first run)
         genface.types
         stats_before = [Puppet::FileSystem.stat(File.join(outputdir, 'test1.pp')), Puppet::FileSystem.stat(File.join(outputdir, 'test2.pp'))]
