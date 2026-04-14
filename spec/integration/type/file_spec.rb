@@ -530,7 +530,7 @@ describe Puppet::Type.type(:file), :uses_checksums => true do
 
         File.open(file[:path], "w") { |f| f.write("bar") }
 
-        d = filebucket_digest.call(IO.binread(file[:path]))
+        d = filebucket_digest.call(File.open(file[:path], 'rb') { |f| f.read })
 
         catalog.apply
 
