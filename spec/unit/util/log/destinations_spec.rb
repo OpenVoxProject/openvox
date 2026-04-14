@@ -79,7 +79,7 @@ describe Puppet::Util::Log.desttypes[:file] do
           dest = @class.new(abspath)
           dest.handle(msg1)
           dest.handle(msg2)
-          lines = IO.readlines(abspath)
+          lines = File.open(abspath, 'r:UTF-8') { |f| f.readlines }
           expect(JSON.parse(lines[-2])).to include("level" => "info", "message" => "don't panic")
           expect(JSON.parse(lines[-1])).to include("level" => "err", "message" => "panic!")
         end
