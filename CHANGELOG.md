@@ -2,12 +2,46 @@
 
 All notable changes to this project will be documented in this file.
 
-## [8.25.0](https://github.com/openvoxproject/openvox/tree/8.25.0) (2026-02-16)
+## [8.26.0](https://github.com/openvoxproject/openvox/tree/8.26.0) (2026-04-14)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.25.0...8.26.0)
+
+**Implemented enhancements:**
+
+- \[Feature request\]: file resource should support etag [\#328](https://github.com/OpenVoxProject/openvox/issues/328)
+- \[Feature request\]: Provide SLES16 packages [\#246](https://github.com/OpenVoxProject/openvox/issues/246)
+- Add a renew\_cert subcommand to puppet ssl [\#363](https://github.com/OpenVoxProject/openvox/pull/363) ([jay7x](https://github.com/jay7x))
+- Make regsubst\(\) sensitive-aware [\#354](https://github.com/OpenVoxProject/openvox/pull/354) ([cocker-cc](https://github.com/cocker-cc))
+- Feature: file etag support [\#329](https://github.com/OpenVoxProject/openvox/pull/329) ([C24-AK](https://github.com/C24-AK))
+- Add environment parameter to the package resource type [\#321](https://github.com/OpenVoxProject/openvox/pull/321) ([C24-AK](https://github.com/C24-AK))
+
+**Fixed bugs:**
+
+- \[Bug\]: OpenVox Agent on SuSE 15.5 fails with `version 'GLIBC_2.34' not found` [\#226](https://github.com/OpenVoxProject/openvox/issues/226)
+- fix: puppet module install should honor manage\_file\_permissions=false [\#362](https://github.com/OpenVoxProject/openvox/pull/362) ([dotconfig404](https://github.com/dotconfig404))
+- unbreak OpenBSD package handling. [\#316](https://github.com/OpenVoxProject/openvox/pull/316) ([buzzdeee](https://github.com/buzzdeee))
+- Use usermod\(8\) on OpenBSD to unbreak password management [\#294](https://github.com/OpenVoxProject/openvox/pull/294) ([klemensn](https://github.com/klemensn))
+
+**Merged pull requests:**
+
+- Promote openfact 5.6.0 [\#387](https://github.com/OpenVoxProject/openvox/pull/387) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Promote puppet-runtime 2026.04.09.1 [\#386](https://github.com/OpenVoxProject/openvox/pull/386) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- fix: skip SHA1 CSR signing test when OpenSSL doesn't support it [\#378](https://github.com/OpenVoxProject/openvox/pull/378) ([silug](https://github.com/silug))
+- fix: stub SRV DNS in ca\_server session spec [\#377](https://github.com/OpenVoxProject/openvox/pull/377) ([silug](https://github.com/silug))
+- Fix acceptance tests for systemd PrivateTmp compatibility [\#376](https://github.com/OpenVoxProject/openvox/pull/376) ([nmburgan](https://github.com/nmburgan))
+- Fix acceptance tests for systemd PrivateTmp compatibility [\#375](https://github.com/OpenVoxProject/openvox/pull/375) ([nmburgan](https://github.com/nmburgan))
+- Add libffi-devel to Windows setup script [\#373](https://github.com/OpenVoxProject/openvox/pull/373) ([nmburgan](https://github.com/nmburgan))
+- Promote puppet-runtime 2026.04.05.1 [\#372](https://github.com/OpenVoxProject/openvox/pull/372) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Restore the legend of help help help help help [\#364](https://github.com/OpenVoxProject/openvox/pull/364) ([nmburgan](https://github.com/nmburgan))
+- Fixes for Ruby 4.0 compatibility [\#311](https://github.com/OpenVoxProject/openvox/pull/311) ([silug](https://github.com/silug))
+
+## [8.25.0](https://github.com/openvoxproject/openvox/tree/8.25.0) (2026-02-17)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/8.24.2...8.25.0)
 
 **Implemented enhancements:**
 
+- \[Feature request\]: environment parameter for package resource [\#298](https://github.com/OpenVoxProject/openvox/issues/298)
 - Add Ubuntu 26.04 support [\#315](https://github.com/OpenVoxProject/openvox/pull/315) ([bastelfreak](https://github.com/bastelfreak))
 - Reduce OpenSSL monkey patch to only calling set\_params [\#308](https://github.com/OpenVoxProject/openvox/pull/308) ([ekohl](https://github.com/ekohl))
 - Remove monkey patch to remove daemonize [\#307](https://github.com/OpenVoxProject/openvox/pull/307) ([ekohl](https://github.com/ekohl))
