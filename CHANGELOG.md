@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [8.26.1](https://github.com/openvoxproject/openvox/tree/8.26.1) (2026-04-15)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.26.0...8.26.1)
+
+**Merged pull requests:**
+
+- Promote puppet-runtime 2026.04.15.1 [\#404](https://github.com/OpenVoxProject/openvox/pull/404) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Add signoff to promote action [\#402](https://github.com/OpenVoxProject/openvox/pull/402) ([nmburgan](https://github.com/nmburgan))
+- Add syslog as a runtime dependency [\#400](https://github.com/OpenVoxProject/openvox/pull/400) ([nmburgan](https://github.com/nmburgan))
+- acceptance: add hiera-eyaml v5 backend test [\#399](https://github.com/OpenVoxProject/openvox/pull/399) ([nmburgan](https://github.com/nmburgan))
+- avoid command injection risk [\#398](https://github.com/OpenVoxProject/openvox/pull/398) ([corporate-gadfly](https://github.com/corporate-gadfly))
+
 ## [8.26.0](https://github.com/openvoxproject/openvox/tree/8.26.0) (2026-04-14)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/8.25.0...8.26.0)
