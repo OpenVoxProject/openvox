@@ -14,7 +14,7 @@ class Puppet::Interface::Action
 
   # @api private
   def initialize(face, name)
-    raise "#{name.inspect} is an invalid action name" unless name.to_s =~ /^[a-z]\w*$/
+    raise "#{name.inspect} is an invalid action name" unless name.to_s =~ /\A[a-z]\w*\z/
 
     @face    = face
     @name    = name.to_sym
