@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [8.26.2](https://github.com/openvoxproject/openvox/tree/8.26.2) (2026-04-17)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.26.1...8.26.2)
+
+**Fixed bugs:**
+
+- \[Bug\]: `provides puppet-agent` uses bare major version, breaking `>= x.y.z` dependency constraints \(e.g. foreman-installer\) [\#406](https://github.com/OpenVoxProject/openvox/issues/406)
+- Revert "Add syslog as a runtime dependency" [\#410](https://github.com/OpenVoxProject/openvox/pull/410) ([nmburgan](https://github.com/nmburgan))
+- \(\#406\) packaging: Set Maj.Min.Patch version as `provides` instead of major one [\#407](https://github.com/OpenVoxProject/openvox/pull/407) ([bastelfreak](https://github.com/bastelfreak))
+
+**Merged pull requests:**
+
+- Promote puppet-runtime 2026.04.17.1 [\#411](https://github.com/OpenVoxProject/openvox/pull/411) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- .gitignore: Ignore /acceptance/.vendor [\#408](https://github.com/OpenVoxProject/openvox/pull/408) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [8.26.1](https://github.com/openvoxproject/openvox/tree/8.26.1) (2026-04-15)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/8.26.0...8.26.1)
