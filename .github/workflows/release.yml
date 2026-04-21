@@ -16,12 +16,32 @@ on:
 permissions: {}
 
 jobs:
+  verify-version:
+    name: 'Verify prepare_release PR was merged'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.base-branch }}
+
+      - name: Verify PUPPETVERSION matches release version
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          puppetversion=$(ruby -e "require_relative 'lib/puppet/version'; puts Puppet::PUPPETVERSION")
+          if [ "$puppetversion" != "$RELEASE_VERSION" ]; then
+            echo "::error::PUPPETVERSION is '$puppetversion' but expected '$RELEASE_VERSION'. Has the prepare_release PR been merged?"
+            exit 1
+          fi
+          echo "PUPPETVERSION '$puppetversion' matches release version"
+
   release:
+    needs: verify-version
     uses: OpenVoxProject/shared-actions/.github/workflows/release.yml@main
     with:
       version: ${{ inputs.version }}
       base-branch: ${{ inputs.base-branch }}
-      bump_to_rc_after_release: true
     secrets:
       github_pat: ${{ secrets.OPENVOXBOT_COMMIT_AND_PRS }}
       ssh_private_key: ${{ secrets.OPENVOXBOT_SSH_PRIVATE_KEY }}
