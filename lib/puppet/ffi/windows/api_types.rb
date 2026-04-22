@@ -230,7 +230,7 @@ module Puppet::FFI::Windows
                :Data4, [:byte, 8]
 
         def self.[](s)
-          raise _('Bad GUID format.') unless s =~ /^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$/i
+          raise _('Bad GUID format.') unless s =~ /\A[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}\z/i
 
           new.tap do |guid|
             guid[:Data1] = s[0, 8].to_i(16)
