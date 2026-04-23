@@ -512,45 +512,6 @@ class Puppet::Settings
     @config.include?(name)
   end
 
-  # Prints the contents of a config file with the available config settings, or it
-  # prints a single value of a config setting.
-  def print_config_options
-    if Puppet::Util::Log.sendlevel?(:info)
-      Puppet::Util::Log.newdestination(:console)
-      message = _("Using --configprint is deprecated. Use 'puppet config <subcommand>' instead.")
-      Puppet.deprecation_warning(message)
-    end
-
-    env = value(:environment)
-    val = value(:configprint)
-    if val == "all"
-      hash = {}
-      each do |name, _obj|
-        val = value(name, env)
-        val = val.inspect if val == ""
-        hash[name] = val
-      end
-      hash.sort { |a, b| a[0].to_s <=> b[0].to_s }.each do |name, v|
-        puts "#{name} = #{v}"
-      end
-    else
-      val.split(/\s*,\s*/).sort.each do |v|
-        if include?(v)
-          # if there is only one value, just print it for back compatibility
-          if v == val
-            puts value(val, env)
-            break
-          end
-          puts "#{v} = #{value(v, env)}"
-        else
-          puts "invalid setting: #{v}"
-          return false
-        end
-      end
-    end
-    true
-  end
-
   def generate_config
     puts to_config
     true
@@ -562,14 +523,13 @@ class Puppet::Settings
   end
 
   def print_configs
-    return print_config_options if value(:configprint) != ""
     return generate_config if value(:genconfig)
 
     generate_manifest if value(:genmanifest)
   end
 
   def print_configs?
-    (value(:configprint) != "" || value(:genconfig) || value(:genmanifest)) && true
+    (value(:genconfig) || value(:genmanifest)) && true
   end
 
   # The currently configured run mode that is preferred for constructing the application configuration.
