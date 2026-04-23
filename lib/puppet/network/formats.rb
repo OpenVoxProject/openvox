@@ -87,38 +87,6 @@ Puppet::Network::FormatHandler.create(:binary, :mime => "application/octet-strea
                                                :required_methods => [:render_method, :intern_method]) do
 end
 
-# PSON is deprecated
-Puppet::Network::FormatHandler.create_serialized_formats(:pson, :weight => 10, :required_methods => [:render_method, :intern_method], :intern_method => :from_data_hash) do
-  confine :feature => :pson
-
-  def intern(klass, text)
-    data_to_instance(klass, PSON.parse(text))
-  end
-
-  def intern_multiple(klass, text)
-    PSON.parse(text).collect do |data|
-      data_to_instance(klass, data)
-    end
-  end
-
-  # PSON monkey-patches Array, so this works.
-  def render_multiple(instances)
-    instances.to_pson
-  end
-
-  # If they pass class information, we want to ignore it.
-  # This is required for compatibility with Puppet 3.x
-  def data_to_instance(klass, data)
-    d = data['data'] if data.is_a?(Hash)
-    if d
-      data = d
-    end
-    return data if data.is_a?(klass)
-
-    klass.from_data_hash(data)
-  end
-end
-
 Puppet::Network::FormatHandler.create_serialized_formats(:json, :mime => 'application/json', :charset => Encoding::UTF_8, :weight => 15, :required_methods => [:render_method, :intern_method], :intern_method => :from_data_hash) do
   def intern(klass, text)
     data_to_instance(klass, Puppet::Util::Json.load(text))
@@ -134,8 +102,6 @@ Puppet::Network::FormatHandler.create_serialized_formats(:json, :mime => 'applic
     Puppet::Util::Json.dump(instances)
   end
 
-  # Unlike PSON, we do not need to unwrap the data envelope, because legacy 3.x agents
-  # have never supported JSON
   def data_to_instance(klass, data)
     return data if data.is_a?(klass)
 

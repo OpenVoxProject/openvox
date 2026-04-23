@@ -189,12 +189,7 @@ class Puppet::Network::HTTP::API::IndirectedRoutes
     rescue Puppet::Network::FormatHandler::FormatError => err
       msg = _("Failed to serialize %{model} for '%{key}': %{detail}") %
             { model: model, key: key, detail: err }
-      if Puppet[:allow_pson_serialization]
-        Puppet.warning(msg)
-      else
-        raise Puppet::Network::FormatHandler::FormatError, msg
-      end
-      false
+      raise Puppet::Network::FormatHandler::FormatError, msg
     end
 
     return formatter if formatter

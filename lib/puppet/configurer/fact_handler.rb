@@ -42,10 +42,6 @@ module Puppet::Configurer::FactHandler
     # > 1024 characters sent in POST data, additionally x-www-form-urlencoded
     # so it's only important that encoding method here return original values
     # correctly when CGI.unescape called against it (in compiler code)
-    if Puppet[:preferred_serialization_format] == "pson"
-      { :facts_format => :pson, :facts => Puppet::Util.uri_query_encode(facts.render(:pson)) }
-    else
-      { :facts_format => 'application/json', :facts => Puppet::Util.uri_query_encode(facts.render(:json)) }
-    end
+    { :facts_format => 'application/json', :facts => Puppet::Util.uri_query_encode(facts.render(:json)) }
   end
 end

@@ -6,7 +6,6 @@ describe Puppet::Network::HTTP::Request do
   include PuppetSpec::Network
 
   let(:json_formatter) { Puppet::Network::FormatHandler.format(:json) }
-  let(:pson_formatter) { Puppet::Network::FormatHandler.format(:pson) }
 
   def headers
     {
@@ -75,13 +74,13 @@ describe Puppet::Network::HTTP::Request do
     end
 
     it "returns accepted and supported formats, in the accepted order" do
-      request = a_request(headers.merge('accept' => 'application/json, application/x-msgpack, text/pson'))
-      expect(request.response_formatters_for([:pson, :json])).to eq([json_formatter, pson_formatter])
+      request = a_request(headers.merge('accept' => 'application/json, text/yaml'))
+      expect(request.response_formatters_for([:json])).to eq([json_formatter])
     end
 
-    it "selects the second format if the first one isn't supported by the server" do
-      request = a_request(headers.merge('accept' => 'application/json, text/pson'))
-      expect(request.response_formatters_for([:pson])).to eq([pson_formatter])
+    it "selects the first matching format between accepted and server-supported" do
+      request = a_request(headers.merge('accept' => 'text/yaml, application/json'))
+      expect(request.response_formatters_for([:json])).to eq([json_formatter])
     end
 
     it "raises HTTP 406 if Accept doesn't include any server-supported formats" do
