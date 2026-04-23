@@ -92,6 +92,7 @@ end
         <<-EOF
 # The a_fact fact comment
 Puppet.runtime[:facter].add("a_fact") do
+  setcode { 'a_fact_value' }
 end
         EOF
       ],
