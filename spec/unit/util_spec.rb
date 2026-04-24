@@ -215,6 +215,55 @@ describe Puppet::Util do
     end
   end
 
+  describe "deprecated ENV wrapper methods" do
+    it "#get_env emits a deprecation warning and returns the env var" do
+      ENV["PUPPET_UTIL_TEST_VAR"] = "testval"
+      expect(Puppet).to receive(:deprecation_warning).with(/get_env is deprecated/)
+      expect(Puppet::Util.get_env("PUPPET_UTIL_TEST_VAR")).to eq("testval")
+    ensure
+      ENV.delete("PUPPET_UTIL_TEST_VAR")
+    end
+
+    it "#get_environment emits a deprecation warning and returns ENV as a hash" do
+      expect(Puppet).to receive(:deprecation_warning).with(/get_environment is deprecated/)
+      result = Puppet::Util.get_environment
+      expect(result).to be_a(Hash)
+    end
+
+    it "#clear_environment emits a deprecation warning and clears ENV" do
+      saved = ENV.to_hash
+      expect(Puppet).to receive(:deprecation_warning).with(/clear_environment is deprecated/)
+      Puppet::Util.clear_environment
+      expect(ENV.to_hash).to be_empty
+    ensure
+      ENV.replace(saved)
+    end
+
+    it "#set_env emits a deprecation warning and sets the env var" do
+      expect(Puppet).to receive(:deprecation_warning).with(/set_env is deprecated/)
+      Puppet::Util.set_env("PUPPET_UTIL_TEST_VAR", "setval")
+      expect(ENV["PUPPET_UTIL_TEST_VAR"]).to eq("setval")
+    ensure
+      ENV.delete("PUPPET_UTIL_TEST_VAR")
+    end
+
+    it "#merge_environment emits a deprecation warning and merges the hash into ENV" do
+      expect(Puppet).to receive(:deprecation_warning).with(/merge_environment is deprecated/)
+      Puppet::Util.merge_environment("PUPPET_UTIL_TEST_MERGE" => "merged")
+      expect(ENV["PUPPET_UTIL_TEST_MERGE"]).to eq("merged")
+    ensure
+      ENV.delete("PUPPET_UTIL_TEST_MERGE")
+    end
+
+    it "#merge_environment coerces symbol keys to strings" do
+      expect(Puppet).to receive(:deprecation_warning).with(/merge_environment is deprecated/)
+      Puppet::Util.merge_environment(PUPPET_UTIL_TEST_SYM: "symval")
+      expect(ENV["PUPPET_UTIL_TEST_SYM"]).to eq("symval")
+    ensure
+      ENV.delete("PUPPET_UTIL_TEST_SYM")
+    end
+  end
+
   describe "#absolute_path?" do
     describe "on posix systems", :if => Puppet.features.posix? do
       it "should default to the platform of the local system" do
