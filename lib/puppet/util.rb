@@ -44,6 +44,7 @@ module Util
   # @deprecated Use ENV instead
   # @api private
   def get_env(name, mode = default_env)
+    Puppet.deprecation_warning(_("Puppet::Util.get_env is deprecated and will be removed in a future version. Use ENV[] directly instead."))
     ENV.fetch(name, nil)
   end
   module_function :get_env
@@ -51,6 +52,7 @@ module Util
   # @deprecated Use ENV instead
   # @api private
   def get_environment(mode = default_env)
+    Puppet.deprecation_warning(_("Puppet::Util.get_environment is deprecated and will be removed in a future version. Use ENV.to_hash directly instead."))
     ENV.to_hash
   end
   module_function :get_environment
@@ -58,6 +60,7 @@ module Util
   # @deprecated Use ENV instead
   # @api private
   def clear_environment(mode = default_env)
+    Puppet.deprecation_warning(_("Puppet::Util.clear_environment is deprecated and will be removed in a future version. Use ENV.clear directly instead."))
     ENV.clear
   end
   module_function :clear_environment
@@ -65,6 +68,7 @@ module Util
   # @deprecated Use ENV instead
   # @api private
   def set_env(name, value = nil, mode = default_env)
+    Puppet.deprecation_warning(_("Puppet::Util.set_env is deprecated and will be removed in a future version. Use ENV[]= directly instead."))
     ENV[name] = value
   end
   module_function :set_env
@@ -72,7 +76,8 @@ module Util
   # @deprecated Use ENV instead
   # @api private
   def merge_environment(env_hash, mode = default_env)
-    ENV.merge!(hash.transform_keys(&:to_s))
+    Puppet.deprecation_warning(_("Puppet::Util.merge_environment is deprecated and will be removed in a future version. Use ENV.merge! directly instead."))
+    ENV.merge!(env_hash.transform_keys(&:to_s))
   end
   module_function :merge_environment
 
