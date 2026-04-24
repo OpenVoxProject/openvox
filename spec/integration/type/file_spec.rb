@@ -1309,21 +1309,6 @@ describe Puppet::Type.type(:file), :uses_checksums => true do
   end
 
   describe "when sourcing" do
-    it "should give a deprecation warning when the user sets source_permissions" do
-      expect(Puppet).to receive(:puppet_deprecation_warning).with(
-        'The `source_permissions` parameter is deprecated. Explicitly set `owner`, `group`, and `mode`.',
-        {:file => 'my/file.pp', :line => 5})
-
-      catalog.add_resource described_class.new(:path => path, :content => 'this is content', :source_permissions => :use_when_creating)
-      catalog.apply
-    end
-
-    it "should not give a deprecation warning when the user does not set source_permissions" do
-      expect(Puppet).not_to receive(:puppet_deprecation_warning)
-      catalog.add_resource described_class.new(:path => path, :content => 'this is content')
-      catalog.apply
-    end
-
     with_checksum_types "source", "default_values" do
       before(:each) do
         set_mode(0770, checksum_file)
