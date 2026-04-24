@@ -524,6 +524,7 @@ describe 'The lookup function' do
               Global Data Provider (hiera configuration version 5)
                 No such key: "abc::e"
               Environment Data Provider (hiera configuration version 5)
+                Using configuration "#{environmentpath}/production/hiera.yaml"
                 Deprecated API function "environment::data"
                   Found key: "abc::e" value: {
                     "k1" => "env_e1",
@@ -570,6 +571,7 @@ describe 'The lookup function' do
               Global Data Provider (hiera configuration version 5)
                 No such key: "hieraprovider::test::not_found"
               Environment Data Provider (hiera configuration version 5)
+                Using configuration "#{environmentpath}/production/hiera.yaml"
                 Deprecated API function "environment::data"
                   No such key: "hieraprovider::test::not_found"
               Module "hieraprovider" Data Provider (hiera configuration version 4)
@@ -627,6 +629,7 @@ describe 'The lookup function' do
                   {
                     :type => :data_provider,
                     :name => 'Environment Data Provider (hiera configuration version 5)',
+                    :configuration_path => "#{environmentpath}/production/hiera.yaml",
                     :branches => [
                       {
                         :type => :data_provider,

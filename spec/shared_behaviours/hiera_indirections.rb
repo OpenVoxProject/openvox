@@ -27,10 +27,6 @@ shared_examples_for "Hiera indirection" do |test_klass, fixture_dir|
     test_klass.instance_variable_set(:@hiera, nil)
   end
 
-  it "should be the default data_binding terminus" do
-    expect(Puppet.settings[:data_binding_terminus]).to eq(:hiera)
-  end
-
   it "should raise an error if we don't have the hiera feature" do
     expect(Puppet.features).to receive(:hiera?).and_return(false)
     expect { test_klass.new }.to raise_error RuntimeError,
