@@ -863,7 +863,7 @@ names.
 **Note:** The list of alternate names is locked in when the server's
 certificate is signed. If you need to change the list later, you can't just
 change this setting; you also need to regenerate the certificate. For more
-information on that process, see the 
+information on that process, see the
 [cert regen docs](https://puppet.com/docs/puppet/latest/ssl_regenerate_certificates.html).
 
 To see all the alternate names your servers are using, log into your CA server
@@ -1650,7 +1650,7 @@ EOT
       :desc     => "The root directory of devices' $confdir.",
     },
     :server => {
-      :default => "puppet",
+      :default => Puppet.features.root? ? 'puppet' : '', # use an empty string so dependent settings can resolve without crashing
       :desc => "The primary Puppet server to which the Puppet agent should connect. This setting is ignored when `server_list` is specified.",
     },
     :server_list => {
