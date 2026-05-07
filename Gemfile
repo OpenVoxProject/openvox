@@ -93,7 +93,7 @@ end
 platforms :ruby do
   group :release, optional: true do
     gem 'faraday-retry', require: false
-    gem 'github_changelog_generator', require: false, git: 'https://github.com/voxpupuli/github-changelog-generator', branch: 'avoid-processing-a-single-commit-multiple-time'
+    gem 'github_changelog_generator', '~> 1.18', require: false
   end
 end
 
