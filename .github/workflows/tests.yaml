@@ -2,7 +2,7 @@
 name: RSpec tests
 
 on:
-  pull_request: {}
+  pull_request: { branches: ['main'] }
   push:
     branches:
       - main
