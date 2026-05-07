@@ -8,10 +8,12 @@ on:
         required: true
         type: string
       base-branch:
-        description: 'The branch that will be used as the origin for the release branch.'
-        required: false
-        default: ''
-        type: string
+        description: 'The branch to release from.'
+        type: choice
+        options:
+          - main
+          - '8.x'
+        default: 'main'
 
 permissions: {}
 
