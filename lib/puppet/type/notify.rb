@@ -11,7 +11,7 @@ module Puppet
 
     newproperty(:message, :idempotent => false) do
       desc "The message to be sent to the log. Note that the value specified must be a string."
-      def sync
+      def insync?(is)
         message = @sensitive ? 'Sensitive [value redacted]' : should
         case @resource["withpath"]
         when :true
@@ -19,15 +19,11 @@ module Puppet
         else
           Puppet.send(@resource[:loglevel], message)
         end
-        nil
+        true
       end
 
       def retrieve
         :absent
-      end
-
-      def insync?(is)
-        false
       end
 
       defaultto { @resource[:name] }
