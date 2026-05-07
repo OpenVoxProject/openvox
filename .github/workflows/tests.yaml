@@ -2,10 +2,10 @@
 name: RSpec tests
 
 on:
-  pull_request: { branches: ['main'] }
+  pull_request: { branches: ['8.x'] }
   push:
     branches:
-      - main
+      - '8.x'
 
 permissions:
   contents: read
