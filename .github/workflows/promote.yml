@@ -88,10 +88,10 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
         with:
-          commit-message: "Promote ${{ inputs.component }} ${{ inputs.ref }}"
-          branch: "promote/${{ inputs.component }}/${{ inputs.ref }}"
+          commit-message: "Promote ${{ inputs.component }} ${{ inputs.ref }} into ${{ inputs.branch }}"
+          branch: "promote/${{ inputs.branch }}/${{ inputs.component }}/${{ inputs.ref }}"
           delete-branch: true
-          title: "Promote ${{ inputs.component }} ${{ inputs.ref }}"
+          title: "Promote ${{ inputs.component }} ${{ inputs.ref }} into ${{ inputs.branch }}"
           token: ${{ secrets.OPENVOXBOT_COMMIT_AND_PRS }}
           assignees: '${{ github.triggering_actor }}'
           author: '${{ env.GIT_AUTHOR_NAME }} <${{ env.GIT_AUTHOR_EMAIL }}>'
@@ -99,4 +99,4 @@ jobs:
           signoff: true
           base: ${{ inputs.branch }}
           body: |
-            Automated promotion of ${{ inputs.component }} to ref ${{ inputs.ref }}.
+            Automated promotion of ${{ inputs.component }} to ref ${{ inputs.ref }} in ${{ inputs.branch }}.
