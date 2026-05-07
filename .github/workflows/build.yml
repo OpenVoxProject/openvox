@@ -33,6 +33,13 @@ on:
         required: false
         type: boolean
         default: false
+      branch:
+        description: 'The release branch to build from.'
+        type: choice
+        options:
+          - main
+          - '8.x'
+        default: 'main'
 
 jobs:
   build:
@@ -45,6 +52,7 @@ jobs:
       vanagon_branch: ${{ inputs.vanagon_branch }}
       upload_to_s3: ${{ inputs.upload_to_s3 }}
       working_directory: 'packaging'
+      branch: ${{ inputs.branch }}
     secrets: inherit
   build_dev:
     if: ${{ github.event.inputs.use_dev == 'true' }}
@@ -56,4 +64,5 @@ jobs:
       vanagon_branch: ${{ inputs.vanagon_branch }}
       upload_to_s3: ${{ inputs.upload_to_s3 }}
       working_directory: 'packaging'
+      branch: ${{ inputs.branch }}
     secrets: inherit
