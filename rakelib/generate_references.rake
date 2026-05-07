@@ -198,18 +198,18 @@ namespace :references do
 
   desc "Generate function reference"
   task :function do
-    # Locate puppet-strings
+    # Locate openvox-strings
     begin
-      require 'puppet-strings'
-      require 'puppet-strings/version'
+      require 'openvox-strings'
+      require 'openvox-strings/version'
     rescue LoadError
-      abort("Run `bundle config set with documentation` and `bundle update` to install the `puppet-strings` gem.")
+      abort("Run `bundle config set with documentation` and `bundle update` to install the `openvox-strings` gem.")
     end
 
     strings_data = {}
     Tempfile.create do |tmpfile|
-      puts "Running puppet strings #{PuppetStrings::VERSION}"
-      PuppetStrings.generate(['lib/puppet/{functions,parser/functions}/**/*.rb'], json: true, path: tmpfile.path)
+      puts "Running puppet strings #{OpenvoxStrings::VERSION}"
+      OpenvoxStrings.generate(['lib/puppet/{functions,parser/functions}/**/*.rb'], json: true, path: tmpfile.path)
       strings_data = JSON.load_file(tmpfile.path)
     end
 
@@ -334,12 +334,12 @@ namespace :references do
   task :type do
     FileUtils.mkdir_p(TYPES_DIR)
 
-    # Locate puppet-strings
+    # Locate openvox-strings
     begin
-      require 'puppet-strings'
-      require 'puppet-strings/version'
+      require 'openvox-strings'
+      require 'openvox-strings/version'
     rescue LoadError
-      abort("Run `bundle config set with documentation` and `bundle update` to install the `puppet-strings` gem.")
+      abort("Run `bundle config set with documentation` and `bundle update` to install the `openvox-strings` gem.")
     end
 
     sha = %x{git rev-parse HEAD}.chomp
@@ -347,8 +347,8 @@ namespace :references do
 
     # Based on https://github.com/puppetlabs/puppet-docs/blob/1a13be3fc6981baa8a96ff832ab090abc986830e/lib/puppet_references/puppet/strings.rb#L25-L26
     Tempfile.create do |tmpfile|
-      puts "Running puppet strings #{PuppetStrings::VERSION}"
-      PuppetStrings.generate(['lib/puppet/type/*.rb'], json: true, path: tmpfile.path)
+      puts "Running puppet strings #{OpenvoxStrings::VERSION}"
+      OpenvoxStrings.generate(['lib/puppet/type/*.rb'], json: true, path: tmpfile.path)
       strings_data = JSON.load_file(tmpfile.path)
 
       # convert strings output to data the overview ERB template expects
