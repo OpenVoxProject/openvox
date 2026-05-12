@@ -14,22 +14,14 @@ describe Puppet::Util::CommandLine::PuppetOptionParser do
       expect(@logs).to be_empty
     end
 
-    it "parses a 'long' option with a value and converts '-' to '_' & warns" do
-      parses(
-        :option => ["--an_gry", "Angry", :REQUIRED],
-        :from_arguments => ["--an-gry", "foo"],
-        :expects => "foo"
-      )
-      expect(@logs).to have_matching_log(/Partial argument match detected: correct argument is --an_gry, got --an-gry. Partial argument matching is deprecated and will be removed in a future release./)
+    it "raises for a 'long' option where '-' and '_' don't match exactly" do
+      option_parser.on("--an_gry", "Angry", :REQUIRED) { |val| }
+      expect { option_parser.parse(["--an-gry", "foo"]) }.to raise_error(Puppet::Util::CommandLine::PuppetOptionError)
     end
 
-    it "parses a 'long' option with a value and converts '_' to '-' & warns" do
-      parses(
-        :option => ["--an-gry", "Angry", :REQUIRED],
-        :from_arguments => ["--an_gry", "foo"],
-        :expects => "foo"
-      )
-      expect(@logs).to have_matching_log(/Partial argument match detected: correct argument is --an-gry, got --an_gry. Partial argument matching is deprecated and will be removed in a future release./)
+    it "raises for a 'long' option where '_' and '-' don't match exactly" do
+      option_parser.on("--an-gry", "Angry", :REQUIRED) { |val| }
+      expect { option_parser.parse(["--an_gry", "foo"]) }.to raise_error(Puppet::Util::CommandLine::PuppetOptionError)
     end
 
     it "parses a 'short' option with a value" do
@@ -60,22 +52,14 @@ describe Puppet::Util::CommandLine::PuppetOptionParser do
       )
     end
 
-    it "converts '_' to '-' with a 'long' option & warns" do
-      parses(
-        :option => ["--an-gry", "Angry", :NONE],
-        :from_arguments => ["--an_gry"],
-        :expects => true
-      )
-      expect(@logs).to have_matching_log(/Partial argument match detected: correct argument is --an-gry, got --an_gry. Partial argument matching is deprecated and will be removed in a future release./)
+    it "raises for a 'long' option where '_' and '-' don't match exactly" do
+      option_parser.on("--an-gry", "Angry", :NONE) { |val| }
+      expect { option_parser.parse(["--an_gry"]) }.to raise_error(Puppet::Util::CommandLine::PuppetOptionError)
     end
 
-    it "converts '-' to '_' with a 'long' option & warns" do
-      parses(
-        :option => ["--an_gry", "Angry", :NONE],
-        :from_arguments => ["--an-gry"],
-        :expects => true
-      )
-      expect(@logs).to have_matching_log(/Partial argument match detected: correct argument is --an_gry, got --an-gry. Partial argument matching is deprecated and will be removed in a future release./)
+    it "raises for a 'long' option where '-' and '_' don't match exactly" do
+      option_parser.on("--an_gry", "Angry", :NONE) { |val| }
+      expect { option_parser.parse(["--an-gry"]) }.to raise_error(Puppet::Util::CommandLine::PuppetOptionError)
     end
 
     it "parses a 'short' option" do
@@ -95,41 +79,25 @@ describe Puppet::Util::CommandLine::PuppetOptionParser do
       expect(@logs).to be_empty
     end
 
-    it "resolves '-' to '_' with '--no-blah' syntax" do
-      parses(
-        :option => ["--[no-]an_gry", "Angry", :NONE],
-        :from_arguments => ["--no-an-gry"],
-        :expects => false
-      )
-      expect(@logs).to have_matching_log(/Partial argument match detected: correct argument is --\[no-\]an_gry, got --no-an-gry. Partial argument matching is deprecated and will be removed in a future release./)
+    it "raises for '--no-blah' syntax where '-' and '_' don't match exactly" do
+      option_parser.on("--[no-]an_gry", "Angry", :NONE) { |val| }
+      expect { option_parser.parse(["--no-an-gry"]) }.to raise_error(Puppet::Util::CommandLine::PuppetOptionError)
     end
 
-    it "resolves '_' to '-' with '--no-blah' syntax" do
-      parses(
-        :option => ["--[no-]an-gry", "Angry", :NONE],
-        :from_arguments => ["--no-an_gry"],
-        :expects => false
-      )
-      expect(@logs).to have_matching_log(/Partial argument match detected: correct argument is --\[no-\]an-gry, got --no-an_gry. Partial argument matching is deprecated and will be removed in a future release./)
+    it "raises for '--no-blah' syntax where '_' and '-' don't match exactly" do
+      option_parser.on("--[no-]an-gry", "Angry", :NONE) { |val| }
+      expect { option_parser.parse(["--no-an_gry"]) }.to raise_error(Puppet::Util::CommandLine::PuppetOptionError)
     end
 
-    it "resolves '-' to '_' & warns when option is defined with '--no-blah syntax' but argument is given in '--option' syntax" do
-      parses(
-        :option => ["--[no-]rag-e", "Rage", :NONE],
-        :from_arguments => ["--rag_e"],
-        :expects => true
-      )
-      expect(@logs).to have_matching_log(/Partial argument match detected: correct argument is --\[no-\]rag-e, got --rag_e. Partial argument matching is deprecated and will be removed in a future release./)
-  end
+    it "raises when option is defined with '--no-blah' syntax but '-' and '_' don't match exactly" do
+      option_parser.on("--[no-]rag-e", "Rage", :NONE) { |val| }
+      expect { option_parser.parse(["--rag_e"]) }.to raise_error(Puppet::Util::CommandLine::PuppetOptionError)
+    end
 
-  it "resolves '_' to '-' & warns when option is defined with '--no-blah syntax' but argument is given in '--option' syntax" do
-    parses(
-      :option => ["--[no-]rag_e", "Rage", :NONE],
-      :from_arguments => ["--rag-e"],
-      :expects => true
-    )
-    expect(@logs).to have_matching_log(/Partial argument match detected: correct argument is --\[no-\]rag_e, got --rag-e. Partial argument matching is deprecated and will be removed in a future release./)
-  end
+    it "raises when option is defined with '--no-blah' syntax but '_' and '-' don't match exactly" do
+      option_parser.on("--[no-]rag_e", "Rage", :NONE) { |val| }
+      expect { option_parser.parse(["--rag-e"]) }.to raise_error(Puppet::Util::CommandLine::PuppetOptionError)
+    end
 
     it "overrides a previous argument with a later one" do
       parses(
