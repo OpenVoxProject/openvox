@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.licenses = ['Apache-2.0']
 
   spec.required_rubygems_version = Gem::Requirement.new("> 1.3.1")
-  spec.required_ruby_version = Gem::Requirement.new(">= 3.1.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 3.3.0")
   spec.authors = ["OpenVox Project"]
   spec.date = "2012-08-17"
   spec.description = <<~EOF
