@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       ref:
-        description: 'Tag to build'
+        description: 'Tag to build for a release, or branch to build for a pre-release'
         required: true
       project_name:
         description: 'The vanagon project to build'
