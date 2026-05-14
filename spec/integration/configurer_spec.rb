@@ -135,6 +135,7 @@ describe Puppet::Configurer do
         end
 
         it 'logs errors that occur during fact submission' do
+          Puppet[:server] = 'puppet'
           stub_request(:put, "https://puppet:8140/puppet/v3/facts/configurer.test?environment=production").to_return(status: 502)
           expect(Puppet).to receive(:log_exception).with(Puppet::HTTP::ResponseError,
                                                          /^Failed to submit facts/)

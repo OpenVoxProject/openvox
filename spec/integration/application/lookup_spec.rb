@@ -147,6 +147,7 @@ describe 'lookup' do
     end
 
     it 'loads trusted information from the node certificate' do
+      Puppet.settings[:server] = 'puppet'
       Puppet.settings[:node_terminus] = 'exec'
       expect_any_instance_of(Puppet::Node::Exec).to receive(:find) do |args|
         info = Puppet.lookup(:trusted_information)

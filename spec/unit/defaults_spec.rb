@@ -8,6 +8,31 @@ describe "Defaults" do
     end
   end
 
+  describe 'server' do
+    it 'should default to `puppet` when root' do
+      allow(Puppet.features).to receive(:root?).and_return(true)
+      foo = Puppet::Settings.new
+      Puppet.initialize_default_settings!(foo)
+      expect(foo[:server]).to eq('puppet')
+    end
+
+    it 'should default to empty value when non-root' do
+      allow(Puppet.features).to receive(:root?).and_return(false)
+      foo = Puppet::Settings.new
+      Puppet.initialize_default_settings!(foo)
+      expect(foo[:server]).to eq('')
+    end
+
+    it 'should fail when trying to establish a compiler connection without setting `server`' do
+      allow(Puppet.features).to receive(:root?).and_return(false)
+      expect {
+        client = Puppet.runtime[:http]
+        session = client.create_session
+        service = session.route_to(:puppet)
+      }.to raise_exception ArgumentError, /Required setting/
+    end
+  end
+
   describe 'strict' do
     it 'should accept the valid value :off' do
       expect {Puppet.settings[:strict] = 'off'}.to_not raise_exception
