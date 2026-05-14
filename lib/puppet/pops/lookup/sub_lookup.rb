@@ -21,6 +21,8 @@ module SubLookup
   def split_key(key)
     return [key] if key.match(SPECIAL).nil?
 
+    # Rubocop 1.86.2 starts mis-classifying the "raise yield" constructions as a failure.
+    # rubocop:disable Lint/ParenthesesAsGroupedExpression
     segments = key.split(/(\s*"[^"]+"\s*|\s*'[^']+'\s*|[^'".]+)/)
     if segments.empty?
       # Only happens if the original key was an empty string
@@ -45,6 +47,7 @@ module SubLookup
     else
       raise yield('Syntax error')
     end
+    # rubocop:enable Lint/ParenthesesAsGroupedExpression
   end
 
   # Perform a sub-lookup using the given _segments_ to access the given _value_. Each segment must be a string. A string
