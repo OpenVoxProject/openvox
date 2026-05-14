@@ -2,7 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
-## [8.26.2](https://github.com/openvoxproject/openvox/tree/8.26.2) (2026-04-17)
+## [8.27.0](https://github.com/openvoxproject/openvox/tree/8.27.0) (2026-05-14)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.26.2...8.27.0)
+
+**Fixed bugs:**
+
+- \[Bug\]: openvox-agent 8.26.2 reports 8.26.1 with --version option [\#415](https://github.com/OpenVoxProject/openvox/issues/415)
+
+**Closed issues:**
+
+- \[docs\] use openvox-strings instead of puppet-strings [\#433](https://github.com/OpenVoxProject/openvox/issues/433)
+
+**Merged pull requests:**
+
+- Clarify "ref" description in GitHub build workflow [\#445](https://github.com/OpenVoxProject/openvox/pull/445) ([Sharpie](https://github.com/Sharpie))
+- Promote puppet-runtime 2026.05.11.1 into main [\#437](https://github.com/OpenVoxProject/openvox/pull/437) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Promote openfact 5.6.1 into main [\#436](https://github.com/OpenVoxProject/openvox/pull/436) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Switch from puppet-strings to openvox-strings [\#434](https://github.com/OpenVoxProject/openvox/pull/434) ([tuxmea](https://github.com/tuxmea))
+- Update acceptance defaults and descriptions for OpenVox 9 [\#431](https://github.com/OpenVoxProject/openvox/pull/431) ([nmburgan](https://github.com/nmburgan))
+- Promote puppet-runtime 2026.05.07.1 into main [\#429](https://github.com/OpenVoxProject/openvox/pull/429) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Change branch name in promote workflow [\#428](https://github.com/OpenVoxProject/openvox/pull/428) ([nmburgan](https://github.com/nmburgan))
+- Changes to prepare for 8.x branching [\#425](https://github.com/OpenVoxProject/openvox/pull/425) ([nmburgan](https://github.com/nmburgan))
+- Update github\_changelog\_generator [\#424](https://github.com/OpenVoxProject/openvox/pull/424) ([nmburgan](https://github.com/nmburgan))
+- Modify S3 copy command to suppress progress output [\#423](https://github.com/OpenVoxProject/openvox/pull/423) ([corporate-gadfly](https://github.com/corporate-gadfly))
+- avoid badly anchored regular expression [\#414](https://github.com/OpenVoxProject/openvox/pull/414) ([corporate-gadfly](https://github.com/corporate-gadfly))
+- Add release version check and stop trying to bump to an RC version [\#413](https://github.com/OpenVoxProject/openvox/pull/413) ([nmburgan](https://github.com/nmburgan))
+
+## [8.26.2](https://github.com/openvoxproject/openvox/tree/8.26.2) (2026-04-18)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/8.26.1...8.26.2)
 
@@ -51,8 +78,6 @@ All notable changes to this project will be documented in this file.
 
 **Merged pull requests:**
 
-- Promote openfact 5.6.0 [\#387](https://github.com/OpenVoxProject/openvox/pull/387) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
-- Promote puppet-runtime 2026.04.09.1 [\#386](https://github.com/OpenVoxProject/openvox/pull/386) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
 - fix: skip SHA1 CSR signing test when OpenSSL doesn't support it [\#378](https://github.com/OpenVoxProject/openvox/pull/378) ([silug](https://github.com/silug))
 - fix: stub SRV DNS in ca\_server session spec [\#377](https://github.com/OpenVoxProject/openvox/pull/377) ([silug](https://github.com/silug))
 - Fix acceptance tests for systemd PrivateTmp compatibility [\#376](https://github.com/OpenVoxProject/openvox/pull/376) ([nmburgan](https://github.com/nmburgan))
