@@ -19,7 +19,6 @@ module Puppet::SSL
   require_relative 'ssl/verifier'
   require_relative 'ssl/ssl_provider'
   require_relative 'ssl/state_machine'
-  require_relative 'ssl/certificate'
   require_relative 'ssl/certificate_request'
   require_relative 'ssl/certificate_request_attributes'
 end
