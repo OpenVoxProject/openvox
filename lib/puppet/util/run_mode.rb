@@ -5,8 +5,10 @@ require 'etc'
 module Puppet
   module Util
     class RunMode
-      def initialize(name)
+      def initialize(name, root = nil, expand = true)
         @name = name.to_sym
+        @root = root.nil? ? Puppet.features.root? : root
+        @expand = expand
       end
 
       attr_reader :name
@@ -55,15 +57,83 @@ module Puppet
       # @todo this code duplicates {Puppet::Settings#which\_configuration\_file}
       #   as described in {https://projects.puppetlabs.com/issues/16637 #16637}
       def which_dir(system, user)
-        if Puppet.features.root?
-          File.expand_path(system)
-        else
-          File.expand_path(user)
-        end
+        value = @root ? system : user
+        @expand ? File.expand_path(value) : value
       end
     end
 
     class UnixRunMode < RunMode
+      def conf_dir
+        ENV.fetch('CONFIGURATION_DIRECTORY') do
+          config_home = which_dir("/etc", ENV.fetch("XDG_CONFIG_HOME", "~/.config"))
+          File.join(config_home, packaging_name)
+        end
+      end
+
+      def code_dir
+        File.join(conf_dir, 'code')
+      end
+
+      def var_dir
+        ENV.fetch('STATE_DIRECTORY') do
+          data_home = which_dir("/var/lib", ENV.fetch("XDG_DATA_HOME", "~/.local/share"))
+          File.join(data_home, packaging_name)
+        end
+      end
+
+      def cache_directory
+        ENV.fetch('CACHE_DIRECTORY') do
+          cache_home = which_dir("/var/cache", ENV.fetch("XDG_CACHE_HOME", "~/.cache"))
+          File.join(cache_home, packaging_name)
+        end
+      end
+
+      def public_dir
+        File.join(cache_directory, 'public')
+      end
+
+      def run_dir
+        ENV.fetch('RUNTIME_DIRECTORY') do
+          runtime_dir = which_dir("/run", ENV.fetch("XDG_RUNTIME_DIR") { File.join('/run', 'user', ::Etc.getpwuid.uid) })
+          File.join(runtime_dir, packaging_name)
+        end
+      end
+
+      def log_dir
+        ENV.fetch('LOGS_DIRECTORY') do
+          which_dir(File.join('/var', 'log', packaging_name),
+                    File.join(ENV.fetch("XDG_STATE_HOME", "~/.local/state"), packaging_name, "logs"))
+        end
+      end
+
+      def pkg_config_path
+        # automatically picked up
+      end
+
+      def gem_cmd
+        '/usr/bin/gem'
+      end
+
+      def data_dir
+        File.join('/usr', 'share', packaging_name)
+      end
+
+      def common_module_dir
+        File.join(data_dir, 'modules')
+      end
+
+      def vendor_module_dir
+        File.join(data_dir, 'vendor_modules')
+      end
+
+      private
+
+      def packaging_name
+        'puppet'
+      end
+    end
+
+    class AIORunMode < RunMode
       def conf_dir
         which_dir("/etc/puppetlabs/puppet", "~/.puppetlabs/etc/puppet")
       end
@@ -107,27 +177,27 @@ module Puppet
 
     class WindowsRunMode < RunMode
       def conf_dir
-        which_dir(File.join(windows_common_base("puppet/etc")), "~/.puppetlabs/etc/puppet")
+        which_dir("puppet/etc", "etc/puppet")
       end
 
       def code_dir
-        which_dir(File.join(windows_common_base("code")), "~/.puppetlabs/etc/code")
+        which_dir("code", "etc/code")
       end
 
       def var_dir
-        which_dir(File.join(windows_common_base("puppet/cache")), "~/.puppetlabs/opt/puppet/cache")
+        which_dir("puppet/cache", "opt/puppet/cache")
       end
 
       def public_dir
-        which_dir(File.join(windows_common_base("puppet/public")), "~/.puppetlabs/opt/puppet/public")
+        which_dir("puppet/public", "opt/puppet/public")
       end
 
       def run_dir
-        which_dir(File.join(windows_common_base("puppet/var/run")), "~/.puppetlabs/var/run")
+        which_dir("puppet/var/run", "var/run")
       end
 
       def log_dir
-        which_dir(File.join(windows_common_base("puppet/var/log")), "~/.puppetlabs/var/log")
+        which_dir("puppet/var/log", "var/log")
       end
 
       def pkg_config_path
@@ -152,12 +222,16 @@ module Puppet
 
       private
 
+      def which_dir(system, user)
+        super(File.join(windows_common_base(system)), File.join('~/.puppetlabs', user))
+      end
+
       def installdir
         ENV.fetch('FACTER_env_windows_installdir', nil)
       end
 
       def windows_common_base(*extra)
-        [ENV.fetch('ALLUSERSPROFILE', nil), "PuppetLabs"] + extra
+        [ENV.fetch('ALLUSERSPROFILE', 'C:\ProgramData'), "PuppetLabs"] + extra
       end
     end
   end
