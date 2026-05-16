@@ -188,6 +188,10 @@ module Puppet::Util::SELinux
     # We don't cache this, but there's already a ton of duplicate work
     # in the selinux handling code.
 
+    if category == :lookup
+      return category
+    end
+
     path = Selinux.selinux_translations_path
     begin
       File.open(path).each do |line|
