@@ -368,13 +368,7 @@ module Puppet
     defaultto :ignore
     newvalues(:use, :use_when_creating, :ignore)
     munge do |value|
-      value = value ? value.to_sym : :ignore
-      if @resource.file && @resource.line && value != :ignore
-        # TRANSLATORS "source_permissions" is a parameter name and should not be translated
-        Puppet.puppet_deprecation_warning(_("The `source_permissions` parameter is deprecated. Explicitly set `owner`, `group`, and `mode`."), file: @resource.file, line: @resource.line)
-      end
-
-      value
+      value ? value.to_sym : :ignore
     end
   end
 end
