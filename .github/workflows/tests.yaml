@@ -48,6 +48,7 @@ jobs:
           - {os: ubuntu-24.04, ruby: '4.0'}
           - {os: ubuntu-24.04, ruby: 'jruby-9.4.8.0'}
           - {os: ubuntu-24.04, ruby: 'jruby-9.4.14.0'}
+          - {os: ubuntu-24.04, ruby: 'jruby-10.0.5.0'}
           - {os: windows-2025, ruby: '3.2'}
           - {os: windows-2025, ruby: '3.3'}
           - {os: windows-2025, ruby: '3.4'}
@@ -57,7 +58,20 @@ jobs:
     steps:
       - name: Checkout current PR
         uses: actions/checkout@v6
-
+      # we explictly force Java 17 because that's the lowest one we support when building packages with ezbake
+      - name: Set up Java 17 for JRuby 9
+        if: runner.os == 'Linux' && contains(matrix.cfg.ruby, 'jruby-9')
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      # JRuby 10.0.5 requires java 21 or 25
+      - name: Set up Java 21 for JRuby 10
+        if: runner.os == 'Linux' && contains(matrix.cfg.ruby, 'jruby-10')
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
       - name: Install ruby version ${{ matrix.cfg.ruby }}
         uses: ruby/setup-ruby@v1
         with:
