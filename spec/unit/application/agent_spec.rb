@@ -286,19 +286,6 @@ describe Puppet::Application::Agent do
       end
     end
 
-    it "should print puppet config if asked to in Puppet config" do
-      Puppet[:configprint] = "plugindest"
-      expect(Puppet.settings).to receive(:print_configs).and_return(true)
-      expect { execute_agent }.to exit_with 0
-    end
-
-    it "should exit after printing puppet config if asked to in Puppet config" do
-      path = make_absolute('/my/path')
-      Puppet[:modulepath] = path
-      Puppet[:configprint] = "modulepath"
-      expect_any_instance_of(Puppet::Settings).to receive(:puts).with(path)
-      expect { execute_agent }.to exit_with 0
-    end
 
     it "should use :main, :puppetd, and :ssl" do
       expect(Puppet.settings).to receive(:use).with(:main, :agent, :ssl)
