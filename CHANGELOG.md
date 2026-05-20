@@ -17,14 +17,10 @@ All notable changes to this project will be documented in this file.
 
 **Merged pull requests:**
 
-- Fix rubocop 1.86.2 lint [\#447](https://github.com/OpenVoxProject/openvox/pull/447) ([Sharpie](https://github.com/Sharpie))
-- Clarify "ref" description in GitHub build workflow [\#445](https://github.com/OpenVoxProject/openvox/pull/445) ([Sharpie](https://github.com/Sharpie))
-- Promote puppet-runtime 2026.05.11.1 into main [\#437](https://github.com/OpenVoxProject/openvox/pull/437) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
-- Promote openfact 5.6.1 into main [\#436](https://github.com/OpenVoxProject/openvox/pull/436) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
-- Switch from puppet-strings to openvox-strings [\#434](https://github.com/OpenVoxProject/openvox/pull/434) ([tuxmea](https://github.com/tuxmea))
-- Update acceptance defaults and descriptions for OpenVox 9 [\#431](https://github.com/OpenVoxProject/openvox/pull/431) ([nmburgan](https://github.com/nmburgan))
-- Promote puppet-runtime 2026.05.07.1 into main [\#429](https://github.com/OpenVoxProject/openvox/pull/429) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
-- Change branch name in promote workflow [\#428](https://github.com/OpenVoxProject/openvox/pull/428) ([nmburgan](https://github.com/nmburgan))
+- 8.x Backport: Fix rubocop 1.86.2 lint [\#448](https://github.com/OpenVoxProject/openvox/pull/448) ([Sharpie](https://github.com/Sharpie))
+- Promote puppet-runtime 2026.05.11.1 into 8.x [\#439](https://github.com/OpenVoxProject/openvox/pull/439) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Promote openfact 5.6.1 into 8.x [\#438](https://github.com/OpenVoxProject/openvox/pull/438) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Promote puppet-runtime 2026.05.07.1 into 8.x [\#430](https://github.com/OpenVoxProject/openvox/pull/430) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
 - Changes to prepare for 8.x branching [\#425](https://github.com/OpenVoxProject/openvox/pull/425) ([nmburgan](https://github.com/nmburgan))
 - Update github\_changelog\_generator [\#424](https://github.com/OpenVoxProject/openvox/pull/424) ([nmburgan](https://github.com/nmburgan))
 - Modify S3 copy command to suppress progress output [\#423](https://github.com/OpenVoxProject/openvox/pull/423) ([corporate-gadfly](https://github.com/corporate-gadfly))
