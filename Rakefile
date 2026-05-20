@@ -162,7 +162,8 @@ begin
     config.exclude_labels = %w[dependencies duplicate question invalid wontfix wont-fix modulesync skip-changelog]
     config.since_tag = "8.18.1"
     config.future_release = Puppet::PUPPETVERSION
-    config.exclude_tags_regex = /\A7\./
+    config.exclude_tags_regex = /\A[7,9]\./
+    config.release_branch = "8.x"
   end
 rescue LoadError
   task :changelog do
