@@ -2,7 +2,47 @@
 
 All notable changes to this project will be documented in this file.
 
-## [8.26.2](https://github.com/openvoxproject/openvox/tree/8.26.2) (2026-04-17)
+## [9.0.0-rc1](https://github.com/openvoxproject/openvox/tree/9.0.0-rc1) (2026-05-20)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.27.0...9.0.0-rc1)
+
+**Implemented enhancements:**
+
+- Add platform definitions for Fedora 44 [\#455](https://github.com/OpenVoxProject/openvox/pull/455) ([Sharpie](https://github.com/Sharpie))
+- Promote openfact 5.6.1 into main [\#436](https://github.com/OpenVoxProject/openvox/pull/436) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+
+**Fixed bugs:**
+
+- avoid badly anchored regular expression [\#414](https://github.com/OpenVoxProject/openvox/pull/414) ([corporate-gadfly](https://github.com/corporate-gadfly))
+
+**Merged pull requests:**
+
+- Promote puppet-runtime 2026.05.20.1 into main [\#453](https://github.com/OpenVoxProject/openvox/pull/453) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Fix rubocop 1.86.2 lint [\#447](https://github.com/OpenVoxProject/openvox/pull/447) ([Sharpie](https://github.com/Sharpie))
+- Clarify "ref" description in GitHub build workflow [\#445](https://github.com/OpenVoxProject/openvox/pull/445) ([Sharpie](https://github.com/Sharpie))
+- Promote puppet-runtime 2026.05.11.1 into main [\#437](https://github.com/OpenVoxProject/openvox/pull/437) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Switch from puppet-strings to openvox-strings [\#434](https://github.com/OpenVoxProject/openvox/pull/434) ([tuxmea](https://github.com/tuxmea))
+- Update acceptance defaults and descriptions for OpenVox 9 [\#431](https://github.com/OpenVoxProject/openvox/pull/431) ([nmburgan](https://github.com/nmburgan))
+- Promote puppet-runtime 2026.05.07.1 into main [\#429](https://github.com/OpenVoxProject/openvox/pull/429) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Change branch name in promote workflow [\#428](https://github.com/OpenVoxProject/openvox/pull/428) ([nmburgan](https://github.com/nmburgan))
+- Changes to prepare for 8.x branching [\#425](https://github.com/OpenVoxProject/openvox/pull/425) ([nmburgan](https://github.com/nmburgan))
+- Update github\_changelog\_generator [\#424](https://github.com/OpenVoxProject/openvox/pull/424) ([nmburgan](https://github.com/nmburgan))
+- Modify S3 copy command to suppress progress output [\#423](https://github.com/OpenVoxProject/openvox/pull/423) ([corporate-gadfly](https://github.com/corporate-gadfly))
+- Add release version check and stop trying to bump to an RC version [\#413](https://github.com/OpenVoxProject/openvox/pull/413) ([nmburgan](https://github.com/nmburgan))
+
+## [8.27.0](https://github.com/openvoxproject/openvox/tree/8.27.0) (2026-05-15)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.26.2...8.27.0)
+
+**Fixed bugs:**
+
+- \[Bug\]: openvox-agent 8.26.2 reports 8.26.1 with --version option [\#415](https://github.com/OpenVoxProject/openvox/issues/415)
+
+**Closed issues:**
+
+- \[docs\] use openvox-strings instead of puppet-strings [\#433](https://github.com/OpenVoxProject/openvox/issues/433)
+
+## [8.26.2](https://github.com/openvoxproject/openvox/tree/8.26.2) (2026-04-18)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/8.26.1...8.26.2)
 
