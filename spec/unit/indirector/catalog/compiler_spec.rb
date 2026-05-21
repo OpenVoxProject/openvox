@@ -306,7 +306,7 @@ describe Puppet::Resource::Catalog::Compiler do
       Puppet::Node::Facts.indirection.save(facts)
     end
 
-    def a_legacy_request_that_contains(facts, format = :pson)
+    def a_legacy_request_that_contains(facts, format = :yaml)
       request = Puppet::Indirector::Request.new(:catalog, :find, "hostname", nil)
       request.options[:facts_format] = format.to_s
       request.options[:facts] = Puppet::Util.uri_query_encode(facts.render(format))
@@ -336,13 +336,6 @@ describe Puppet::Resource::Catalog::Compiler do
         request = a_request_that_contains(facts)
         facts = compiler.extract_facts_from_request(request)
         expect(facts.timestamp).to eq(time)
-      end
-
-      it "accepts PSON facts from older agents", :if => Puppet.features.pson? do
-        request = a_legacy_request_that_contains(facts)
-
-        facts = compiler.extract_facts_from_request(request)
-        expect(facts).to eq(facts)
       end
 
       it "rejects YAML facts" do

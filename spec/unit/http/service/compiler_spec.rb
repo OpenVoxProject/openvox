@@ -68,16 +68,6 @@ describe Puppet::HTTP::Service::Compiler do
       subject.post_catalog(certname, environment: environment, facts: facts)
     end
 
-    it 'submits facts as pson if set as the preferred format', if: Puppet.features.pson? do
-      Puppet[:preferred_serialization_format] = "pson"
-
-      stub_request(:post, uri)
-        .with(body: hash_including("facts_format" => /pson/))
-        .to_return(**catalog_response)
-
-      subject.post_catalog(certname, environment: environment, facts: facts)
-    end
-
     it 'includes environment as a query parameter AND in the POST body' do
       stub_request(:post, uri)
         .with(query: {"environment" => "outerspace"},
@@ -145,7 +135,6 @@ describe Puppet::HTTP::Service::Compiler do
         .to_return(**catalog_response)
 
       allow(Puppet.features).to receive(:msgpack?).and_return(false)
-      allow(Puppet.features).to receive(:pson?).and_return(false)
 
       subject.post_catalog(certname, environment: environment, facts: facts)
     end
@@ -156,7 +145,6 @@ describe Puppet::HTTP::Service::Compiler do
         .to_return(**catalog_response)
 
       allow(Puppet.features).to receive(:msgpack?).and_return(true)
-      allow(Puppet.features).to receive(:pson?).and_return(false)
 
       subject.post_catalog(certname, environment: environment, facts: facts)
     end
