@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe Puppet::Util::RunMode do
   let(:name) { 'fake' }
-  let(:run_mode) { described_class.new(name) }
+  let(:run_mode) { described_class.new(name, root) }
+  let(:root) { @root }
 
   describe Puppet::Util::UnixRunMode, :unless => Puppet::Util::Platform.windows? do
     describe "#conf_dir" do
@@ -252,12 +253,12 @@ describe Puppet::Util::RunMode do
   end
 
   def as_root
-    allow(Puppet.features).to receive(:root?).and_return(true)
+    @root = true
     yield
   end
 
   def as_non_root
-    allow(Puppet.features).to receive(:root?).and_return(false)
+    @root = false
     yield
   end
 end
