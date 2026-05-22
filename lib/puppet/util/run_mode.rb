@@ -5,8 +5,10 @@ require 'etc'
 module Puppet
   module Util
     class RunMode
-      def initialize(name)
+      def initialize(name, root = nil, expand = true)
         @name = name.to_sym
+        @root = root.nil? ? Puppet.features.root? : root
+        @expand = expand
       end
 
       attr_reader :name
@@ -55,11 +57,8 @@ module Puppet
       # @todo this code duplicates {Puppet::Settings#which\_configuration\_file}
       #   as described in {https://projects.puppetlabs.com/issues/16637 #16637}
       def which_dir(system, user)
-        if Puppet.features.root?
-          File.expand_path(system)
-        else
-          File.expand_path(user)
-        end
+        value = @root ? system : user
+        @expand ? File.expand_path(value) : value
       end
     end
 
