@@ -23,6 +23,7 @@ describe Puppet::Application::Ssl, unless: Puppet::Util::Platform.jruby? do
 
   before do
     Puppet.settings.use(:main)
+    Puppet.settings[:server] = 'puppet'
     Puppet[:certname] = name
     Puppet[:vardir] = tmpdir("ssl_testing")
 

@@ -56,6 +56,7 @@ describe 'lookup' do
       stub_request(:get, "https://puppet:8140/puppet-ca/v1/certificate/#{fqdn}").to_return(body: cert)
       allow(Puppet::Node::Facts.indirection).to receive(:find).and_return(facts)
 
+      Puppet[:server] = 'puppet'
       Puppet[:environment] = env_name
       Puppet[:environmentpath] = populated_env_dir
 

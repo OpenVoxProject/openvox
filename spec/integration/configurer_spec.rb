@@ -106,6 +106,7 @@ describe Puppet::Configurer do
 
         before(:each) do
           Puppet[:resubmit_facts] = true
+          Puppet[:server] = 'puppet'
 
           allow(@configurer).to receive(:find_facts).and_return(test_facts)
         end
