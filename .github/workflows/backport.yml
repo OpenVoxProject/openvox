@@ -1,10 +1,11 @@
 ---
 name: Backport merged pull request
+
 on:
   pull_request_target:
     types: [labeled]
-permissions:
-  contents: read      # so it can clone the repo. rest is done via PAT
+
+permissions: {}
 
 env:
   GIT_AUTHOR_NAME: OpenVoxProjectBot
@@ -38,7 +39,10 @@ jobs:
           git config --global user.signingkey ~/.ssh/github_actions
           git config --global commit.gpgsign true
           git config --global tag.gpgsign true
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - name: Checkout repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          token: ${{ secrets.OPENVOXBOT_COMMIT_AND_PRS }}
       - name: Create backport pull requests
         uses: korthout/backport-action@66065406958f46e82238fd59546f5a99e69e22aa # v4.5.2
         with:
