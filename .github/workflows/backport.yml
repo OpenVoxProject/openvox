@@ -21,3 +21,6 @@ jobs:
         with:
           auto_merge_enabled: true
           auto_merge_method: merge
+          github_token: ${{ secrets.OPENVOXBOT_COMMIT_AND_PRS }}
+          git_committer_name: OpenVoxProjectBot
+          git_committer_email: 215568489+OpenVoxProjectBot@users.noreply.github.com
