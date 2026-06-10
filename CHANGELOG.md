@@ -2,7 +2,59 @@
 
 All notable changes to this project will be documented in this file.
 
-## [8.26.2](https://github.com/openvoxproject/openvox/tree/8.26.2) (2026-04-17)
+## [9.0.0-alpha2](https://github.com/openvoxproject/openvox/tree/9.0.0-alpha2) (2026-06-10)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/9.0.0-alpha1...9.0.0-alpha2)
+
+**Breaking changes:**
+
+- return to preprocessing deferred functions by default [\#462](https://github.com/OpenVoxProject/openvox/pull/462) ([binford2k](https://github.com/binford2k))
+- Decouple :posix feature from :syslog library check [\#458](https://github.com/OpenVoxProject/openvox/pull/458) ([silug](https://github.com/silug))
+- remove pe\_serverversion fact [\#397](https://github.com/OpenVoxProject/openvox/pull/397) ([corporate-gadfly](https://github.com/corporate-gadfly))
+
+**Implemented enhancements:**
+
+- Add windows-msys2-x64 build for OpenVox 9 [\#468](https://github.com/OpenVoxProject/openvox/pull/468) ([Sharpie](https://github.com/Sharpie))
+
+**Fixed bugs:**
+
+- Manage group members on EL 10 without libuser [\#476](https://github.com/OpenVoxProject/openvox/pull/476) ([Sharpie](https://github.com/Sharpie))
+- Fix File.open Ruby 3.2 regression in FileSystem::Uniquefile [\#450](https://github.com/OpenVoxProject/openvox/pull/450) ([JonasVerhofste](https://github.com/JonasVerhofste))
+
+**Merged pull requests:**
+
+- Promote puppet-runtime 2026.06.09.1 into main [\#479](https://github.com/OpenVoxProject/openvox/pull/479) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- CI: Use bot account for backports [\#472](https://github.com/OpenVoxProject/openvox/pull/472) ([bastelfreak](https://github.com/bastelfreak))
+- Add JRuby 10.0.5.0 and 10.1.0.0 to test matrix [\#463](https://github.com/OpenVoxProject/openvox/pull/463) ([silug](https://github.com/silug))
+
+## [9.0.0-alpha1](https://github.com/openvoxproject/openvox/tree/9.0.0-alpha1) (2026-05-20)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.27.0...9.0.0-alpha1)
+
+**Implemented enhancements:**
+
+- Add platform definitions for Fedora 44 [\#455](https://github.com/OpenVoxProject/openvox/pull/455) ([Sharpie](https://github.com/Sharpie))
+- Promote openfact 5.6.1 into main [\#436](https://github.com/OpenVoxProject/openvox/pull/436) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+
+**Fixed bugs:**
+
+- avoid badly anchored regular expression [\#414](https://github.com/OpenVoxProject/openvox/pull/414) ([corporate-gadfly](https://github.com/corporate-gadfly))
+
+**Merged pull requests:**
+
+- Promote puppet-runtime 2026.05.20.1 into main [\#453](https://github.com/OpenVoxProject/openvox/pull/453) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Switch from puppet-strings to openvox-strings [\#434](https://github.com/OpenVoxProject/openvox/pull/434) ([tuxmea](https://github.com/tuxmea))
+- Update acceptance defaults and descriptions for OpenVox 9 [\#431](https://github.com/OpenVoxProject/openvox/pull/431) ([nmburgan](https://github.com/nmburgan))
+- Promote puppet-runtime 2026.05.07.1 into main [\#429](https://github.com/OpenVoxProject/openvox/pull/429) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Change branch name in promote workflow [\#428](https://github.com/OpenVoxProject/openvox/pull/428) ([nmburgan](https://github.com/nmburgan))
+- Changes to prepare for 8.x branching [\#425](https://github.com/OpenVoxProject/openvox/pull/425) ([nmburgan](https://github.com/nmburgan))
+- Add release version check and stop trying to bump to an RC version [\#413](https://github.com/OpenVoxProject/openvox/pull/413) ([nmburgan](https://github.com/nmburgan))
+
+## [8.27.0](https://github.com/openvoxproject/openvox/tree/8.27.0) (2026-05-15)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.26.2...8.27.0)
+
+## [8.26.2](https://github.com/openvoxproject/openvox/tree/8.26.2) (2026-04-18)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/8.26.1...8.26.2)
 
