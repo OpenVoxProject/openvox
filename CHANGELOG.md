@@ -2,18 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## [8.28.0](https://github.com/openvoxproject/openvox/tree/8.28.0) (2026-06-10)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.27.0...8.28.0)
+
+**Implemented enhancements:**
+
+- Backport: Add Platform definitions for Fedora 44 to 8.x [\#459](https://github.com/OpenVoxProject/openvox/pull/459) ([Sharpie](https://github.com/Sharpie))
+
+**Fixed bugs:**
+
+- \[Backport 8.x\] Fix File.open Ruby 3.2 regression in FileSystem::Uniquefile [\#478](https://github.com/OpenVoxProject/openvox/pull/478) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- \[Backport 8.x\] Manage group members on EL 10 without libuser [\#477](https://github.com/OpenVoxProject/openvox/pull/477) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+
+**Merged pull requests:**
+
+- Promote puppet-runtime 2026.06.09.1 into 8.x [\#480](https://github.com/OpenVoxProject/openvox/pull/480) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+
 ## [8.27.0](https://github.com/openvoxproject/openvox/tree/8.27.0) (2026-05-15)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/8.26.2...8.27.0)
 
 **Fixed bugs:**
 
-- \[Bug\]: openvox-agent 8.26.2 reports 8.26.1 with --version option [\#415](https://github.com/OpenVoxProject/openvox/issues/415)
 - avoid badly anchored regular expression [\#414](https://github.com/OpenVoxProject/openvox/pull/414) ([corporate-gadfly](https://github.com/corporate-gadfly))
-
-**Closed issues:**
-
-- \[docs\] use openvox-strings instead of puppet-strings [\#433](https://github.com/OpenVoxProject/openvox/issues/433)
 
 **Merged pull requests:**
 
@@ -22,8 +34,6 @@ All notable changes to this project will be documented in this file.
 - Promote openfact 5.6.1 into 8.x [\#438](https://github.com/OpenVoxProject/openvox/pull/438) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
 - Promote puppet-runtime 2026.05.07.1 into 8.x [\#430](https://github.com/OpenVoxProject/openvox/pull/430) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
 - Changes to prepare for 8.x branching [\#425](https://github.com/OpenVoxProject/openvox/pull/425) ([nmburgan](https://github.com/nmburgan))
-- Update github\_changelog\_generator [\#424](https://github.com/OpenVoxProject/openvox/pull/424) ([nmburgan](https://github.com/nmburgan))
-- Modify S3 copy command to suppress progress output [\#423](https://github.com/OpenVoxProject/openvox/pull/423) ([corporate-gadfly](https://github.com/corporate-gadfly))
 - Add release version check and stop trying to bump to an RC version [\#413](https://github.com/OpenVoxProject/openvox/pull/413) ([nmburgan](https://github.com/nmburgan))
 
 ## [8.26.2](https://github.com/openvoxproject/openvox/tree/8.26.2) (2026-04-18)
