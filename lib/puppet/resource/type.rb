@@ -206,7 +206,7 @@ class Puppet::Resource::Type
 
   def name
     if type == :node && name_is_regex?
-      # Normalize lookarround regex patthern
+      # Normalize lookaround regex patthern
       internal_name = @name.source.downcase.gsub(/\(\?[^)]*\)/) do |str|
         str.gsub(/./) { |ch| LOOKAROUND_OPERATORS[ch] || ch }
       end
