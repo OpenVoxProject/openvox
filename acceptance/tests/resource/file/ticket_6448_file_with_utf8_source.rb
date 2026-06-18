@@ -2,7 +2,8 @@ test_name 'Ensure a file resource can have a UTF-8 source attribute, content, an
   tag 'audit:high',
       'broken:images',
       'audit:acceptance',
-      'server'
+      'server',
+      'shard:group2' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/environment_utils'
   extend Puppet::Acceptance::EnvironmentUtils

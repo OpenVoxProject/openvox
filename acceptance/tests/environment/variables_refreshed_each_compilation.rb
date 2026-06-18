@@ -6,7 +6,8 @@ test_name 'C98115 compilation should get new values in variables on each compila
 
   tag 'audit:high',
       'audit:integration',
-      'server'
+      'server',
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   teardown do
     agents.each do |agent|

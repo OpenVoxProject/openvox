@@ -3,7 +3,8 @@ test_name 'utf-8 characters in function parameters' do
 
   tag 'audit:high',
       'audit:integration', # not package dependent but may want to vary platform by LOCALE/encoding
-      'audit:refactor'     # if keeping, use mk_tmp_environment_with_teardown
+      'audit:refactor',    # if keeping, use mk_tmp_environment_with_teardown
+      'shard:group1' # For splitting out groups of tests for slow test runners
 
   confine :except, :platform => [
     'windows',      # PUP-6983

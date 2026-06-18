@@ -2,7 +2,8 @@ test_name 'ensure production environment created by master if missing'
 
 tag 'audit:high',
     'audit:integration',
-    'server'
+    'server',
+    'shard:group3' # For splitting out groups of tests for slow test runners
 
 testdir = create_tmpdir_for_user master, 'prod-env-created'
 

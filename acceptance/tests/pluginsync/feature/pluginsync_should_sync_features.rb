@@ -1,7 +1,8 @@
 test_name "the pluginsync functionality should sync feature and function definitions" do
 
   tag 'audit:high',
-      'audit:integration'
+      'audit:integration',
+      'shard:group1' # For splitting out groups of tests for slow test runners
 
   #
   # This test is intended to ensure that pluginsync syncs feature definitions to

@@ -4,7 +4,8 @@ test_name "Master should produce error if enc specifies a nonexistent environmen
 
   tag 'audit:high',
       'audit:unit',
-      'server'
+      'server',
+      'shard:group4' # For splitting out groups of tests for slow test runners
 
   teardown do
     agents.each do |agent|

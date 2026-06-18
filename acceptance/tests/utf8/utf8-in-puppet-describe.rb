@@ -2,9 +2,10 @@ test_name 'utf-8 characters in module doc string, puppet describe' do
 
   tag 'audit:high',      # utf-8 is high impact in general, puppet describe low risk?
       'audit:integration', # not package dependent but may want to vary platform by LOCALE/encoding
-      'audit:refactor'     # if keeping, use mk_tmp_environment_with_teardown
+      'audit:refactor',    # if keeping, use mk_tmp_environment_with_teardown
                            # remove with_puppet_running_on unless pluginsync is absolutely necessary
                            # (if it is, add 'server' tag
+      'shard:group2' # For splitting out groups of tests for slow test runners
 
   # utf8chars = "€‰ㄘ万竹ÜÖ"
   utf8chars = "\u20ac\u2030\u3118\u4e07\u7af9\u00dc\u00d6"

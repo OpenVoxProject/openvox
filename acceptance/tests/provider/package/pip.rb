@@ -1,6 +1,7 @@
 test_name "pip provider should install, use install_options with latest, and uninstall" do
   confine :to, :template => /centos/
-  tag 'audit:high'
+  tag 'audit:high',
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/common_utils'
   extend Puppet::Acceptance::PackageUtils

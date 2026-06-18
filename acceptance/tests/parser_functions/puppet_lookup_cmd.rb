@@ -2,8 +2,9 @@ test_name "Puppet Lookup Command"
 
 tag 'audit:high',
     'audit:acceptance',
-    'audit:refactor'   # Master is not required for this test. Replace with agents.each
+    'audit:refactor',  # Master is not required for this test. Replace with agents.each
                        # Wrap steps in blocks in accordance with Beaker style guide
+    'shard:group3' # For splitting out groups of tests for slow test runners
 
 # doc:
 # https://puppet.com/docs/puppet/latest/hiera_automatic.html
