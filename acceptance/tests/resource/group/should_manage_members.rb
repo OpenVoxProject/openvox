@@ -4,10 +4,11 @@ test_name "should correctly manage the members property for the Group resource" 
   confine :to, :platform => /windows|osx|aix|^el-|fedora/
 
   tag 'audit:high',
-      'audit:acceptance' # Could be done as integration tests, but would
+      'audit:acceptance',# Could be done as integration tests, but would
                          # require changing the system running the test
                          # in ways that might require special permissions
                          # or be harmful to the system running the test
+      'shard:group4' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/common_utils'
   extend Puppet::Acceptance::BeakerUtils

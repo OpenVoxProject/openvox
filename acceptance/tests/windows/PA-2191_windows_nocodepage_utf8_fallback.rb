@@ -2,7 +2,8 @@ test_name 'PA-2191 - winruby fallsback to UTF8 for invalid CodePage' do
   confine :to, platform: 'windows'
 
   tag 'audit:high',
-      'audit:acceptance'
+      'audit:acceptance',
+      'shard:group4' # For splitting out groups of tests for slow test runners
 
   agents.each do |host|
 

@@ -3,7 +3,8 @@ extend Puppet::Acceptance::ServiceUtils
 
 test_name 'systemd service shows correct output when queried with "puppet resource"' do
 
-  tag 'audit:high'
+  tag 'audit:high',
+      'shard:group4' # For splitting out groups of tests for slow test runners
 
   skip_test 'requires puppet service script from AIO agent package' if @options[:type] != 'aio'
 

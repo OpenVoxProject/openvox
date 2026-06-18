@@ -6,7 +6,8 @@ test_name "certificate extensions available as trusted data" do
 
   tag 'audit:high',        # ca/cert core functionality
       'audit:integration',
-      'server'             # Ruby implementation is deprecated
+      'server',            # Ruby implementation is deprecated
+      'shard:group2' # For splitting out groups of tests for slow test runners
 
   initialize_temp_dirs
 

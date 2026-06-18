@@ -1,7 +1,8 @@
 test_name 'Ensure hiera lookup occurs if class param is undef' do
 
   tag 'audit:high',
-      'audit:unit'    # basic auto lookup functionality
+      'audit:unit',   # basic auto lookup functionality
+      'shard:group2' # For splitting out groups of tests for slow test runners
 
   agents.each do |agent|
 

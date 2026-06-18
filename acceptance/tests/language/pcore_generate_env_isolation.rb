@@ -4,7 +4,8 @@ test_name 'C98345: ensure puppet generate assures env. isolation' do
 
 tag 'audit:high',
     'audit:integration',
-    'server'
+    'server',
+    'shard:group2' # For splitting out groups of tests for slow test runners
 
   teardown do
     agents.each do |agent|
