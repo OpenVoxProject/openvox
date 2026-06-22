@@ -121,6 +121,7 @@ class Puppet::SSL::StateMachine
     rescue Puppet::HTTP::ResponseError => e
       if e.response.code == 304
         Puppet.info(_("CA certificate is unmodified, using existing CA certificate"))
+        @cert_provider.ca_last_update = Time.now
       else
         Puppet.info(_("Failed to refresh CA certificate, using existing CA certificate: %{message}") % { message: e.message })
       end
@@ -219,6 +220,7 @@ class Puppet::SSL::StateMachine
     rescue Puppet::HTTP::ResponseError => e
       if e.response.code == 304
         Puppet.info(_("CRL is unmodified, using existing CRL"))
+        @cert_provider.crl_last_update = Time.now
       else
         Puppet.info(_("Failed to refresh CRL, using existing CRL: %{message}") % { message: e.message })
       end
