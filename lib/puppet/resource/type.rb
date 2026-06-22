@@ -34,13 +34,13 @@ class Puppet::Resource::Type
   EMPTY_ARRAY = [].freeze
 
   LOOKAROUND_OPERATORS = {
-    "(" => 'LP',
-    "?" => "QU",
-    "<" => "LT",
-    ">" => "GT",
-    "!" => "EX",
-    "=" => "EQ",
-    ")" => 'RP'
+    "(" => 'lp',
+    "?" => "qu",
+    "<" => "lt",
+    ">" => "gt",
+    "!" => "ex",
+    "=" => "eq",
+    ")" => 'rp'
   }.freeze
 
   attr_accessor :file, :line, :doc, :code, :parent, :resource_type_collection, :override
@@ -216,7 +216,7 @@ class Puppet::Resource::Type
       internal_name = @name.source.downcase.gsub(/\(\?[^)]*\)/) do |str|
         str.gsub(/./) { |ch| LOOKAROUND_OPERATORS[ch] || ch }
       end
-      "__node_regexp__#{internal_name.gsub(/[^-\w:.]/, '').sub(/^\.+/, '')}".downcase
+      "__node_regexp__#{internal_name.gsub(/[^-\w:.]/, '').sub(/^\.+/, '')}"
     else
       @name
     end
