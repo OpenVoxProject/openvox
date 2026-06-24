@@ -2,7 +2,8 @@ test_name 'C100560: puppet agent run output falls back to english when language 
   # No confines because even on non-translation supported OS' we should still fall back to english
 
   tag 'audit:medium',
-      'audit:acceptance'
+      'audit:acceptance',
+      'shard:group1' # For splitting out groups of tests for slow test runners
 
   agents.each do |agent|
     step 'Run Puppet apply with language Hungarian and check the output' do

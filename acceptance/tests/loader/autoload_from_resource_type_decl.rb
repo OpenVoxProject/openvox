@@ -1,5 +1,6 @@
 test_name 'C100303: Resource type statement triggered auto-loading works both with and without generated types' do
-  tag 'risk:high'
+  tag 'risk:high',
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/environment_utils.rb'
   extend Puppet::Acceptance::EnvironmentUtils

@@ -3,7 +3,8 @@ test_name 'utf-8 characters in cached catalog' do
   tag 'audit:high', # utf-8 is high impact in general
       'audit:integration', # not package dependent but may want to vary platform by LOCALE/encoding
       'audit:refactor', # use mk_tmp_environment_with_teardown
-      'server'
+      'server',
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   utf8chars     = "\u20ac\u2030\u3118\u4e07\u7af9\u00dc\u00d6"
   file_content  = "This is the file content. file #{utf8chars}"

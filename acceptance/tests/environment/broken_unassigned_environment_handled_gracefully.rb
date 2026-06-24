@@ -3,7 +3,8 @@ test_name 'PUP-3755 Test an un-assigned broken environment'
 tag 'audit:high',
     'audit:integration',
     'audit:refactor',     # Use mk_tmp_environment_with_teardown helper
-    'server'
+    'server',
+    'shard:group4' # For splitting out groups of tests for slow test runners
 
 teardown do
   agents.each do |agent|

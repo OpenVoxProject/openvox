@@ -1,5 +1,6 @@
 test_name 'C100296: can auto-load defined types using a Resource statement' do
-  tag 'risk:high'
+  tag 'risk:high',
+      'shard:group1' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/environment_utils.rb'
   extend Puppet::Acceptance::EnvironmentUtils

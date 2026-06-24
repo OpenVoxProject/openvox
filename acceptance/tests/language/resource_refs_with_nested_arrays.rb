@@ -1,7 +1,8 @@
 test_name "#7681: Allow using array variables in resource references"
 
 tag 'audit:high',
-    'audit:unit'
+    'audit:unit',
+    'shard:group4' # For splitting out groups of tests for slow test runners
 
 agents.each do |agent|
   test_manifest = <<MANIFEST

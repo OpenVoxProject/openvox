@@ -7,7 +7,8 @@ test_name 'C98346: Binary data type' do
                            # between server and agent transport/application.
                            # The weak link here is final ruby translation and
                            # should not be OS sensitive.
-      'server'
+      'server',
+      'shard:group2' # For splitting out groups of tests for slow test runners
 
   teardown do
     agents.each do |agent|

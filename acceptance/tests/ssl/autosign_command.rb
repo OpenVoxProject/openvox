@@ -3,7 +3,8 @@ test_name "autosign command and csr attributes behavior (#7243,#7244)" do
 
   tag 'audit:high',        # cert/ca core behavior
       'audit:integration',
-      'server'             # Ruby implementation is deprecated
+      'server',            # Ruby implementation is deprecated
+      'shard:group1' # For splitting out groups of tests for slow test runners
 
   def assert_key_generated(name, stdout)
     assert_match(/Creating a new RSA SSL key for #{name}/, stdout, "Expected agent to create a new SSL key for autosigning")

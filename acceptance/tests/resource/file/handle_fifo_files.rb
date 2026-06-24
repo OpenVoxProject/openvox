@@ -1,6 +1,7 @@
 test_name "should be able to handle fifo files"
 tag 'audit:high',
-    'audit:acceptance'
+    'audit:acceptance',
+    'shard:group4' # For splitting out groups of tests for slow test runners
 confine :except, :platform => /windows/
 
 def ensure_content_to_file_manifest(file_path, ensure_value)

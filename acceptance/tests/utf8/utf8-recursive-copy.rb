@@ -1,7 +1,8 @@
 test_name "PUP-8735: UTF-8 characters are preserved after recursively copying directories" do
 
   tag 'audit:high', # utf-8 is high impact in general
-      'audit:integration' # not package dependent but may want to vary platform by LOCALE/encoding
+      'audit:integration',# not package dependent but may want to vary platform by LOCALE/encoding
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   # Translation is not supported on these platforms:
   confine :except, :platform => /^solaris/

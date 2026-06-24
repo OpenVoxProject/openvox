@@ -1,6 +1,7 @@
 test_name "Pluginsync'ed external facts should be resolvable on the agent" do
   tag 'audit:high',
-      'audit:integration'
+      'audit:integration',
+      'shard:group1' # For splitting out groups of tests for slow test runners
 
 #
 # This test is intended to ensure that external facts downloaded onto an agent via

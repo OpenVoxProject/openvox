@@ -5,7 +5,8 @@ test_name 'hiera-eyaml backend resolves encrypted values via eyaml_lookup_key' d
   extend Puppet::Acceptance::TempFileUtils
 
   tag 'audit:high',
-      'audit:acceptance'
+      'audit:acceptance',
+      'shard:group1' # For splitting out groups of tests for slow test runners
 
   app_type        = File.basename(__FILE__, '.*')
   tmp_environment = mk_tmp_environment_with_teardown(master, app_type)

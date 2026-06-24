@@ -2,7 +2,8 @@ test_name "Calling Hiera function from inside templates"
 
 tag 'audit:high',
     'audit:integration',
-    'audit:refactor'    # Master is not required for this test. Replace with agents.each
+    'audit:refactor',   # Master is not required for this test. Replace with agents.each
+    'shard:group1' # For splitting out groups of tests for slow test runners
 
 @module_name = "hieratest"
 @coderoot = master.tmpdir("#{@module_name}")
