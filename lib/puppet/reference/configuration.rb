@@ -1,15 +1,12 @@
 # frozen_string_literal: true
 
 config = Puppet::Util::Reference.newreference(:configuration, :depth => 1, :doc => "A reference for all settings") do
-  docs = {}
-  Puppet.settings.each do |name, object|
-    docs[name] = object
-  end
+  str = +''
+  unix_runmode_root = Puppet::Util::UnixRunMode.new(:server, true, false)
+  unix_runmode_user = Puppet::Util::UnixRunMode.new(:server, false, false)
+  windows_runmode = Puppet::Util::WindowsRunMode.new(:server, true, false)
 
-  str = ''.dup
-  docs.sort { |a, b|
-    a[0].to_s <=> b[0].to_s
-  }.each do |name, object|
+  Puppet.settings.sort_by { |name, _| name.to_s }.each do |name, object|
     # Make each name an anchor
     header = name.to_s
     str << markdown_header(header, 3)
@@ -23,33 +20,34 @@ config = Puppet::Util::Reference.newreference(:configuration, :depth => 1, :doc 
     str << "\n\n"
 
     # Now print the data about the item.
-    val = object.default
-    case name.to_s
-    when 'vardir'
-      val = 'Unix/Linux: /opt/puppetlabs/puppet/cache -- Windows: C:\ProgramData\PuppetLabs\puppet\cache -- Non-root user: ~/.puppetlabs/opt/puppet/cache'
-    when 'publicdir'
-      val = 'Unix/Linux: /opt/puppetlabs/puppet/public -- Windows: C:\ProgramData\PuppetLabs\puppet\public -- Non-root user: ~/.puppetlabs/opt/puppet/public'
-    when 'confdir'
-      val = 'Unix/Linux: /etc/puppetlabs/puppet -- Windows: C:\ProgramData\PuppetLabs\puppet\etc -- Non-root user: ~/.puppetlabs/etc/puppet'
-    when 'codedir'
-      val = 'Unix/Linux: /etc/puppetlabs/code -- Windows: C:\ProgramData\PuppetLabs\code -- Non-root user: ~/.puppetlabs/etc/code'
-    when 'rundir'
-      val = 'Unix/Linux: /var/run/puppetlabs -- Windows: C:\ProgramData\PuppetLabs\puppet\var\run -- Non-root user: ~/.puppetlabs/var/run'
-    when 'logdir'
-      val = 'Unix/Linux: /var/log/puppetlabs/puppet -- Windows: C:\ProgramData\PuppetLabs\puppet\var\log -- Non-root user: ~/.puppetlabs/var/log'
-    when 'hiera_config'
-      val = '$confdir/hiera.yaml. However, for backwards compatibility, if a file exists at $codedir/hiera.yaml, Puppet uses that instead.'
-    when 'certname'
-      val = "the Host's fully qualified domain name, as determined by Facter"
-    when 'hostname'
-      val = "(the system's fully qualified hostname)"
-    when 'domain'
-      val = "(the system's own domain)"
-    when 'srv_domain'
-      val = 'example.com'
-    when 'http_user_agent'
-      val = 'Puppet/<version> Ruby/<version> (<architecture>)'
-    end
+    val = case name.to_s
+          when 'vardir'
+            "Unix/Linux: #{unix_runmode_root.var_dir} -- Windows: #{windows_runmode.var_dir} -- Non-root user: #{unix_runmode_user.var_dir}"
+          when 'publicdir'
+            "Unix/Linux: #{unix_runmode_root.public_dir} -- Windows: #{windows_runmode.public_dir} -- Non-root user: #{unix_runmode_user.public_dir}"
+          when 'confdir'
+            "Unix/Linux: #{unix_runmode_root.conf_dir} -- Windows: #{windows_runmode.conf_dir} -- Non-root user: #{unix_runmode_user.conf_dir}"
+          when 'codedir'
+            "Unix/Linux: #{unix_runmode_root.code_dir} -- Windows: #{windows_runmode.code_dir} -- Non-root user: #{unix_runmode_user.code_dir}"
+          when 'rundir'
+            "Unix/Linux: #{unix_runmode_root.run_dir} -- Windows: #{windows_runmode.run_dir} -- Non-root user: #{unix_runmode_user.run_dir}"
+          when 'logdir'
+            "Unix/Linux: #{unix_runmode_root.log_dir} -- Windows: #{windows_runmode.log_dir} -- Non-root user: #{unix_runmode_user.log_dir}"
+          when 'hiera_config'
+            '$confdir/hiera.yaml. However, for backwards compatibility, if a file exists at $codedir/hiera.yaml, Puppet uses that instead.'
+          when 'certname'
+            "the Host's fully qualified domain name, as determined by Facter"
+          when 'hostname'
+            "(the system's fully qualified hostname)"
+          when 'domain'
+            "(the system's own domain)"
+          when 'srv_domain'
+            'example.com'
+          when 'http_user_agent'
+            'Puppet/<version> Ruby/<version> (<architecture>)'
+          else
+            object.default
+          end
 
     # Leave out the section information; it was apparently confusing people.
     # str << "- **Section**: #{object.section}\n"
