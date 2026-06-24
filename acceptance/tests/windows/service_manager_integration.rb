@@ -1,6 +1,7 @@
 test_name 'Test agent state via service control manager' do
 
-  tag 'audit:integration'
+  tag 'audit:integration',
+      'shard:group1' # For splitting out groups of tests for slow test runners
 
   confine :to, platform: 'windows'
 

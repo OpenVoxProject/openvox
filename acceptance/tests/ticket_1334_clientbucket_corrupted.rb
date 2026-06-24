@@ -1,7 +1,8 @@
 test_name 'C99977 corrupted clientbucket' do
 
   tag 'audit:high',
-      'audit:integration'
+      'audit:integration',
+      'shard:group4' # For splitting out groups of tests for slow test runners
 
   agents.each do |agent|
     tmpfile = agent.tmpfile('c99977file')

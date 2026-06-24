@@ -1,6 +1,7 @@
 test_name "puppetserver_gem provider should install and uninstall" do
   tag 'audit:high',
-      'server'
+      'server',
+      'shard:group4' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/common_utils'
   extend Puppet::Acceptance::PackageUtils

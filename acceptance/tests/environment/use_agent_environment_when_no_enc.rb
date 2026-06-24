@@ -3,7 +3,8 @@ test_name "Agent should use agent environment if there is no enc-specified envir
   tag 'audit:high',
       'audit:integration',
       'audit:refactor', # This can be combined with use_agent_environment_when_enc_doesnt_specify test
-      'server'
+      'server',
+      'shard:group1' # For splitting out groups of tests for slow test runners
 
   # Remove all traces of the last used environment
   teardown do
