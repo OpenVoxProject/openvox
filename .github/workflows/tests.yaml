@@ -25,10 +25,10 @@ jobs:
     runs-on: ${{ matrix.cfg.os }}
     steps:
       - name: Checkout current PR
-        uses: actions/checkout@v7
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
       - name: Install ruby version ${{ matrix.cfg.ruby }}
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@9eb537ca036ebaed86729dcb9309076e4c5c3b74 # v1.314.0
         with:
           ruby-version: ${{ matrix.cfg.ruby }}
           bundler-cache: true
@@ -58,10 +58,10 @@ jobs:
     runs-on: ${{ matrix.cfg.os }}
     steps:
       - name: Checkout current PR
-        uses: actions/checkout@v7
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
       - name: Install ruby version ${{ matrix.cfg.ruby }}
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@9eb537ca036ebaed86729dcb9309076e4c5c3b74 # v1.314.0
         with:
           ruby-version: ${{ matrix.cfg.ruby }}
           bundler-cache: true
@@ -117,11 +117,11 @@ jobs:
     steps:
       # needs fetch-depth because the packaging dem reads old git tags
       - name: Checkout current PR
-        uses: actions/checkout@v7
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           fetch-depth: 0
       - name: Install Ruby version 3.3
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@9eb537ca036ebaed86729dcb9309076e4c5c3b74 # v1.314.0
         with:
           ruby-version: 3.3
           bundler-cache: true
