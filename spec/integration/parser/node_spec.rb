@@ -85,7 +85,7 @@ describe 'node statements' do
       end.not_to raise_error
     end
 
-    it 'does not raise an error with 2 regex node names are the same due to lookarround pattern' do
+    it 'does not raise an error with 2 regex node names are the same due to lookaround pattern' do
       expect do
         compile_to_catalog(<<-MANIFEST, Puppet::Node.new("async"))
         node /(?<!a)sync/ { }
@@ -101,6 +101,63 @@ describe 'node statements' do
         node /a.*c/ { }
         MANIFEST
       end.to raise_error(Puppet::Error, /Node '__node_regexp__a.c' is already defined/)
+    end
+
+    # Regression test for https://github.com/OpenVoxProject/openvox/issues/14
+    # A regex with non-capturing group syntax (?:...) or other lookaround constructs
+    # caused uppercase characters to appear in the synthetic node key, which is stored
+    # in the TypeCollection hash.  Lookups always downcase the key via munge_name(), so
+    # the node could never be found again, producing "Cannot find definition Node".
+    it 'matches a node whose regex contains a non-capturing group' do
+      catalog = compile_to_catalog(<<-MANIFEST, Puppet::Node.new("thing-foo-42"))
+      node /^thing-(foo|bar)(?:-test)?-(\\d+)$/ { notify { matched: } }
+      node default                              { notify { unmatched: } }
+      MANIFEST
+
+      expect(catalog).not_to have_resource('Notify[unmatched]')
+      expect(catalog).to have_resource('Notify[matched]')
+    end
+
+    it 'matches a node whose regex contains a non-capturing group for the optional suffix' do
+      catalog = compile_to_catalog(<<-MANIFEST, Puppet::Node.new("thing-bar-test-7"))
+      node /^thing-(foo|bar)(?:-test)?-(\\d+)$/ { notify { matched: } }
+      node default                              { notify { unmatched: } }
+      MANIFEST
+
+      expect(catalog).not_to have_resource('Notify[unmatched]')
+      expect(catalog).to have_resource('Notify[matched]')
+    end
+
+    it 'does not match a node when the non-capturing-group regex prefix does not match' do
+      catalog = compile_to_catalog(<<-MANIFEST, Puppet::Node.new("thing-baz-7"))
+      node /^thing-(foo|bar)(?:-test)?-(\\d+)$/ { notify { matched: } }
+      node default                              { notify { unmatched: } }
+      MANIFEST
+
+      expect(catalog).not_to have_resource('Notify[matched]')
+      expect(catalog).to have_resource('Notify[unmatched]')
+    end
+
+    it 'matches a node whose regex contains a negative lookahead' do
+      # /^(db01)\.(?!hosts).*$/ matches db01.<anything-except-hosts...>
+      # e.g. db01.example.com matches, db01.hosts.example.com does not
+      catalog = compile_to_catalog(<<-MANIFEST, Puppet::Node.new("db01.example.com"))
+      node /^(db01)\.(?!hosts).*$/ { notify { matched: } }
+      node default                 { notify { unmatched: } }
+      MANIFEST
+
+      expect(catalog).not_to have_resource('Notify[unmatched]')
+      expect(catalog).to have_resource('Notify[matched]')
+    end
+
+    it 'does not match a node excluded by a negative lookahead' do
+      catalog = compile_to_catalog(<<-MANIFEST, Puppet::Node.new("db01.hosts.example.com"))
+      node /^(db01)\.(?!hosts).*$/ { notify { matched: } }
+      node default                 { notify { unmatched: } }
+      MANIFEST
+
+      expect(catalog).not_to have_resource('Notify[matched]')
+      expect(catalog).to     have_resource('Notify[unmatched]')
     end
 
     it 'provides captures from the regex in the node body' do

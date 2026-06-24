@@ -34,13 +34,13 @@ class Puppet::Resource::Type
   EMPTY_ARRAY = [].freeze
 
   LOOKAROUND_OPERATORS = {
-    "(" => 'LP',
-    "?" => "QU",
-    "<" => "LT",
-    ">" => "GT",
-    "!" => "EX",
-    "=" => "EQ",
-    ")" => 'RP'
+    "(" => 'lp',
+    "?" => "qu",
+    "<" => "lt",
+    ">" => "gt",
+    "!" => "ex",
+    "=" => "eq",
+    ")" => 'rp'
   }.freeze
 
   attr_accessor :file, :line, :doc, :code, :parent, :resource_type_collection, :override
@@ -206,7 +206,13 @@ class Puppet::Resource::Type
 
   def name
     if type == :node && name_is_regex?
-      # Normalize lookarround regex patthern
+      # Normalize lookaround regex pattern to a unique, lookup-safe lowercase string.
+      # The LOOKAROUND_OPERATORS tokens are uppercased to keep them distinct from ordinary
+      # regex characters, but the final result MUST be downcased so it matches the key
+      # produced by munge_name() (which calls String#downcase) inside TypeCollection.
+      # Without this, a regex such as /^thing-(foo|bar)(?:-test)?-(\d+)/ produces a
+      # mixed-case synthetic key that is stored correctly but can never be found again
+      # via the downcased lookup path, causing "Cannot find definition Node" at runtime.
       internal_name = @name.source.downcase.gsub(/\(\?[^)]*\)/) do |str|
         str.gsub(/./) { |ch| LOOKAROUND_OPERATORS[ch] || ch }
       end
