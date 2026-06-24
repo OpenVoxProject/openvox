@@ -27,6 +27,10 @@ module Puppet
   class SELFileContext < Puppet::Property
     include Puppet::Util::SELinux
 
+    def skip_property?
+      !Puppet::Util::SELinux.selinux_support? || @resource[:selinux_ignore_defaults] == :true
+    end
+
     def retrieve
       return :absent unless @resource.stat
 
@@ -40,11 +44,6 @@ module Puppet
     end
 
     def retrieve_default_context(property)
-      return nil if Puppet::Util::Platform.windows?
-      if @resource[:selinux_ignore_defaults] == :true
-        return nil
-      end
-
       context = get_selinux_default_context_with_handle(@resource[:path], provider.class.selinux_handle, @resource[:ensure])
       unless context
         return nil
@@ -63,7 +62,18 @@ module Puppet
         debug("SELinux not available for this filesystem. Ignoring parameter.")
         true
       else
+        @should = @should.collect { |v| v == :lookup ? retrieve_default_context(name) : v }
+        if @should.include?(nil)
+          return true
+        end
+
         super
+      end
+    end
+
+    def validate(value)
+      unless value.is_a?(String) || value == :lookup
+        raise Puppet::Error, "The property #{name} must be either a string or :lookup"
       end
     end
 
@@ -104,7 +114,7 @@ module Puppet
       enabled."
 
     @event = :file_changed
-    defaultto { retrieve_default_context(:seluser) }
+    defaultto { skip_property? ? nil : :lookup }
   end
 
   Puppet::Type.type(:file).newproperty(:selrole, :parent => Puppet::SELFileContext) do
@@ -115,7 +125,7 @@ module Puppet
       enabled."
 
     @event = :file_changed
-    defaultto { retrieve_default_context(:selrole) }
+    defaultto { skip_property? ? nil : :lookup }
   end
 
   Puppet::Type.type(:file).newproperty(:seltype, :parent => Puppet::SELFileContext) do
@@ -126,7 +136,7 @@ module Puppet
       enabled."
 
     @event = :file_changed
-    defaultto { retrieve_default_context(:seltype) }
+    defaultto { skip_property? ? nil : :lookup }
   end
 
   Puppet::Type.type(:file).newproperty(:selrange, :parent => Puppet::SELFileContext) do
@@ -138,6 +148,6 @@ module Puppet
       Security)."
 
     @event = :file_changed
-    defaultto { retrieve_default_context(:selrange) }
+    defaultto { skip_property? ? nil : :lookup }
   end
 end
