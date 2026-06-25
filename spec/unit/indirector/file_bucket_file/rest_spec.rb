@@ -86,4 +86,32 @@ describe Puppet::FileBucketFile::Rest do
       expect{described_class.indirection.save(file_bucket_file, dest_path)}.to raise_error(Net::HTTPError, "Error 503 on SERVER: server unavailable")
     end
   end
+
+  context 'when the request URI contains an explicit server' do
+    let(:server_uri) { %r{https://xanadu:8141/puppet/v3/file_bucket_file} }
+
+    describe '#head' do
+      it 'routes the request to the server in the filebucket URI' do
+        stub_request(:head, server_uri)
+
+        described_class.indirection.head(file_bucket_path, :bucket_path => file_bucket_file.bucket_path)
+      end
+    end
+
+    describe '#find' do
+      it 'routes the request to the server in the filebucket URI' do
+        stub_request(:get, server_uri).to_return(status: 200, headers: {'Content-Type' => 'application/octet-stream'})
+
+        described_class.indirection.find(source_path, :bucket_path => nil)
+      end
+    end
+
+    describe '#save' do
+      it 'routes the request to the server in the filebucket URI' do
+        stub_request(:put, server_uri)
+
+        described_class.indirection.save(file_bucket_file, dest_path)
+      end
+    end
+  end
 end
