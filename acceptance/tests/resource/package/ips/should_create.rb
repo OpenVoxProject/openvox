@@ -3,9 +3,10 @@ confine :to, :platform => 'solaris-11'
 
 tag 'audit:medium',
     'audit:refactor',  # Use block style `test_name`
-    'audit:acceptance' # Could be done at the integration (or unit) layer though
+    'audit:acceptance',# Could be done at the integration (or unit) layer though
                        # actual changing of resources could irreparably damage a
                        # host running this, or require special permissions.
+    'shard:group2' # For splitting out groups of tests for slow test runners
 
 require 'puppet/acceptance/solaris_util'
 extend Puppet::Acceptance::IPSUtils

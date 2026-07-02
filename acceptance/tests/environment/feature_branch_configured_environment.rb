@@ -3,7 +3,8 @@ test_name "Agent should use set environment after running with specified environ
   extend Puppet::Acceptance::EnvironmentUtils
 
   tag 'audit:high',
-      'server'
+      'server',
+      'shard:group2' # For splitting out groups of tests for slow test runners
 
   # Remove all traces of the last used environment
   teardown do

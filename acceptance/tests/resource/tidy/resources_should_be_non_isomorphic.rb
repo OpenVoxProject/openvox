@@ -2,7 +2,8 @@
 # different matches should not cause error as found in the bug PUP-6508
 test_name "PUP-6655 - C98145 tidy resources should be non-isomorphic" do
   tag 'audit:high',
-      'audit:integration'
+      'audit:integration',
+      'shard:group4' # For splitting out groups of tests for slow test runners
 
   agents. each do |agent|
     dir = agent.tmpdir('tidy-test-dir')

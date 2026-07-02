@@ -2,7 +2,8 @@ test_name "#6857: redact password hashes when applying in noop mode"
 
 tag 'audit:high',
     'audit:refactor',    # Use block style `test_name`
-    'audit:integration'
+    'audit:integration',
+    'shard:group4' # For splitting out groups of tests for slow test runners
 
 require 'puppet/acceptance/common_utils'
 extend Puppet::Acceptance::CommandUtils

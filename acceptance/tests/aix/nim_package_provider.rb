@@ -1,7 +1,8 @@
 test_name "NIM package provider should work correctly"
 
 tag 'audit:high',
-    'audit:acceptance'  # OS specific by definition
+    'audit:acceptance', # OS specific by definition
+    'shard:group3' # For splitting out groups of tests for slow test runners
 
 # nim test is slow, confine to only aix 7.2 and recent puppet versions
 confine :to, :platform => "aix" do |aix|

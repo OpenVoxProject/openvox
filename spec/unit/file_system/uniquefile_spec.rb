@@ -108,6 +108,28 @@ describe Puppet::FileSystem::Uniquefile do
     end
   end
 
+  context "when constructed with an options hash" do
+    after(:each) do
+      @tempfile.close! if @tempfile
+    end
+
+    it "accepts an options hash without raising an error" do
+      expect {
+        @tempfile = Puppet::FileSystem::Uniquefile.new('foo', Dir.tmpdir, mode: 0)
+      }.not_to raise_error
+    end
+
+    it "ensures the file has permissions 0600", unless: Puppet::Util::Platform.windows? do
+      @tempfile = Puppet::FileSystem::Uniquefile.new('foo', Dir.tmpdir, perm: 0o640)
+      expect(Puppet::FileSystem.stat(@tempfile.path).mode & 0o7777).to eq(0o600)
+    end
+
+    it "passes File.open args like :encoding through to the underlying file" do
+      @tempfile = Puppet::FileSystem::Uniquefile.new('foo', Dir.tmpdir, encoding: 'UTF-8')
+      expect(@tempfile.external_encoding.to_s).to eq('UTF-8')
+    end
+  end
+
   context "Ruby 1.9.3 Tempfile tests" do
     # the remaining tests in this file are ported directly from the ruby 1.9.3 source,
     # since most of this file was ported from there

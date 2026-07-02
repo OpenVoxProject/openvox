@@ -4,7 +4,8 @@ tag 'risk:high',
     'audit:high',        # tests defined catalog format
     'audit:integration', # There is no OS specific risk here.
     'server',
-    'catalog:json'
+    'catalog:json',
+    'shard:group3' # For splitting out groups of tests for slow test runners
 
 require 'puppet/acceptance/common_utils'
 require 'json'

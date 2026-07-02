@@ -3,10 +3,11 @@
 test_name 'should create a user with password and modify the password' do
 
   tag 'audit:high',
-      'audit:acceptance' # Could be done as integration tests, but would
+      'audit:acceptance',# Could be done as integration tests, but would
   # require changing the system running the test
   # in ways that might require special permissions
   # or be harmful to the system running the test
+      'shard:group2' # For splitting out groups of tests for slow test runners
   
   require 'puppet/acceptance/common_utils'
   extend Puppet::Acceptance::ManifestUtils

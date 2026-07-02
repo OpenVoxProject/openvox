@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'puppet/util/rdoc'
 
-describe "RDoc::Parser", :unless => Puppet::Util::Platform.windows? do
+describe "RDoc::Parser", :unless => Puppet::Util::Platform.windows? || Puppet::Util::Platform.jruby? do
   require 'puppet_spec/files'
   include PuppetSpec::Files
 

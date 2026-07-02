@@ -1,6 +1,7 @@
 test_name "dpkg ensure hold package is latest installed" do
   confine :to, :platform => /debian-9-amd64/
-  tag 'audit:high'
+  tag 'audit:high',
+      'shard:group4' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/common_utils'
   extend Puppet::Acceptance::PackageUtils

@@ -3,7 +3,8 @@ test_name "C100533: Agent sends json report for cached catalog" do
   tag 'risk:high',
       'audit:high',
       'audit:integration',
-      'server'
+      'server',
+      'shard:group1' # For splitting out groups of tests for slow test runners
 
   with_puppet_running_on(master, :main => {}) do
     expected_format = 'json'

@@ -4,7 +4,8 @@ test_name 'Agent should use environment given by ENC and only compile a catalog 
 
   tag 'audit:high',
       'audit:integration',
-      'server'
+      'server',
+      'shard:group2' # For splitting out groups of tests for slow test runners
 
   # Remove all traces of the last used environment
   teardown do

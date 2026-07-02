@@ -2,10 +2,11 @@ test_name "verifies that puppet resource creates a user and assigns the correct 
   confine :except, :platform => 'windows'
 
   tag 'audit:high',
-      'audit:acceptance' # Could be done as integration tests, but would
+      'audit:acceptance',# Could be done as integration tests, but would
                          # require changing the system running the test
                          # in ways that might require special permissions
                          # or be harmful to the system running the test
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   user = "pl#{rand(999999).to_i}"
 
