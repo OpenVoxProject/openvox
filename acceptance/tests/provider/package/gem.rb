@@ -1,6 +1,7 @@
 test_name "gem provider should install and uninstall" do
   confine :to, :template => /centos-7-x86_64|redhat-7-x86_64/
-  tag 'audit:high'
+  tag 'audit:high',
+      'shard:group2' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/common_utils'
   extend Puppet::Acceptance::PackageUtils

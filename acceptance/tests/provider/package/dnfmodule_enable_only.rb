@@ -1,6 +1,7 @@
 test_name "dnfmodule can change flavors" do
   confine :to, :platform => /el-8-x86_64/  # only el/centos 8 have the appstream repo
-  tag 'audit:high'
+  tag 'audit:high',
+      'shard:group4' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/common_utils'
   extend Puppet::Acceptance::PackageUtils

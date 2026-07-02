@@ -1,7 +1,8 @@
 test_name 'Puppet should change passwords for disabled, expired, or locked out Windows user accounts' do
 
   tag 'audit:high',
-      'audit:acceptance'
+      'audit:acceptance',
+      'shard:group4' # For splitting out groups of tests for slow test runners
 
   require 'date'
   require 'puppet/acceptance/windows_utils'

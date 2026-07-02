@@ -2090,14 +2090,16 @@ EOT
         what is being done.",
     },
     :preprocess_deferred => {
-      :default => false,
+      :default => true,
       :type => :boolean,
       :desc => "Whether Puppet should call deferred functions before applying
         the catalog. If set to `true`, all prerequisites required for the
         deferred function must be satisfied before the Puppet run. If set to
         `false`, deferred functions follow Puppet relationships and
         ordering. In this way, Puppet can install the prerequisites required for a
-        deferred function and call the deferred function in the same run.",
+        deferred function and call the deferred function in the same run.
+        Please note that many functions that return complex datatypes will fail
+        when disabling preprocessing and this option may be removed in the future.",
     },
     :summarize => {
         :default  => false,

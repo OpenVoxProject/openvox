@@ -2,7 +2,8 @@ test_name "providers should be useable in the same run they become suitable"
 
 tag 'audit:high',       # autoloader, core puppet agent run functionality
     'audit:refactor',    # Use block style `test_name`
-    'audit:integration' # does not require packages, probably implicitly assumed in many other places
+    'audit:integration',# does not require packages, probably implicitly assumed in many other places
+    'shard:group1' # For splitting out groups of tests for slow test runners
 
 agents.each do |agent|
   dir = agent.tmpdir('provider-6907')

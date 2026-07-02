@@ -3,7 +3,8 @@ test_name "Agent should use environment given by ENC for fetching remote files" 
   tag 'audit:high',
       'audit:integration',
       'audit:refactor', # This test should be rolled into use_enc_environment
-      'server'
+      'server',
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   # Remove all traces of the last used environment
   teardown do

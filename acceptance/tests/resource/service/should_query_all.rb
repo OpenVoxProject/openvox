@@ -3,7 +3,8 @@ test_name "should query all services"
 tag 'audit:high',
     'audit:refactor',   # Investigate combining with should_not_change_the_system.rb
                         # Use block style `test_name`
-    'audit:integration' # Doesn't change the system it runs on
+    'audit:integration',# Doesn't change the system it runs on
+    'shard:group2' # For splitting out groups of tests for slow test runners
 
 agents.each do |agent|
   step "query with puppet"

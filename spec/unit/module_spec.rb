@@ -920,10 +920,10 @@ describe Puppet::Module do
 
     foo_path = Pathname.new(File.join(checksummed_module.path, 'foo'))
 
-    IO.binwrite(foo_path, 'notfoo')
+    File.open(foo_path, 'wb') { |f| f.write('notfoo') }
     expect(Puppet::ModuleTool::Checksums.new(foo_path).checksum(foo_path)).not_to eq(foo_checksum)
 
-    IO.binwrite(foo_path, 'foo')
+    File.open(foo_path, 'wb') { |f| f.write('foo') }
     expect(Puppet::ModuleTool::Checksums.new(foo_path).checksum(foo_path)).to eq(foo_checksum)
   end
 

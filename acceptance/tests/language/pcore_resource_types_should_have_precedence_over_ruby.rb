@@ -3,7 +3,8 @@ test_name 'C98097 - generated pcore resource types should be loaded instead of r
 tag 'audit:high',
     'audit:integration',
     'audit:refactor',    # use `mk_tmp_environment_with_teardown` helper to build environment
-    'server'
+    'server',
+    'shard:group3' # For splitting out groups of tests for slow test runners
 
   environment = 'production'
   step 'setup - install module with custom ruby resource type' do

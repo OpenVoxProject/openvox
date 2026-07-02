@@ -16,11 +16,11 @@ on:
           (Ref) The git ref of openvox-agent to run the Beaker test
           suite from.
 
-          If testing something from openvox8, this should be a ref off
+          If testing something from openvox9, this should be a ref off
           of main.
 
-          If testing something from openvox7, this should be a ref off
-          of the 7.x branch.
+          If testing something from openvox8, this should be a ref off
+          of the 8.x branch.
         required: true
         type: string
         default: main
@@ -51,9 +51,9 @@ on:
           (Collection) OpenVox collection to use. (ignored if
           Pre-release Build is true)
 
-          If testing something from main, this should be openvox8.
-          If testing something from 7.x, this should be openvox7.
-        default: 'openvox8'
+          If testing something from main, this should be openvox9.
+          If testing something from 8.x, this should be openvox8.
+        default: 'openvox9'
         type: string
       artifacts-url:
         description: |-

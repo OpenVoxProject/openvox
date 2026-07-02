@@ -4,10 +4,11 @@ confine :except, :platform => /aix/ # PUP-5358
 
 tag 'audit:high',
     'audit:refactor',  # Use block style `test_run`
-    'audit:acceptance' # Could be done as integration tests, but would
+    'audit:acceptance',# Could be done as integration tests, but would
                        # require changing the system running the test
                        # in ways that might require special permissions
                        # or be harmful to the system running the test
+    'shard:group1' # For splitting out groups of tests for slow test runners
 
 user = "u#{rand(99999).to_i}"
 group1 = "#{user}o"

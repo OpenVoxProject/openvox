@@ -1,6 +1,7 @@
 test_name 'should manage purge_ssh_keys' do
   tag 'audit:high',
-      'audit:acceptance'
+      'audit:acceptance',
+      'shard:group1' # For splitting out groups of tests for slow test runners
 
   # MODULES-11236
   # This test does not work on Windows nor macOS

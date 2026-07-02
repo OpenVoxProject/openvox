@@ -18,7 +18,8 @@ test_name "trusted external fact test" do
   ### END HELPERS ###
 
   tag 'audit:high',        # external facts
-    'server'
+    'server',
+    'shard:group3' # For splitting out groups of tests for slow test runners
 
   skip_test 'requires a master for serving module content' if master.nil?
 

@@ -4,7 +4,8 @@ test_name "Use environments from the environmentpath" do
 
   tag 'audit:high',
       'audit:integration',
-      'server'
+      'server',
+      'shard:group1' # For splitting out groups of tests for slow test runners
 
   classify_nodes_as_agent_specified_if_classifer_present
 
