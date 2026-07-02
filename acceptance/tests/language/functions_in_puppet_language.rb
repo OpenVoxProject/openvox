@@ -3,7 +3,8 @@ test_name 'Puppet executes functions written in the Puppet language'
 tag 'audit:high',
     'audit:integration',
     'audit:refactor',     # use mk_tmp_environment_with_teardown helper for environment construction
-    'server'
+    'server',
+    'shard:group4' # For splitting out groups of tests for slow test runners
 
 teardown do
   on master, 'rm -rf /etc/puppetlabs/code/modules/jenny'

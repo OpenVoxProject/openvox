@@ -17,7 +17,7 @@ namespace :vox do
     end
 
     engine = platform =~ /^(macos|windows)-/ ? 'local' : 'docker'
-    cmd = "bundle exec build #{project} #{platform} --engine #{engine}"
+    cmd = "bundle exec vanagon build #{project} #{platform} --engine #{engine}"
 
     Dir.chdir('packaging') do
       run_command(cmd, silent: false, print_command: true, report_status: true)

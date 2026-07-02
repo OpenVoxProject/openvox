@@ -1,6 +1,7 @@
 test_name "Binary Diff Output of Content Attribute" do
   tag 'audit:high',
-      'audit:acceptance'
+      'audit:acceptance',
+      'shard:group2' # For splitting out groups of tests for slow test runners
 
   # cannot test binary diff on windows2012r2_ja-64-1
   # Error: Could not write report for afire-lien.delivery.puppetlabs.net at C:/ProgramData/PuppetLabs/puppet/cache/reports/afire-lien.delivery.puppetlabs.net/201912041455.yaml: anchor value must contain alphanumerical characters only

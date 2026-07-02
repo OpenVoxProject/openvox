@@ -4,9 +4,10 @@ test_name 'C99627: can use Object types in the catalog and apply/agent' do
 
 tag 'audit:high',
     'audit:integration',
-    'audit:refactor'     # The use of apply on a reference system should
+    'audit:refactor',    # The use of apply on a reference system should
                          # be adequate to test puppet. Running this in
                          # context of server/agent should not be necessary.
+    'shard:group1' # For splitting out groups of tests for slow test runners
 
   manifest = <<-PP
 type Mod::Foo = Object[{

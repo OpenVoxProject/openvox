@@ -2,7 +2,8 @@ test_name "Puppet applies resources without dependencies in file order over the 
 
 tag 'audit:high',
     'audit:integration',
-    'server'
+    'server',
+    'shard:group4' # For splitting out groups of tests for slow test runners
 
 testdir = master.tmpdir('application_order')
 

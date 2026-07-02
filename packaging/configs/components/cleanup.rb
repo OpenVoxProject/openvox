@@ -24,12 +24,6 @@ component "cleanup" do |pkg, settings, platform|
       "#{rm} -rf #{settings[:prefix]}/ssl/man",
     ]
 
-    if platform.is_windows?
-      # On Windows releases that distribute curl, these curl binaries can
-      # interfere with the native ones when puppet-agent's bindir is in the PATH:
-      cleanup_steps << "#{rm} #{settings[:bindir]}/curl*"
-    end
-
     cleanup_steps << "#{rm} -rf #{settings[:service_conf]}"
 
     pkg.install { cleanup_steps }

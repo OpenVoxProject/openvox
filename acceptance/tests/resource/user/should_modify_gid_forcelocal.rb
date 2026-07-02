@@ -5,7 +5,8 @@ test_name "verify that we can modify the gid with forcelocal" do
   extend Puppet::Acceptance::PackageUtils
   extend Puppet::Acceptance::ManifestUtils
 
-  tag 'audit:high'
+  tag 'audit:high',
+      'shard:group2' # For splitting out groups of tests for slow test runners
 
   user = "u#{rand(99999).to_i}"
   group1 = "#{user}o"

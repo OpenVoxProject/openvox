@@ -2,8 +2,9 @@ test_name "#6541: file type truncates target when filebucket cannot retrieve has
 
 tag 'audit:high',
     'audit:integration', # file type and file bucket interop
-    'audit:refactor'     # look into combining with ticket_4622_filebucket_diff_test.rb
+    'audit:refactor',    # look into combining with ticket_4622_filebucket_diff_test.rb
                          # Use block style `test_run`
+    'shard:group3' # For splitting out groups of tests for slow test runners
 
 agents.each do |agent|
   target=agent.tmpfile('6541-target')

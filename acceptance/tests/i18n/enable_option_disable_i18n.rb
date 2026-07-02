@@ -2,7 +2,8 @@ test_name 'Verify that disable_i18n can be set to true and have translations dis
   confine :except, :platform => /^solaris/ # translation not supported
 
   tag 'audit:medium',
-      'audit:acceptance'
+      'audit:acceptance',
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/environment_utils.rb'
   extend Puppet::Acceptance::EnvironmentUtils

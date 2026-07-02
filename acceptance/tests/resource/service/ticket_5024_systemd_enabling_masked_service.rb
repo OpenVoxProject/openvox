@@ -5,9 +5,10 @@ test_name 'Systemd masked services are unmasked before attempting to start'
 
 tag 'audit:high',
     'audit:refactor',  # Use block style `test_run`
-    'audit:acceptance' # Could be done at the integration (or unit) layer though
+    'audit:acceptance',# Could be done at the integration (or unit) layer though
                        # actual changing of resources could irreparably damage a
                        # host running this, or require special permissions.
+    'shard:group1' # For splitting out groups of tests for slow test runners
 
 skip_test "requires AIO install to require 'puppet'" if @options[:type] != 'aio'
 
@@ -27,13 +28,17 @@ agents.each do |agent|
   platform = agent.platform.variant
   init_script_systemd = "/usr/lib/systemd/system/#{package_name[platform]}.service"
 
+  # The /usr merge happened at various points among the Debian distros
   if agent['platform'] =~ /(ubuntu)/
     version = on(agent, facter('os.release.full')).stdout.chomp.to_i
     if version < 24
       init_script_systemd = "/lib/systemd/system/#{package_name[platform]}.service"
     end
   elsif agent['platform'] =~ /debian/
-    init_script_systemd = "/lib/systemd/system/#{package_name[platform]}.service"
+    version = on(agent, facter('os.release.full')).stdout.chomp.to_i
+    if version < 13
+      init_script_systemd = "/lib/systemd/system/#{package_name[platform]}.service"
+    end
   end
 
   symlink_systemd = "/etc/systemd/system/multi-user.target.wants/#{package_name[platform]}.service"

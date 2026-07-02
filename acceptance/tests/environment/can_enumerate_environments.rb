@@ -2,7 +2,8 @@ test_name "Can enumerate environments via an HTTP endpoint"
 
 tag 'audit:high',
     'audit:integration',
-    'server'
+    'server',
+    'shard:group1' # For splitting out groups of tests for slow test runners
 
 confine :except, :platform => /osx/ # see PUP-4820
 

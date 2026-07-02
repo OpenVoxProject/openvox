@@ -10,7 +10,8 @@ test_name "C98093 - a resource changed outside of Puppet will be reported as a c
   tag 'audit:high',
       'audit:integration',
       'audit:refactor',    # Uses a server currently, but is testing agent report
-      'broken:images'
+      'broken:images',
+      'shard:group4' # For splitting out groups of tests for slow test runners
 
   test_file_name  = File.basename(__FILE__, '.*')
   tmp_environment = mk_tmp_environment_with_teardown(master, test_file_name)

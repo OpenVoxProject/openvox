@@ -2,10 +2,11 @@ test_name "should modify a user when no longer managing home (#20726)"
 
 tag 'audit:high',
     'audit:refactor',  # Use block style `test_run`
-    'audit:acceptance' # Could be done as integration tests, but would
+    'audit:acceptance',# Could be done as integration tests, but would
                        # require changing the system running the test
                        # in ways that might require special permissions
                        # or be harmful to the system running the test
+    'shard:group3' # For splitting out groups of tests for slow test runners
 
 require 'puppet/acceptance/windows_utils'
 extend Puppet::Acceptance::WindowsUtils

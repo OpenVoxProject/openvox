@@ -4,7 +4,8 @@ tag 'audit:high',
     'audit:refactor',  # Use block style `test_namme`
                        # refactor to be OS agnostic and added to the resource/user
                        # tests. managehome is currently not covered there.
-    'audit:acceptance'
+    'audit:acceptance',
+    'shard:group2' # For splitting out groups of tests for slow test runners
 
 confine :to, :platform => 'windows'
 
