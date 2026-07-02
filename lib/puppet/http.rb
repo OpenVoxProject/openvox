@@ -38,11 +38,4 @@ module Puppet
     require_relative 'http/retry_after_handler'
     require_relative 'http/external_client'
   end
-
-  # Legacy HTTP API
-  module Network
-    module HTTP
-      require_relative '../puppet/network/http_pool'
-    end
-  end
 end

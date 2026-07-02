@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative '../../puppet'
-require_relative '../../puppet/network/http_pool'
 require 'uri'
 
 Puppet::Reports.register_report(:http) do
