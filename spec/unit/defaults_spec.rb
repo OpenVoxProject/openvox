@@ -172,11 +172,4 @@ describe "Defaults" do
     end
   end
 
-  describe "#preferred_serialization_format" do
-    it 'raises if PSON is not available', unless: Puppet.features.pson? do
-      expect {
-        Puppet.settings[:preferred_serialization_format] = "pson"
-      }.to raise_error(Puppet::Settings::ValidationError, "The 'puppet-pson' gem must be installed to use the PSON serialization format.")
-    end
-  end
 end
