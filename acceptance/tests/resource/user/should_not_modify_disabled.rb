@@ -3,10 +3,11 @@ test_name 'PUP-6586 Ensure puppet does not continually reset password for disabl
   confine :to, :platform => 'windows'
 
   tag 'audit:high',
-      'audit:acceptance' # Could be done as integration tests, but would
+      'audit:acceptance',# Could be done as integration tests, but would
                          # require changing the system running the test
                          # in ways that might require special permissions
                          # or be harmful to the system running the test
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   name = "pl#{rand(99999).to_i}"
 

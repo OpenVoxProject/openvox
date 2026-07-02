@@ -10,10 +10,11 @@
 test_name 'PUP-6777 Manage users with UTF-8 comments' do
 
   tag 'audit:high',
-      'audit:acceptance' # Could be done as integration tests, but would
+      'audit:acceptance',# Could be done as integration tests, but would
                          # require changing the system running the test
                          # in ways that might require special permissions
                          # or be harmful to the system running the test
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   # AIX providers are separate from most other platforms,
   # and have not been made unicode-aware yet.

@@ -52,7 +52,7 @@ describe Puppet::Util::Execution, unless: Puppet::Util::Platform.jruby? do
     end
 
     it "allows stdout and stderr to share a file" do
-      command = "ruby -e '(1..10).each {|i| (i%2==0) ? $stdout.puts(i) : $stderr.puts(i)}'"
+      command = "ruby -W0 -e '(1..10).each {|i| (i%2==0) ? $stdout.puts(i) : $stderr.puts(i)}'"
 
       expect(Puppet::Util::Execution.execute(command, :combine => true).split).to match_array([*'1'..'10'])
     end

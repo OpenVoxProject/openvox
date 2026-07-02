@@ -1,7 +1,8 @@
 test_name "tests that puppet correctly captures large and empty output."
 tag 'audit:high',
     'audit:refactor',   # Use block style `test_name`
-    'audit:acceptance'
+    'audit:acceptance',
+    'shard:group1' # For splitting out groups of tests for slow test runners
 
 agents.each do |agent|
   testfile = agent.tmpfile('should_accept_large_output')

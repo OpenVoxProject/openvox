@@ -37,7 +37,7 @@ require 'puppet/application/agent'
 #
 # Note that this test does not have anything to say about what happens to logging after
 # daemonizing.
-describe 'agent logging' do
+describe 'agent logging', unless: Puppet::Util::Platform.jruby? do
   ONETIME  = '--onetime'
   DAEMONIZE  = '--daemonize'
   NO_DAEMONIZE  = '--no-daemonize'

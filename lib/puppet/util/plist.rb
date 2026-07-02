@@ -126,7 +126,7 @@ module Puppet::Util::Plist
     #
     # @api private
     def read_file_with_offset(file_path, offset)
-      IO.read(file_path, offset)
+      File.open(file_path, 'rb') { |f| f.read(offset) }
     end
 
     def to_format(format)

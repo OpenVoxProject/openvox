@@ -4,7 +4,8 @@ test_name 'C98345: ensure puppet generate assures env. isolation' do
 
 tag 'audit:high',
     'audit:integration',
-    'server'
+    'server',
+    'shard:group2' # For splitting out groups of tests for slow test runners
 
   teardown do
     agents.each do |agent|
@@ -50,8 +51,8 @@ tag 'audit:high',
     create_sitepp(master, tmp_environment2, site_pp2)
   end
 
-  on master, "chmod -R 755 /tmp/#{tmp_environment}"
-  on master, "chmod -R 755 /tmp/#{tmp_environment2}"
+  on master, "chmod -R 755 #{test_tmpdir}/#{tmp_environment}"
+  on master, "chmod -R 755 #{test_tmpdir}/#{tmp_environment2}"
 
   with_puppet_running_on(master,{}) do
     agents.each do |agent|

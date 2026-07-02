@@ -44,7 +44,7 @@ describe Puppet::Type.type(:package) do
   end
 
   describe "when validating attributes" do
-    [:name, :source, :instance, :status, :adminfile, :responsefile, :configfiles, :category, :platform, :root, :vendor, :description, :allowcdrom, :allow_virtual, :reinstall_on_refresh].each do |param|
+    [:name, :source, :instance, :status, :adminfile, :responsefile, :configfiles, :category, :platform, :root, :vendor, :description, :allowcdrom, :allow_virtual, :reinstall_on_refresh, :environment].each do |param|
       it "should have a #{param} parameter" do
         expect(Puppet::Type.type(:package).attrtype(param)).to eq(:param)
       end
@@ -129,6 +129,49 @@ describe Puppet::Type.type(:package) do
       expect do
         Puppet::Type.type(:package).new(:name => ["error"])
       end.to raise_error(Puppet::ResourceError, /Name must be a String/)
+    end
+  end
+
+  describe "when validating the environment parameter" do
+    before :each do
+      @provider = double(
+        'provider',
+        :class           => Puppet::Type.type(:package).defaultprovider,
+        :clear           => nil,
+        :validate_source => nil
+      )
+      allow(Puppet::Type.type(:package).defaultprovider).to receive(:new).and_return(@provider)
+    end
+
+    after :each do
+      Puppet::Type.type(:package).defaultprovider = nil
+    end
+
+    it "should accept a single string" do
+      pkg = Puppet::Type.type(:package).new(:name => "yay", :environment => "FOO=bar")
+      expect(pkg[:environment]).to eq("FOO=bar")
+    end
+
+    it "should accept an array of strings" do
+      pkg = Puppet::Type.type(:package).new(:name => "yay", :environment => ["FOO=bar", "BAZ=quux"])
+      expect(pkg[:environment]).to eq(["FOO=bar", "BAZ=quux"])
+    end
+
+    it "should accept values with special characters" do
+      pkg = Puppet::Type.type(:package).new(:name => "yay", :environment => "KEY=myStrongP@ss!")
+      expect(pkg[:environment]).to eq("KEY=myStrongP@ss!")
+    end
+
+    it "should reject entries without an equals sign" do
+      expect {
+        Puppet::Type.type(:package).new(:name => "yay", :environment => "FOO")
+      }.to raise_error(Puppet::ResourceError, /Invalid environment setting/)
+    end
+
+    it "should reject entries without a variable name" do
+      expect {
+        Puppet::Type.type(:package).new(:name => "yay", :environment => "=bar")
+      }.to raise_error(Puppet::ResourceError, /Invalid environment setting/)
     end
   end
 

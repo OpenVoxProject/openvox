@@ -303,7 +303,7 @@ describe Puppet::SSL::SSLProvider do
     end
 
     it 'raises if private key is unsupported' do
-      dsa_key = OpenSSL::PKey::DSA.new
+      dsa_key = OpenSSL::PKey::DSA.generate(1024)
       expect {
         subject.create_context(**config.merge(private_key: dsa_key))
       }.to raise_error(Puppet::SSL::SSLError, /Unsupported key 'OpenSSL::PKey::DSA'/)

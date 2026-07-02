@@ -72,4 +72,30 @@ describe Puppet::ModuleTool::Applications::Unpacker do
     Puppet::ModuleTool::Applications::Unpacker.run(filename, :target_dir => target)
     expect(File).to be_directory(File.join(target, 'mytarball'))
   end
+
+  describe '.harmonize_ownership' do
+    let(:source_stat) { instance_double(File::Stat, uid: 1010, gid: 2020) }
+    let(:source) { instance_double(Pathname, stat: source_stat) }
+    let(:target) { instance_double(Pathname, stat: source_stat) }
+
+    before :each do
+      allow(Puppet::Util::Platform).to receive(:windows?).and_return(false)
+    end
+
+    it 'does not call chown_R when internal file permission management is disabled' do
+      allow(Puppet).to receive(:[]).with(:manage_internal_file_permissions).and_return(false)
+
+      expect(FileUtils).not_to receive(:chown_R)
+
+      described_class.harmonize_ownership(source, target)
+    end
+
+    it 'calls chown_R when internal file permission management is enabled' do
+      allow(Puppet).to receive(:[]).with(:manage_internal_file_permissions).and_return(true)
+
+      expect(FileUtils).to receive(:chown_R).with(1010, 2020, target)
+
+      described_class.harmonize_ownership(source, target)
+    end
+  end
 end

@@ -7,7 +7,8 @@ tag 'audit:high',
                           # between server and agent transport/application.
                           # Leaving at acceptance layer due to validate
                           # written logs.
-    'server'
+    'server',
+    'shard:group1' # For splitting out groups of tests for slow test runners
 
   teardown do
     agents.each do |agent|

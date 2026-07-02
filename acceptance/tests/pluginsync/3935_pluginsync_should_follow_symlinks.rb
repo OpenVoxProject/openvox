@@ -2,7 +2,8 @@ test_name "pluginsync should not error when modulepath is a symlink and no modul
 
 tag 'audit:high',
     'audit:integration',
-    'server'
+    'server',
+    'shard:group4' # For splitting out groups of tests for slow test runners
 
 step "Create a modulepath directory which is a symlink and includes a module without facts.d or lib directories"
 basedir = master.tmpdir("symlink_modulepath")

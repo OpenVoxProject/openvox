@@ -1,7 +1,8 @@
 test_name "PUP-5867: The report specifies whether a cached catalog was used, and if so, why" do
   tag 'audit:high',
       'audit:integration',
-      'server'
+      'server',
+      'shard:group2' # For splitting out groups of tests for slow test runners
 
   master_reportdir = create_tmpdir_for_user(master, 'report_dir')
 

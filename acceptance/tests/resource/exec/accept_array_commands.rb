@@ -1,6 +1,7 @@
 test_name "Be able to execute array commands" do
   tag 'audit:high',
-      'audit:acceptance'
+      'audit:acceptance',
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   agents.each do |agent|
     if agent.platform =~ /windows/

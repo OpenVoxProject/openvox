@@ -142,7 +142,7 @@ Puppet::Type.type(:package).provide :zypper, :parent => :rpm, :source => :rpm do
     options << '--name' unless major < 1 || @resource.allow_virtual? || should
     options << wanted
 
-    zypper(*options)
+    with_environment { zypper(*options) }
 
     unless query
       raise Puppet::ExecutionFailure, _("Could not find package %{name}") % { name: name }
@@ -176,7 +176,7 @@ Puppet::Type.type(:package).provide :zypper, :parent => :rpm, :source => :rpm do
 
       options << @resource[:name]
 
-      zypper(*options)
+      with_environment { zypper(*options) }
     end
   end
 

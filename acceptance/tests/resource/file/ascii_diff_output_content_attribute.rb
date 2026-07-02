@@ -1,6 +1,7 @@
 test_name "ASCII Diff Output of Content Attribute" do
   tag 'audit:high',
-      'audit:acceptance'
+      'audit:acceptance',
+      'shard:group1' # For splitting out groups of tests for slow test runners
 
   sha256 = Digest::SHA256.new
   agents.each do |agent|

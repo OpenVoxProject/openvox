@@ -2,7 +2,8 @@ test_name "Tidying files by date"
 
 tag 'audit:high',
     'audit:refactor',  # Use block style `test_run`
-    'audit:integration'
+    'audit:integration',
+    'shard:group1' # For splitting out groups of tests for slow test runners
 
 agents.each do |agent|
   step "Create a directory of old and new files"

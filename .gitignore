@@ -23,6 +23,7 @@ puppet-acceptance/
 /acceptance/junit
 /acceptance/log
 /acceptance/.beaker
+/acceptance/.vendor
 /packaging/acceptance/junit
 /packaging/acceptance/log
 /packaging/acceptance/.beaker
@@ -51,3 +52,4 @@ spec_order.txt
 /vendor
 /.vendor
 /*.gem
+.DS_Store

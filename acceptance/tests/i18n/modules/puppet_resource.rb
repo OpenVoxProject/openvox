@@ -2,7 +2,8 @@ test_name 'C100572: puppet resource with module translates messages' do
   confine :except, :platform => /^solaris/ # translation not supported
 
   tag 'audit:medium',
-      'audit:acceptance'
+      'audit:acceptance',
+      'shard:group4' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/i18n_utils'
   extend Puppet::Acceptance::I18nUtils

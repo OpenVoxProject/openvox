@@ -21,7 +21,8 @@ require 'puppet/acceptance/temp_file_utils'
 extend Puppet::Acceptance::TempFileUtils
 
 tag 'audit:high',
-    'audit:unit'    # This should be covered adequately by unit tests
+    'audit:unit',   # This should be covered adequately by unit tests
+    'shard:group4' # For splitting out groups of tests for slow test runners
 
 initialize_temp_dirs
 

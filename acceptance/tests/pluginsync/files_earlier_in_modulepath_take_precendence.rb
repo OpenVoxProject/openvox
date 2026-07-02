@@ -2,7 +2,8 @@ test_name "earlier modules take precendence over later modules in the modulepath
 
 tag 'audit:high',
     'audit:integration',
-    'server'
+    'server',
+    'shard:group2' # For splitting out groups of tests for slow test runners
 
 step "Create some modules in the modulepath"
 basedir = master.tmpdir("module_precedence")

@@ -5,8 +5,9 @@ confine :except, :platform => 'windows'
 
 tag 'audit:high',
     'audit:acceptance',    # This has been OS sensitive.
-    'audit:refactor'       # Remove the confine against windows and refactor to
+    'audit:refactor',      # Remove the confine against windows and refactor to
                            # accommodate the Windows platform.
+    'shard:group1' # For splitting out groups of tests for slow test runners
 
 require 'puppet/acceptance/temp_file_utils'
 extend Puppet::Acceptance::TempFileUtils
