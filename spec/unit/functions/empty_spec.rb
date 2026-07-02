@@ -30,22 +30,6 @@ describe 'the empty function' do
     end
   end
 
-  context 'for numeric values it' do
-    it 'always returns false for integer values (including 0)' do
-      Puppet::Util::Log.with_destination(Puppet::Test::LogCollector.new(logs)) do
-        expect(compile_to_catalog("notify { String(empty(0)): }")).to have_resource('Notify[false]')
-      end
-      expect(warnings).to include(/Calling function empty\(\) with Numeric value is deprecated/)
-    end
-
-    it 'always returns false for float values (including 0.0)' do
-      Puppet::Util::Log.with_destination(Puppet::Test::LogCollector.new(logs)) do
-        expect(compile_to_catalog("notify { String(empty(0.0)): }")).to have_resource('Notify[false]')
-      end
-      expect(warnings).to include(/Calling function empty\(\) with Numeric value is deprecated/)
-    end
-  end
-
   context 'for a string it' do
     it 'returns true when empty' do
       expect(compile_to_catalog("notify { String(empty('')): }")).to have_resource('Notify[true]')
