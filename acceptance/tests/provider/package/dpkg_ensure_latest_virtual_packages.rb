@@ -1,6 +1,7 @@
 test_name "dpkg ensure latest with allow_virtual set to true, the virtual package should detect and install a real package" do
   confine :to, :platform => /debian/
-  tag 'audit:high'
+  tag 'audit:high',
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/common_utils'
   extend Puppet::Acceptance::PackageUtils

@@ -26,7 +26,7 @@ module Issues
     attr_writer :demotable
 
     # Configures the Issue with required arguments (bound by occurrence), and a block producing a message.
-    def initialize issue_code, *args, &block
+    def initialize(issue_code, *args, &block)
       @issue_code = issue_code
       @message_block = block
       @arg_names = args
@@ -62,7 +62,7 @@ module Issues
   # @api private
   #
   class MessageData
-    def initialize *argnames
+    def initialize(*argnames)
       singleton = class << self; self end
       argnames.each do |name|
         singleton.send(:define_method, name) do

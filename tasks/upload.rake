@@ -44,7 +44,7 @@ namespace :vox do
     path = "s3://#{bucket}/#{component}/#{args[:tag]}"
     files.each do |f|
       f = `cygpath -m #{f}`.chomp if os =~ /windows/
-      run_command("#{s3} cp #{f} #{path}/#{File.basename(f)}", silent: false)
+      run_command("#{s3} cp #{f} #{path}/#{File.basename(f)} --no-progress", silent: false)
     end
   end
 end

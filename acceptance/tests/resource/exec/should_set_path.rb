@@ -1,7 +1,8 @@
 test_name "the path statement should work to locate commands"
 tag 'audit:high',
     'audit:refactor',   # Use block style `test_name`
-    'audit:acceptance'
+    'audit:acceptance',
+    'shard:group4' # For splitting out groups of tests for slow test runners
 
 agents.each do |agent|
   file = agent.tmpfile('touched-should-set-path')

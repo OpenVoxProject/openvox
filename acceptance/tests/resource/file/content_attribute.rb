@@ -1,7 +1,8 @@
 test_name "Content Attribute"
 tag 'audit:high',
     'audit:refactor',   # Use block stype test_name
-    'audit:acceptance'
+    'audit:acceptance',
+    'shard:group3' # For splitting out groups of tests for slow test runners
 
 agents.each do |agent|
   target = agent.tmpfile('content_file_test')

@@ -1,8 +1,9 @@
 test_name 'parser validate' do
 
 tag 'audit:high',
-    'audit:unit'   # Parser validation should be core to ruby
+    'audit:unit',  # Parser validation should be core to ruby
                    # and platform agnostic.
+    'shard:group2' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/environment_utils'
   extend Puppet::Acceptance::EnvironmentUtils

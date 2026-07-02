@@ -3,10 +3,11 @@ test_name "should allow managed macOS users to login" do
   confine :to, :platform => /osx/
 
   tag 'audit:high',
-      'audit:acceptance' # Could be done as integration tests, but would
+      'audit:acceptance',# Could be done as integration tests, but would
                          # require changing the system running the test
                          # in ways that might require special permissions
                          # or be harmful to the system running the test
+      'shard:group4' # For splitting out groups of tests for slow test runners
 
 
   # Two different test cases, with additional environment setup inbetween,

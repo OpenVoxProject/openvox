@@ -165,7 +165,7 @@ Puppet::Type.type(:package).provide :apt, :parent => :dpkg, :source => :dpkg do
 
     unhold if properties[:mark] == :hold
     begin
-      aptget(*cmd)
+      with_environment { aptget(*cmd) }
     ensure
       hold if @resource[:mark] == :hold
     end
@@ -213,7 +213,7 @@ Puppet::Type.type(:package).provide :apt, :parent => :dpkg, :source => :dpkg do
     args = ['-y', '-q']
     args << '--allow-change-held-packages' if properties[:mark] == :hold
     args << :remove << @resource[:name]
-    aptget(*args)
+    with_environment { aptget(*args) }
   end
 
   def purge
@@ -221,7 +221,7 @@ Puppet::Type.type(:package).provide :apt, :parent => :dpkg, :source => :dpkg do
     args = ['-y', '-q']
     args << '--allow-change-held-packages' if properties[:mark] == :hold
     args << :remove << '--purge' << @resource[:name]
-    aptget(*args)
+    with_environment { aptget(*args) }
     # workaround a "bug" in apt, that already removed packages are not purged
     super
   end

@@ -1,6 +1,7 @@
 test_name "yum provider should use semantic versioning for ensuring desired version" do
   confine :to, :platform => /el-7/
-  tag 'audit:high'
+  tag 'audit:high',
+      'shard:group2' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/common_utils'
   extend Puppet::Acceptance::PackageUtils

@@ -1,6 +1,7 @@
 test_name "should be able to handle fifo files when recursing"
 tag 'audit:high',
-    'audit:acceptance'
+    'audit:acceptance',
+    'shard:group1' # For splitting out groups of tests for slow test runners
 confine :except, :platform => /windows/
 
 def ensure_owner_recursively_manifest(path, owner_value)

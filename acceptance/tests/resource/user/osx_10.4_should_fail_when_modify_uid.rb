@@ -2,10 +2,11 @@ test_name "should not modify the uid of an user on OS X >= 10.14" do
   confine :to, :platform => /osx/
 
   tag 'audit:high',
-      'audit:acceptance' # Could be done as integration tests, but would
+      'audit:acceptance',# Could be done as integration tests, but would
                          # require changing the system running the test
                        # in ways that might require special permissions
                        # or be harmful to the system running the test
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/common_utils'
   extend Puppet::Acceptance::BeakerUtils

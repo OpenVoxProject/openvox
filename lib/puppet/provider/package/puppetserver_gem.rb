@@ -146,10 +146,7 @@ Puppet::Type.type(:package).provide :puppetserver_gem, :parent => :gem do
     puppet_default_vendor_gems               = '/opt/puppetlabs/puppet/lib/ruby/vendor_gems'
     puppetserver_default_gem_path = [puppetserver_default_gem_home, puppetserver_default_vendored_jruby_gems, puppet_default_vendor_gems].join(':')
 
-    pe_puppetserver_conf_file = '/etc/puppetlabs/puppetserver/conf.d/pe-puppet-server.conf'
-    os_puppetserver_conf_file = '/etc/puppetlabs/puppetserver/puppetserver.conf'
-    puppetserver_conf_file = Puppet.runtime[:facter].value(:pe_server_version) ? pe_puppetserver_conf_file : os_puppetserver_conf_file
-    puppetserver_conf = Hocon.load(puppetserver_conf_file)
+    puppetserver_conf = Hocon.load('/etc/puppetlabs/puppetserver/puppetserver.conf')
 
     gem_env = {}
     if puppetserver_conf.empty? || puppetserver_conf.key?('jruby-puppet') == false

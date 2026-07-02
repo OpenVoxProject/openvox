@@ -56,7 +56,7 @@ group(:test) do
   gem 'webrick', '~> 1.7', require: false
   gem 'yard', require: false
 
-  gem 'rubocop', '~> 1.81.6', require: false, platforms: [:ruby]
+  gem 'rubocop', '~> 1.87.0', require: false, platforms: [:ruby]
   gem 'rubocop-i18n', '~> 3.0', require: false, platforms: [:ruby]
   gem 'rubocop-performance', '~> 1.0', require: false, platforms: [:ruby]
   gem 'rubocop-rake', '~> 0.6', require: false, platforms: [:ruby]
@@ -93,7 +93,7 @@ end
 platforms :ruby do
   group :release, optional: true do
     gem 'faraday-retry', require: false
-    gem 'github_changelog_generator', require: false, git: 'https://github.com/voxpupuli/github-changelog-generator', branch: 'avoid-processing-a-single-commit-multiple-time'
+    gem 'github_changelog_generator', '~> 1.18', require: false
   end
 end
 

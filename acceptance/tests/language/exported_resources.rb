@@ -5,7 +5,8 @@ extend Puppet::Acceptance::EnvironmentUtils
 tag 'audit:high',
     'audit:integration',
     'audit:refactor',     # This could be a component of a larger workflow scenario.
-    'server'
+    'server',
+    'shard:group3' # For splitting out groups of tests for slow test runners
 
   skip_test 'requires puppetserver to service restart' if @options[:type] != 'aio'
 

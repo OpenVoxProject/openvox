@@ -85,7 +85,8 @@ project 'openvox-agent' do |proj|
   proj.vendor "Vox Pupuli <openvox@voxpupuli.org>"
   proj.homepage "https://voxpupuli.org"
 
-  major = proj.get_version.split('.').first
+  version = proj.get_version
+  major = version.split('.').first
   proj.target_repo "openvox#{major}"
 
   if platform.is_solaris?
@@ -100,7 +101,7 @@ project 'openvox-agent' do |proj|
   end
 
   # Set package version, for use by Facter in creating the AIO_AGENT_VERSION fact.
-  proj.setting(:package_version, proj.get_version)
+  proj.setting(:package_version, version)
 
   # Provides augeas, curl, libedit, libxml2, libxslt, openssl, puppet-ca-bundle, ruby and rubygem-*
   proj.component "puppet-runtime"
@@ -160,7 +161,7 @@ project 'openvox-agent' do |proj|
   # make sure we can replace puppet-agent in place for the rename
   proj.replaces 'puppet-agent', "< #{major.to_i + 1}"
   proj.conflicts 'puppet-agent'
-  proj.provides 'puppet-agent', "= #{major}"
+  proj.provides 'puppet-agent', "= #{version}"
 
   proj.timeout 7200 if platform.is_windows?
 end

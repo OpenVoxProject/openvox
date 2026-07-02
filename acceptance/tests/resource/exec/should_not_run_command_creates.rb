@@ -1,7 +1,8 @@
 test_name "should not run command creates"
 tag 'audit:high',
     'audit:refactor',   # Use block style `test_name`
-    'audit:acceptance'
+    'audit:acceptance',
+    'shard:group2' # For splitting out groups of tests for slow test runners
 
 agents.each do |agent|
   touch      = agent.tmpfile('touched')
