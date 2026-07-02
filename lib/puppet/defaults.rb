@@ -541,28 +541,6 @@ module Puppet
       :desc       => "How to store cached nodes.
       Valid values are (none), 'json', 'msgpack', or 'yaml'.",
     },
-    :data_binding_terminus => {
-      :type    => :terminus,
-      :default => "hiera",
-      :desc    =>
-        "This setting has been deprecated. Use of any value other than 'hiera' should instead be configured
-         in a version 5 hiera.yaml. Until this setting is removed, it controls which data binding terminus
-         to use for global automatic data binding (across all environments). By default this value is 'hiera'.
-         A value of 'none' turns off the global binding.",
-      :call_hook => :on_initialize_and_write,
-      :hook => proc do |value|
-        if Puppet[:strict] != :off
-          s_val = value.to_s # because sometimes the value is a symbol
-          unless s_val == 'hiera' || s_val == 'none' || value == '' || value.nil?
-            #TRANSLATORS 'data_binding_terminus' is a setting and should not be translated
-            message = _("Setting 'data_binding_terminus' is deprecated.")
-            #TRANSLATORS 'hiera' should not be translated
-            message += ' ' + _("Convert custom terminus to hiera 5 API.")
-            Puppet.deprecation_warning(message)
-          end
-        end
-      end
-    },
     :hiera_config => {
       :default => lambda do
         config = nil
@@ -740,20 +718,6 @@ Valid values are 0 (never cache) and 15 (15 second minimum wait time).
       endpoint after you deploy new code. See the docs for the Puppet Server
       [administrative API](https://puppet.com/docs/puppetserver/latest/admin-api/v1/environment-cache.html).
       "
-    },
-    :environment_data_provider => {
-      :desc => "The name of a registered environment data provider used when obtaining environment
-      specific data. The three built in and registered providers are 'none' (no data), 'function' (data
-      obtained by calling the function 'environment::data()') and 'hiera' (data obtained using a data
-      provider configured using a hiera.yaml file in root of the environment).
-      Other environment data providers may be registered in modules on the module path. For such
-      custom data providers see the respective module documentation. This setting is deprecated.",
-      :hook => proc { |value|
-        unless value.nil? || Puppet[:strict] == :off
-          #TRANSLATORS 'environment_data_provider' is a setting and should not be translated
-          Puppet.deprecation_warning(_("Setting 'environment_data_provider' is deprecated."))
-        end
-      }
     },
     :prerun_command => {
       :default    => "",
