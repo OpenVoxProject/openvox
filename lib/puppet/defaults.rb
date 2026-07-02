@@ -694,21 +694,8 @@ module Puppet
       :type       => :duration,
       :desc       => "The minimum time to wait between checking for updates in
       configuration files.  This timeout determines how quickly Puppet checks whether
-      a file (such as manifests or puppet.conf) has changed on disk. The default will
-      change in a future release to be 'unlimited', requiring a reload of the Puppet
-      service to pick up changes to its internal configuration. Currently we do not
-      accept a value of 'unlimited'. To reparse files within an environment in
-      Puppet Server please use the environment_cache endpoint",
-      :hook => proc do |val|
-        unless [0, 15, '15s'].include?(val)
-          Puppet.deprecation_warning(<<-WARNING)
-Fine grained control of filetimeouts is deprecated. In future
-releases this value will only determine if file content is cached.
-
-Valid values are 0 (never cache) and 15 (15 second minimum wait time).
-          WARNING
-        end
-      end
+      a file (such as manifests or puppet.conf) has changed on disk. To reparse files
+      within an environment in Puppet Server please use the environment_cache endpoint",
     },
     :environment_timeout => {
       :default    => "0",
