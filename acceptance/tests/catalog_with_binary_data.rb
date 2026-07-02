@@ -7,7 +7,8 @@ test_name "C100300: Catalog containing binary data is applied correctly" do
   extend Puppet::Acceptance::AgentFqdnUtils
 
   tag 'risk:high',
-      'server'
+      'server',
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   test_num        = 'c100300'
   tmp_environment = mk_tmp_environment_with_teardown(master, File.basename(__FILE__, '.*'))

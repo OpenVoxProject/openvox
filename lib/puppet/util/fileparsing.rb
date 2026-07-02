@@ -103,13 +103,13 @@ module Puppet::Util::FileParsing
     # Convert a record into a line by joining the fields together appropriately.
     # This is pulled into a separate method so it can be called by the hooks.
     def join(details)
-      joinchar = self.joiner
+      joinchar = joiner
 
       fields.filter_map { |field|
         # If the field is marked absent, use the appropriate replacement
         if details[field] == :absent or details[field] == [:absent] or details[field].nil?
-          if self.optional.include?(field)
-            self.absent
+          if optional.include?(field)
+            absent
           else
             raise ArgumentError, _("Field '%{field}' is required") % { field: field }
           end

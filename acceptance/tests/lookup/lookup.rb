@@ -7,7 +7,8 @@ tag 'audit:high',
     'audit:refactor',  # Master is not needed for this test. Refactor
                        # to use puppet apply with a local module tree.
                        # Use mk_tmp_environment_with_teardown to create environment.
-    'server'
+    'server',
+    'shard:group2' # For splitting out groups of tests for slow test runners
 
   testdir = master.tmpdir('lookup')
 

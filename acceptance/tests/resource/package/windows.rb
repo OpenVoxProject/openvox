@@ -2,7 +2,8 @@ test_name "Windows Package Provider" do
   confine :to, :platform => 'windows'
 
   tag 'audit:high',
-      'audit:acceptance'
+      'audit:acceptance',
+      'shard:group1' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/windows_utils'
   extend Puppet::Acceptance::WindowsUtils

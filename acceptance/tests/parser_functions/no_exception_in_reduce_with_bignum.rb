@@ -3,7 +3,8 @@ test_name 'C97760: Integer in reduce() should not cause exception' do
   extend Puppet::Acceptance::EnvironmentUtils
 
   tag 'audit:high',
-      'audit:unit'
+      'audit:unit',
+      'shard:group2' # For splitting out groups of tests for slow test runners
 
   # Remove all traces of the last used environment
   teardown do

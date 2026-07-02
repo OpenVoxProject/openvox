@@ -1,6 +1,7 @@
 test_name "The Exec resource should set user-specified environment variables" do
   tag 'audit:high',
-      'audit:acceptance'
+      'audit:acceptance',
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   # Would be nice to parse the actual values from puppet_output,
   # but that would require some complicated matching since

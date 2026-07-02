@@ -3,7 +3,8 @@
 test_name 'PUP-9719 Windows First Agent run as SYSTEM sets cache file permissions correctly' do
   tag 'risk:high',
       'audit:high',
-      'audit:integration'
+      'audit:integration',
+      'shard:group1' # For splitting out groups of tests for slow test runners
 
   confine :to, platform: 'windows'
 

@@ -4,7 +4,8 @@ test_name "The source attribute" do
 
   tag 'audit:high',
       'audit:acceptance',
-      'server'
+      'server',
+      'shard:group4' # For splitting out groups of tests for slow test runners
 
   @target_file_on_windows = 'C:/windows/temp/source_attr_test'
   @target_file_on_nix     = '/tmp/source_attr_test'

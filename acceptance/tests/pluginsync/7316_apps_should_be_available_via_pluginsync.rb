@@ -1,7 +1,8 @@
 test_name 'the pluginsync functionality should sync app definitions, and they should be runnable afterwards' do
 
   tag 'audit:high',
-      'audit:integration'
+      'audit:integration',
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   #
   # This test is intended to ensure that pluginsync syncs app definitions to the agents.

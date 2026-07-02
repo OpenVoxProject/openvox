@@ -3,7 +3,8 @@ test_name "QA-760 - Windows Files Containing '-' and '.'"
 tag 'risk:high',
     'audit:high',
     'audit:refactor',   # Use block style `test_name`
-    'audit:integration'
+    'audit:integration',
+    'shard:group3' # For splitting out groups of tests for slow test runners
 
 confine(:to, :platform => 'windows')
 

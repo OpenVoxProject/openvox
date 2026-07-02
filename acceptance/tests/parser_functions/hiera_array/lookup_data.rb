@@ -2,7 +2,8 @@ test_name "Lookup data using the hiera_array parser function"
 
 tag 'audit:high',
     'audit:acceptance',
-    'audit:refactor'    # Master is not required for this test. Replace with agents.each
+    'audit:refactor',   # Master is not required for this test. Replace with agents.each
+    'shard:group3' # For splitting out groups of tests for slow test runners
 
 testdir = master.tmpdir('hiera')
 

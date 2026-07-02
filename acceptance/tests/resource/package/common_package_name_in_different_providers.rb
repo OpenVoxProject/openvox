@@ -12,7 +12,8 @@ test_name "ticket 1073: common package name in two different providers should be
   end
 
   tag 'audit:high',
-      'audit:acceptance' # Uses a provider that depends on AIO packaging
+      'audit:acceptance',# Uses a provider that depends on AIO packaging
+      'shard:group2' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/rpm_util'
   extend Puppet::Acceptance::RpmUtils
