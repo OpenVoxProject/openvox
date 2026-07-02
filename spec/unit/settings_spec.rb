@@ -2044,11 +2044,6 @@ describe Puppet::Settings do
         expect(@settings.print_configs?).to be_falsey
       end
 
-      it "should return true when :configprint has a value" do
-        allow(@settings).to receive(:value).with(:configprint).and_return("something")
-        expect(@settings.print_configs?).to be_truthy
-      end
-
       it "should return true when :genconfig has a value" do
         allow(@settings).to receive(:value).with(:genconfig).and_return(true)
         expect(@settings.print_configs?).to be_truthy
@@ -2061,57 +2056,6 @@ describe Puppet::Settings do
     end
 
     describe "when printing configs" do
-      describe "when :configprint has a value" do
-        it "should call print_config_options" do
-          allow(@settings).to receive(:value).with(:configprint).and_return("something")
-          expect(@settings).to receive(:print_config_options)
-          @settings.print_configs
-        end
-
-        it "should get the value of the option using the environment" do
-          allow(@settings).to receive(:value).with(:configprint).and_return("something")
-          allow(@settings).to receive(:include?).with("something").and_return(true)
-          expect(@settings).to receive(:value).with(:environment).and_return("env")
-          expect(@settings).to receive(:value).with("something", "env").and_return("foo")
-          allow(@settings).to receive(:puts).with("foo")
-          @settings.print_configs
-        end
-
-        it "should print the value of the option" do
-          allow(@settings).to receive(:value).with(:configprint).and_return("something")
-          allow(@settings).to receive(:include?).with("something").and_return(true)
-          allow(@settings).to receive(:value).with("something", nil).and_return("foo")
-          expect(@settings).to receive(:puts).with("foo")
-          @settings.print_configs
-        end
-
-        it "should print the value pairs if there are multiple options" do
-          allow(@settings).to receive(:value).with(:configprint).and_return("bar,baz")
-          allow(@settings).to receive(:include?).with("bar").and_return(true)
-          allow(@settings).to receive(:include?).with("baz").and_return(true)
-          allow(@settings).to receive(:value).with("bar", nil).and_return("foo")
-          allow(@settings).to receive(:value).with("baz", nil).and_return("fud")
-          expect(@settings).to receive(:puts).with("bar = foo")
-          expect(@settings).to receive(:puts).with("baz = fud")
-          @settings.print_configs
-        end
-
-        it "should return true after printing" do
-          allow(@settings).to receive(:value).with(:configprint).and_return("something")
-          allow(@settings).to receive(:include?).with("something").and_return(true)
-          allow(@settings).to receive(:value).with("something", nil).and_return("foo")
-          allow(@settings).to receive(:puts).with("foo")
-          expect(@settings.print_configs).to be_truthy
-        end
-
-        it "should return false if a config param is not found" do
-          allow(@settings).to receive(:puts)
-          allow(@settings).to receive(:value).with(:configprint).and_return("something")
-          allow(@settings).to receive(:include?).with("something").and_return(false)
-          expect(@settings.print_configs).to be_falsey
-        end
-      end
-
       describe "when genconfig is true" do
         before do
           allow(@settings).to receive(:puts)

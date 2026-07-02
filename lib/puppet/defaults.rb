@@ -318,14 +318,6 @@ module Puppet
           sense when specified on the command line as `--genmanifest`.  Takes into account arguments specified
           on the CLI.",
     },
-    :configprint => {
-        :default    => "",
-        :deprecated => :completely,
-        :desc       => "Prints the value of a specific configuration setting.  If the name of a
-          setting is provided for this, then the value is printed and puppet
-          exits.  Comma-separate multiple values.  For a list of all values,
-          specify 'all'. This setting is deprecated, the 'puppet config' command replaces this functionality.",
-    },
     :color => {
       :default => "ansi",
       :type    => :string,
