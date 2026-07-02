@@ -4,7 +4,8 @@ test_name "should purge a user" do
   confine :except, :platform => /^solaris/
   confine :except, :platform => /^osx/
   tag 'audit:high',
-      'audit:acceptance'
+      'audit:acceptance',
+      'shard:group4' # For splitting out groups of tests for slow test runners
 
   agents.each do |agent|
     unmanaged = "unmanaged-#{rand(999999).to_i}"

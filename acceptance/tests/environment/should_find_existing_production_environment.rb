@@ -1,5 +1,6 @@
 test_name "should find existing production environment"
-tag 'audit:medium'
+tag 'audit:medium',
+    'shard:group3' # For splitting out groups of tests for slow test runners
 
 require 'puppet/acceptance/i18ndemo_utils'
 extend Puppet::Acceptance::I18nDemoUtils

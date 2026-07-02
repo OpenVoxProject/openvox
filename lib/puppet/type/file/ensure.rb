@@ -86,12 +86,21 @@ module Puppet
         raise Puppet::Error,
               "Cannot create #{@resource[:path]}; parent directory #{parent} does not exist"
       end
-      if mode
-        Puppet::Util.withumask(0o00) do
-          Dir.mkdir(@resource[:path], symbolic_mode_to_int(mode, 0o755, true))
+      begin
+        if mode
+          Puppet::Util.withumask(0o00) do
+            Dir.mkdir(@resource[:path], symbolic_mode_to_int(mode, 0o755, true))
+          end
+        else
+          Dir.mkdir(@resource[:path])
         end
-      else
-        Dir.mkdir(@resource[:path])
+      rescue Errno::EEXIST
+        # Another process may have created the directory concurrently. If it
+        # really is a directory now, treat that as success.
+        #
+        # Directory mode, and other properties, will be checked and enforced by
+        # the call to `property_fix`.
+        raise unless Puppet::FileSystem.directory?(@resource[:path])
       end
       @resource.send(:property_fix)
       return :directory_created

@@ -116,6 +116,24 @@ describe Puppet::Type.type(:file).attrclass(:ensure) do
 
         property.sync
       end
+
+      it "should not raise if the directory was created concurrently by another process" do
+        expect(Dir).to receive(:mkdir).with(path).and_raise(Errno::EEXIST)
+        expect(Puppet::FileSystem).to receive(:directory?).with(path).and_return(true)
+        expect(resource).to receive(:property_fix)
+
+        expect(property.sync).to eq(:directory_created)
+      end
+
+      it "should raise if the path exists but is not a directory" do
+        expect(Dir).to receive(:mkdir).with(path).and_raise(Errno::EEXIST)
+        expect(Puppet::FileSystem).to receive(:directory?).with(path).and_return(false)
+        expect(resource).not_to receive(:property_fix)
+
+        expect {
+          property.sync
+        }.to raise_error(Puppet::ResourceError, /File exists/)
+      end
     end
   end
 end

@@ -5,6 +5,7 @@ tag 'audit:high',     # startup/configuration, high impact, low risk
     'audit:integration' # could easily be acceptance, not package dependant,
                         # but changing a person running the tests users and
                         # groups can be very onerous
+    'shard:group2' # For splitting out groups of tests for slow test runners
 
 # puppet doesn't try to manage ownership on windows.
 confine :except, :platform => 'windows'

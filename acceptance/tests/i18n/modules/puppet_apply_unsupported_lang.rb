@@ -1,7 +1,8 @@
 test_name 'C100568: puppet apply of module for an unsupported language should fall back to english' do
 
   tag 'audit:medium',
-      'audit:acceptance'
+      'audit:acceptance',
+      'shard:group1' # For splitting out groups of tests for slow test runners
 
   skip_test('i18n test module uses deprecated function; update module to resume testing.')
   # function validate_absolute_path used https://github.com/eputnam/eputnam-i18ndemo/blob/621d06d/manifests/init.pp#L15

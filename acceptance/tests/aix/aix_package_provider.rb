@@ -1,7 +1,8 @@
 test_name "aix package provider should work correctly" do
 
   tag 'audit:high',
-      'audit:acceptance'  # OS specific by definition.
+      'audit:acceptance', # OS specific by definition.
+      'shard:group2' # For splitting out groups of tests for slow test runners
 
   confine :to, :platform => /aix/
 

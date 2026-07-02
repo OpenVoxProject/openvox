@@ -8,7 +8,8 @@ tag 'audit:high',
     'audit:refactor',  # This test specifically tests interpolation on the master.
                        # Recommend adding an additonal test that validates
                        # lookup in a masterless setup.
-    'server'
+    'server',
+    'shard:group3' # For splitting out groups of tests for slow test runners
 
   app_type        = File.basename(__FILE__, '.*')
   tmp_environment = mk_tmp_environment_with_teardown(master, app_type + '1')

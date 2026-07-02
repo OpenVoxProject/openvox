@@ -4,7 +4,8 @@ test_name 'C64667: ensure server_facts is set and error if any value is overwrit
 
 tag 'audit:high',
     'audit:acceptance', # Validating server/client interaction
-    'server'
+    'server',
+    'shard:group2' # For splitting out groups of tests for slow test runners
 
   teardown do
     agents.each do |agent|

@@ -5,9 +5,10 @@ test_name 'Systemd masked services are unmasked before attempting to start'
 
 tag 'audit:high',
     'audit:refactor',  # Use block style `test_run`
-    'audit:acceptance' # Could be done at the integration (or unit) layer though
+    'audit:acceptance',# Could be done at the integration (or unit) layer though
                        # actual changing of resources could irreparably damage a
                        # host running this, or require special permissions.
+    'shard:group1' # For splitting out groups of tests for slow test runners
 
 skip_test "requires AIO install to require 'puppet'" if @options[:type] != 'aio'
 

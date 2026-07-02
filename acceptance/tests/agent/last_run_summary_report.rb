@@ -1,5 +1,6 @@
 test_name "The 'last_run_summary.yaml' report has the right location and permissions" do
-  tag 'audit:high'
+  tag 'audit:high',
+      'shard:group1' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/temp_file_utils'
   extend Puppet::Acceptance::TempFileUtils

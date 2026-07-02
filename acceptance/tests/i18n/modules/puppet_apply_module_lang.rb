@@ -3,7 +3,8 @@ test_name 'C100574: puppet apply using a module should translate messages in a l
   confine :except, :platform => /^windows/ # Can't print Finish on an English or Japanese code page
 
   tag 'audit:medium',
-      'audit:acceptance'
+      'audit:acceptance',
+      'shard:group4' # For splitting out groups of tests for slow test runners
 
   skip_test('i18n test module uses deprecated function; update module to resume testing.')
   # function validate_absolute_path used https://github.com/eputnam/eputnam-i18ndemo/blob/621d06d/manifests/init.pp#L15

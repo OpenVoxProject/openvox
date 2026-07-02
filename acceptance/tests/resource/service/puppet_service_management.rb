@@ -2,12 +2,13 @@ test_name "The Puppet service should be manageable with Puppet"
 
 tag 'audit:high',
     'audit:refactor',  # Use block style `test_name`
-    'audit:acceptance' # uses services from a running puppet-agent install
+    'audit:acceptance',# uses services from a running puppet-agent install
 #
 # This test is intended to ensure that the Puppet service can
 # be directly managed by Puppet. See PUP-5053, PUP-5257, and RE-5574 for
 # more context around circumstances that this can fail.
 #
+    'shard:group2' # For splitting out groups of tests for slow test runners
 
 skip_test 'requires puppet service scripts from AIO agent package' if @options[:type] != 'aio'
 
