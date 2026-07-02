@@ -1,7 +1,8 @@
 test_name "Pluginsync'ed custom facts should be resolvable during application runs" do
 
   tag 'audit:high',
-      'audit:integration'
+      'audit:integration',
+      'shard:group2' # For splitting out groups of tests for slow test runners
 
   #
   # This test is intended to ensure that custom facts downloaded onto an agent via

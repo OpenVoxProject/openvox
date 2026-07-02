@@ -4,7 +4,8 @@ test_name "Agent should use agent environment if there is an enc that does not s
 
   tag 'audit:high',
       'audit:integration',
-      'server'
+      'server',
+      'shard:group4' # For splitting out groups of tests for slow test runners
 
   # Remove all traces of the last used environment
   teardown do

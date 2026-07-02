@@ -1,6 +1,7 @@
 test_name "agent run should fail if it finds an unknown resource type" do
   tag 'audit:high',
-      'audit:integration'
+      'audit:integration',
+      'shard:group2' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/common_utils'
 

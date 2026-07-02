@@ -23,6 +23,7 @@ puppet-acceptance/
 /acceptance/junit
 /acceptance/log
 /acceptance/.beaker
+/acceptance/.vendor
 /packaging/acceptance/junit
 /packaging/acceptance/log
 /packaging/acceptance/.beaker

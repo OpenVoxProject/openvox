@@ -6,9 +6,10 @@ test_name 'SysV on default Systemd Service Provider Validation' do
   end
 
   tag 'audit:high',
-      'audit:acceptance' # Could be done at the integration (or unit) layer though
+      'audit:acceptance',# Could be done at the integration (or unit) layer though
                          # actual changing of resources could irreparably damage a
                          # host running this, or require special permissions.
+      'shard:group4' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/service_utils'
   extend Puppet::Acceptance::ServiceUtils

@@ -6,7 +6,8 @@ tag 'audit:high',
     'audit:acceptance',
     'audit:refactor',  # Master is not needed for this test. Refactor
                        # to use puppet apply with a local environment.
-    'server'
+    'server',
+    'shard:group3' # For splitting out groups of tests for slow test runners
 
   # The following two lines are required for the puppetserver service to
   # start correctly. These should be removed when PUP-7102 is resolved.

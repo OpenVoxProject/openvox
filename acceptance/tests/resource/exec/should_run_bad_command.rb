@@ -1,7 +1,8 @@
 test_name "tests that puppet can run badly written scripts that fork and inherit descriptors"
 tag 'audit:high',
     'audit:refactor',   # Use block style `test_name`
-    'audit:acceptance'
+    'audit:acceptance',
+    'shard:group3' # For splitting out groups of tests for slow test runners
 
 def sleepy_daemon_script(agent)
   if agent['platform'] =~ /win/

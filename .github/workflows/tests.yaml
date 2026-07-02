@@ -2,7 +2,7 @@
 name: RSpec tests
 
 on:
-  pull_request: {}
+  pull_request: { branches: ['main'] }
   push:
     branches:
       - main
@@ -25,10 +25,10 @@ jobs:
     runs-on: ${{ matrix.cfg.os }}
     steps:
       - name: Checkout current PR
-        uses: actions/checkout@v6
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
       - name: Install ruby version ${{ matrix.cfg.ruby }}
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@0dafeac902942906541bc140009cdbf32665b601 # v1.315.0
         with:
           ruby-version: ${{ matrix.cfg.ruby }}
           bundler-cache: true
@@ -45,19 +45,23 @@ jobs:
           - {os: ubuntu-24.04, ruby: '3.2'}
           - {os: ubuntu-24.04, ruby: '3.3'}
           - {os: ubuntu-24.04, ruby: '3.4'}
+          - {os: ubuntu-24.04, ruby: '4.0'}
           - {os: ubuntu-24.04, ruby: 'jruby-9.4.8.0'}
           - {os: ubuntu-24.04, ruby: 'jruby-9.4.14.0'}
+          - {os: ubuntu-24.04, ruby: 'jruby-10.0.5.0'}
+          - {os: ubuntu-24.04, ruby: 'jruby-10.1.0.0'}
           - {os: windows-2025, ruby: '3.2'}
           - {os: windows-2025, ruby: '3.3'}
           - {os: windows-2025, ruby: '3.4'}
+          - {os: windows-2025, ruby: '4.0'}
 
     runs-on: ${{ matrix.cfg.os }}
     steps:
       - name: Checkout current PR
-        uses: actions/checkout@v6
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
       - name: Install ruby version ${{ matrix.cfg.ruby }}
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@0dafeac902942906541bc140009cdbf32665b601 # v1.315.0
         with:
           ruby-version: ${{ matrix.cfg.ruby }}
           bundler-cache: true
@@ -113,11 +117,11 @@ jobs:
     steps:
       # needs fetch-depth because the packaging dem reads old git tags
       - name: Checkout current PR
-        uses: actions/checkout@v6
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           fetch-depth: 0
       - name: Install Ruby version 3.3
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@0dafeac902942906541bc140009cdbf32665b601 # v1.315.0
         with:
           ruby-version: 3.3
           bundler-cache: true

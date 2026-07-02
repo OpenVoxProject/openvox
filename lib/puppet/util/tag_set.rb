@@ -11,7 +11,8 @@ class Puppet::Util::TagSet < Set
   end
 
   def to_yaml
-    @hash.keys.to_yaml
+    # Ruby 4 changed Set's internal structure, use to_a instead of @hash.keys
+    to_a.to_yaml
   end
 
   def self.from_data_hash(data)

@@ -1,6 +1,7 @@
 test_name "rpm should install packages with multiple versions" do
   confine :to, :platform => /redhat|centos|el|fedora/
-  tag 'audit:high'
+  tag 'audit:high',
+      'shard:group1' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/common_utils'
   extend Puppet::Acceptance::PackageUtils

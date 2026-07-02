@@ -403,13 +403,13 @@ EOF
     let(:groups) { [['foo package1'], ['foo package2'], ['bar package3'], ['bar package4'], ['baz package5']] }
 
     it 'should raise an error on non-zero pacman exit without a filter' do
-      expect(executor).to receive(:open).with('| /usr/bin/pacman --sync -gg 2>&1').and_return('error!')
+      expect(IO).to receive(:popen).with('/usr/bin/pacman --sync -gg 2>&1', 'r').and_return('error!')
       expect(Puppet::Util::Execution).to receive(:exitstatus).and_return(1)
       expect { described_class.get_installed_groups(installed_packages) }.to raise_error(Puppet::ExecutionFailure, 'error!')
     end
 
     it 'should return empty groups on non-zero pacman exit with a filter' do
-      expect(executor).to receive(:open).with('| /usr/bin/pacman --sync -gg git 2>&1').and_return('')
+      expect(IO).to receive(:popen).with('/usr/bin/pacman --sync -gg git 2>&1', 'r').and_return('')
       expect(Puppet::Util::Execution).to receive(:exitstatus).and_return(1)
       expect(described_class.get_installed_groups(installed_packages, 'git')).to eq({})
     end
@@ -417,7 +417,7 @@ EOF
     it 'should return empty groups on empty pacman output' do
       pipe = double()
       expect(pipe).to receive(:each_line)
-      expect(executor).to receive(:open).with('| /usr/bin/pacman --sync -gg 2>&1').and_yield(pipe).and_return('')
+      expect(IO).to receive(:popen).with('/usr/bin/pacman --sync -gg 2>&1', 'r').and_yield(pipe).and_return('')
       expect(Puppet::Util::Execution).to receive(:exitstatus).and_return(0)
       expect(described_class.get_installed_groups(installed_packages)).to eq({})
     end
@@ -427,7 +427,7 @@ EOF
       pipe_expectation = receive(:each_line)
       groups.each { |group| pipe_expectation = pipe_expectation.and_yield(*group) }
       expect(pipe).to pipe_expectation
-      expect(executor).to receive(:open).with('| /usr/bin/pacman --sync -gg 2>&1').and_yield(pipe).and_return('')
+      expect(IO).to receive(:popen).with('/usr/bin/pacman --sync -gg 2>&1', 'r').and_yield(pipe).and_return('')
       expect(Puppet::Util::Execution).to receive(:exitstatus).and_return(0)
       expect(described_class.get_installed_groups(installed_packages)).to eq({'foo' => 'package1 1.0, package2 2.0'})
     end

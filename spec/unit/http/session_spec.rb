@@ -138,6 +138,7 @@ describe Puppet::HTTP::Session do
       Puppet[:server_list] = 'foo.example.com,bar.example.com,baz.example.com'
       Puppet[:ca_server] = 'caserver.example.com'
 
+      allow_any_instance_of(Puppet::HTTP::DNS).to receive(:each_srv_record)
       service = session.route_to(:ca)
 
       expect(service.url).to eq(URI("https://caserver.example.com:8140/puppet-ca/v1"))

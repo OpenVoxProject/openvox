@@ -590,7 +590,7 @@ class Puppet::Resource
           argtype =~ /^([^\[\]]+)\[(.+)\]$/m                   then [::Regexp.last_match(1), ::Regexp.last_match(2)]
     elsif argtitle                                             then [argtype,            argtitle]
     elsif argtype.is_a?(Puppet::Type)                          then [argtype.class.name, argtype.title]
-    else  raise ArgumentError, _("No title provided and %{type} is not a valid resource reference") % { type: argtype.inspect } # rubocop:disable Lint/ElseLayout
+    else  raise ArgumentError, _("No title provided and %{type} is not a valid resource reference") % { type: argtype.inspect }
     end
   end
   private_class_method :extract_type_and_title

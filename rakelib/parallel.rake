@@ -184,12 +184,14 @@ else
           fail red('error: no specs were found') if groups.length == 0
 
           begin
-            run_specs(groups, options)
+            result = run_specs(groups, options)
           ensure
             groups.each do |file|
-              File.unlink(file)
+              # Only delete files that actually exist (Ruby 4 on Windows compatibility)
+              FileUtils.rm_f(file)
             end
           end
+          result
         end
 
         private
@@ -205,7 +207,9 @@ else
             line.chomp!
             header = false if line.empty?
             next if header || line.empty?
-            spec_group_files << line
+            # Only add lines that are actual file paths (Ruby 4 on Windows compatibility)
+            # This filters out error messages that might be mixed in the output
+            spec_group_files << line if File.exist?(line)
           end
 
           _, status = Process.waitpid2(io.pid)

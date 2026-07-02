@@ -34,6 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency('concurrent-ruby', '~> 1.0')
   spec.add_runtime_dependency('deep_merge', '~> 1.0')
   spec.add_runtime_dependency('fast_gettext', '>= 2.1', '< 5')
+  spec.add_runtime_dependency('fiddle', '~> 1.1')
   spec.add_runtime_dependency('getoptlong', '~> 0.2.0')
   spec.add_runtime_dependency('locale', '~> 2.1')
   spec.add_runtime_dependency('openfact', '~> 5.0')
@@ -42,6 +43,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency('racc', '~> 1.5')
   spec.add_runtime_dependency('scanf', '~> 1.0')
   spec.add_runtime_dependency('semantic_puppet', '~> 1.0')
+  spec.add_runtime_dependency('win32ole', '>= 1.8', '< 2.0') if Gem.win_platform?
 
   platform = spec.platform.to_s
   if platform == 'universal-darwin'

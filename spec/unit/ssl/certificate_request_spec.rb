@@ -69,6 +69,17 @@ describe Puppet::SSL::CertificateRequest do
     end
   end
 
+  def sha1_signing_supported?
+    test_key = OpenSSL::PKey::RSA.new(512)
+    csr = OpenSSL::X509::Request.new
+    csr.public_key = test_key.public_key
+    csr.version = 0
+    csr.sign(test_key, OpenSSL::Digest::SHA1.new)
+    true
+  rescue
+    false
+  end
+
   describe "when generating", :unless => RUBY_PLATFORM == 'java' do
     it "should verify the CSR using the public key associated with the private key" do
       request.generate(key)
@@ -312,6 +323,7 @@ describe Puppet::SSL::CertificateRequest do
     end
 
     it "should use SHA1 to sign the csr when SHA256 isn't available" do
+      skip "SHA1 signing not supported by this OpenSSL build" unless sha1_signing_supported?
       csr = OpenSSL::X509::Request.new
       csr.public_key = key.public_key
       csr.version = 0

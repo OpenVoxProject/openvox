@@ -2,10 +2,11 @@ test_name "should correctly manage the attributes property for the Group (AIX on
   confine :to, :platform => /aix/
   
   tag 'audit:high',
-      'audit:acceptance' # Could be done as integration tests, but would
+      'audit:acceptance',# Could be done as integration tests, but would
                          # require changing the system running the test
                          # in ways that might require special permissions
                          # or be harmful to the system running the test
+      'shard:group3' # For splitting out groups of tests for slow test runners
   
   require 'puppet/acceptance/aix_util'
   extend Puppet::Acceptance::AixUtil

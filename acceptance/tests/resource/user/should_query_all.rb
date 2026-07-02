@@ -2,7 +2,8 @@ test_name "should query all users"
 
 tag 'audit:high',
     'audit:refactor',  # Use block style `test_run`
-    'audit:integration'
+    'audit:integration',
+    'shard:group2' # For splitting out groups of tests for slow test runners
 
 agents.each do |agent|
   next if agent == master
