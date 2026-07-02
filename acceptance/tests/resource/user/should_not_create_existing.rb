@@ -1,10 +1,11 @@
 test_name "tests that user resource will not add users that already exist." do
 
   tag 'audit:high',
-      'audit:acceptance' # Could be done as integration tests, but would
+      'audit:acceptance',# Could be done as integration tests, but would
                          # require changing the system running the test
                          # in ways that might require special permissions
                          # or be harmful to the system running the test
+      'shard:group1' # For splitting out groups of tests for slow test runners
 
   user  = "u#{rand(999999).to_i}"
   group = "g#{rand(999999).to_i}"

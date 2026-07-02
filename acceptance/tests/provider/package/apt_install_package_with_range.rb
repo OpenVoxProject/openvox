@@ -1,6 +1,7 @@
 test_name "apt can install range if package is not installed" do
   confine :to, :platform => /debian|ubuntu/
-  tag 'audit:high'
+  tag 'audit:high',
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/common_utils'
   extend Puppet::Acceptance::PackageUtils

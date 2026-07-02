@@ -11,7 +11,8 @@ test_name "C98094 - a resource changed via Puppet manifest will not be reported 
       'audit:integration',
       'audit:refactor',    # Uses a server currently, but is testing agent report
       'broken:images',
-      'server'
+      'server',
+      'shard:group1' # For splitting out groups of tests for slow test runners
 
   test_file_name = File.basename(__FILE__, '.*')
   tmp_environment = mk_tmp_environment_with_teardown(master, test_file_name)

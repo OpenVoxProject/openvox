@@ -1,7 +1,8 @@
 test_name "file resource: set default modes"
 tag 'audit:high',
     'audit:refactor',   # Use block style `test_name`
-    'audit:acceptance'
+    'audit:acceptance',
+    'shard:group1' # For splitting out groups of tests for slow test runners
 
 def regexp_mode(mode)
   Regexp.new("mode\s*=>\s*'0?#{mode}'")

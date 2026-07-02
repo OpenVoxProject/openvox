@@ -30,21 +30,18 @@ class Puppet::FileSystem::Uniquefile < DelegateClass(File)
   def initialize(basename, *rest)
     create_tmpname(basename, *rest) do |tmpname, _n, opts|
       mode = File::RDWR | File::CREAT | File::EXCL
-      perm = 0o600
       if opts
         mode |= opts.delete(:mode) || 0
-        opts[:perm] = perm
-        perm = nil
+        opts.delete(:perm)
       else
-        opts = perm
+        opts = {}
       end
       self.class.locking(tmpname) do
-        @tmpfile = File.open(tmpname, mode, opts)
+        @tmpfile = File.open(tmpname, mode, 0o600, **opts)
         @tmpname = tmpname
       end
       @mode = mode & ~(File::CREAT | File::EXCL)
-      perm or opts.freeze
-      @opts = opts
+      @opts = opts.freeze
     end
 
     super(@tmpfile)
@@ -53,7 +50,7 @@ class Puppet::FileSystem::Uniquefile < DelegateClass(File)
   # Opens or reopens the file with mode "r+".
   def open
     @tmpfile.close if @tmpfile
-    @tmpfile = File.open(@tmpname, @mode, @opts)
+    @tmpfile = File.open(@tmpname, @mode, 0o600, **@opts)
     __setobj__(@tmpfile)
   end
 

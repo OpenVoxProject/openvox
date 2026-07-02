@@ -1,7 +1,8 @@
 test_name 'Calling all functions.. test in progress!'
 
 tag 'audit:high',
-    'audit:acceptance'
+    'audit:acceptance',
+    'shard:group1' # For splitting out groups of tests for slow test runners
 
 # create single manifest calling all functions
 step 'Apply manifest containing all function calls'

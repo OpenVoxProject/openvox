@@ -1,7 +1,8 @@
 test_name "should create symlink"
 tag 'audit:high',
     'audit:refactor',   # Use block style `test_name`
-    'audit:acceptance'
+    'audit:acceptance',
+    'shard:group4' # For splitting out groups of tests for slow test runners
 
 def message
   'hello world'

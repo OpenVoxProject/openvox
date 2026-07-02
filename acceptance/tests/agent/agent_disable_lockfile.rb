@@ -3,7 +3,8 @@ tag 'audit:integration', # lockfile uses the standard `vardir` location to store
                          # The validation of the `vardir` at the OS level
                          # should be accomplished in another test.
     'audit:high',
-    'audit:refactor'     # This test should not require a master. Remove the use of `with_puppet_running_on`.
+    'audit:refactor',    # This test should not require a master. Remove the use of `with_puppet_running_on`.
+    'shard:group1' # For splitting out groups of tests for slow test runners
 
 #
 # This test is intended to ensure that puppet agent --enable/--disable

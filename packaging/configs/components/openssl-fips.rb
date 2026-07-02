@@ -29,7 +29,7 @@ component "openssl-fips" do |pkg, settings, platform|
   # into place after `fipsmodule.cnf` is generated. So ship `openssl-fips.cnf`
   # and rename it to `openssl.cnf` during postinstall action.
   #
-  extract_dir = platform.is_windows? ? '/cygdrive/c' : '/'
+  extract_dir = platform.is_windows? ? '/c' : '/'
   pkg.install do
     [
       "#{platform.tar} --skip-old-files --directory=#{extract_dir} --extract --gunzip --file=#{tarball_name}",

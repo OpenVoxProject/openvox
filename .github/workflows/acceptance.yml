@@ -1,7 +1,8 @@
 ---
 name: Beaker OpenVox Acceptance Tests
 run-name: |-
-  Beaker acceptance tests of openvox for
+  Beaker acceptance tests of openvox
+  on ${{ inputs.guest-arch }} runners for
   ${{ inputs.pre-release-build && 'pre-release' || 'release' }}
   packages of openvox-agent
   ${{ (inputs.pre-release-build && inputs.openvox-agent-version) ||
@@ -24,11 +25,11 @@ on:
           (Ref) The git ref of openvox to run the Beaker test suite
           from.
 
-          If testing something from openvox8, this should be a ref off
+          If testing something from openvox9, this should be a ref off
           of main.
 
-          If testing something from openvox7, this should be a ref off
-          of the 7.x branch.
+          If testing something from openvox8, this should be a ref off
+          of the 8.x branch.
         required: true
         type: string
         default: main
@@ -70,9 +71,9 @@ on:
           (Collection) OpenVox collection to use. (ignored if
           Pre-release Build is true)
 
-          If testing something from main, this should be openvox8.
-          If testing something from 7.x, this should be openvox7.
-        default: 'openvox8'
+          If testing something from main, this should be openvox9.
+          If testing something from 8.x, this should be openvox8.
+        default: 'openvox9'
         type: string
       artifacts-url:
         description: |-
@@ -80,6 +81,20 @@ on:
           true)
         default: 'https://s3.osuosl.org/openvox-artifacts'
         type: string
+      guest-arch:
+        description: |-
+          The architecture of the guest VMs to run the acceptance tests
+          on. This is used by the nested_vms action to determine which
+          VM images to use.
+
+          If not provided, the default is x86_64.
+
+          NOTE: Currently only x86_64 *runners* support nested
+          virtualization, so if guest-arch is set to arm64, the
+          nested_vms will run under qemu and be quite a bit slower
+          (5x-20x).
+        type: string
+        default: 'x86_64'
 
 permissions:
   contents: read
@@ -103,3 +118,4 @@ jobs:
       openvox-server-version: ${{ inputs.openvox-server-version }}
       openvox-server-pre-release-build: ${{ inputs.pre-release-build }}
       artifacts-url: ${{ inputs.artifacts-url }}
+      guest-arch: ${{ inputs.guest-arch }}

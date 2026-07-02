@@ -721,6 +721,7 @@ class amod::bad_type {
     end
 
     it "applies a deferred function and its prerequisite in the same run" do
+      Puppet[:preprocess_deferred] = false
       apply.command_line.args = ['-e', deferred_manifest]
       expect {
         apply.run
@@ -754,6 +755,7 @@ class amod::bad_type {
     end
 
     it "evaluates resources before validating the deferred resource" do
+      Puppet[:preprocess_deferred] = false
       manifest = <<~END
         notify { 'runs before file': } ->
         file { '#{deferred_file}':

@@ -3,7 +3,8 @@ test_name "Environment control of static catalogs"
 tag 'audit:high',
     'audit:acceptance',
     'audit:refactor',  # use mk_tmp_environment_with_teardown helper for environment construction
-    'server'
+    'server',
+    'shard:group2' # For splitting out groups of tests for slow test runners
 
 skip_test 'requires puppetserver to test static catalogs' if @options[:type] != 'aio'
 

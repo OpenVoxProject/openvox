@@ -2,7 +2,8 @@ test_name 'C100575: puppet agent with different modules in different environment
   confine :except, :platform => /^solaris/ # translation not supported
 
   tag 'audit:medium',
-      'audit:acceptance'
+      'audit:acceptance',
+      'shard:group2' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/environment_utils.rb'
   extend Puppet::Acceptance::EnvironmentUtils
