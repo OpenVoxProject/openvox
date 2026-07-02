@@ -1,7 +1,8 @@
 test_name "should allow param override"
 
 tag 'audit:high',
-    'audit:unit'   # This should be covered at the unit layer.
+    'audit:unit',  # This should be covered at the unit layer.
+    'shard:group3' # For splitting out groups of tests for slow test runners
 
 manifest = %q{
 class parent {

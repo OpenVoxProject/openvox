@@ -2,10 +2,11 @@ test_name "should create a user"
 
 tag 'audit:high',
     'audit:refactor',  # Use block style `test_run`
-    'audit:acceptance' # Could be done as integration tests, but would
+    'audit:acceptance',# Could be done as integration tests, but would
                        # require changing the system running the test
                        # in ways that might require special permissions
                        # or be harmful to the system running the test
+    'shard:group1' # For splitting out groups of tests for slow test runners
 
 name = "pl#{rand(999999).to_i}"
 

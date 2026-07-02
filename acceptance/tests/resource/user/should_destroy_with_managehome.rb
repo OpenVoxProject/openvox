@@ -2,10 +2,11 @@ test_name "should delete a user with managehome=true" do
   confine :except, :platform => /osx/
 
   tag 'audit:high',
-      'audit:acceptance' # Could be done as integration tests, but would
+      'audit:acceptance',# Could be done as integration tests, but would
                          # require changing the system running the test
                          # in ways that might require special permissions
                          # or be harmful to the system running the test
+      'shard:group2' # For splitting out groups of tests for slow test runners
 
   agents.each do |agent|
     home = ''

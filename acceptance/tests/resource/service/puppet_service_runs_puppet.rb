@@ -4,7 +4,8 @@ extend Puppet::Acceptance::ServiceUtils
 test_name 'Starting the puppet service should successfully run puppet' do
 
   tag 'audit:high',
-      'audit:acceptance'
+      'audit:acceptance',
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   skip_test 'requires a server node to run puppet agent -t' unless master
 

@@ -2,7 +2,8 @@ test_name 'C100567: puppet apply of module should translate messages' do
   confine :except, :platform => /^solaris/ # translation not supported
 
   tag 'audit:medium',
-      'audit:acceptance'
+      'audit:acceptance',
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   skip_test('i18n test module uses deprecated function; update module to resume testing.')
   # function validate_absolute_path used https://github.com/eputnam/eputnam-i18ndemo/blob/621d06d/manifests/init.pp#L15

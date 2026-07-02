@@ -3,7 +3,8 @@ test_name "Windows Service Provider With Mixed UTF-8 Service Names" do
   confine :to, :platform => 'windows'
 
   tag 'audit:high',
-      'audit:acceptance'
+      'audit:acceptance',
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/windows_utils'
   extend Puppet::Acceptance::WindowsUtils

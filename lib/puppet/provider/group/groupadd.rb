@@ -19,10 +19,14 @@ Puppet::Type.type(:group).provide :groupadd, :parent => Puppet::Provider::NameSe
 
   optional_commands :localadd => "lgroupadd", :localdelete => "lgroupdel", :localmodify => "lgroupmod", :purgemember => "usermod"
 
-  has_feature :manages_local_users_and_groups if Puppet.features.libuser?
-  has_feature :manages_members if Puppet.features.libuser? ||
-                                  (Puppet.runtime[:facter].value('os.name') == "Fedora" &&
-                                  Puppet.runtime[:facter].value('os.release.major').to_i >= 40)
+  if Puppet.features.libuser?
+    has_feature :manages_local_users_and_groups
+    has_feature :manages_members
+  elsif Puppet.runtime[:facter].value('os.name') == "Fedora"
+    has_feature :manages_members if Puppet.runtime[:facter].value('os.release.major').to_i >= 40
+  elsif Puppet.runtime[:facter].value('os.family') == "RedHat"
+    has_feature :manages_members if Puppet.runtime[:facter].value('os.release.major').to_i >= 10
+  end
 
   # Libuser's modify command 'lgroupmod' requires '-M' flag for member additions.
   # 'groupmod' command requires the '-aU' flags for it.

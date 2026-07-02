@@ -8,7 +8,8 @@ test_name "Ticket 5477, Puppet Master does not detect newly created site.pp file
 tag 'audit:high',
     'audit:integration',
     'audit:refactor',     # Use block style `test_name`
-    'server'
+    'server',
+    'shard:group1' # For splitting out groups of tests for slow test runners
 
 testdir = master.tmpdir('missing_site_pp')
 manifest_file = "#{testdir}/environments/production/manifests/site.pp"
