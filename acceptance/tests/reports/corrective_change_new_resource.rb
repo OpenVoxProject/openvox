@@ -10,7 +10,8 @@ test_name "C98092 - a new resource should not be reported as a corrective change
   tag 'audit:high',
       'audit:integration',
       'audit:refactor',    # Uses a server currently but is testing agent report
-      'broken:images'
+      'broken:images',
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   test_file_name  = File.basename(__FILE__, '.*')
   tmp_environment = mk_tmp_environment_with_teardown(master, test_file_name)

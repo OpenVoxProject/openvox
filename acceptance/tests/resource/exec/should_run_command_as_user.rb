@@ -2,7 +2,8 @@ test_name "The exec resource should be able to run commands as a different user"
   confine :except, :platform => 'windows'
 
   tag 'audit:high',
-      'audit:acceptance'
+      'audit:acceptance',
+      'shard:group1' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/common_utils'
   extend Puppet::Acceptance::BeakerUtils

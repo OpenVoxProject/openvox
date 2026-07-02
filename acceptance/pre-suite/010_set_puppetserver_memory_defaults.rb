@@ -12,7 +12,13 @@ test_name 'Set Puppetserver Memory Defaults' do
                  end
 
   if half_mem > 2048
-    on(master, "sed -i -E -e '/^JAVA_ARGS=/ s/-Xms[0-9]+[m|g] -Xmx[0-9]+[m|g]/-Xms#{half_mem}m -Xmx#{half_mem}m/' #{defaults_dir}/puppetserver")
+    mem_regex       = "-Xms[0-9]+[m|g][[:blank:]]+-Xmx[0-9]+[m|g]"
+    mem_replacement = "-Xms#{half_mem}m -Xmx#{half_mem}m"
+    on(master, <<~EOS)
+      sed -i -E \
+        -e '/^JAVA_ARGS=/ s/#{mem_regex}/#{mem_replacement}/' \
+        #{defaults_dir}/puppetserver
+    EOS
     on(master, "cat #{defaults_dir}/puppetserver")
   else
     logger.info("System memory on the primary is less than 4GB (#{(mem_in_bytes.to_i / megabytes)}m). Leaving the defult 2GB for Puppetserver memory.")

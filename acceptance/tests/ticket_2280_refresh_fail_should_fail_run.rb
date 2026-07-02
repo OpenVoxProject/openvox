@@ -1,7 +1,8 @@
 test_name 'C100297 - A resource triggered by a refresh that fails should be reported as a failure when using --detailed-exitcodes' do
 
   tag 'audit:high',
-      'audit:integration' # Service type interaction with --detailed-exitcodes
+      'audit:integration',# Service type interaction with --detailed-exitcodes
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   manifest =<<EOS
     exec{'true':

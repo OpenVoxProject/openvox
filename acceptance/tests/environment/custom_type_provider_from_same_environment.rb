@@ -4,7 +4,8 @@ extend Puppet::Acceptance::EnvironmentUtils
 
 tag 'audit:high',
     'audit:integration',  # This behavior is specific to the master to 'do the right thing'
-    'server'
+    'server',
+    'shard:group2' # For splitting out groups of tests for slow test runners
 
   app_type        = File.basename(__FILE__, '.*')
   tmp_environment = mk_tmp_environment_with_teardown(master, app_type)

@@ -7,7 +7,8 @@ extend Puppet::Acceptance::TempFileUtils
 tag 'audit:high',      # tests basic custom module/pluginsync handling?
     'audit:refactor',    # Use block style `test_namme`
     'audit:integration',
-    'server'
+    'server',
+    'shard:group1' # For splitting out groups of tests for slow test runners
 
 initialize_temp_dirs()
 all_tests_passed = false

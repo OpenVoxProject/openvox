@@ -2,7 +2,8 @@ test_name "fallback to the cached catalog"
 
 tag 'audit:high',
     'audit:integration', # This test is not OS sensitive.
-    'audit:refactor'     # A catalog fixture can be used for this test. Remove the usage of `with_puppet_running_on`.
+    'audit:refactor',    # A catalog fixture can be used for this test. Remove the usage of `with_puppet_running_on`.
+    'shard:group4' # For splitting out groups of tests for slow test runners
 
 step "run agents once to cache the catalog" do
   with_puppet_running_on master, {} do

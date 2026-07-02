@@ -1,7 +1,8 @@
 test_name "parametrized classes"
 
 tag 'audit:high',
-    'audit:unit'   # This should be covered at the unit layer.
+    'audit:unit',  # This should be covered at the unit layer.
+    'shard:group2' # For splitting out groups of tests for slow test runners
 
 ########################################################################
 step "should allow param classes"

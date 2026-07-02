@@ -2,7 +2,8 @@ test_name "`puppet resource service` should list running services without callin
 
 tag 'audit:high',
     'audit:refactor',   # Use block style `test_name`
-    'audit:integration' # Doesn't change the system it runs on
+    'audit:integration',# Doesn't change the system it runs on
+    'shard:group1' # For splitting out groups of tests for slow test runners
 
 confine :except, :platform => 'windows'
 confine :except, :platform => 'solaris'

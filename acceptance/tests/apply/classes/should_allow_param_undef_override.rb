@@ -1,7 +1,8 @@
 test_name "should allow overriding a parameter to undef in inheritence"
 
 tag 'audit:high',
-    'audit:unit'   # This should be covered at the unit layer.
+    'audit:unit',  # This should be covered at the unit layer.
+    'shard:group4' # For splitting out groups of tests for slow test runners
 
 agents.each do |agent|
   dir = agent.tmpdir('class_undef_override')

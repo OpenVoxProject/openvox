@@ -1,7 +1,8 @@
 test_name "Package:IPS test for updatable holded package" do
   confine :to, :platform => 'solaris-11'
 
-  tag 'audit:high'
+  tag 'audit:high',
+      'shard:group4' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/solaris_util'
   extend Puppet::Acceptance::IPSUtils

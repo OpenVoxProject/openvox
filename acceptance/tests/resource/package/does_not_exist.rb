@@ -2,9 +2,10 @@
 test_name "Puppet returns only resource package declaration when querying an uninstalled package" do
 
   tag 'audit:high',
-      'audit:acceptance' # Could be done at the integration (or unit) layer though
+      'audit:acceptance',# Could be done at the integration (or unit) layer though
                          # actual changing of resources could irreparably damage a
                          # host running this, or require special permissions.
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   agents.each do |agent|
 

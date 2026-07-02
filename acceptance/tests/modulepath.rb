@@ -1,5 +1,6 @@
 test_name 'Supports vendored modules' do
-  tag 'risk:high'
+  tag 'risk:high',
+      'shard:group3' # For splitting out groups of tests for slow test runners
 
   # beacon custom type emits a message so we can tell where the
   # type was loaded from, e.g. vendored, global, and whether the
