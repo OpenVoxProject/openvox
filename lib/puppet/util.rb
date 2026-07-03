@@ -41,41 +41,6 @@ module Util
   end
   module_function :create_erb
 
-  # @deprecated Use ENV instead
-  # @api private
-  def get_env(name, mode = default_env)
-    ENV.fetch(name, nil)
-  end
-  module_function :get_env
-
-  # @deprecated Use ENV instead
-  # @api private
-  def get_environment(mode = default_env)
-    ENV.to_hash
-  end
-  module_function :get_environment
-
-  # @deprecated Use ENV instead
-  # @api private
-  def clear_environment(mode = default_env)
-    ENV.clear
-  end
-  module_function :clear_environment
-
-  # @deprecated Use ENV instead
-  # @api private
-  def set_env(name, value = nil, mode = default_env)
-    ENV[name] = value
-  end
-  module_function :set_env
-
-  # @deprecated Use ENV instead
-  # @api private
-  def merge_environment(env_hash, mode = default_env)
-    ENV.merge!(hash.transform_keys(&:to_s))
-  end
-  module_function :merge_environment
-
   # Run some code with a specific environment.  Resets the environment back to
   # what it was at the end of the code.
   #
