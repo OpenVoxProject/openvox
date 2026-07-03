@@ -21,19 +21,15 @@ describe 'the regsubst function' do
 
   context 'when using a string pattern' do
     it 'should raise an Error if there is less than 3 arguments' do
-      expect { regsubst('foo', 'bar') }.to raise_error(/expects between 3 and 5 arguments, got 2/)
+      expect { regsubst('foo', 'bar') }.to raise_error(/expects between 3 and 4 arguments, got 2/)
     end
 
-    it 'should raise an Error if there is more than 5 arguments' do
-      expect { regsubst('foo', 'bar', 'gazonk', 'G', 'U', 'y') }.to raise_error(/expects between 3 and 5 arguments, got 6/)
+    it 'should raise an Error if there is more than 4 arguments' do
+      expect { regsubst('foo', 'bar', 'gazonk', 'G', 'y') }.to raise_error(/expects between 3 and 4 arguments, got 5/)
     end
 
     it 'should raise an Error if given a bad flag' do
       expect { regsubst('foo', 'bar', 'gazonk', 'X') }.to raise_error(/parameter 'flags' expects an undef value or a match for Pattern\[\/\^\[GEIM\]\*\$\/\], got 'X'/)
-    end
-
-    it 'should raise an Error if given a bad encoding' do
-      expect { regsubst('foo', 'bar', 'gazonk', nil, 'X') }.to raise_error(/parameter 'encoding' expects a match for Enum\['E', 'N', 'S', 'U'\], got 'X'/)
     end
 
     it 'should raise an Error if given a bad regular expression' do
@@ -51,11 +47,11 @@ describe 'the regsubst function' do
 
   context 'when using a regexp pattern' do
     it 'should raise an Error if there is less than 3 arguments' do
-      expect { regsubst('foo', /bar/) }.to raise_error(/expects between 3 and 5 arguments, got 2/)
+      expect { regsubst('foo', /bar/) }.to raise_error(/expects between 3 and 4 arguments, got 2/)
     end
 
-    it 'should raise an Error if there is more than 5 arguments' do
-      expect { regsubst('foo', /bar/, 'gazonk', 'G', 'E', 'y') }.to raise_error(/expects between 3 and 5 arguments, got 6/)
+    it 'should raise an Error if there is more than 4 arguments' do
+      expect { regsubst('foo', /bar/, 'gazonk', 'G', 'E') }.to raise_error(/expects between 3 and 4 arguments, got 5/)
     end
 
     it 'should raise an Error if given a flag other thant G' do
