@@ -181,12 +181,19 @@ describe Puppet::Face[:generate, :current] do
       end
 
       it 'overwrites if files exists that are not up to date while keeping up to date files' do
+        # Sleep before the first run so the generated output files will have
+        # unambiguously newer mtimes than the input files, even on filesystems
+        # with 2-second timestamp granularity (e.g. Windows/FAT).
+        sleep(2)
         # create them (first run)
         genface.types
         stats_before = [Puppet::FileSystem.stat(File.join(outputdir, 'test1.pp')), Puppet::FileSystem.stat(File.join(outputdir, 'test2.pp'))]
-        # fake change in input test1 - sorry about the sleep (which there was a better way to change the modtime
+        # fake change in input test1 by rewriting its content to update its mtime.
+        # We use File.write rather than Puppet::FileSystem.touch to avoid potential
+        # Windows Ruby 3.2 behaviour where touch updates all files in the directory.
         sleep(1)
-        Puppet::FileSystem.touch(File.join(m1, 'lib', 'puppet', 'type', 'test1.rb'))
+        test1_rb_path = File.join(m1, 'lib', 'puppet', 'type', 'test1.rb')
+        File.write(test1_rb_path, File.read(test1_rb_path))
         # generate again
         genface.types
         # assert that test1 was overwritten (later) but not test2 (same time)
