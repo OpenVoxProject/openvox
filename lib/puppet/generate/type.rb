@@ -45,11 +45,14 @@ module Puppet
         end
 
         # Determines if the output file is up-to-date with respect to the input file.
+        # Generated files are stamped with their input's mtime, so the output is
+        # up-to-date only on an exact match; an input with older timestamps (e.g.
+        # a module downgrade) also triggers regeneration.
         # @param [String, nil] The path to output to, or nil if determined by input
         # @return [Boolean] Returns true if the output is up-to-date or false if not.
         def up_to_date?(outputdir)
           f = effective_output_path(outputdir)
-          Puppet::FileSystem.exist?(f) && (Puppet::FileSystem.stat(@path) <=> Puppet::FileSystem.stat(f)) <= 0
+          Puppet::FileSystem.exist?(f) && (Puppet::FileSystem.stat(@path) <=> Puppet::FileSystem.stat(f)) == 0
         end
 
         # Gets the filename of the output file.
@@ -240,6 +243,7 @@ module Puppet
             Puppet::FileSystem.open(effective_output_path, nil, 'w:UTF-8') do |file|
               file.write(result)
             end
+            Puppet::FileSystem.touch(effective_output_path, mtime: Puppet::FileSystem.stat(input.path).mtime)
           rescue Exception => e
             @bad_input = true
             Puppet.log_exception(e, _("Failed to generate '%{effective_output_path}': %{message}") % { effective_output_path: effective_output_path, message: e.message })
