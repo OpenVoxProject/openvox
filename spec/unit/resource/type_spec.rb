@@ -67,6 +67,21 @@ describe Puppet::Resource::Type do
         expect(Puppet::Resource::Type.new(:node, /W/).name).to eq("__node_regexp__w")
       end
 
+      # Regression coverage for issue #14: lookaround syntax must be encoded into a
+      # lowercase synthetic name so node lookups can find the stored regex node again.
+      it "should normalize lookaround syntax into a lowercase synthetic name" do
+        expect(Puppet::Resource::Type.new(:node, /(?<!a)sync/).name).to eq("__node_regexp__lpqultexarpsync")
+      end
+
+      it "should keep lookaround names distinct from otherwise similar regexes" do
+        lookaround = Puppet::Resource::Type.new(:node, /(?<!a)sync/).name
+        plain = Puppet::Resource::Type.new(:node, /async/).name
+
+        expect(lookaround).not_to eq(plain)
+        expect(lookaround).to eq(lookaround.downcase)
+        expect(plain).to eq(plain.downcase)
+      end
+
       it "should remove non-alpha characters when returning the name as a string" do
         expect(Puppet::Resource::Type.new(:node, /w*w/).name).not_to include("*")
       end
