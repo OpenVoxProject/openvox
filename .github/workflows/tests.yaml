@@ -74,6 +74,11 @@ jobs:
       - name: Run tests on Windows
         if: runner.os == 'Windows'
         run: |
+          # Exclude the workspace and temp dirs from Windows Defender realtime
+          # scanning; the specs create thousands of short-lived tmpfiles and
+          # scanning each one slows the suite considerably.
+          Add-MpPreference -ExclusionPath $Env:GITHUB_WORKSPACE, $Env:RUNNER_TEMP
+
           # https://github.com/ruby/ruby/pull/2791/files#diff-ff5ff976e81bebd977f0834e60416abbR97-R100
           # Actions uses UTF8, causes test failures, similar to normal OS setup
           $PSDefaultParameterValues['*:Encoding'] = 'utf8'
@@ -92,7 +97,9 @@ jobs:
           ruby -ropenssl -e 'puts "OpenSSL Version - #{OpenSSL::OPENSSL_VERSION}"; puts "OpenSSL Library Version - #{OpenSSL::OPENSSL_LIBRARY_VERSION}"'
 
           # Run tests
-          bundle exec rake parallel:spec
+          # Larger spec groups mean fewer Ruby process spawns; process startup
+          # and spec_helper load (~10s each) are expensive on Windows.
+          bundle exec rake "parallel:spec[$Env:NUMBER_OF_PROCESSORS,6000]"
 
       - name: Run tests on Linux
         if: runner.os == 'Linux'
@@ -103,11 +110,22 @@ jobs:
           if [[ ${{ matrix.cfg.ruby }} =~ "jruby" ]]; then
             export _JAVA_OPTIONS='-Xmx1024m -Xms512m'
 
+            # Favor fast startup over peak JIT optimization: the suite runs in
+            # many short-lived processes, so cold-JIT time dominates. Note the
+            # trade-off: less-optimized JIT could in principle behave
+            # differently, but these jobs exist to test openvox under JRuby,
+            # not to exercise JRuby's optimizer.
+            export JRUBY_OPTS='--dev'
+
             # workaround for PUP-10683
             sudo apt remove rpm
-          fi
 
-          bundle exec rake parallel:spec
+            # Larger spec groups mean fewer JVM boots (23 -> ~4), each of
+            # which costs startup plus ~19s of requires.
+            bundle exec rake "parallel:spec[$(nproc),6000]"
+          else
+            bundle exec rake parallel:spec
+          fi
 
   rake_checks:
     name: AIO Package Rake Checks
