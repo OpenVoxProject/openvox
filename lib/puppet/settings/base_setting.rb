@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'set' # rubocop:disable Lint/RedundantRequireStatement
 require_relative '../../puppet/settings/errors'
 
 # The base setting type

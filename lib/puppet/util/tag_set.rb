@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'set' # rubocop:disable Lint/RedundantRequireStatement
 require_relative '../../puppet/network/format_support'
 
 class Puppet::Util::TagSet < Set
