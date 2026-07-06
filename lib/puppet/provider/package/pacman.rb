@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../../../puppet/provider/package'
+require 'set' # rubocop:disable Lint/RedundantRequireStatement
 require 'uri'
 
 Puppet::Type.type(:package).provide :pacman, :parent => Puppet::Provider::Package do

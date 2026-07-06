@@ -4,6 +4,7 @@ require_relative '../../puppet/module_tool'
 require_relative '../../puppet/network/format_support'
 require 'uri'
 require_relative '../../puppet/util/json'
+require 'set' # rubocop:disable Lint/RedundantRequireStatement
 
 module Puppet::ModuleTool
   # This class provides a data structure representing a module's metadata.
