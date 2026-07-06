@@ -184,26 +184,45 @@ describe Puppet::Face[:generate, :current] do
         # create them (first run)
         genface.types
         stats_before = [Puppet::FileSystem.stat(File.join(outputdir, 'test1.pp')), Puppet::FileSystem.stat(File.join(outputdir, 'test2.pp'))]
-        # fake change in input test1 - sorry about the sleep (which there was a better way to change the modtime
-        sleep(1)
-        Puppet::FileSystem.touch(File.join(m1, 'lib', 'puppet', 'type', 'test1.rb'))
+        # fake change in input test1 by giving it an mtime that differs from its output
+        stale = stats_before[0].mtime + 2
+        File.utime(stale, stale, File.join(m1, 'lib', 'puppet', 'type', 'test1.rb'))
         # generate again
         genface.types
-        # assert that test1 was overwritten (later) but not test2 (same time)
+        # assert that test1 was overwritten (stamped with its input's new mtime) but not test2
         stats_after = [Puppet::FileSystem.stat(File.join(outputdir, 'test1.pp')), Puppet::FileSystem.stat(File.join(outputdir, 'test2.pp'))]
         expect(stats_before[1] <=> stats_after[1]).to be(0)
         expect(stats_before[0] <=> stats_after[0]).to be(-1)
+        expect(stats_after[0].mtime).to eq(Puppet::FileSystem.stat(File.join(m1, 'lib', 'puppet', 'type', 'test1.rb')).mtime)
+      end
+
+      it 'overwrites when an input is older than its output (module downgrade)' do
+        # create them (first run)
+        genface.types
+        output = File.join(outputdir, 'test1.pp')
+        # fake a downgrade: input mtime is older than the generated output
+        older = Puppet::FileSystem.stat(output).mtime - 2
+        File.utime(older, older, File.join(m1, 'lib', 'puppet', 'type', 'test1.rb'))
+        # generate again
+        genface.types
+        # assert that test1 was regenerated and stamped with the older input mtime
+        expect(Puppet::FileSystem.stat(output).mtime).to eq(older)
       end
 
       it 'overwrites all files when called with --force' do
         # create them (first run)
         genface.types
         stats_before = [Puppet::FileSystem.stat(File.join(outputdir, 'test1.pp')), Puppet::FileSystem.stat(File.join(outputdir, 'test2.pp'))]
-        # generate again
-        sleep(1) # sorry, if there is no delay the stats will be the same
+        # corrupt the outputs to prove --force rewrites them; mtimes are copied
+        # from the unchanged inputs, so content is the rewrite detector
+        File.write(File.join(outputdir, 'test1.pp'), '# stale sentinel')
+        File.write(File.join(outputdir, 'test2.pp'), '# stale sentinel')
         genface.types(:force => true)
+        expect(File.read(File.join(outputdir, 'test1.pp'))).not_to include('sentinel')
+        expect(File.read(File.join(outputdir, 'test2.pp'))).not_to include('sentinel')
+        # regenerated outputs are re-stamped with their inputs' unchanged mtimes
         stats_after = [Puppet::FileSystem.stat(File.join(outputdir, 'test1.pp')), Puppet::FileSystem.stat(File.join(outputdir, 'test2.pp'))]
-        expect(stats_before <=> stats_after).to be(-1)
+        expect(stats_before <=> stats_after).to be(0)
       end
 
       it 'removes previously generated files from output when there is no input for it' do
