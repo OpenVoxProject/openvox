@@ -305,7 +305,7 @@ module Serialization
         if tos.empty?
           semantic = Puppet::Pops::SemanticError.new(issue, nil, EMPTY_HASH)
         else
-          file, line = stacktrace
+          file, line = Puppet::Pops::PuppetStack.stacktrace
           semantic = Puppet::Pops::SemanticError.new(issue, nil, { :file => file, :line => line })
         end
       end

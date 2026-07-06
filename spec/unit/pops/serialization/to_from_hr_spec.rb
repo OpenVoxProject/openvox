@@ -525,7 +525,7 @@ module Serialization
       expect(warnings).to eql([
         "Test Hash contains a hash with a SemanticPuppet::Version key. It will be converted to the String '1.0.0'",
         "Test Hash contains a hash with a SemanticPuppet::Version key. It will be converted to the String '2.0.0'"])
-      end
+    end
 
     it 'A Hash with rich data is not converted and raises error by default' do
       Puppet[:strict] = :error
@@ -564,6 +564,17 @@ module Serialization
         val = { 'key' => :default  }
         Puppet::Util::Log.with_destination(Puppet::Test::LogCollector.new(logs)) do
           write(val)
+          val2 = read
+          expect(val2).to be_a(Hash)
+          expect(val2).to eql({ 'key' => 'default' })
+        end
+        expect(warnings).to eql(["['key'] contains the special value default. It will be converted to the String 'default'"])
+      end
+
+      it 'A Hash with default values will have the values converted to string with a warning when not at top-of-stack' do
+        val = { 'key' => :default  }
+        Puppet::Util::Log.with_destination(Puppet::Test::LogCollector.new(logs)) do
+          Puppet::Pops::PuppetStack.stack('afile', 1234, self, :write, [val])
           val2 = read
           expect(val2).to be_a(Hash)
           expect(val2).to eql({ 'key' => 'default' })
