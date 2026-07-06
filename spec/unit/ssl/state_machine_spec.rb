@@ -495,6 +495,14 @@ describe Puppet::SSL::StateMachine, unless: Puppet::Util::Platform.jruby? do
         state.next_state
       end
 
+      it 'updates the `last_update` time on 304 Not Modified so ca_refresh_interval is respected' do
+        stub_request(:get, %r{puppet-ca/v1/certificate/ca}).to_return(status: 304)
+
+        expect_any_instance_of(Puppet::X509::CertProvider).to receive(:ca_last_update=).with(be_within(60).of(Time.now))
+
+        state.next_state
+      end
+
       it "does not update the `last_update` time when CA refresh fails" do
         stub_request(:get, %r{puppet-ca/v1/certificate/ca}).to_raise(Errno::ECONNREFUSED)
 
@@ -653,6 +661,14 @@ describe Puppet::SSL::StateMachine, unless: Puppet::Util::Platform.jruby? do
 
       it 'updates the `last_update` time' do
         stub_request(:get, %r{puppet-ca/v1/certificate_revocation_list/ca}).to_return(status: 200, body: new_crl_bundle.join)
+
+        expect_any_instance_of(Puppet::X509::CertProvider).to receive(:crl_last_update=).with(be_within(60).of(Time.now))
+
+        state.next_state
+      end
+
+      it 'updates the `last_update` time on 304 Not Modified so crl_refresh_interval is respected' do
+        stub_request(:get, %r{puppet-ca/v1/certificate_revocation_list/ca}).to_return(status: 304)
 
         expect_any_instance_of(Puppet::X509::CertProvider).to receive(:crl_last_update=).with(be_within(60).of(Time.now))
 
