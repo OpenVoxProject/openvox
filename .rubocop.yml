@@ -9,7 +9,7 @@ plugins:
 
 # without excluding the vendor dirs below, rubocop will load all rubocop config files from installed gems ¯\_(ツ)_/¯
 AllCops:
-  TargetRubyVersion: 3.3
+  TargetRubyVersion: 3.2
   Include:
     - 'lib/**/*.rb'
     - 'ext/**/*.rb'
