@@ -119,10 +119,10 @@ Puppet::Indirector::Face.define(:catalog, '0.0.1') do
   end
 
   action(:download) do
-    summary "Download this node's catalog from the Puppet server."
+    summary "Download this node's catalog from the OpenVox server."
     description <<-'EOT'
-      Retrieves a catalog from the Puppet server and saves it to the local yaml
-      cache. This action always contacts the Puppet server and will ignore
+      Retrieves a catalog from the OpenVox server and saves it to the local yaml
+      cache. This action always contacts the OpenVox server and will ignore
       alternate termini.
 
       The saved catalog can be used in any subsequent catalog action by specifying

@@ -14,15 +14,15 @@ Puppet::Face.define(:catalog, '0.0.1') do
       resources of the requested type.
     EOT
     notes <<-'NOTES'
-      By default, this action will retrieve a catalog from Puppet's compiler
+      By default, this action will retrieve a catalog from OpenVox's compiler
       subsystem; you must call the action with `--terminus rest` if you wish
-      to retrieve a catalog from the Puppet server.
+      to retrieve a catalog from the OpenVox server.
 
       FORMATTING ISSUES: This action cannot currently render useful yaml;
       instead, it returns an entire catalog. Use json instead.
     NOTES
     examples <<-'EOT'
-      Ask the Puppet server for a list of managed file resources for a node:
+      Ask the OpenVox server for a list of managed file resources for a node:
 
       $ puppet catalog select --terminus rest somenode.magpie.lan file
     EOT

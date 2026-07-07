@@ -1,6 +1,6 @@
-# Profiling Puppet
+# Profiling OpenVox
 
-Puppet is a beast. Puppet is at times a very *slow* beast. Maybe we can find
+OpenVox is a beast. OpenVox is at times a very *slow* beast. Maybe we can find
 what is making it slow and fix it.
 
 ## Coarse Grained Profiling
@@ -33,7 +33,7 @@ Rack::RubyProf, :path => '/temp/profile'` to the config.ru for your server.
 
 ## Running the Benchmarks
 
-Puppet has a number of benchmark scenarios to pinpoint problems in specific,
+OpenVox has a number of benchmark scenarios to pinpoint problems in specific,
 known, use cases. The benchmark scenarios live in the `benchmarks` directory.
 
 To run a scenario you do:
