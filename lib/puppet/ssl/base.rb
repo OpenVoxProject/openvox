@@ -85,7 +85,13 @@ class Puppet::SSL::Base
 
   # Read content from disk appropriately.
   def read(path)
-    # applies to Puppet::SSL::CertificateRequest
+    # applies to Puppet::SSL::Certificate, Puppet::SSL::CertificateRequest
+    # nothing derives from Puppet::SSL::Certificate, but it is called by a number of other SSL Indirectors:
+    # Puppet::Indirector::CertificateStatus::File (.indirection.find)
+    # Puppet::Network::HTTP::WEBrick (.indirection.find)
+    # Puppet::Network::HTTP::RackREST (.from_instance)
+    # Puppet::Network::HTTP::WEBrickREST (.from_instance)
+    # Puppet::SSL::Inventory (.indirection.search, implements its own add / rebuild / serials with encoding UTF8)
     @content = wrapped_class.new(Puppet::FileSystem.read(path, :encoding => Encoding::ASCII))
   end
 
