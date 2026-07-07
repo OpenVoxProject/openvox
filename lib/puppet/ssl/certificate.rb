@@ -9,6 +9,10 @@ require_relative '../../puppet/ssl/base'
 # the case).
 #
 # @deprecated Use {Puppet::SSL::SSLProvider} instead.
+#   This class and its associated helpers are still
+#   necessary as they enable FIPS-mode OpenVox Server
+#   to populate trusted data when `require 'openssl'`
+#   is not available.
 class Puppet::SSL::Certificate < Puppet::SSL::Base
   # This is defined from the base class
   wraps OpenSSL::X509::Certificate
