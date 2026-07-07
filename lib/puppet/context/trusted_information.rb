@@ -54,7 +54,7 @@ class Puppet::Context::TrustedInformation
       if certificate.nil?
         Puppet.info(_('TrustedInformation expected a certificate, but none was given.'))
       else
-        extensions = Puppet::SSL::Oids.custom_extensions_for(certificate).to_h do |ext|
+        extensions = certificate.custom_extensions.to_h do |ext|
           [ext['oid'].freeze, ext['value'].freeze]
         end
       end

@@ -106,7 +106,7 @@ module Puppet
         cert.add_extension(ext)
       end
       cert.sign(@key, @digest)
-      cert
+      Puppet::SSL::Certificate.from_instance(cert)
     end
 
     def revoke(cert, crl = @crl, issuer_key = @key)
@@ -122,7 +122,7 @@ module Puppet
 
     def generate(name, opts)
       info = create_request(name)
-      cert = sign(info[:csr], opts)
+      cert = sign(info[:csr], opts).content
       info.merge(cert: cert)
     end
 
