@@ -38,17 +38,17 @@ Puppet::Indirector::Face.define(:facts, '0.0.1') do
   deactivate_action(:search)
 
   action(:upload) do
-    summary _("Upload local facts to the Puppet server.")
+    summary _("Upload local facts to the OpenVox server.")
     description <<-'EOT'
       Reads facts from the local system using the `facter` terminus, then
       saves the returned facts using the rest terminus.
     EOT
     returns "Nothing."
     notes <<-'EOT'
-      This action requires that the Puppet Server's `auth.conf` file
+      This action requires that the OpenVox Server's `auth.conf` file
       allow `PUT` or `save` access to the `/puppet/v3/facts` API endpoint.
 
-      For details on configuring Puppet Server's `auth.conf`, see:
+      For details on configuring OpenVox Server's `auth.conf`, see:
 
       <https://puppet.com/docs/puppetserver/latest/config_file_auth.html>
     EOT
@@ -61,7 +61,7 @@ Puppet::Indirector::Face.define(:facts, '0.0.1') do
     render_as :json
 
     when_invoked do |_options|
-      # Use `agent` sections  settings for certificates, Puppet Server URL,
+      # Use `agent` sections  settings for certificates, OpenVox Server URL,
       # etc. instead of `user` section settings.
       Puppet.settings.preferred_run_mode = :agent
       Puppet::Node::Facts.indirection.terminus_class = :facter

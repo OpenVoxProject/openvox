@@ -1,8 +1,8 @@
 # Indirector
 
-> This document describes Puppet's indirector subsystem, but it has a number of limitations described below. As a result, don't introduce any new indirections or termini.
+> This document describes OpenVox's indirector subsystem, but it has a number of limitations described below. As a result, don't introduce any new indirections or termini.
 
-Puppet's indirector supports pluggable backends (termini) for a variety of key-value stores (indirections). Each indirection type corresponds to a particular Ruby class (the "Indirected Class" below) and values are instances of that class. Each instance's key is available from its name method. The termini can be local (e.g., on-disk files) or remote (e.g., using a REST interface to talk to a Puppet server).
+OpenVox's indirector supports pluggable backends (termini) for a variety of key-value stores (indirections). Each indirection type corresponds to a particular Ruby class (the "Indirected Class" below) and values are instances of that class. Each instance's key is available from its name method. The termini can be local (e.g., on-disk files) or remote (e.g., using a REST interface to talk to a OpenVox server).
 
 An indirector has five methods, which are mapped into HTTP verbs for the REST interface:
 
@@ -37,7 +37,7 @@ Indirected Class: `Puppet::Resource::Catalog`
 Terminus Setting: `catalog_terminus`
 
 `compiler` terminus
-Compiles catalogs on demand using Puppet's compiler.
+Compiles catalogs on demand using OpenVox's compiler.
 
 `json` terminus
 Store catalogs as flat files, serialized using JSON.
@@ -71,7 +71,7 @@ Indirected Class: `Puppet::Node::Facts`
 Terminus Setting: `facts_terminus`
 
 `facter` terminus
-Retrieve facts from Facter. This provides a somewhat abstract interface between Puppet and Facter. It's only somewhat abstract because it always returns the local host's facts, regardless of what you attempt to find.
+Retrieve facts from OpenFact. This provides a somewhat abstract interface between OpenVox and OpenFact. It's only somewhat abstract because it always returns the local host's facts, regardless of what you attempt to find.
 
 `memory` terminus
 Keep track of facts in memory but nowhere else. This is used for one-time compiles, such as what the stand-alone puppet does. To use this terminus, you must load it with the data you want it to contain.
@@ -104,7 +104,7 @@ Indirected Class: `Puppet::FileServing::Content`
 Retrieve file contents from disk.
 
 `file_server` terminus
-Retrieve file contents using Puppet's fileserver.
+Retrieve file contents using OpenVox's fileserver.
 
 `http` terminus
 Retrieve file contents from a remote HTTP server.
@@ -122,7 +122,7 @@ Indirected Class: `Puppet::FileServing::Metadata`
 Retrieve file metadata directly from the local filesystem.
 
 `file_server` terminus
-Retrieve file metadata using Puppet's fileserver.
+Retrieve file metadata using OpenVox's fileserver.
 
 `http` terminus
 Retrieve file metadata from a remote HTTP server.
@@ -157,7 +157,7 @@ Always return an empty node object. Assumes you keep track of nodes in flat file
 Note that class is responsible for merging the node's facts into the node instance before it is returned.
 
 `rest` terminus
-Get a node via REST. Puppet agent uses this to allow the Puppet server to override its environment.
+Get a node via REST. OpenVox agent uses this to allow the OpenVox server to override its environment.
 
 `store_configs` terminus
 Part of the "storeconfigs" feature. Should not be directly set by end users.
@@ -172,7 +172,7 @@ Indirected Class: `Puppet::Transaction::Report`
 Store last report as a flat file, serialized using MessagePack.
 
 `processor` terminus
-Puppet's report processor. Processes the report with each of the report types listed in the ‘reports' setting.
+OpenVox's report processor. Processes the report with each of the report types listed in the ‘reports' setting.
 
 `rest` terminus
 Get server report over HTTP via REST.
@@ -189,7 +189,7 @@ Manipulate resources with the resource abstraction layer. Only used internally.
 Part of the "storeconfigs" feature. Should not be directly set by end users.
 
 `rest` terminus
-Get Puppet server's status via REST. Useful because it tests the health of both the web server and the indirector.
+Get OpenVox server's status via REST. Useful because it tests the health of both the web server and the indirector.
 
 ## Limitations
 
