@@ -14,8 +14,20 @@ on:
         description: 'The vanagon project to build'
         required: false
         default: 'openvox-agent'
+      branch:
+        description: >-
+          The default platform list to build for. Use `main` for 9.x builds
+          and `8.x` for 8.x builds.
+        type: choice
+        options:
+          - main
+          - '8.x'
+        default: 'main'
       platform_list:
-        description: 'A comma-separated list of platforms to build for. Do not include spaces. If not provided, will use the default list of platform supported by OpenVox.'
+        description: >-
+          Comma-separated list of platforms to build for. Do not include
+          spaces. If not provided, will use the default platform list chosen
+          above.
         required: false
         type: string
       vanagon_branch:
@@ -33,13 +45,6 @@ on:
         required: false
         type: boolean
         default: false
-      branch:
-        description: 'The release branch to build from.'
-        type: choice
-        options:
-          - main
-          - '8.x'
-        default: 'main'
 
 jobs:
   build:
