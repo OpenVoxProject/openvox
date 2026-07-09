@@ -8,6 +8,7 @@ describe Puppet::Indirector::FileContent::Rest do
   let(:key) { "puppet:///:mount/path/to/file" }
 
   before :each do
+    Puppet[:server] = 'puppet'
     described_class.indirection.terminus_class = :rest
   end
 

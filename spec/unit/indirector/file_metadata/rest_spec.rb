@@ -9,6 +9,7 @@ describe Puppet::Indirector::FileMetadata::Rest do
   let(:model) { described_class.model }
 
   before :each do
+    Puppet[:server] = 'puppet'
     described_class.indirection.terminus_class = :rest
   end
 

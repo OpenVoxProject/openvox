@@ -615,6 +615,10 @@ describe Puppet::Type.type(:file).attrclass(:source), :uses_checksums => true do
     end
 
     describe 'from remote source' do
+      before do
+        Puppet[:server] = 'puppet'
+      end
+
       let(:source_content) { "source file content\n"*10 }
       let(:source) {
         attr = resource.newattr(:source)
