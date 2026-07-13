@@ -20,7 +20,7 @@ module Puppet
       attribute is mutually exclusive with `content` and `target`. Allowed
       values are:
 
-      * `puppet:` URIs, which point to files in modules or Puppet file server
+      * `puppet:` URIs, which point to files in modules or OpenVox file server
       mount points.
       * Fully qualified paths to locally available files (including files on NFS
       shares or Windows mapped drives).
@@ -31,8 +31,8 @@ module Puppet
 
       `puppet:///modules/<MODULE NAME>/<FILE PATH>`
 
-      This will fetch a file from a module on the Puppet master (or from a
-      local module when using Puppet apply). Given a `modulepath` of
+      This will fetch a file from a module on the OpenVox server (or from a
+      local module when using puppet apply). Given a `modulepath` of
       `/etc/puppetlabs/code/modules`, the example above would resolve to
       `/etc/puppetlabs/code/modules/<MODULE NAME>/files/<FILE PATH>`.
 
@@ -46,28 +46,28 @@ module Puppet
       because HTTP servers do not transfer any metadata that translates to
       ownership or permission details.
 
-      Puppet determines if file content is synchronized by computing a checksum
+      OpenVox determines if file content is synchronized by computing a checksum
       for the local file and comparing it against the `checksum_value`
       parameter. If the `checksum_value` parameter is not specified for
-      `puppet` and `file` sources, Puppet computes a checksum based on its
-      `Puppet[:digest_algorithm]`. For `http(s)` sources, Puppet uses the
+      `puppet` and `file` sources, OpenVox computes a checksum based on its
+      `Puppet[:digest_algorithm]`. For `http(s)` sources, OpenVox uses the
       first HTTP header it recognizes out of the following list:
       `X-Checksum-Sha256`, `X-Checksum-Sha1`, `X-Checksum-Md5` or `Content-MD5`.
-      If the server response does not include one of these headers, Puppet
-      defaults to using the `Last-Modified` header. Puppet updates the local
+      If the server response does not include one of these headers, OpenVox
+      defaults to using the `Last-Modified` header. OpenVox updates the local
       file if the header is newer than the modified time (mtime) of the local
       file.
 
-      _HTTP_ URIs can include a user information component so that Puppet can
+      _HTTP_ URIs can include a user information component so that OpenVox can
       retrieve file metadata and content from HTTP servers that require HTTP Basic
       authentication. For example `https://<user>:<pass>@<server>:<port>/path/to/file.`
 
-      When connecting to _HTTPS_ servers, Puppet trusts CA certificates in the
-      puppet-agent certificate bundle and the Puppet CA. You can configure Puppet
+      When connecting to _HTTPS_ servers, OpenVox trusts CA certificates in the
+      puppet-agent certificate bundle and the OpenVox CA. You can configure OpenVox
       to trust additional CA certificates using the `Puppet[:ssl_trust_store]`
       setting.
 
-      Multiple `source` values can be specified as an array, and Puppet will
+      Multiple `source` values can be specified as an array, and OpenVox will
       use the first source that exists. This can be used to serve different
       files to different system types:
 
@@ -323,9 +323,9 @@ module Puppet
 
     def chunk_file_from_source(&block)
       if uri.scheme =~ /^https?/
-        # Historically puppet has not encoded the http(s) source URL before parsing
+        # Historically OpenVox has not encoded the http(s) source URL before parsing
         # it, for example, if the path contains spaces, then it must be URL encoded
-        # as %20 in the manifest. Puppet behaves the same when retrieving file
+        # as %20 in the manifest. OpenVox behaves the same when retrieving file
         # metadata via http(s), see Puppet::Indirector::FileMetadata::Http#find.
         url = URI.parse(metadata.source)
         get_from_http_source(url, &block)
@@ -347,7 +347,7 @@ module Puppet
 
   Puppet::Type.type(:file).newparam(:source_permissions) do
     desc <<-'EOT'
-      Whether (and how) Puppet should copy owner, group, and mode permissions from
+      Whether (and how) OpenVox should copy owner, group, and mode permissions from
       the `source` to `file` resources when the permissions are not explicitly
       specified. (In all cases, explicit permissions will take precedence.)
       Valid values are `use`, `use_when_creating`, and `ignore`:
@@ -355,10 +355,10 @@ module Puppet
       * `ignore` (the default) will never apply the owner, group, or mode from
         the `source` when managing a file. When creating new files without explicit
         permissions, the permissions they receive will depend on platform-specific
-        behavior. On POSIX, Puppet will use the umask of the user it is running as.
-        On Windows, Puppet will use the default DACL associated with the user it is
+        behavior. On POSIX, OpenVox will use the umask of the user it is running as.
+        On Windows, OpenVox will use the default DACL associated with the user it is
         running as.
-      * `use` will cause Puppet to apply the owner, group,
+      * `use` will cause OpenVox to apply the owner, group,
         and mode from the `source` to any files it is managing.
       * `use_when_creating` will only apply the owner, group, and mode from the
         `source` when creating a file; existing files will not have their permissions

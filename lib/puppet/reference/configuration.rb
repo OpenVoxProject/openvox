@@ -38,7 +38,7 @@ config = Puppet::Util::Reference.newreference(:configuration, :depth => 1, :doc 
     when 'logdir'
       val = 'Unix/Linux: /var/log/puppetlabs/puppet -- Windows: C:\ProgramData\PuppetLabs\puppet\var\log -- Non-root user: ~/.puppetlabs/var/log'
     when 'hiera_config'
-      val = '$confdir/hiera.yaml. However, for backwards compatibility, if a file exists at $codedir/hiera.yaml, Puppet uses that instead.'
+      val = '$confdir/hiera.yaml. However, for backwards compatibility, if a file exists at $codedir/hiera.yaml, OpenVox uses that instead.'
     when 'certname'
       val = "the Host's fully qualified domain name, as determined by Facter"
     when 'hostname'
@@ -67,18 +67,11 @@ config.header = <<~EOT
 
   * Each of these settings can be specified in `puppet.conf` or on the
     command line.
-  * Puppet Enterprise (PE) and open source Puppet share the configuration settings
-    documented here. However, PE defaults differ from open source defaults for some
-    settings, such as `node_terminus`, `storeconfigs`, `always_retry_plugins`,
-    `disable18n`, `environment_timeout` (when Code Manager is enabled), and the
-    Puppet Server JRuby `max-active-instances` setting. To verify PE configuration
-    defaults, check the `puppet.conf` or `pe-puppet-server.conf` file after
-    installation.
   * When using boolean settings on the command line, use `--setting` and
     `--no-setting` instead of `--setting (true|false)`. (Using `--setting false`
     results in "Error: Could not parse application options: needless argument".)
   * Settings can be interpolated as `$variables` in other settings; `$environment`
-    is special, in that puppet master will interpolate each agent node's
+    is special, in that OpenVox Server will interpolate each agent node's
     environment instead of its own.
   * Multiple values should be specified as comma-separated lists; multiple
     directories should be separated with the system path separator (usually
@@ -90,11 +83,11 @@ config.header = <<~EOT
     '3600' which is equivalent to '1h' (one hour), and '1825d' which is equivalent
     to '5y' (5 years).
   * If you use the `splay` setting, note that the period that it waits changes
-    each time the Puppet agent is restarted.
+    each time the OpenVox agent is restarted.
   * Settings that take a single file or directory can optionally set the owner,
     group, and mode for their value: `rundir = $vardir/run { owner = puppet,
     group = puppet, mode = 644 }`
-  * The Puppet executables ignores any setting that isn't relevant to
+  * The OpenVox executables ignores any setting that isn't relevant to
     their function.
 
   See the [configuration guide][confguide] for more details.

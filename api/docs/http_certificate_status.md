@@ -5,8 +5,8 @@ The `certificate status` endpoint allows a client to read or alter the
 status of a certificate or pending certificate request. It is only
 useful on the CA.
 
-Under Puppet Server's CA service, the `environment` parameter is ignored and can
-be omitted. Under a Rack or WEBrick Puppet master, `environment` is required and
+Under OpenVox Server's CA service, the `environment` parameter is ignored and can
+be omitted. Under a Rack or WEBrick OpenVox server, `environment` is required and
 must be a valid environment, but it has no effect on the response.
 
 Find
@@ -68,7 +68,7 @@ Otherwise it returns
 
 This endpoint is disabled in the default configuration. It is
 recommended to be careful with this endpoint, as it can allow control
-over the certificates used by the puppet master.
+over the certificates used by the OpenVox server.
 
 GET, PUT, DELETE
 

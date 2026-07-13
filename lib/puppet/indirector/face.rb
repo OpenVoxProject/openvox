@@ -6,16 +6,16 @@ class Puppet::Indirector::Face < Puppet::Face
   option "--terminus _" + _("TERMINUS") do
     summary _("The indirector terminus to use.")
     description <<-EOT
-      Indirector faces expose indirected subsystems of Puppet. These
+      Indirector faces expose indirected subsystems of OpenVox. These
       subsystems are each able to retrieve and alter a specific type of data
       (with the familiar actions of `find`, `search`, `save`, and `destroy`)
-      from an arbitrary number of pluggable backends. In Puppet parlance,
+      from an arbitrary number of pluggable backends. In OpenVox parlance,
       these backends are called terminuses.
 
       Almost all indirected subsystems have a `rest` terminus that interacts
-      with the puppet master's data. Most of them have additional terminuses
+      with the OpenVox server's data. Most of them have additional terminuses
       for various local data models, which are in turn used by the indirected
-      subsystem on the puppet master whenever it receives a remote request.
+      subsystem on the OpenVox server whenever it receives a remote request.
 
       The terminus for an action is often determined by context, but
       occasionally needs to be set explicitly. See the "Notes" section of this

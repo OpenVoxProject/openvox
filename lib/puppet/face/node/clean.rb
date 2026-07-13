@@ -2,10 +2,10 @@
 
 Puppet::Face.define(:node, '0.0.1') do
   action(:clean) do
-    summary _("Clean up signed certs, cached facts, node objects, and reports for a node stored by the puppetmaster")
+    summary _("Clean up signed certs, cached facts, node objects, and reports for a node stored by the OpenVox server")
     arguments _("<host1> [<host2> ...]")
     description <<-'EOT'
-      Cleans up the following information a puppet master knows about a node:
+      Cleans up the following information a OpenVox server knows about a node:
 
       <Signed certificates> - ($vardir/ssl/ca/signed/node.domain.pem)
 
@@ -15,7 +15,7 @@ Puppet::Face.define(:node, '0.0.1') do
 
       <Reports> - ($vardir/reports/node.domain)
 
-      NOTE: this action now cleans up certs via Puppet Server's CA API. A running server is required for certs to be cleaned.
+      NOTE: this action now cleans up certs via OpenVox Server's CA API. A running server is required for certs to be cleaned.
     EOT
 
     when_invoked do |*args|

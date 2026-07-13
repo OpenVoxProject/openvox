@@ -2,7 +2,7 @@
 
 # = Synopsis
 # This is an external node classifier script, after
-# https://puppet.com/docs/puppet/latest/lang_write_functions_in_puppet.html
+# https://docs.openvoxproject.org/openvox/latest/lang_write_functions_in_puppet.html
 #
 # = Usage
 # regexp_nodes.rb <host>
@@ -13,7 +13,7 @@
 # finds.  Each file's contents are a regexp-per-line which, if they match the
 # hostname passed to the program as ARGV[0], sets a class, parameter value
 # or environment named the same thing as the file itself. At the end, the
-# resultant data structure is returned back to the puppet master process as
+# resultant data structure is returned back to the OpenVox server process as
 # yaml.
 #
 # = Caveats

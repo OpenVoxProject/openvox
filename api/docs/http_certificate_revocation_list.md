@@ -2,14 +2,14 @@ Certificate Revocation List
 ===========================
 
 The `certificate_revocation_list` endpoint retrieves a Certificate Revocation List (CRL)
-from the master. The master must be configured to be a CA. The returned
+from the server. The server must be configured to be a CA. The returned
 CRL is always in the `.pem` format.
 
-Under Puppet Server's CA service, the `environment` parameter is ignored and can
-be omitted. Under a Rack or WEBrick Puppet master, `environment` is required and
+Under OpenVox Server's CA service, the `environment` parameter is ignored and can
+be omitted. Under a Rack or WEBrick OpenVox server, `environment` is required and
 must be a valid environment, but it has no effect on the response.
 
-The `:nodename` should always be `ca`, due to Puppet Server's default
+The `:nodename` should always be `ca`, due to OpenVox Server's default
 `auth.conf`. (You can use a different `:nodename` if you change the auth rules,
 but it will have no effect on the response.)
 
