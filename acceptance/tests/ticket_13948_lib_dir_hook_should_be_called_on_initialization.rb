@@ -112,7 +112,7 @@ begin
         agents.each do |agent|
 
           step "capture the existing ssldir, in case the default package puppet.conf sets it within vardir (rhel...)"
-          agent_ssldir = on(agent, puppet('agent --configprint ssldir')).stdout.chomp
+          agent_ssldir = agent.puppet['ssldir']
 
           on(agent, puppet('agent',
                            "--vardir=\"#{get_test_file_path(agent, agent_var_dir)}\" ",

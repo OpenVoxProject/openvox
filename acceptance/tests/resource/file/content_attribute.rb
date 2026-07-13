@@ -55,7 +55,7 @@ agents.each do |agent|
   step "Modify file to force apply to retrieve file from local clientbucket"
   on(agent, "echo 'This is the modified file contents' > #{target}")
 
-  dir = on(agent, puppet_filebucket("--configprint clientbucketdir")).stdout.chomp
+  dir = agent.puppet('user')['clientbucketdir']
 
   sha256_manifest = %Q|
     filebucket { 'local':

@@ -13,7 +13,7 @@ test_name 'Validate Sign Cert' do
 
   step 'Clear SSL on all hosts'
   hosts.each do |host|
-    ssldir = on(host, puppet('agent --configprint ssldir')).stdout.chomp
+    ssldir = host.puppet['ssldir']
     # preserve permissions for master's ssldir so puppetserver can read it
     on(host, "rm -rf '#{ssldir}/'*")
   end
