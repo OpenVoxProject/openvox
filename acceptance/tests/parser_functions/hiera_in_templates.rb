@@ -326,16 +326,16 @@ with_puppet_running_on master, @master_opts, @coderoot do
 
     step "Verifying hiera() call #2."
     assert_match(
-      /#{@h_h_call}.*\"#{@k3}\"=>\"#{@hval3p}\"/,
+      /#{@h_h_call}.*\"#{@k3}\" => \"#{@hval3p}\"/,
       result,
-      "#{@h_h_call} failed. Expected: '\"#{@k3}\"=>\"#{@hval3p}\"'"
+      "#{@h_h_call} failed. Expected: '\"#{@k3}\" => \"#{@hval3p}\"'"
     )
 
     step "Verifying hiera() call #3."
     assert_match(
-      /#{@h_h_call}.*\"#{@k2}\"=>\"#{@hval2p}\"/,
+      /#{@h_h_call}.*\"#{@k2}\" => \"#{@hval2p}\"/,
       result,
-      "#{@h_h_call} failed. Expected: '\"#{@k2}\"=>\"#{@hval2p}\"'"
+      "#{@h_h_call} failed. Expected: '\"#{@k2}\" => \"#{@hval2p}\"'"
     )
 
     step "Verifying hiera() call #4."
@@ -361,23 +361,23 @@ with_puppet_running_on master, @master_opts, @coderoot do
 
     step "Verifying hiera_hash() call. #1"
     assert_match(
-      /#{@hh_h_call}:.*\"#{@k3}\"=>\"#{@hval3p}\"/,
+      /#{@hh_h_call}:.*\"#{@k3}\" => \"#{@hval3p}\"/,
       result,
-      "#{@hh_h_call} failed. Expected: '\"#{@k3}\"=>\"#{@hval3p}\"'"
+      "#{@hh_h_call} failed. Expected: '\"#{@k3}\" => \"#{@hval3p}\"'"
     )
 
     step "Verifying hiera_hash() call. #2"
     assert_match(
-      /#{@hh_h_call}:.*\"#{@k2}\"=>\"#{@hval2p}\"/,
+      /#{@hh_h_call}:.*\"#{@k2}\" => \"#{@hval2p}\"/,
       result,
-      "#{@hh_h_call} failed. Expected: '\"#{@k2}\"=>\"#{@hval2p}\"'"
+      "#{@hh_h_call} failed. Expected: '\"#{@k2}\" => \"#{@hval2p}\"'"
     )
 
     step "Verifying hiera_hash() call. #3"
     assert_match(
-      /#{@hh_h_call}:.*\"#{@k1}\"=>\"#{@hval1os}\"/,
+      /#{@hh_h_call}:.*\"#{@k1}\" => \"#{@hval1os}\"/,
       result,
-      "#{@hh_h_call} failed.  Expected: '\"#{@k1}\"=>\"#{@hval1os}\"'"
+      "#{@hh_h_call} failed.  Expected: '\"#{@k1}\" => \"#{@hval1os}\"'"
     )
 
     r2 = on(agent, "cat #{resultdir}/mod_default")
