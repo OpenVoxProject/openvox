@@ -642,7 +642,7 @@ describe Puppet::Type.type(:file), :uses_checksums => true do
       end
 
       it "should give a checksum deprecation warning" do
-        expect(Puppet).to receive(:puppet_deprecation_warning).with('Using a checksum in a file\'s "content" property is deprecated. The ability to use a checksum to retrieve content from the filebucket using the "content" property will be removed in a future release. The literal value of the "content" property will be written to the file. The checksum retrieval functionality is being replaced by the use of static catalogs. See https://puppet.com/docs/puppet/latest/static_catalogs.html for more information.', {:file => 'my/file.pp', :line => 5})
+        expect(Puppet).to receive(:puppet_deprecation_warning).with('Using a checksum in a file\'s "content" property is deprecated. The ability to use a checksum to retrieve content from the filebucket using the "content" property will be removed in a future release. The literal value of the "content" property will be written to the file. The checksum retrieval functionality is being replaced by the use of static catalogs. See https://docs.openvoxproject.org/openvox/latest/static_catalogs.html for more information.', {:file => 'my/file.pp', :line => 5})
         d = digest("this is some content")
         catalog.add_resource described_class.new(:path => path, :content => "{#{digest_algorithm}}#{d}")
         catalog.apply

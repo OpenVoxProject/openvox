@@ -1,8 +1,8 @@
-A Puppet server provides several services via HTTP API, and the Puppet
+An OpenVox server provides several services via HTTP API, and the OpenVox
 agent application uses those services to resolve a node's credentials, retrieve
 a configuration catalog, retrieve file data, and submit reports.
 
-In general, these APIs aren't designed for use by tools other than Puppet agent.
+In general, these APIs aren't designed for use by tools other than OpenVox agent.
 This is gradually changing, although we expect external use of these APIs to
 remain low for the foreseeable future. The server ignores any parameters it isn't expecting.
 
@@ -15,13 +15,13 @@ API or [`/puppet-ca/v1`](#ca-v1-http-api) API.
 
 Starting with version 2.1, the Puppet Server 2.x series provides both the
 current and previous API endpoints, and can serve nodes running Puppet agent 3.x
-and 4.x. However, Rack masters, WEBrick masters, and Puppet Server 2.0 cannot
+and 4.x. However, Rack servers, WEBrick servers, and Puppet Server 2.0 cannot
 serve nodes running Puppet 3.x.
 
 Puppet and Puppet CA APIs
 ------------------
 
-Beginning with Puppet 4, Puppet's HTTP API has been split into two APIs, which
+Beginning with Puppet 4, the HTTP API has been split into two APIs, which
 are versioned separately. There is now an API for configuration-related services
 and a separate one for the certificate authority (CA).
 
@@ -32,20 +32,20 @@ the letter `v`, and the version number of the API).
 
 ### Authorization
 
-As of Puppet 7, support for legacy auth.conf is removed. Puppet Server 7
+As of Puppet 7, support for legacy auth.conf is removed. OpenVox Server
 enforces all authorization using its `auth.conf`. See
-https://puppet.com/docs/puppetserver/latest/config_file_auth.html for more
+https://docs.openvoxproject.org/openvox-server/latest/config_file_auth.html for more
 details.
 
 Puppet V3 HTTP API
 ------------------
 
-The Puppet agent application uses several network services to manage systems.
+The OpenVox agent application uses several network services to manage systems.
 These services are all grouped under the `/puppet` API. Other tools can access
-these services and use the Puppet server's data for other purposes.
+these services and use the OpenVox server's data for other purposes.
 
 The V3 API contains endpoints of two types: those that are based on dispatching
-to Puppet's internal "indirector" framework, and those that are not (namely the
+to OpenVox's internal "indirector" framework, and those that are not (namely the
 [environment endpoints](#environment-endpoints)).
 
 Every HTTP endpoint that dispatches to the indirector follows the form:
@@ -57,13 +57,13 @@ Every HTTP endpoint that dispatches to the indirector follows the form:
 * `:indirection` is the indirection to dispatch the request to.
 * `:key` is the "key" portion of the indirection call.
 
-Using this API requires significant understanding of how Puppet's internal
+Using this API requires significant understanding of how OpenVox's internal
 services are structured, but the following documents attempt to specify what is
 available and how to interact with it.
 
 ### Configuration Management Services
 
-These services are all directly used by the Puppet agent application, in order
+These services are all directly used by the OpenVox agent application, in order
 to manage the configuration of a node.
 
 These endpoints accept payload formats formatted as JSON (MIME type
@@ -80,7 +80,7 @@ always use `application/octet-stream`.
 
 ### Informational Services
 
-These services are not directly used by Puppet agent, but may be used by other
+These services are not directly used by OpenVox agent, but may be used by other
 tools.
 
 * [Status](./http_status.md)
@@ -92,12 +92,12 @@ formatted as JSON and respond with JSON (MIME type of `application/json`).
 
 * [Environments](./http_environments.md)
 
-### Puppet Server-specific endpoints
+### OpenVox Server-specific endpoints
 
-Puppet Server adds additional `/puppet/v3/` endpoints:
+OpenVox Server adds additional `/puppet/v3/` endpoints:
 
-* [Static File Content](https://puppet.com/docs/puppetserver/latest/puppet-api/v3/static_file_content.md)
-* [Environment Classes](https://puppet.com/docs/puppetserver/latest/puppet-api/v3/environment_classes.md)
+* [Static File Content](https://docs.openvoxproject.org/openvox-server/latest/puppet-api/v3/static_file_content.md)
+* [Environment Classes](https://docs.openvoxproject.org/openvox-server/latest/puppet-api/v3/environment_classes.md)
 
 #### Error Responses
 
@@ -128,12 +128,12 @@ A [JSON schema for the error objects](../schemas/error.json) is also available.
 CA V1 HTTP API
 --------------
 
-The certificate authority (CA) API contains all of the endpoints supporting Puppet's public key infrastructure (PKI) system. This endpoint is now handled entirely through Puppet Server. See Puppet Server's [HTTP API](https://puppet.com/docs/puppetserver/latest/http_api_index.md) docs for detailed information.
+The certificate authority (CA) API contains all of the endpoints supporting OpenVox's public key infrastructure (PKI) system. This endpoint is now handled entirely through OpenVox Server. See OpenVox Server's [HTTP API](https://docs.openvoxproject.org/openvox-server/latest/http_api_index.md) docs for detailed information.
 
 Serialization Formats
 ---------------------
 
-Puppet sends messages using `JSON` or as binary data. Not all
+OpenVox sends messages using `JSON` or as binary data. Not all
 REST services support all of the formats.
 
 * [JSON](https://tools.ietf.org/html/rfc7159)

@@ -134,7 +134,7 @@ class Puppet::Application::Device < Puppet::Application
       The optional debug property specifies transport-level debugging,
       and is limited to telnet and ssh transports.
 
-      See https://puppet.com/docs/puppet/latest/config_file_device.html for details.
+      See https://docs.openvoxproject.org/openvox/latest/config_file_device.html for details.
 
 
       OPTIONS

@@ -288,7 +288,7 @@ module Puppet::Util::Windows::ADSI
       rescue WIN32OLERuntimeError => e
         # ERROR_BAD_USERNAME 2202L from winerror.h
         if e.message =~ /8007089A/m
-          raise Puppet::Error, _("Puppet is not able to create/delete domain %{object_class} objects with the %{object_class} resource.") % { object_class: object_class }
+          raise Puppet::Error, _("OpenVox is not able to create/delete domain %{object_class} objects with the %{object_class} resource.") % { object_class: object_class }
         end
 
         raise Puppet::Error.new(_("%{object_class} update failed: %{error}") % { object_class: object_class.capitalize, error: e }, e)

@@ -55,8 +55,8 @@ class Puppet::Application::Ssl < Puppet::Application
         Perform all of the steps necessary to request and download a client
         certificate. If autosigning is disabled, then puppet will wait every
         `waitforcert` seconds for its certificate to be signed. To only attempt
-        once and never wait, specify a time of 0. Since `waitforcert` is a
-        Puppet setting, it can be specified as a time interval, such as 30s,
+        once and never wait, specify a time of 0. Since `waitforcert` is an
+        OpenVox setting, it can be specified as a time interval, such as 30s,
         5m, 1h.
 
       * submit_request:

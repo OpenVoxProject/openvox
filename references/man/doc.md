@@ -1,20 +1,20 @@
 ---
 layout: default
-built_from_commit: 812d7420ea5d7e19e8003b26486a7c8847afdb25
+built_from_commit: f7b1a950d990274b9f352eb7aa0cd93ee6067df1
 title: 'Man Page: puppet doc'
-canonical: "/puppet/latest/man/doc.html"
+canonical: "/openvox/latest/man/doc.html"
 ---
 
 # Man Page: puppet doc
 
-> **NOTE:** This page was generated from the Puppet source code on 2024-10-18 17:22:50 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-07-14 18:42:24 +0000
 
 ## NAME
-**puppet-doc** - Generate Puppet references
+**puppet-doc** - Generate Puppet references for OpenVox
 
 ## SYNOPSIS
-Generates a reference for all Puppet types. Largely meant for internal
-Puppet Inc. use. (Deprecated)
+Generates a reference for all resource types. Largely meant for internal
+use. (Deprecated)
 
 ## USAGE
 puppet doc \[-h\|\--help\] \[-l\|\--list\] \[-r\|\--reference
@@ -22,16 +22,15 @@ puppet doc \[-h\|\--help\] \[-l\|\--list\] \[-r\|\--reference
 
 ## DESCRIPTION
 This deprecated command generates a Markdown document to stdout
-describing all installed Puppet types or all allowable arguments to
+describing all installed resource types or all allowable arguments to
 puppet executables. It is largely meant for internal use and is used to
-generate the reference document available on the Puppet Inc. web site.
+generate the reference documents which can be posted to a website.
 
 For Puppet module documentation (and all other use cases) this command
 has been superseded by the \"puppet-strings\" module - see
 https://github.com/puppetlabs/puppetlabs-strings for more information.
 
-This command (puppet-doc) will be removed once the puppetlabs internal
-documentation processing pipeline is completely based on puppet-strings.
+This command (puppet-doc) will be removed in a future release.
 
 ## OPTIONS
 \--help
@@ -44,12 +43,11 @@ documentation processing pipeline is completely based on puppet-strings.
     \'puppet doc \--list\'.
 
 ## EXAMPLE
-
     $ puppet doc -r type > /tmp/type_reference.markdown
 
 ## AUTHOR
 Luke Kanies
 
 ## COPYRIGHT
-Copyright (c) 2011 Puppet Inc., LLC Licensed under the Apache 2.0
-License
+Copyright (c) 2011 Puppet Inc. Copyright (c) 2024 Vox Pupuli Licensed
+under the Apache 2.0 License

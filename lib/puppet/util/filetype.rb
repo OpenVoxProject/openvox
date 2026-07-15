@@ -193,7 +193,7 @@ class Puppet::Util::FileType
     # Read a specific @path's cron tab.
     def read
       unless Puppet::Util.uid(@path)
-        Puppet.debug _("The %{path} user does not exist. Treating their crontab file as empty in case Puppet creates them in the middle of the run.") % { path: @path }
+        Puppet.debug _("The %{path} user does not exist. Treating their crontab file as empty in case OpenVox creates them in the middle of the run.") % { path: @path }
 
         return ""
       end
@@ -204,7 +204,7 @@ class Puppet::Util::FileType
       when /no crontab for/
         ""
       when /are not allowed to/
-        Puppet.debug _("The %{path} user is not authorized to use cron. Their crontab file is treated as empty in case Puppet authorizes them in the middle of the run (by, for example, modifying the cron.deny or cron.allow files).") % { path: @path }
+        Puppet.debug _("The %{path} user is not authorized to use cron. Their crontab file is treated as empty in case OpenVox authorizes them in the middle of the run (by, for example, modifying the cron.deny or cron.allow files).") % { path: @path }
 
         ""
       else
@@ -258,7 +258,7 @@ class Puppet::Util::FileType
     # Read a specific @path's cron tab.
     def read
       unless Puppet::Util.uid(@path)
-        Puppet.debug _("The %{path} user does not exist. Treating their crontab file as empty in case Puppet creates them in the middle of the run.") % { path: @path }
+        Puppet.debug _("The %{path} user does not exist. Treating their crontab file as empty in case OpenVox creates them in the middle of the run.") % { path: @path }
 
         return ""
       end
@@ -269,7 +269,7 @@ class Puppet::Util::FileType
       when /can't open your crontab/
         ""
       when /you are not authorized to use cron/
-        Puppet.debug _("The %{path} user is not authorized to use cron. Their crontab file is treated as empty in case Puppet authorizes them in the middle of the run (by, for example, modifying the cron.deny or cron.allow files).") % { path: @path }
+        Puppet.debug _("The %{path} user is not authorized to use cron. Their crontab file is treated as empty in case OpenVox authorizes them in the middle of the run (by, for example, modifying the cron.deny or cron.allow files).") % { path: @path }
 
         ""
       else
@@ -309,7 +309,7 @@ class Puppet::Util::FileType
     # Read a specific @path's cron tab.
     def read
       unless Puppet::Util.uid(@path)
-        Puppet.debug _("The %{path} user does not exist. Treating their crontab file as empty in case Puppet creates them in the middle of the run.") % { path: @path }
+        Puppet.debug _("The %{path} user does not exist. Treating their crontab file as empty in case OpenVox creates them in the middle of the run.") % { path: @path }
 
         return ""
       end
@@ -320,7 +320,7 @@ class Puppet::Util::FileType
       when /open.*in.*directory/
         ""
       when /not.*authorized.*cron/
-        Puppet.debug _("The %{path} user is not authorized to use cron. Their crontab file is treated as empty in case Puppet authorizes them in the middle of the run (by, for example, modifying the cron.deny or cron.allow files).") % { path: @path }
+        Puppet.debug _("The %{path} user is not authorized to use cron. Their crontab file is treated as empty in case OpenVox authorizes them in the middle of the run (by, for example, modifying the cron.deny or cron.allow files).") % { path: @path }
 
         ""
       else

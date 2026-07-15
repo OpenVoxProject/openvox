@@ -70,7 +70,7 @@ Puppet::Type.type(:user).provide :directoryservice do
   # variable so you don't have to read from the system every time you need
   # to gather the 'is' values for a resource. The downside here is that
   # populating this instance variable for every resource on the system
-  # takes time and front-loads your Puppet run.
+  # takes time and front-loads your OpenVox run.
   def self.prefetch(resources)
     instances.each do |prov|
       resource = resources[prov.name]
@@ -224,7 +224,7 @@ Puppet::Type.type(:user).provide :directoryservice do
     when 'iterations'
       Integer(embedded_binary_plist['SALTED-SHA512-PBKDF2'][field])
     else
-      raise Puppet::Error, "Puppet has tried to read an incorrect value from the user #{user_name} in the SALTED-SHA512-PBKDF2 hash. Acceptable fields are 'salt', 'entropy', or 'iterations'."
+      raise Puppet::Error, "OpenVox has tried to read an incorrect value from the user #{user_name} in the SALTED-SHA512-PBKDF2 hash. Acceptable fields are 'salt', 'entropy', or 'iterations'."
     end
   end
 
@@ -370,16 +370,16 @@ Puppet::Type.type(:user).provide :directoryservice do
     # the user's plist directly. DSCL has its own caching mechanism, which
     # means that every time we call dscl in this provider we're not directly
     # changing values on disk (instead, those calls are cached and written
-    # to disk according to Apple's prioritization algorithms). When Puppet
+    # to disk according to Apple's prioritization algorithms). When OpenVox
     # needs to set the password property on OS X > 10.6, the provider has to
     # tell dscl to write its cache to disk before modifying the user's
     # plist. The 'dscacheutil -flushcache' command does this. Another issue
-    # is how fast Puppet makes calls to dscl and how long it takes dscl to
+    # is how fast OpenVox makes calls to dscl and how long it takes dscl to
     # enter those calls into its cache. We have to sleep for 2 seconds before
     # flushing the dscl cache to allow all dscl calls to get INTO the cache
     # first. This could be made faster (and avoid a sleep call) by finding
     # a way to enter calls into the dscl cache faster. A sleep time of 1
-    # second would intermittently require a second Puppet run to set
+    # second would intermittently require a second OpenVox run to set
     # properties, so 2 seconds seems to be the minimum working value.
     sleep 2
     flush_dscl_cache
@@ -414,7 +414,7 @@ Puppet::Type.type(:user).provide :directoryservice do
   def salt=(value)
     if Puppet::Util::Package.versioncmp(self.class.get_os_version, '10.15') >= 0
       if value.length != 64
-        self.fail "macOS versions 10.15 and higher require the salt to be 32-bytes. Since Puppet's user resource requires the value to be hex encoded, the length of the salt's string must be 64. Please check your salt and try again."
+        self.fail "macOS versions 10.15 and higher require the salt to be 32-bytes. Since OpenVox's user resource requires the value to be hex encoded, the length of the salt's string must be 64. Please check your salt and try again."
       end
     end
     if Puppet::Util::Package.versioncmp(self.class.get_os_version, '10.7') > 0
@@ -442,7 +442,7 @@ Puppet::Type.type(:user).provide :directoryservice do
   # value from the @property_hash variable and then use the value passed as
   # the new value. Because we're prefetching instances of the provider, it's
   # possible that the value determined at the start of the run may be stale
-  # (i.e. someone changed the value by hand during a Puppet run) - if that's
+  # (i.e. someone changed the value by hand during an OpenVox run) - if that's
   # the case we rescue the error from dscl and alert the user.
   #
   # In the event that the user doesn't HAVE a value for the attribute, the
@@ -636,7 +636,7 @@ Puppet::Type.type(:user).provide :directoryservice do
     Base64.decode64([[value].pack("H*")].pack("m").strip)
   end
 
-  # Puppet requires a salted-sha512 password hash for 10.7 users to be passed
+  # OpenVox requires a salted-sha512 password hash for 10.7 users to be passed
   # in Hex, but the embedded plist stores that value as a Base64 encoded
   # string. This method converts the string and calls the
   # set_shadow_hash_data method to serialize and write the plist to disk.
@@ -667,7 +667,7 @@ Puppet::Type.type(:user).provide :directoryservice do
     when 'iterations'
       shadow_hash_data['SALTED-SHA512-PBKDF2'][field] = Integer(value)
     else
-      raise Puppet::Error "Puppet has tried to set an incorrect field for the 'SALTED-SHA512-PBKDF2' hash. Acceptable fields are 'salt', 'entropy', or 'iterations'."
+      raise Puppet::Error "OpenVox has tried to set an incorrect field for the 'SALTED-SHA512-PBKDF2' hash. Acceptable fields are 'salt', 'entropy', or 'iterations'."
     end
 
     # on 10.8, this field *must* contain 8 stars, or authentication will

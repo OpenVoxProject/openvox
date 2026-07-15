@@ -21,14 +21,14 @@ module Puppet
       * `link` ensures the file is a symlink, and **requires** that you also
         set the `target` attribute. Symlinks are supported on all Posix
         systems and on Windows Vista / 2008 and higher. On Windows, managing
-        symlinks requires Puppet agent's user account to have the "Create
+        symlinks requires the OpenVox agent's user account to have the "Create
         Symbolic Links" privilege; this can be configured in the "User Rights
-        Assignment" section in the Windows policy editor. By default, Puppet
+        Assignment" section in the Windows policy editor. By default, the OpenVox
         agent runs as the Administrator account, which has this privilege.
 
-      Puppet avoids destroying directories unless the `force` attribute is set
+      OpenVox avoids destroying directories unless the `force` attribute is set
       to `true`. This means that if a file is currently a directory, setting
-      `ensure` to anything but `directory` or `present` will cause Puppet to
+      `ensure` to anything but `directory` or `present` will cause OpenVox to
       skip managing the resource and log either a notice or an error.
 
       There is one other non-standard value for `ensure`. If you specify the

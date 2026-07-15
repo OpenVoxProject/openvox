@@ -34,11 +34,11 @@ Puppet::Indirector::Face.define(:node, '0.0.1') do
 
     $ puppet node find somenode.puppetlabs.lan --terminus plain --render-as yaml
 
-    Retrieve a node using the Puppet Server's configured ENC:
+    Retrieve a node using the OpenVox Server's configured ENC:
 
     $ puppet node find somenode.puppetlabs.lan --terminus exec --run_mode server --render-as yaml
 
-    Retrieve the same node from the Puppet Server:
+    Retrieve the same node from the OpenVox Server:
 
     $ puppet node find somenode.puppetlabs.lan --terminus rest --render-as yaml
   EOT

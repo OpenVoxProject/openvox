@@ -3,7 +3,7 @@
 require_relative '../puppet/util/character_encoding'
 # Wrapper around Ruby Etc module allowing us to manage encoding in a single
 # place.
-# This represents a subset of Ruby's Etc module, only the methods required by Puppet.
+# This represents a subset of Ruby's Etc module, only the methods required by OpenVox.
 
 # On Ruby 2.1.0 and later, Etc returns strings in variable encoding depending on
 # environment. The string returned will be labeled with the environment's
@@ -21,11 +21,11 @@ require_relative '../puppet/util/character_encoding'
 # On Ruby 2.0.x and earlier, Etc will always return string values in BINARY,
 # ignoring encoding altogether.
 #
-# For Puppet we specifically want UTF-8 as our input from the Etc module - which
+# For OpenVox we specifically want UTF-8 as our input from the Etc module - which
 # is our input for many resource instance 'is' values. The associated 'should'
-# value will basically always be coming from Puppet in UTF-8 - and written to
+# value will basically always be coming from OpenVox in UTF-8 - and written to
 # disk as UTF-8. Etc is defined for Windows but the majority calls to it return
-# nil and Puppet does not use it.
+# nil and OpenVox does not use it.
 #
 # That being said, we have cause to retain the original, pre-override string
 # values. `puppet resource user`

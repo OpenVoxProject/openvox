@@ -267,7 +267,7 @@ class ResourceTypeImpl
   # * meta parameters
   #
   def allattrs
-    raise NotImplementedError, "allattrs() - return all attribute names in order - probably not used master side"
+    raise NotImplementedError, "allattrs() - return all attribute names in order - probably not used server side"
     # key_attributes | (parameters & [:provider]) | properties.collect { |property| property.name } | parameters | metaparams
   end
 

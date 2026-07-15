@@ -5,7 +5,7 @@ require_relative '../../../puppet/indirector/code'
 require_relative '../../../puppet/reports'
 
 class Puppet::Transaction::Report::Processor < Puppet::Indirector::Code
-  desc "Puppet's report processor.  Processes the report with each of
+  desc "OpenVox's report processor.  Processes the report with each of
     the report types listed in the 'reports' setting."
 
   def initialize

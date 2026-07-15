@@ -89,7 +89,7 @@ module Puppet::ModuleTool
       @data['dependencies'].to_a
     end
 
-    # Returns a hash of the module's metadata.  Used by Puppet's automated
+    # Returns a hash of the module's metadata.  Used by OpenVox's automated
     # serialization routines.
     #
     # @see Puppet::Network::FormatSupport#to_data_hash

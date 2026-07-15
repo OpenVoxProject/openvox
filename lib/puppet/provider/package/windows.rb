@@ -19,7 +19,7 @@ Puppet::Type.type(:package).provide(:windows, :parent => Puppet::Provider::Packa
 
     If the executable requires special arguments to perform a silent install or
     uninstall, then the appropriate arguments should be specified using the
-    `install_options` or `uninstall_options` attributes, respectively.  Puppet
+    `install_options` or `uninstall_options` attributes, respectively.  OpenVox
     will automatically quote any option that contains spaces."
 
   confine    'os.name' => :windows

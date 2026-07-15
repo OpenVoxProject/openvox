@@ -1,7 +1,7 @@
 {
     "$schema":     "http://json-schema.org/draft-04/schema#",
     "title":       "Report",
-    "description": "A Puppet Report",
+    "description": "An OpenVox Report",
     "type":        "object",
 
     "additionalProperties": false,
@@ -83,7 +83,7 @@
         },
 
         "configuration_version": {
-            "description": "The configuration version of the Puppet run. This is a String if the user has specified their own versioning scheme, otherwise an Integer representing seconds since the epoch.",
+            "description": "The configuration version of the OpenVox run. This is a String if the user has specified their own versioning scheme, otherwise an Integer representing seconds since the epoch.",
             "anyOf":       [
                 { "type": "integer", "description": "seconds since the epoch" },
                 { "type": "string",  "description": "custom versioning scheme" }
@@ -131,7 +131,7 @@
         },
 
         "puppet_version": {
-            "description": "The version of the Puppet Agent the report is for.",
+            "description": "The version of the OpenVox agent the report is for.",
             "type":        "string"
         },
 
@@ -165,7 +165,7 @@
         },
 
         "corrective_change": {
-            "description": "True if a change or noop event in this report was caused by an unexpected change to the system between Puppet runs.",
+            "description": "True if a change or noop event in this report was caused by an unexpected change to the system between OpenVox runs.",
             "type":        "boolean"
         }
     },
@@ -535,12 +535,12 @@
                 },
 
                 "failed": {
-                    "description": "True if Puppet experienced an error while evaluating this resource, otherwise false. **Deprecated**",
+                    "description": "True if OpenVox experienced an error while evaluating this resource, otherwise false. **Deprecated**",
                     "type":        "boolean"
                 },
 
                 "failed_to_restart": {
-                    "description": "True if Puppet experienced an error while trying to restart this resource (For example, when a Service resource has been notified from another resource), otherwise false.",
+                    "description": "True if OpenVox experienced an error while trying to restart this resource (For example, when a Service resource has been notified from another resource), otherwise false.",
                     "type":        "boolean"
                 },
 
@@ -551,7 +551,7 @@
                 },
 
                 "corrective_change": {
-                    "description": "True if a change or noop event on this resource was caused by an unexpected change to the system between Puppet runs.",
+                    "description": "True if a change or noop event on this resource was caused by an unexpected change to the system between OpenVox runs.",
                     "type":        "boolean"
                 }
             },
@@ -608,7 +608,7 @@
                 },
 
                 "historical_value": {
-                    "description": "The audited value from a previous run of Puppet, if known. Absent in reports of `inspect` kind.",
+                    "description": "The audited value from a previous run of OpenVox, if known. Absent in reports of `inspect` kind.",
                     "oneOf": [
                         { "type": "string" },
                         { "type": "array" },
@@ -647,7 +647,7 @@
                 },
 
                 "corrective_change": {
-                    "description": "True if this event was caused by an unexpected change to the system between Puppet runs.",
+                    "description": "True if this event was caused by an unexpected change to the system between OpenVox runs.",
                     "type":        "boolean"
                 }
             },

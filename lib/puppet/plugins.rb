@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # The Puppet Plugins module defines extension points where plugins can be configured
-# to add or modify puppet's behavior. See the respective classes in this module for more
+# to add or modify OpenVox's behavior. See the respective classes in this module for more
 # details.
 #
 # @api public

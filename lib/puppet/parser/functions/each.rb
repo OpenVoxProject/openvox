@@ -5,7 +5,7 @@ Puppet::Parser::Functions.newfunction(
   :type => :rvalue,
   :arity => -3,
   :doc => <<~DOC
-    Runs a [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html)
+    Runs a [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html)
     repeatedly using each value in a data structure, then returns the values unchanged.
 
     This function takes two mandatory arguments, in this order:
@@ -22,7 +22,7 @@ Puppet::Parser::Functions.newfunction(
 
     `each($data) |$parameter| { <PUPPET CODE BLOCK> }`
 
-    When the first argument (`$data` in the above example) is an array, Puppet passes each
+    When the first argument (`$data` in the above example) is an array, OpenVox passes each
     value in turn to the lambda, then returns the original values.
 
     **Example**: Using the `each` function with an array and a one-parameter lambda
@@ -35,11 +35,11 @@ Puppet::Parser::Functions.newfunction(
        message => $item
      }
     }
-    # Puppet creates one resource for each of the three items in $data. Each resource is
+    # OpenVox creates one resource for each of the three items in $data. Each resource is
     # named after the item's value and uses the item's value in a parameter.
     ~~~
 
-    When the first argument is a hash, Puppet passes each key and value pair to the lambda
+    When the first argument is a hash, OpenVox passes each key and value pair to the lambda
     as an array in the form `[key, value]` and returns the original hash.
 
     **Example**: Using the `each` function with a hash and a one-parameter lambda
@@ -53,11 +53,11 @@ Puppet::Parser::Functions.newfunction(
        message => $items[1]
      }
     }
-    # Puppet creates one resource for each of the three items in $data, each named after the
+    # OpenVox creates one resource for each of the three items in $data, each named after the
     # item's key and containing a parameter using the item's value.
     ~~~
 
-    When the first argument is an array and the lambda has two parameters, Puppet passes the
+    When the first argument is an array and the lambda has two parameters, OpenVox passes the
     array's indexes (enumerated from 0) in the first parameter and its values in the second
     parameter.
 
@@ -72,11 +72,11 @@ Puppet::Parser::Functions.newfunction(
        message => $index
      }
     }
-    # Puppet creates one resource for each of the three items in $data, each named after the
+    # OpenVox creates one resource for each of the three items in $data, each named after the
     # item's value and containing a parameter using the item's index.
     ~~~
 
-    When the first argument is a hash, Puppet passes its keys to the first parameter and its
+    When the first argument is a hash, OpenVox passes its keys to the first parameter and its
     values to the second parameter.
 
     **Example**: Using the `each` function with a hash and a two-parameter lambda
@@ -90,13 +90,13 @@ Puppet::Parser::Functions.newfunction(
        message => $value
      }
     }
-    # Puppet creates one resource for each of the three items in $data, each named after the
+    # OpenVox creates one resource for each of the three items in $data, each named after the
     # item's key and containing a parameter using the item's value.
     ~~~
 
     For an example that demonstrates how to create multiple `file` resources using `each`,
-    see the Puppet
-    [iteration](https://puppet.com/docs/puppet/latest/lang_iteration.html)
+    see the OpenVox
+    [iteration](https://docs.openvoxproject.org/openvox/latest/lang_iteration.html)
     documentation.
 
     - Since 4.0.0

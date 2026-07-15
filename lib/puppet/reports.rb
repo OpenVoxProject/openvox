@@ -23,7 +23,7 @@ require_relative '../puppet/util/instance_loader'
 #
 # Required configuration:
 # --
-# * A .rb file that defines a new report should be placed in the master's directory `lib/puppet/reports`
+# * A .rb file that defines a new report should be placed in the server's directory `lib/puppet/reports`
 # * The `puppet.conf` file must have `report = true` in the `[agent]` section
 #
 # @see Puppet::Transaction::Report

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Puppet package provider for Python's `pip` package management frontend.
+# OpenVox package provider for Python's `pip` package management frontend.
 # <http://pip.pypa.io/>
 
 require_relative '../../../puppet/util/package/version/pip'

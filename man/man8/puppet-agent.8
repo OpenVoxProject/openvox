@@ -1,6 +1,6 @@
 .\" generated with Ronn-NG/v0.10.1
 .\" http://github.com/apjanke/ronn-ng/tree/0.10.1
-.TH "PUPPET\-AGENT" "8" "January 2025" "Vox Pupuli" "OpenVox manual"
+.TH "PUPPET\-AGENT" "8" "July 2026" "Vox Pupuli" "OpenVox manual"
 .SH "NAME"
 \fBpuppet\-agent\fR \- The puppet agent daemon provided by OpenVox
 .SH "SYNOPSIS"
@@ -10,7 +10,7 @@ This service may be run as a daemon, run periodically using cron (or something s
 .SH "USAGE"
 puppet agent [\-\-certname \fINAME\fR] [\-D|\-\-daemonize|\-\-no\-daemonize] [\-d|\-\-debug] [\-\-detailed\-exitcodes] [\-\-digest \fIDIGEST\fR] [\-\-disable [MESSAGE]] [\-\-enable] [\-\-fingerprint] [\-h|\-\-help] [\-l|\-\-logdest syslog|eventlog|\fIABS FILEPATH\fR|console] [\-\-serverport \fIPORT\fR] [\-\-noop] [\-o|\-\-onetime] [\-\-sourceaddress \fIIP_ADDRESS\fR] [\-t|\-\-test] [\-v|\-\-verbose] [\-V|\-\-version] [\-w|\-\-waitforcert \fISECONDS\fR]
 .SH "DESCRIPTION"
-This is the main puppet client\. Its job is to retrieve the local machine's configuration from a remote server and apply it\. In order to successfully communicate with the remote server, the client must have a certificate signed by a certificate authority that the server trusts; the recommended method for this, at the moment, is to run a certificate authority as part of the puppet server (which is the default)\. The client will connect and request a signed certificate, and will continue connecting until it receives one\.
+This is the main OpenVox client\. Its job is to retrieve the local machine's configuration from a remote server and apply it\. In order to successfully communicate with the remote server, the client must have a certificate signed by a certificate authority that the server trusts; the recommended method for this, at the moment, is to run a certificate authority as part of the OpenVox server (which is the default)\. The client will connect and request a signed certificate, and will continue connecting until it receives one\.
 .P
 Once the client has a signed certificate, it will retrieve its configuration and apply it\.
 .SH "USAGE NOTES"
@@ -31,21 +31,21 @@ Some flags are meant specifically for interactive use \-\- in particular, 'test'
 6: The run succeeded, and included both changes and failures\.
 .IP "" 0
 .P
-\&'\-\-tags' allows you to specify what portions of a configuration you want to apply\. Puppet elements are tagged with all of the class or definition names that contain them, and you can use the 'tags' flag to specify one of these names, causing only configuration elements contained within that class or definition to be applied\. This is very useful when you are testing new configurations \-\- for instance, if you are just starting to manage 'ntpd', you would put all of the new elements into an 'ntpd' class, and call puppet with '\-\-tags ntpd', which would only apply that small portion of the configuration during your testing, rather than applying the whole thing\.
+\&'\-\-tags' allows you to specify what portions of a configuration you want to apply\. OpenVox elements are tagged with all of the class or definition names that contain them, and you can use the 'tags' flag to specify one of these names, causing only configuration elements contained within that class or definition to be applied\. This is very useful when you are testing new configurations \-\- for instance, if you are just starting to manage 'ntpd', you would put all of the new elements into an 'ntpd' class, and call puppet with '\-\-tags ntpd', which would only apply that small portion of the configuration during your testing, rather than applying the whole thing\.
 .P
-\&'\-\-fingerprint' is a one\-time flag\. In this mode 'puppet agent' runs once and displays on the console (and in the log) the current certificate (or certificate request) fingerprint\. Providing the '\-\-digest' option allows you to use a different digest algorithm to generate the fingerprint\. The main use is to verify that before signing a certificate request on the master, the certificate request the master received is the same as the one the client sent (to prevent against man\-in\-the\-middle attacks when signing certificates)\.
+\&'\-\-fingerprint' is a one\-time flag\. In this mode 'puppet agent' runs once and displays on the console (and in the log) the current certificate (or certificate request) fingerprint\. Providing the '\-\-digest' option allows you to use a different digest algorithm to generate the fingerprint\. The main use is to verify that before signing a certificate request on the server, the certificate request the server received is the same as the one the client sent (to prevent against man\-in\-the\-middle attacks when signing certificates)\.
 .P
 \&'\-\-skip_tags' is a flag used to filter resources\. If this is set, then only resources not tagged with the specified tags will be applied\. Values must be comma\-separated\.
 .SH "OPTIONS"
-Note that any Puppet setting that's valid in the configuration file is also a valid long argument\. For example, 'server' is a valid setting, so you can specify '\-\-server \fIservername\fR' as an argument\. Boolean settings accept a '\-\-no\-' prefix to turn off a behavior, translating into '\-\-setting' and '\-\-no\-setting' pairs, such as \fB\-\-daemonize\fR and \fB\-\-no\-daemonize\fR\.
+Note that any OpenVox setting that's valid in the configuration file is also a valid long argument\. For example, 'server' is a valid setting, so you can specify '\-\-server \fIservername\fR' as an argument\. Boolean settings accept a '\-\-no\-' prefix to turn off a behavior, translating into '\-\-setting' and '\-\-no\-setting' pairs, such as \fB\-\-daemonize\fR and \fB\-\-no\-daemonize\fR\.
 .P
-See the configuration file documentation at https://puppet\.com/docs/puppet/latest/configuration\.html for the full list of acceptable settings\. A commented list of all settings can also be generated by running puppet agent with '\-\-genconfig'\.
+See the configuration file documentation at https://docs\.openvoxproject\.org/openvox/latest/configuration\.html for the full list of acceptable settings\. A commented list of all settings can also be generated by running puppet agent with '\-\-genconfig'\.
 .IP "\(bu" 4
-\-\-certname: Set the certname (unique ID) of the client\. The master reads this unique identifying string, which is usually set to the node's fully\-qualified domain name, to determine which configurations the node will receive\. Use this option to debug setup problems or implement unusual node identification schemes\. (This is a Puppet setting, and can go in puppet\.conf\.)
+\-\-certname: Set the certname (unique ID) of the client\. The server reads this unique identifying string, which is usually set to the node's fully\-qualified domain name, to determine which configurations the node will receive\. Use this option to debug setup problems or implement unusual node identification schemes\. (This is an OpenVox setting, and can go in puppet\.conf\.)
 .IP "\(bu" 4
-\-\-daemonize: Send the process into the background\. This is the default\. (This is a Puppet setting, and can go in puppet\.conf\. Note the special 'no\-' prefix for boolean settings on the command line\.)
+\-\-daemonize: Send the process into the background\. This is the default\. (This is an OpenVox setting, and can go in puppet\.conf\. Note the special 'no\-' prefix for boolean settings on the command line\.)
 .IP "\(bu" 4
-\-\-no\-daemonize: Do not send the process into the background\. (This is a Puppet setting, and can go in puppet\.conf\. Note the special 'no\-' prefix for boolean settings on the command line\.)
+\-\-no\-daemonize: Do not send the process into the background\. (This is an OpenVox setting, and can go in puppet\.conf\. Note the special 'no\-' prefix for boolean settings on the command line\.)
 .IP "\(bu" 4
 \-\-debug: Enable full debugging\.
 .IP "\(bu" 4
@@ -75,13 +75,13 @@ Disable can also take an optional message that will be reported by the 'puppet a
 .IP
 \&'puppet agent' exits after executing this\.
 .IP "\(bu" 4
-\-\-evaltrace: Logs each resource as it is being evaluated\. This allows you to interactively see exactly what is being done\. (This is a Puppet setting, and can go in puppet\.conf\. Note the special 'no\-' prefix for boolean settings on the command line\.)
+\-\-evaltrace: Logs each resource as it is being evaluated\. This allows you to interactively see exactly what is being done\. (This is an OpenVox setting, and can go in puppet\.conf\. Note the special 'no\-' prefix for boolean settings on the command line\.)
 .IP "\(bu" 4
 \-\-fingerprint: Display the current certificate or certificate signing request fingerprint and then exit\. Use the '\-\-digest' option to change the digest algorithm used\.
 .IP "\(bu" 4
 \-\-help: Print this help message
 .IP "\(bu" 4
-\-\-job\-id: Attach the specified job id to the catalog request and the report used for this agent run\. This option only works when '\-\-onetime' is used\. When using Puppet Enterprise this flag should not be used as the orchestrator sets the job\-id for you and it must be unique\.
+\-\-job\-id: Attach the specified job id to the catalog request and the report used for this agent run\. This option only works when '\-\-onetime' is used\.
 .IP "\(bu" 4
 \-\-logdest: Where to send log messages\. Choose between 'syslog' (the POSIX syslog service), 'eventlog' (the Windows Event Log), 'console', or the path to a log file\. If debugging or verbosity is enabled, this defaults to 'console'\. Otherwise, it defaults to 'syslog' on POSIX systems and 'eventlog' on Windows\. Multiple destinations can be set using a comma separated list (eg: \fB/path/file1,console,/path/file2\fR)"
 .IP
@@ -89,34 +89,34 @@ A path ending with '\.json' will receive structured output in JSON format\. The 
 .IP
 A path ending with '\.jsonl' will receive structured output in JSON Lines format\.
 .IP "\(bu" 4
-\-\-masterport: The port on which to contact the Puppet Server\. (This is a Puppet setting, and can go in puppet\.conf\. Deprecated in favor of the 'serverport' setting\.)
+\-\-masterport: The port on which to contact the OpenVox Server\. (This is an OpenVox setting, and can go in puppet\.conf\. Deprecated in favor of the 'serverport' setting\.)
 .IP "\(bu" 4
-\-\-noop: Use 'noop' mode where the daemon runs in a no\-op or dry\-run mode\. This is useful for seeing what changes Puppet would make without actually executing the changes\. (This is a Puppet setting, and can go in puppet\.conf\. Note the special 'no\-' prefix for boolean settings on the command line\.)
+\-\-noop: Use 'noop' mode where the daemon runs in a no\-op or dry\-run mode\. This is useful for seeing what changes OpenVox would make without actually executing the changes\. (This is an OpenVox setting, and can go in puppet\.conf\. Note the special 'no\-' prefix for boolean settings on the command line\.)
 .IP "\(bu" 4
-\-\-onetime: Run the configuration once\. Runs a single (normally daemonized) Puppet run\. Useful for interactively running puppet agent when used in conjunction with the \-\-no\-daemonize option\. (This is a Puppet setting, and can go in puppet\.conf\. Note the special 'no\-' prefix for boolean settings on the command line\.)
+\-\-onetime: Run the configuration once\. Runs a single (normally daemonized) OpenVox run\. Useful for interactively running puppet agent when used in conjunction with the \-\-no\-daemonize option\. (This is an OpenVox setting, and can go in puppet\.conf\. Note the special 'no\-' prefix for boolean settings on the command line\.)
 .IP "\(bu" 4
-\-\-serverport: The port on which to contact the Puppet Server\. (This is a Puppet setting, and can go in puppet\.conf\.)
+\-\-serverport: The port on which to contact the OpenVox Server\. (This is an OpenVox setting, and can go in puppet\.conf\.)
 .IP "\(bu" 4
-\-\-sourceaddress: Set the source IP address for transactions\. This defaults to automatically selected\. (This is a Puppet setting, and can go in puppet\.conf\.)
+\-\-sourceaddress: Set the source IP address for transactions\. This defaults to automatically selected\. (This is an OpenVox setting, and can go in puppet\.conf\.)
 .IP "\(bu" 4
 \-\-test: Enable the most common options used for testing\. These are 'onetime', 'verbose', 'no\-daemonize', 'no\-usecacheonfailure', 'detailed\-exitcodes', 'no\-splay', and 'show_diff'\.
 .IP "\(bu" 4
-\-\-trace Prints stack traces on some errors\. (This is a Puppet setting, and can go in puppet\.conf\. Note the special 'no\-' prefix for boolean settings on the command line\.)
+\-\-trace Prints stack traces on some errors\. (This is an OpenVox setting, and can go in puppet\.conf\. Note the special 'no\-' prefix for boolean settings on the command line\.)
 .IP "\(bu" 4
 \-\-verbose: Turn on verbose reporting\.
 .IP "\(bu" 4
-\-\-version: Print the puppet version number and exit\.
+\-\-version: Print the OpenVox agent version number and exit\.
 .IP "\(bu" 4
-\-\-waitforcert: This option only matters for daemons that do not yet have certificates and it is enabled by default, with a value of 120 (seconds)\. This causes 'puppet agent' to connect to the server every 2 minutes and ask it to sign a certificate request\. This is useful for the initial setup of a puppet client\. You can turn off waiting for certificates by specifying a time of 0\. (This is a Puppet setting, and can go in puppet\.conf\.)
+\-\-waitforcert: This option only matters for daemons that do not yet have certificates and it is enabled by default, with a value of 120 (seconds)\. This causes 'puppet agent' to connect to the server every 2 minutes and ask it to sign a certificate request\. This is useful for the initial setup of an OpenVox client\. You can turn off waiting for certificates by specifying a time of 0\. (This is an OpenVox setting, and can go in puppet\.conf\.)
 .IP "\(bu" 4
-\-\-write_catalog_summary After compiling the catalog saves the resource list and classes list to the node in the state directory named classes\.txt and resources\.txt (This is a Puppet setting, and can go in puppet\.conf\.)
+\-\-write_catalog_summary After compiling the catalog saves the resource list and classes list to the node in the state directory named classes\.txt and resources\.txt (This is an OpenVox setting, and can go in puppet\.conf\.)
 .IP "" 0
 .SH "EXAMPLE"
 .nf
 $ puppet agent \-\-server puppet\.domain\.com
 .fi
 .SH "DIAGNOSTICS"
-Puppet agent accepts the following signals:
+OpenVox agent accepts the following signals:
 .TP
 SIGHUP
 Restart the puppet agent daemon\.
@@ -126,7 +126,6 @@ Shut down the puppet agent daemon\.
 .TP
 SIGUSR1
 Immediately retrieve and apply configurations from the OpenVox server\.
-.
 .TP
 SIGUSR2
 Close file descriptors for log files and reopen them\. Used with logrotate\.

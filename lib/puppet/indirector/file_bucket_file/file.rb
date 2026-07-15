@@ -121,7 +121,7 @@ module Puppet::FileBucketFile
     # @param files_original_path [String]
     #
     def matches(paths_file, files_original_path)
-      # Puppet will have already written the paths_file in the systems encoding
+      # OpenVox will have already written the paths_file in the systems encoding
       # given its possible that request.options[:bucket_path] or Puppet[:bucketdir]
       # contained characters in an encoding that are not represented the
       # same way when the bytes are decoded as UTF-8, continue using system encoding
@@ -157,7 +157,7 @@ module Puppet::FileBucketFile
           Puppet::FileSystem.dir_mkpath(paths_file)
         end
 
-        # Puppet will have already written the paths_file in the systems encoding
+        # OpenVox will have already written the paths_file in the systems encoding
         # given its possible that request.options[:bucket_path] or Puppet[:bucketdir]
         # contained characters in an encoding that are not represented the
         # same way when the bytes are decoded as UTF-8, continue using system encoding

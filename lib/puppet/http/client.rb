@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # The HTTP client provides methods for making `GET`, `POST`, etc requests to
-# HTTP(S) servers. It also provides methods for resolving Puppetserver REST
+# HTTP(S) servers. It also provides methods for resolving OpenVox Server REST
 # service endpoints using SRV records and settings (such as `server_list`,
 # `server`, `ca_server`, etc). Once a service endpoint has been resolved, there
 # are methods for making REST requests (such as getting a node, sending facts,
@@ -10,9 +10,9 @@
 # The client uses persistent HTTP connections by default unless the `Connection:
 # close` header is specified and supports streaming response bodies.
 #
-# By default the client only trusts the Puppet CA for HTTPS connections. However,
-# if the `include_system_store` request option is set to true, then Puppet will
-# trust certificates in the puppet-agent CA bundle.
+# By default the client only trusts the OpenVox CA for HTTPS connections. However,
+# if the `include_system_store` request option is set to true, then OpenVox will
+# trust certificates in the openvox-agent CA bundle.
 #
 # @example To access the HTTP client:
 #   client = Puppet.runtime[:http]
@@ -20,7 +20,7 @@
 # @example To make an HTTP GET request:
 #   response = client.get(URI("http://www.example.com"))
 #
-# @example To make an HTTPS GET request, trusting the puppet CA and certs in Puppet's CA bundle:
+# @example To make an HTTPS GET request, trusting the OpenVox CA and certs in OpenVox's CA bundle:
 #   response = client.get(URI("https://www.example.com"), options: { include_system_store: true })
 #
 # @example To use a URL containing special characters, such as spaces:

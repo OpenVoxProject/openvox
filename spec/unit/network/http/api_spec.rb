@@ -46,7 +46,7 @@ describe Puppet::Network::HTTP::API do
       res = {}
       handler.process(req, res)
       expect(res[:status]).to eq(404)
-      expect(res[:body]).to include("Puppet version: #{Puppet.version}")
+      expect(res[:body]).to include("OpenVox version: #{Puppet.version}")
     end
 
     describe "when processing Puppet 3 routes" do
@@ -55,7 +55,7 @@ describe Puppet::Network::HTTP::API do
         res = {}
         handler.process(req, res)
         expect(res[:status]).to eq(404)
-        expect(res[:body]).to include("Puppet version: #{Puppet.version}")
+        expect(res[:body]).to include("OpenVox version: #{Puppet.version}")
         expect(res[:body]).to include("Supported /puppet API versions: #{Puppet::Network::HTTP::SERVER_URL_VERSIONS}")
       end
 
@@ -64,7 +64,7 @@ describe Puppet::Network::HTTP::API do
         res = {}
         handler.process(req, res)
         expect(res[:status]).to eq(404)
-        expect(res[:body]).to include("Puppet version: #{Puppet.version}")
+        expect(res[:body]).to include("OpenVox version: #{Puppet.version}")
         expect(res[:body]).to include("Supported /puppet API versions: #{Puppet::Network::HTTP::SERVER_URL_VERSIONS}")
       end
     end

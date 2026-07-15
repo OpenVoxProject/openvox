@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Puppet
-  # The base class for all Puppet errors. It can wrap another exception
+  # The base class for all OpenVox errors. It can wrap another exception
   class Error < RuntimeError
     attr_accessor :original
 

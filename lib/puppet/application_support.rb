@@ -10,7 +10,7 @@ require_relative '../puppet/indirector'
 module Puppet
   module ApplicationSupport
     # Pushes a Puppet Context configured with a remote environment for an agent
-    # (one that exists at the master end), and a regular environment for other
+    # (one that exists at the server end), and a regular environment for other
     # modes. The configuration is overridden with options from the command line
     # before being set in a pushed Puppet Context.
     #
@@ -44,7 +44,7 @@ module Puppet
     # Reads the routes YAML settings from the file specified by Puppet[:route_file]
     # and resets indirector termini for the current application class if listed.
     #
-    # For instance, PE uses this to set the master facts terminus
+    # For instance, this can be used to set the server facts terminus
     # to 'puppetdb' and its cache terminus to 'yaml'.
     #
     # @param application_name [String] The name of the current application.

@@ -5,7 +5,7 @@
 #
 # The primary goal of this mapping is to ensure that owner, group, and
 # modes can be round-tripped in a consistent and deterministic
-# way. Otherwise, Puppet might think file resources are out-of-sync
+# way. Otherwise, OpenVox might think file resources are out-of-sync
 # every time it runs. A secondary goal is to provide equivalent
 # permissions for common use-cases. For example, setting the owner to
 # "Administrators", group to "Users", and mode to 750 (which also
@@ -52,8 +52,8 @@
 #   be mapped into the 3 class POSIX model. The get_mode method will
 #   set the S_IEXTRA bit flag indicating that an access control entry
 #   was found whose SID is neither the owner, group, or other. This
-#   enables Puppet to detect when file/dirs are out-of-sync,
-#   especially those that Puppet did not create, but is attempting
+#   enables OpenVox to detect when file/dirs are out-of-sync,
+#   especially those that OpenVox did not create, but is attempting
 #   to manage.
 # * A special case of this is S_ISYSTEM_MISSING, which is set when the
 #   SYSTEM permissions are *not* present on the DACL.

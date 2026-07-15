@@ -116,7 +116,7 @@ class Puppet::Util::Log
     # loglevel changed
     @loglevel = loglevel
 
-    # Enable or disable Facter debugging
+    # Enable or disable OpenFact debugging
     Puppet.runtime[:facter].debugging(level == :debug)
   end
 
@@ -157,7 +157,7 @@ class Puppet::Util::Log
         newdestination(:console)
       end
 
-      # Re-raise (end exit Puppet) because we could not set up logging correctly.
+      # Re-raise (end exit OpenVox) because we could not set up logging correctly.
       raise detail
     end
   end

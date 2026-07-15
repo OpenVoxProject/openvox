@@ -32,7 +32,7 @@ module Puppet::Indirector
   end
 
   # Declare that the including class indirects its methods to
-  # this terminus.  The terminus name must be the name of a Puppet
+  # this terminus.  The terminus name must be the name of an OpenVox
   # default, not the value -- if it's the value, then it gets
   # evaluated at parse time, which is before the user has had a chance
   # to override it.

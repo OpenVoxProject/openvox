@@ -1,6 +1,6 @@
 .\" generated with Ronn-NG/v0.10.1
 .\" http://github.com/apjanke/ronn-ng/tree/0.10.1
-.TH "PUPPET\-SSL" "8" "January 2025" "Vox Pupuli" "OpenVox manual"
+.TH "PUPPET\-SSL" "8" "July 2026" "Vox Pupuli" "OpenVox manual"
 .SH "NAME"
 \fBpuppet\-ssl\fR \- Manage SSL keys and certificates for OpenVox SSL clients
 .SH "SYNOPSIS"
@@ -18,28 +18,26 @@ puppet ssl \fIaction\fR [\-h|\-\-help] [\-v|\-\-verbose] [\-d|\-\-debug] [\-\-lo
 \-\-localca Also clean the local CA certificate and CRL\.
 .IP "\(bu" 4
 \-\-target CERTNAME Clean the specified device certificate instead of this host's certificate\.
+.IP "\(bu" 4
+\-\-if\-expiring\-in DURATION When renewing a certificate only renew if the certificate is valid for less than this amount of time\. Duration can be specified as a time interval, such as 30s, 5m, 1h\.
 .IP "" 0
 .SH "ACTIONS"
-.TP
-bootstrap
-Perform all of the steps necessary to request and download a client certificate\. If autosigning is disabled, then puppet will wait every \fBwaitforcert\fR seconds for its certificate to be signed\. To only attempt once and never wait, specify a time of 0\. Since \fBwaitforcert\fR is a Puppet setting, it can be specified as a time interval, such as 30s, 5m, 1h\.
-.TP
-submit_request
-Generate a certificate signing request (CSR) and submit it to the CA\. If a private and public key pair already exist, they will be used to generate the CSR\. Otherwise, a new key pair will be generated\. If a CSR has already been submitted with the given \fBcertname\fR, then the operation will fail\.
-.TP
-generate_request
-Generate a certificate signing request (CSR)\. If a private and public key pair exist, they will be used to generate the CSR\. Otherwise a new key pair will be generated\.
-.TP
-download_cert
-Download a certificate for this host\. If the current private key matches the downloaded certificate, then the certificate will be saved and used for subsequent requests\. If there is already an existing certificate, it will be overwritten\.
-.TP
-verify
-Verify the private key and certificate are present and match, verify the certificate is issued by a trusted CA, and check revocation status\.
-.TP
-clean
-Remove the private key and certificate related files for this host\. If \fB\-\-localca\fR is specified, then also remove this host's local copy of the CA certificate(s) and CRL bundle\. if \fB\-\-target CERTNAME\fR is specified, then remove the files for the specified device on this host instead of this host\.
-.TP
-show
-Print the full\-text version of this host's certificate\.
+.IP "\(bu" 4
+bootstrap: Perform all of the steps necessary to request and download a client certificate\. If autosigning is disabled, then puppet will wait every \fBwaitforcert\fR seconds for its certificate to be signed\. To only attempt once and never wait, specify a time of 0\. Since \fBwaitforcert\fR is an OpenVox setting, it can be specified as a time interval, such as 30s, 5m, 1h\.
+.IP "\(bu" 4
+submit_request: Generate a certificate signing request (CSR) and submit it to the CA\. If a private and public key pair already exist, they will be used to generate the CSR\. Otherwise, a new key pair will be generated\. If a CSR has already been submitted with the given \fBcertname\fR, then the operation will fail\.
+.IP "\(bu" 4
+generate_request: Generate a certificate signing request (CSR)\. If a private and public key pair exist, they will be used to generate the CSR\. Otherwise a new key pair will be generated\.
+.IP "\(bu" 4
+download_cert: Download a certificate for this host\. If the current private key matches the downloaded certificate, then the certificate will be saved and used for subsequent requests\. If there is already an existing certificate, it will be overwritten\.
+.IP "\(bu" 4
+renew_cert Renew an existing and non\-expired client certificate\. When \fB\-\-if\-expiring\-in\fR option is specified, then renew the certificate only if it's going to expire in the amount of time given\.
+.IP "\(bu" 4
+verify: Verify the private key and certificate are present and match, verify the certificate is issued by a trusted CA, and check revocation status\.
+.IP "\(bu" 4
+clean: Remove the private key and certificate related files for this host\. If \fB\-\-localca\fR is specified, then also remove this host's local copy of the CA certificate(s) and CRL bundle\. if \fB\-\-target CERTNAME\fR is specified, then remove the files for the specified device on this host instead of this host\.
+.IP "\(bu" 4
+show: Print the full\-text version of this host's certificate\.
+.IP "" 0
 .P
 COPYRIGHT \-\-\-\-\-\- Copyright (c) 2011 Puppet Inc\. Copyright (c) 2024 Vox Pupuli Licensed under the Apache 2\.0 License

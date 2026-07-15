@@ -380,7 +380,7 @@ class Puppet::Provider
   # @raise [Puppet::DevError] Error indicating that the method should have been implemented by subclass.
   # @see prefetch
   def self.instances
-    raise Puppet::DevError, _("To support listing resources of this type the '%{provider}' provider needs to implement an 'instances' class method returning the current set of resources. We recommend porting your module to the simpler Resource API instead: https://puppet.com/search/docs?keys=resource+api") % { provider: name }
+    raise Puppet::DevError, _("To support listing resources of this type the '%{provider}' provider needs to implement an 'instances' class method returning the current set of resources. We recommend porting your module to the simpler Resource API instead: https://github.com/puppetlabs/puppet-resource_api") % { provider: name }
   end
 
   # Creates getter- and setter- methods for each property supported by the resource type.

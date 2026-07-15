@@ -3,7 +3,7 @@
 require_relative '../puppet/thread_local'
 
 # Puppet::Context is a system for tracking services and contextual information
-# that puppet needs to be able to run. Values are "bound" in a context when it is created
+# that OpenVox needs to be able to run. Values are "bound" in a context when it is created
 # and cannot be changed; however a child context can be created, using
 # {#override}, that provides a different value.
 #

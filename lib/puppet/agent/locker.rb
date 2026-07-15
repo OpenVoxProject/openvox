@@ -10,7 +10,7 @@ require_relative '../../puppet/error'
 #
 # The implementation involves writing a lockfile whose contents are simply the
 # PID of the running agent process.  This is considered part of the public
-# Puppet API because it used by external tools such as mcollective.
+# OpenVox API because it used by external tools such as mcollective.
 #
 # For more information, please see docs on the website.
 #  http://links.puppet.com/agent_lockfiles

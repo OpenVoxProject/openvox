@@ -4,8 +4,8 @@ require_relative '../../../puppet/node/facts'
 require_relative '../../../puppet/indirector/code'
 
 class Puppet::Node::Facts::Facter < Puppet::Indirector::Code
-  desc "Retrieve facts from Facter.  This provides a somewhat abstract interface
-    between Puppet and Facter.  It's only `somewhat` abstract because it always
+  desc "Retrieve facts from OpenFact.  This provides a somewhat abstract interface
+    between OpenVox and OpenFact.  It's only `somewhat` abstract because it always
     returns the local host's facts, regardless of what you attempt to find."
 
   def allow_remote_requests?
@@ -13,25 +13,25 @@ class Puppet::Node::Facts::Facter < Puppet::Indirector::Code
   end
 
   def destroy(facts)
-    raise Puppet::DevError, _('You cannot destroy facts in the code store; it is only used for getting facts from Facter')
+    raise Puppet::DevError, _('You cannot destroy facts in the code store; it is only used for getting facts from OpenFact')
   end
 
   def save(facts)
-    raise Puppet::DevError, _('You cannot save facts to the code store; it is only used for getting facts from Facter')
+    raise Puppet::DevError, _('You cannot save facts to the code store; it is only used for getting facts from OpenFact')
   end
 
-  # Lookup a host's facts up in Facter.
+  # Lookup a host's facts up in OpenFact.
   def find(request)
     Puppet.runtime[:facter].reset
 
-    # Note: we need to setup puppet's external search paths before adding the puppetversion
+    # Note: we need to setup OpenVox's external search paths before adding the puppetversion
     # fact. This is because in Facter 2.x, the first `Puppet.runtime[:facter].add` causes Facter to create
     # its directory loaders which cannot be changed, meaning other external facts won't
     # be resolved. (PUP-4607)
     self.class.setup_external_search_paths(request)
     self.class.setup_search_paths(request)
 
-    # Initialize core Puppet facts, such as puppetversion
+    # Initialize core OpenVox facts, such as puppetversion
     Puppet.initialize_facts
 
     result = if request.options[:resolve_options]

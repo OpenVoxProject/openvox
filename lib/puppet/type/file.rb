@@ -27,11 +27,11 @@ Puppet::Type.newtype(:file) do
     downloaded from a remote source using the `source` attribute; the latter
     can also be used to recursively serve directories (when the `recurse`
     attribute is set to `true` or `local`). On Windows, note that file
-    contents are managed in binary mode; Puppet never automatically translates
+    contents are managed in binary mode; OpenVox never automatically translates
     line endings.
 
-    **Autorequires:** If Puppet is managing the user or group that owns a
-    file, the file resource will autorequire them. If Puppet is managing any
+    **Autorequires:** If OpenVox is managing the user or group that owns a
+    file, the file resource will autorequire them. If OpenVox is managing any
     parent directories of a file, the file resource autorequires them.
 
     Warning: Enabling `recurse` on directories containing large numbers of
@@ -80,11 +80,11 @@ Puppet::Type.newtype(:file) do
       (`File { backup => main }`), so it can affect all file resources.
 
       * If set to `false`, file content won't be backed up.
-      * If set to a string beginning with `.`, such as `.puppet-bak`, Puppet will
+      * If set to a string beginning with `.`, such as `.puppet-bak`, OpenVox will
         use copy the file in the same directory with that value as the extension
         of the backup. (A value of `true` is a synonym for `.puppet-bak`.)
-      * If set to any other string, Puppet will try to back up to a filebucket
-        with that title. Puppet automatically creates a **local** filebucket
+      * If set to any other string, OpenVox will try to back up to a filebucket
+        with that title. OpenVox automatically creates a **local** filebucket
         named `puppet` if one doesn't already exist. See the `filebucket` resource
         type for more details.
 
@@ -92,14 +92,14 @@ Puppet::Type.newtype(:file) do
 
       Backing up to a local filebucket isn't particularly useful. If you want
       to make organized use of backups, you will generally want to use the
-      primary Puppet server's filebucket service. This requires declaring a
+      primary OpenVox server's filebucket service. This requires declaring a
       filebucket resource and a resource default for the `backup` attribute
       in site.pp:
 
           # /etc/puppetlabs/puppet/manifests/site.pp
           filebucket { 'main':
             path   => false,                # This is required for remote filebuckets.
-            server => 'puppet.example.com', # Optional; defaults to the configured primary Puppet server.
+            server => 'puppet.example.com', # Optional; defaults to the configured primary OpenVox server.
           }
 
           File { backup => main, }
@@ -149,7 +149,7 @@ Puppet::Type.newtype(:file) do
 
       * `false` --- The default behavior. The contents of the directory will not be
         automatically managed.
-      * `remote` --- If the `source` attribute is set, Puppet will automatically
+      * `remote` --- If the `source` attribute is set, OpenVox will automatically
         manage the contents of the source directory (or directories), ensuring
         that equivalent files and directories exist on the target system and
         that their contents match.
@@ -188,13 +188,13 @@ Puppet::Type.newtype(:file) do
   end
 
   newparam(:recurselimit) do
-    desc "How far Puppet should descend into subdirectories, when using
+    desc "How far OpenVox should descend into subdirectories, when using
       `ensure => directory` and either `recurse => true` or `recurse => remote`.
       The recursion limit affects which files will be copied from the `source`
       directory, as well as which files can be purged when `purge => true`.
 
       Setting `recurselimit => 0` is the same as setting `recurse => false` ---
-      Puppet will manage the directory, but all of its contents will be treated
+      OpenVox will manage the directory, but all of its contents will be treated
       as unmanaged.
 
       Setting `recurselimit => 1` will manage files and directories that are
@@ -241,7 +241,7 @@ Puppet::Type.newtype(:file) do
       whose content doesn't match what the `source` or `content` attribute
       specifies.  Setting this to false allows file resources to initialize files
       without overwriting future changes.  Note that this only affects content;
-      Puppet will still manage ownership and permissions."
+      OpenVox will still manage ownership and permissions."
     defaultto :true
   end
 
@@ -320,7 +320,7 @@ Puppet::Type.newtype(:file) do
   newparam(:show_diff, :boolean => true, :parent => Puppet::Parameter::Boolean) do
     desc "Whether to display differences when the file changes, defaulting to
         true.  This parameter is useful for files that may contain passwords or
-        other secret data, which might otherwise be included in Puppet reports or
+        other secret data, which might otherwise be included in OpenVox reports or
         other insecure outputs.  If the global `show_diff` setting
         is false, then no diffs will be shown even if this parameter is true."
 
@@ -353,14 +353,14 @@ Puppet::Type.newtype(:file) do
 
   newparam(:validate_cmd) do
     desc "A command for validating the file's syntax before replacing it. If
-      Puppet would need to rewrite a file due to new `source` or `content`, it
+      OpenVox would need to rewrite a file due to new `source` or `content`, it
       will check the new content's validity first. If validation fails, the file
       resource will fail.
 
       This command must have a fully qualified path, and should contain a
       percent (`%`) token where it would expect an input file. It must exit `0`
       if the syntax is correct, and non-zero otherwise. The command will be
-      run on the target system while applying the catalog, not on the primary Puppet server.
+      run on the target system while applying the catalog, not on the primary OpenVox server.
 
       Example:
 

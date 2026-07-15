@@ -67,7 +67,7 @@ describe Puppet::HTTP::Resolver do
 
       subject.resolve(session, :ca)
 
-      expect(@logs.map(&:message)).to include(/Puppet server ca.example.com:8141 is unavailable: 500 Internal Server Error/)
+      expect(@logs.map(&:message)).to include(/OpenVox server ca.example.com:8141 is unavailable: 500 Internal Server Error/)
     end
 
     it 'cancels resolution if no servers in server_list are accessible' do

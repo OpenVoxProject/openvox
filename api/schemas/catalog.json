@@ -1,11 +1,11 @@
 {
     "$schema":     "http://json-schema.org/draft-04/schema#",
     "title":       "Catalog",
-    "description": "A puppet resource catalog",
+    "description": "An OpenVox resource catalog",
     "type": "object",
     "properties": {
         "tags": {
-            "description": "Tags: regex is from https://puppet.com/docs/puppet/latest/lang_reserved.html",
+            "description": "Tags: regex is from https://docs.openvoxproject.org/openvox/latest/lang_reserved.html",
             "type": "array",
             "items": {
                 "type": "string",
@@ -62,7 +62,7 @@
                         }
                     },
                     "tags": {
-                        "description": "Tags: regex is from https://puppet.com/docs/puppet/latest/lang_reserved.html",
+                        "description": "Tags: regex is from https://docs.openvoxproject.org/openvox/latest/lang_reserved.html",
                         "type": "array",
                         "items": {
                             "type": "string",
@@ -70,7 +70,7 @@
                         }
                     },
                     "parameters": {
-                        "description": "Parameters: regex is from https://puppet.com/docs/puppet/latest/lang_reserved.html",
+                        "description": "Parameters: regex is from https://docs.openvoxproject.org/openvox/latest/lang_reserved.html",
                         "type": "object",
                         "patternProperties": {
                             "^[a-z][a-z0-9_]*$": {}

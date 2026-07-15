@@ -1,13 +1,13 @@
 ---
 layout: default
-built_from_commit: 812d7420ea5d7e19e8003b26486a7c8847afdb25
+built_from_commit: f7b1a950d990274b9f352eb7aa0cd93ee6067df1
 title: 'Resource Type: tidy'
 canonical: "/puppet/latest/types/tidy.html"
 ---
 
 # Resource Type: tidy
 
-> **NOTE:** This page was generated from the Puppet source code on 2024-10-18 17:23:49 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-07-14 18:42:41 +0000
 
 
 
@@ -40,7 +40,7 @@ actual deletion.
   <a href="#tidy-attribute-rmdirs">rmdirs</a>    =&gt; <em># Tidy directories in addition to files; that is...</em>
   <a href="#tidy-attribute-size">size</a>      =&gt; <em># Tidy files whose size is equal to or greater...</em>
   <a href="#tidy-attribute-type">type</a>      =&gt; <em># Set the mechanism for determining age.  Default: </em>
-  # ...plus any applicable <a href="https://puppet.com/docs/puppet/latest/metaparameter.html">metaparameters</a>.
+  # ...plus any applicable <a href="https://docs.openvoxproject.org/openvox/latest/metaparameter.html">metaparameters</a>.
 }</code></pre>
 
 

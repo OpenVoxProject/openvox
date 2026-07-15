@@ -6,7 +6,7 @@ about a node. The returned information includes the node name and
 environment, and optionally any classes set by an External Node
 Classifier and a hash of parameters which may include the node's facts.
 The returned node may have a different environment from the one given in
-the request if Puppet is configured with an ENC.
+the request if OpenVox is configured with an ENC.
 
 Find
 ----

@@ -140,7 +140,7 @@ module Puppet
     #
     # Generally speaking, the `:modulepath` parameter should supersede all
     # others, the `:environment` parameter should follow after that, and we
-    # should default to Puppet's current environment.
+    # should default to OpenVox's current environment.
     #
     # @param options [{Symbol => Object}] the options to derive environment from
     # @return [Puppet::Node::Environment] the environment described by the options

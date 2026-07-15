@@ -1,6 +1,6 @@
 # Two Types of Catalogs
 
-When working on subsystems of Puppet that deal with the catalog it is important
+When working on subsystems of OpenVox that deal with the catalog it is important
 to be aware of the two different types of Catalogs.
 
 The two different types of catalogs becomes relevant when writing spec tests
@@ -82,7 +82,7 @@ good chance the catalog is not a RAL catalog.
 
 ## Settings Catalog ##
 
-Be aware that Puppet creates a mini catalog and applies this catalog locally to
+Be aware that OpenVox creates a mini catalog and applies this catalog locally to
 manage file resource from the settings.  This behavior made it difficult and
 time consuming to track down a race condition in
 [PUP-1070](https://tickets.puppetlabs.com/browse/PUP-1070).

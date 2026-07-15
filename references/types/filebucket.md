@@ -1,13 +1,13 @@
 ---
 layout: default
-built_from_commit: 812d7420ea5d7e19e8003b26486a7c8847afdb25
+built_from_commit: f7b1a950d990274b9f352eb7aa0cd93ee6067df1
 title: 'Resource Type: filebucket'
 canonical: "/puppet/latest/types/filebucket.html"
 ---
 
 # Resource Type: filebucket
 
-> **NOTE:** This page was generated from the Puppet source code on 2024-10-18 17:23:49 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-07-14 18:42:41 +0000
 
 
 
@@ -18,19 +18,18 @@ canonical: "/puppet/latest/types/filebucket.html"
 ### Description {#filebucket-description}
 
 A repository for storing and retrieving file content by cryptographic checksum. Can
-be local to each agent node, or centralized on a primary Puppet server. All
-puppet servers provide a filebucket service that agent nodes can access
+be local to each agent node, or centralized on a primary OpenVox server. All
+OpenVox servers provide a filebucket service that agent nodes can access
 via HTTP, but you must declare a filebucket resource before any agents
 will do so.
 
 Filebuckets are used for the following features:
 
 - **Content backups.** If the `file` type's `backup` attribute is set to
-  the name of a filebucket, Puppet will back up the _old_ content whenever
+  the name of a filebucket, OpenVox will back up the _old_ content whenever
   it rewrites a file; see the documentation for the `file` type for more
   details. These backups can be used for manual recovery of content, but
-  are more commonly used to display changes and differences in a tool like
-  Puppet Dashboard.
+  are more commonly used to display changes and differences.
 
 To use a central filebucket for backups, you will usually want to declare
 a filebucket resource and a resource default for the `backup` attribute
@@ -44,9 +43,9 @@ in site.pp:
 
     File { backup => main, }
 
-Puppet Servers automatically provide the filebucket service, so
+OpenVox Servers automatically provide the filebucket service, so
 this will work in a default configuration. If you have a heavily
-restricted Puppet Server `auth.conf` file, you may need to allow access to the
+restricted OpenVox Server `auth.conf` file, you may need to allow access to the
 `file_bucket_file` endpoint.
 
 ### Attributes {#filebucket-attributes}
@@ -56,7 +55,7 @@ restricted Puppet Server `auth.conf` file, you may need to allow access to the
   <a href="#filebucket-attribute-path">path</a>   =&gt; <em># The path to the _local_ filebucket; defaults to...</em>
   <a href="#filebucket-attribute-port">port</a>   =&gt; <em># The port on which the remote server is...</em>
   <a href="#filebucket-attribute-server">server</a> =&gt; <em># The server providing the remote filebucket...</em>
-  # ...plus any applicable <a href="https://puppet.com/docs/puppet/latest/metaparameter.html">metaparameters</a>.
+  # ...plus any applicable <a href="https://docs.openvoxproject.org/openvox/latest/metaparameter.html">metaparameters</a>.
 }</code></pre>
 
 

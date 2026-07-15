@@ -3,8 +3,8 @@
 require 'ffi'
 
 # Puppet::Util::Windows::EventLog needs to be requirable without having loaded
-# any other parts of Puppet so it can be leveraged independently by the code
-# that runs Puppet as a service on Windows.
+# any other parts of OpenVox so it can be leveraged independently by the code
+# that runs OpenVox as a service on Windows.
 #
 # For this reason we:
 # - Define Puppet::Util::Windows
@@ -21,7 +21,7 @@ class Puppet::Util::Windows::EventLog
   EVENTLOG_INFORMATION_TYPE = 0x0004
 
   # These are duplicate definitions from Puppet::Util::Windows::ApiTypes,
-  # established here so this class can be standalone from Puppet, and public so
+  # established here so this class can be standalone from OpenVox, and public so
   # we can reference them in tests.
   NULL_HANDLE = 0
   WIN32_FALSE = 0
@@ -88,7 +88,7 @@ class Puppet::Util::Windows::EventLog
 
     # Query event identifier info for a given log level
     # @param level [Symbol] an event log level
-    # @return [Array] Win API Event ID, Puppet Event ID
+    # @return [Array] Win API Event ID, OpenVox Event ID
     # @api public
     def to_native(level)
       case level
@@ -107,9 +107,9 @@ class Puppet::Util::Windows::EventLog
   private
 
   # For the purposes of allowing this class to be standalone, the following are
-  # duplicate definitions from elsewhere in Puppet:
+  # duplicate definitions from elsewhere in OpenVox:
 
-  # If we're loaded via Puppet we should keep the previous behavior of raising
+  # If we're loaded via OpenVox we should keep the previous behavior of raising
   # Puppet::Util::Windows::Error on errors. If we aren't, at least concatenate
   # the error code to the exception message to pass this information on to the
   # user

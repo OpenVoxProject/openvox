@@ -78,7 +78,7 @@ class Puppet::HTTP::Service::FileServer < Puppet::HTTP::Service
   #   with `:recurselimit`. See the reference documentation for the file type
   #   for more details.
   # @param [Integer] recurselimit When `recurse` is set, `recurselimit` defines
-  #   how far Puppet should descend into subdirectories. `0` is effectively the
+  #   how far OpenVox should descend into subdirectories. `0` is effectively the
   #   same as `recurse => false`, `1` will return files and directories directly
   #   inside the defined directory, `2` will return the direct content of the
   #   directory as well as the contents of the _first_ level of subdirectories.

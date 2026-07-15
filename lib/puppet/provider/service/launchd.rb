@@ -26,7 +26,7 @@ Puppet::Type.type(:service).provide :launchd, :parent => :base do
     * status
     * restart
 
-    Here is how the Puppet states correspond to `launchd` states:
+    Here is how the OpenVox states correspond to `launchd` states:
 
     * stopped --- job unloaded
     * started --- job loaded
@@ -148,7 +148,7 @@ Puppet::Type.type(:service).provide :launchd, :parent => :base do
           @label_to_path_map[job["Label"]] = filepath
         else
           # TRANSLATORS 'plist' and label' should not be translated
-          Puppet.debug(_("The %{file} plist does not contain a 'label' key; Puppet is skipping it") % { file: filepath })
+          Puppet.debug(_("The %{file} plist does not contain a 'label' key; OpenVox is skipping it") % { file: filepath })
           next
         end
       end

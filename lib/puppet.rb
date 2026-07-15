@@ -23,16 +23,16 @@ require_relative 'puppet/util/run_mode'
 require_relative 'puppet/gettext/config'
 require_relative 'puppet/defaults'
 
-# Defines the `Puppet` module. There are different entry points into Puppet
+# Defines the `Puppet` module. There are different entry points into OpenVox
 # depending on your use case.
 #
-# To use puppet as a library, see {Puppet::Pal}.
+# To use OpenVox as a library, see {Puppet::Pal}.
 #
 # To create a new application, see {Puppet::Application}.
 #
 # To create a new function, see {Puppet::Functions}.
 #
-# To access puppet's REST APIs, see https://puppet.com/docs/puppet/latest/http_api/http_api_index.html.
+# To access OpenVox's REST APIs, see https://docs.openvoxproject.org/openvox/latest/http_api/http_api_index.html.
 #
 # @api public
 module Puppet
@@ -129,7 +129,7 @@ module Puppet
   # deprecation warnings. Warn if we're on a deprecated ruby version.
   # Update JRuby version constraints in PUP-11716
   if Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new(Puppet::OLDEST_RECOMMENDED_RUBY_VERSION)
-    Puppet.deprecation_warning(_("Support for ruby version %{version} is deprecated and will be removed in a future release. See https://puppet.com/docs/puppet/latest/system_requirements.html for a list of supported ruby versions.") % { version: RUBY_VERSION })
+    Puppet.deprecation_warning(_("Support for ruby version %{version} is deprecated and will be removed in a future release. See https://docs.openvoxproject.org/openvox/latest/system_requirements.html for a list of supported ruby versions.") % { version: RUBY_VERSION })
   end
 
   # Initialize puppet's settings. This is intended only for use by external tools that are not
@@ -139,7 +139,7 @@ module Puppet
   #
   # @api public
   # @param args [Array<String>] the command line arguments to use for initialization
-  # @param require_config [Boolean] controls loading of Puppet configuration files
+  # @param require_config [Boolean] controls loading of OpenVox configuration files
   # @param global_settings [Boolean] controls push to global context after settings object initialization
   # @param runtime_implementations [Hash<Symbol, Object>] runtime implementations to register
   # @return [void]

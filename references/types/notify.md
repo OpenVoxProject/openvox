@@ -1,13 +1,13 @@
 ---
 layout: default
-built_from_commit: 812d7420ea5d7e19e8003b26486a7c8847afdb25
+built_from_commit: f7b1a950d990274b9f352eb7aa0cd93ee6067df1
 title: 'Resource Type: notify'
 canonical: "/puppet/latest/types/notify.html"
 ---
 
 # Resource Type: notify
 
-> **NOTE:** This page was generated from the Puppet source code on 2024-10-18 17:23:49 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-07-14 18:42:41 +0000
 
 
 
@@ -17,7 +17,7 @@ canonical: "/puppet/latest/types/notify.html"
 
 ### Description {#notify-description}
 
-Sends an arbitrary message, specified as a string, to the agent run-time log. It's important to note that the notify resource type is not idempotent. As a result, notifications are shown as a change on every Puppet run.
+Sends an arbitrary message, specified as a string, to the agent run-time log. It's important to note that the notify resource type is not idempotent. As a result, notifications are shown as a change on every OpenVox run.
 
 ### Attributes {#notify-attributes}
 
@@ -25,7 +25,7 @@ Sends an arbitrary message, specified as a string, to the agent run-time log. It
   <a href="#notify-attribute-name">name</a>     =&gt; <em># <strong>(namevar)</strong> An arbitrary tag for your own reference; the...</em>
   <a href="#notify-attribute-message">message</a>  =&gt; <em># The message to be sent to the log. Note that the </em>
   <a href="#notify-attribute-withpath">withpath</a> =&gt; <em># Whether to show the full object path.  Default...</em>
-  # ...plus any applicable <a href="https://puppet.com/docs/puppet/latest/metaparameter.html">metaparameters</a>.
+  # ...plus any applicable <a href="https://docs.openvoxproject.org/openvox/latest/metaparameter.html">metaparameters</a>.
 }</code></pre>
 
 

@@ -15,13 +15,13 @@ class Puppet::Network::HTTP::API
     Puppet::Network::HTTP::Route
       .path(/.*/)
       .any(lambda do |_req, _res|
-        raise Puppet::Network::HTTP::Error::HTTPNotFoundError.new("Error: Invalid URL - Puppet expects requests that conform to the " \
+        raise Puppet::Network::HTTP::Error::HTTPNotFoundError.new("Error: Invalid URL - OpenVox expects requests that conform to the " \
                                                                   "/puppet and /puppet-ca APIs.\n\n" \
                                                                   "Note that Puppet 3 agents aren't compatible with this version; if you're " \
                                                                   "running Puppet 3, you must either upgrade your agents to match the server " \
                                                                   "or point them to a server running Puppet 3.\n\n" \
                                                                   "Server Info:\n" \
-                                                                  "  Puppet version: #{Puppet.version}\n" \
+                                                                  "  OpenVox version: #{Puppet.version}\n" \
                                                                   "  Supported /puppet API versions: #{Puppet::Network::HTTP::SERVER_URL_VERSIONS}\n",
                                                                   Puppet::Network::HTTP::Issues::HANDLER_NOT_FOUND)
       end)

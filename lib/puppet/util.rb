@@ -262,7 +262,7 @@ module Util
     end
 
     # Ruby only sets File::ALT_SEPARATOR on Windows and the Ruby standard
-    # library uses that to test what platform it's on.  Normally in Puppet we
+    # library uses that to test what platform it's on.  Normally in OpenVox we
     # would use Puppet.features.microsoft_windows?, but this method needs to
     # be called during the initialization of features so it can't depend on
     # that.
@@ -744,7 +744,7 @@ module Util
   module_function :deterministic_rand_int
 
   # Executes a block of code, wrapped around Facter.load_external(false) and
-  # Facter.load_external(true) which will cause Facter to not evaluate external facts.
+  # Facter.load_external(true) which will cause OpenFact to not evaluate external facts.
   def skip_external_facts
     return yield unless Puppet.runtime[:facter].load_external?
 

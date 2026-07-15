@@ -11,7 +11,7 @@ require 'yaml'
 require 'uri'
 
 class Puppet::Resource::Catalog::Compiler < Puppet::Indirector::Code
-  desc "Compiles catalogs on demand using Puppet's compiler."
+  desc "Compiles catalogs on demand using OpenVox's compiler."
 
   include Puppet::Util
   include Puppet::Util::Checksums
@@ -310,7 +310,7 @@ class Puppet::Resource::Catalog::Compiler < Puppet::Indirector::Code
     if node.environment && node.environment.static_catalogs? && options[:static_catalog] && options[:code_id]
       # Check for errors before compiling the catalog
       checksum_type = common_checksum_type(options[:checksum_type])
-      raise Puppet::Error, _("Unable to find a common checksum type between agent '%{agent_type}' and master '%{master_type}'.") % { agent_type: options[:checksum_type], master_type: known_checksum_types } unless checksum_type
+      raise Puppet::Error, _("Unable to find a common checksum type between agent '%{agent_type}' and server '%{master_type}'.") % { agent_type: options[:checksum_type], master_type: known_checksum_types } unless checksum_type
     end
 
     escaped_node_name = node.name.gsub(/%/, '%%')

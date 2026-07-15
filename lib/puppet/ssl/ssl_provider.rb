@@ -18,7 +18,7 @@ require_relative '../../puppet/ssl'
 #   cert = <OpenSSL::X509::Certificate>
 #   ssl_context = provider.create_context(cacerts: cacerts, crls: crls, private_key: key, client_cert: cert)
 #
-# @example To create an SSLContext to connect to non-puppet HTTPS servers:
+# @example To create an SSLContext to connect to non-OpenVox HTTPS servers:
 #   cacerts = [<OpenSSL::X509::Certificate>]
 #   ssl_context = provider.create_root_context(cacerts: cacerts)
 #
@@ -56,9 +56,9 @@ class Puppet::SSL::SSLProvider
   end
 
   # Create an `SSLContext` using the trusted `cacerts` and any certs in OpenSSL's
-  # default verify path locations. When running puppet as a gem, the location is
-  # system dependent. When running puppet from puppet-agent packages, the location
-  # refers to the cacerts bundle in the puppet-agent package.
+  # default verify path locations. When running OpenVox as a gem, the location is
+  # system dependent. When running OpenVox from openvox-agent packages, the location
+  # refers to the cacerts bundle in the openvox-agent package.
   #
   # Connections made from the returned context will authenticate the server,
   # i.e. `VERIFY_PEER`, but will not use a client certificate (unless requested)
@@ -296,7 +296,7 @@ class Puppet::SSL::SSLProvider
 
   def verify_cert_with_store(store, cert)
     # StoreContext#initialize accepts a chain argument, but it's set to [] because
-    # puppet requires any intermediate CA certs needed to complete the client's
+    # OpenVox requires any intermediate CA certs needed to complete the client's
     # chain to be in the CA bundle that we downloaded from the server, and
     # they've already been added to the store. See PUP-9500.
 

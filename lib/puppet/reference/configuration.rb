@@ -40,7 +40,7 @@ config = Puppet::Util::Reference.newreference(:configuration, :depth => 1, :doc 
     when 'hiera_config'
       val = '$confdir/hiera.yaml. However, for backwards compatibility, if a file exists at $codedir/hiera.yaml, OpenVox uses that instead.'
     when 'certname'
-      val = "the Host's fully qualified domain name, as determined by Facter"
+      val = "the Host's fully qualified domain name, as determined by OpenFact"
     when 'hostname'
       val = "(the system's fully qualified hostname)"
     when 'domain'
@@ -92,7 +92,7 @@ config.header = <<~EOT
 
   See the [configuration guide][confguide] for more details.
 
-  [confguide]: https://puppet.com/docs/puppet/latest/config_about_settings.html
+  [confguide]: https://docs.openvoxproject.org/openvox/latest/config_about_settings.html
 
 
 EOT

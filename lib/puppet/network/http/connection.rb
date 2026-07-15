@@ -10,7 +10,7 @@ class Puppet::Network::HTTP::RedirectionLimitExceededException < Puppet::Error; 
 # object, but it provides a few important bits of additional
 # functionality.  Notably:
 #
-# * Any HTTPS requests made using this class will use Puppet's SSL
+# * Any HTTPS requests made using this class will use OpenVox's SSL
 #   certificate configuration for their authentication, and
 # * Provides some useful error handling for any SSL errors that occur
 #   during a request.
@@ -88,7 +88,7 @@ class Puppet::Network::HTTP::Connection
   #   be thrown.
   #   @option options [Hash{Symbol => String}] :basic_auth The basic auth
   #     :username and :password to use for the request, :metric_id Ignored
-  #     by this class - used by Puppet Server only. The metric id by which
+  #     by this class - used by OpenVox Server only. The metric id by which
   #     to track metrics on requests.
 
   # @param path [String]

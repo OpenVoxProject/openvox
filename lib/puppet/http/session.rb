@@ -35,7 +35,7 @@ class Puppet::HTTP::Session
   # port. Otherwise, we walk the list of resolvers in priority order:
   #     - DNS SRV
   #     - Server List
-  #     - Puppet server/port settings
+  #     - OpenVox server/port settings
   # If a given resolver fails to connect, it tries the next available resolver
   # until a successful connection is found and returned. The successful service
   # is cached and returned if `route_to` is called again.

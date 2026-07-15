@@ -1,14 +1,13 @@
 .\" generated with Ronn-NG/v0.10.1
 .\" http://github.com/apjanke/ronn-ng/tree/0.10.1
-.TH "PUPPETCONF" "5" "January 2025" "Vox Pupuli" "OpenVox manual"
+.TH "PUPPETCONF" "5" "July 2026" "Vox Pupuli" "OpenVox manual"
 .SH "Configuration settings"
 .IP "\(bu" 4
 Each of these settings can be specified in \fBpuppet\.conf\fR or on the command line\.
 .IP "\(bu" 4
 When using boolean settings on the command line, use \fB\-\-setting\fR and \fB\-\-no\-setting\fR instead of \fB\-\-setting (true|false)\fR\. (Using \fB\-\-setting false\fR results in "Error: Could not parse application options: needless argument"\.)
 .IP "\(bu" 4
-Settings can be interpolated as \fB$variables\fR in other settings; \fB$environment\fR is special, in that OpenVox server will interpolate each agent node\'s environment instead of its own\.
-.
+Settings can be interpolated as \fB$variables\fR in other settings; \fB$environment\fR is special, in that OpenVox Server will interpolate each agent node's environment instead of its own\.
 .IP "\(bu" 4
 Multiple values should be specified as comma\-separated lists; multiple directories should be separated with the system path separator (usually a colon)\.
 .IP "\(bu" 4
@@ -21,7 +20,7 @@ Settings that take a single file or directory can optionally set the owner, grou
 The OpenVox executables ignores any setting that isn't relevant to their function\.
 .IP "" 0
 .P
-See the configuration guide \fIhttps://puppet\.com/docs/puppet/latest/config_about_settings\.html\fR for more details\.
+See the configuration guide \fIhttps://docs\.openvoxproject\.org/openvox/latest/config_about_settings\.html\fR for more details\.
 .SS "agent_catalog_run_lockfile"
 A lock file to indicate that a puppet agent catalog run is currently in progress\. The file contains the pid of the process that holds the lock on the catalog run\.
 .IP "\(bu" 4
@@ -38,12 +37,12 @@ Whether to allow a new certificate request to overwrite an existing certificate 
 \fIDefault\fR: \fBfalse\fR
 .IP "" 0
 .SS "allow_pson_serialization"
-Whether to allow PSON serialization\. When unable to serialize to JSON or other formats, Puppet falls back to PSON\. This option affects the configuration management service responses of Puppet Server and the process by which the agent saves its cached catalog\. With a default value of \fBfalse\fR, this option is useful in preventing the loss of data because rich data cannot be serialized via PSON\.
+Whether to allow PSON serialization\. When unable to serialize to JSON or other formats, OpenVox falls back to PSON\. This option affects the configuration management service responses of OpenVox Server and the process by which the agent saves its cached catalog\. With a default value of \fBfalse\fR, this option is useful in preventing the loss of data because rich data cannot be serialized via PSON\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBfalse\fR
 .IP "" 0
 .SS "always_retry_plugins"
-Affects how we cache attempts to load Puppet resource types and features\. If true, then calls to \fBPuppet\.type\.<type>?\fR \fBPuppet\.feature\.<feature>?\fR will always attempt to load the type or feature (which can be an expensive operation) unless it has already been loaded successfully\. This makes it possible for a single agent run to, e\.g\., install a package that provides the underlying capabilities for a type or feature, and then later load that type or feature during the same run (even if the type or feature had been tested earlier and had not been available)\.
+Affects how we cache attempts to load OpenVox resource types and features\. If true, then calls to \fBPuppet\.type\.<type>?\fR \fBPuppet\.feature\.<feature>?\fR will always attempt to load the type or feature (which can be an expensive operation) unless it has already been loaded successfully\. This makes it possible for a single agent run to, e\.g\., install a package that provides the underlying capabilities for a type or feature, and then later load that type or feature during the same run (even if the type or feature had been tested earlier and had not been available)\.
 .P
 If this setting is set to false, then types and features will only be checked once, and if they are not available, the negative result is cached and returned for all subsequent attempts to load the type or feature\. This behavior is almost always appropriate for the server, and can result in a significant performance improvement for types and features that are checked frequently\.
 .IP "\(bu" 4
@@ -55,29 +54,29 @@ Whether log files should always flush to disk\.
 \fIDefault\fR: \fBtrue\fR
 .IP "" 0
 .SS "autosign"
-Whether (and how) to autosign certificate requests\. This setting is only relevant on a Puppet Server acting as a certificate authority (CA)\.
+Whether (and how) to autosign certificate requests\. This setting is only relevant on an OpenVox Server acting as a certificate authority (CA)\.
 .P
 Valid values are true (autosigns all certificate requests; not recommended), false (disables autosigning certificates), or the absolute path to a file\.
 .P
-The file specified in this setting may be either a \fBconfiguration file\fR or a \fBcustom policy executable\.\fR Puppet will automatically determine what it is: If the Puppet user (see the \fBuser\fR setting) can execute the file, it will be treated as a policy executable; otherwise, it will be treated as a config file\.
+The file specified in this setting may be either a \fBconfiguration file\fR or a \fBcustom policy executable\.\fR OpenVox will automatically determine what it is: If the OpenVox user (see the \fBuser\fR setting) can execute the file, it will be treated as a policy executable; otherwise, it will be treated as a config file\.
 .P
-If a custom policy executable is configured, the CA Puppet Server will run it every time it receives a CSR\. The executable will be passed the subject CN of the request \fIas a command line argument,\fR and the contents of the CSR in PEM format \fIon stdin\.\fR It should exit with a status of 0 if the cert should be autosigned and non\-zero if the cert should not be autosigned\.
+If a custom policy executable is configured, the CA OpenVox Server will run it every time it receives a CSR\. The executable will be passed the subject CN of the request \fIas a command line argument,\fR and the contents of the CSR in PEM format \fIon stdin\.\fR It should exit with a status of 0 if the cert should be autosigned and non\-zero if the cert should not be autosigned\.
 .P
 If a certificate request is not autosigned, it will persist for review\. An admin user can use the \fBpuppetserver ca sign\fR command to manually sign it, or can delete the request\.
 .P
-For info on autosign configuration files, see the guide to Puppet's config files \fIhttps://puppet\.com/docs/puppet/latest/config_file_autosign\.html\fR\.
+For info on autosign configuration files, see the guide to OpenVox's config files \fIhttps://docs\.openvoxproject\.org/openvox/latest/config_file_autosign\.html\fR\.
 .IP "\(bu" 4
 \fIDefault\fR: \fB$confdir/autosign\.conf\fR
 .IP "" 0
 .SS "basemodulepath"
 The search path for \fBglobal\fR modules\. Should be specified as a list of directories separated by the system path separator character\. (The POSIX path separator is ':', and the Windows path separator is ';'\.)
 .P
-These are the modules that will be used by \fIall\fR environments\. Note that the \fBmodules\fR directory of the active environment will have priority over any global directories\. For more info, see \fIhttps://puppet\.com/docs/puppet/latest/environments_about\.html\fR
+These are the modules that will be used by \fIall\fR environments\. Note that the \fBmodules\fR directory of the active environment will have priority over any global directories\. For more info, see \fIhttps://docs\.openvoxproject\.org/openvox/latest/environments_about\.html\fR
 .IP "\(bu" 4
 \fIDefault\fR: \fB$codedir/modules:/opt/puppetlabs/puppet/modules\fR
 .IP "" 0
 .SS "binder_config"
-The binder configuration file\. Puppet reads this file on each request to configure the bindings system\. If set to nil (the default), a $confdir/binder_config\.yaml is optionally loaded\. If it does not exists, a default configuration is used\. If the setting :binding_config is specified, it must reference a valid and existing yaml file\.
+The binder configuration file\. OpenVox reads this file on each request to configure the bindings system\. If set to nil (the default), a $confdir/binder_config\.yaml is optionally loaded\. If it does not exists, a default configuration is used\. If the setting :binding_config is specified, it must reference a valid and existing yaml file\.
 .IP "\(bu" 4
 \fIDefault\fR: ``
 .IP "" 0
@@ -102,7 +101,7 @@ The port to use for the certificate authority\.
 \fIDefault\fR: \fB$serverport\fR
 .IP "" 0
 .SS "ca_refresh_interval"
-How often the Puppet agent refreshes its local CA certificates\. By default, CA certificates are refreshed every 24 hours\. If a different interval is specified, the agent refreshes its CA certificates during the next agent run if the elapsed time since the certificates were last refreshed exceeds the specified duration\.
+How often the OpenVox agent refreshes its local CA certificates\. By default, CA certificates are refreshed every 24 hours\. If a different interval is specified, the agent refreshes its CA certificates during the next agent run if the elapsed time since the certificates were last refreshed exceeds the specified duration\.
 .P
 In general, the interval should be greater than the \fBruninterval\fR value\. Setting the \fBca_refresh_interval\fR value to 0 or an equal or lesser value than \fBruninterval\fR causes the CA certificates to be refreshed on every run\.
 .P
@@ -168,22 +167,22 @@ The certificate directory\.
 .SS "certificate_revocation"
 Whether certificate revocation checking should be enabled, and what level of checking should be performed\.
 .P
-When certificate revocation is enabled, Puppet expects the contents of its CRL to be one or more PEM\-encoded CRLs concatenated together\. When using a cert bundle, CRLs for all CAs in the chain of trust must be included in the crl file\. The chain should be ordered from least to most authoritative, with the first CRL listed being for the root of the chain and the last being for the leaf CA\.
+When certificate revocation is enabled, OpenVox expects the contents of its CRL to be one or more PEM\-encoded CRLs concatenated together\. When using a cert bundle, CRLs for all CAs in the chain of trust must be included in the crl file\. The chain should be ordered from least to most authoritative, with the first CRL listed being for the root of the chain and the last being for the leaf CA\.
 .P
-When certificate_revocation is set to 'true' or 'chain', Puppet ensures that each CA in the chain of trust has not been revoked by its issuing CA\.
+When certificate_revocation is set to 'true' or 'chain', OpenVox ensures that each CA in the chain of trust has not been revoked by its issuing CA\.
 .P
-When certificate_revocation is set to 'leaf', Puppet verifies certs against the issuing CA's revocation list, but it does not verify the revocation status of the issuing CA or any CA above it within the chain of trust\.
+When certificate_revocation is set to 'leaf', OpenVox verifies certs against the issuing CA's revocation list, but it does not verify the revocation status of the issuing CA or any CA above it within the chain of trust\.
 .P
-When certificate_revocation is set to 'false', Puppet disables all certificate revocation checking and does not attempt to download the CRL\.
+When certificate_revocation is set to 'false', OpenVox disables all certificate revocation checking and does not attempt to download the CRL\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBchain\fR
 .IP "" 0
 .SS "certname"
-The name to use when handling certificates\. When a node requests a certificate from the CA Puppet Server, it uses the value of the \fBcertname\fR setting as its requested Subject CN\.
+The name to use when handling certificates\. When a node requests a certificate from the CA OpenVox Server, it uses the value of the \fBcertname\fR setting as its requested Subject CN\.
 .P
-This is the name used when managing a node's permissions in Puppet Server's auth\.conf \fIhttps://puppet\.com/docs/puppetserver/latest/config_file_auth\.html\fR\. In most cases, it is also used as the node's name when matching node definitions \fIhttps://puppet\.com/docs/puppet/latest/lang_node_definitions\.html\fR and requesting data from an ENC\. (This can be changed with the \fBnode_name_value\fR and \fBnode_name_fact\fR settings, although you should only do so if you have a compelling reason\.)
+This is the name used when managing a node's permissions in OpenVox Server's auth\.conf \fIhttps://docs\.openvoxproject\.org/openvox\-server/latest/config_file_auth\.html\fR\. In most cases, it is also used as the node's name when matching node definitions \fIhttps://docs\.openvoxproject\.org/openvox/latest/lang_node_definitions\.html\fR and requesting data from an ENC\. (This can be changed with the \fBnode_name_value\fR and \fBnode_name_fact\fR settings, although you should only do so if you have a compelling reason\.)
 .P
-A node's certname is available in Puppet manifests as \fB$trusted['certname']\fR\. (See Facts and Built\-In Variables \fIhttps://puppet\.com/docs/puppet/latest/lang_facts_and_builtin_vars\.html\fR for more details\.)
+A node's certname is available in Puppet manifests as \fB$trusted['certname']\fR\. (See Facts and Built\-In Variables \fIhttps://docs\.openvoxproject\.org/openvox/latest/lang_facts_and_builtin_vars\.html\fR for more details\.)
 .IP "\(bu" 4
 For best compatibility, you should limit the value of \fBcertname\fR to only use lowercase letters, numbers, periods, underscores, and dashes\. (That is, it should match \fB/A[a\-z0\-9\._\-]+Z/\fR\.)
 .IP "\(bu" 4
@@ -194,10 +193,10 @@ The special value \fBca\fR is reserved, and can't be used as the certname for a 
 .P
 Defaults to the node's fully qualified domain name\.
 .IP "\(bu" 4
-\fIDefault\fR: \fBthe Host's fully qualified domain name, as determined by Facter\fR
+\fIDefault\fR: \fBthe Host's fully qualified domain name, as determined by OpenFact\fR
 .IP "" 0
 .SS "ciphers"
-The list of ciphersuites for TLS connections initiated by puppet\. The default value is chosen to support TLS 1\.0 and up, but can be made more restrictive if needed\. The ciphersuites must be specified in OpenSSL format, not IANA\.
+The list of ciphersuites for TLS connections initiated by OpenVox\. The default value is chosen to support TLS 1\.0 and up, but can be made more restrictive if needed\. The ciphersuites must be specified in OpenSSL format, not IANA\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBECDHE\-ECDSA\-AES128\-GCM\-SHA256:ECDHE\-RSA\-AES128\-GCM\-SHA256:ECDHE\-ECDSA\-AES256\-GCM\-SHA384:ECDHE\-RSA\-AES256\-GCM\-SHA384:ECDHE\-ECDSA\-CHACHA20\-POLY1305:ECDHE\-RSA\-CHACHA20\-POLY1305:DHE\-RSA\-AES128\-GCM\-SHA256:DHE\-RSA\-AES256\-GCM\-SHA384:DHE\-RSA\-CHACHA20\-POLY1305:ECDHE\-ECDSA\-AES128\-SHA256:ECDHE\-RSA\-AES128\-SHA256:ECDHE\-ECDSA\-AES128\-SHA:ECDHE\-RSA\-AES128\-SHA:ECDHE\-ECDSA\-AES256\-SHA384:ECDHE\-RSA\-AES256\-SHA384:ECDHE\-ECDSA\-AES256\-SHA:ECDHE\-RSA\-AES256\-SHA:DHE\-RSA\-AES128\-SHA256:DHE\-RSA\-AES256\-SHA256:AES128\-GCM\-SHA256:AES256\-GCM\-SHA384:AES128\-SHA256:AES256\-SHA256\fR
 .IP "" 0
@@ -222,9 +221,9 @@ The directory in which client\-side YAML data is stored\.
 \fIDefault\fR: \fB$vardir/client_yaml\fR
 .IP "" 0
 .SS "code"
-Code to parse directly\. This is essentially only used by \fBpuppet\fR, and should only be set if you're writing your own Puppet executable\.
+Code to parse directly\. This is essentially only used by \fBpuppet\fR, and should only be set if you're writing your own OpenVox executable\.
 .SS "codedir"
-The main Puppet code directory\. The default for this setting is calculated based on the user\. If the process is running as root or the user that Puppet is supposed to run as, it defaults to a system directory, but if it's running as any other user, it defaults to being in the user's home directory\.
+The main OpenVox code directory\. The default for this setting is calculated based on the user\. If the process is running as root or the user that OpenVox is supposed to run as, it defaults to a system directory, but if it's running as any other user, it defaults to being in the user's home directory\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBUnix/Linux: /etc/puppetlabs/code \-\- Windows: C:\eProgramData\ePuppetLabs\ecode \-\- Non\-root user: ~/\.puppetlabs/etc/code\fR
 .IP "" 0
@@ -234,28 +233,26 @@ Whether to use colors when logging to the console\. Valid values are \fBansi\fR 
 \fIDefault\fR: \fBansi\fR
 .IP "" 0
 .SS "confdir"
-The main Puppet configuration directory\. The default for this setting is calculated based on the user\. If the process is running as root or the user that Puppet is supposed to run as, it defaults to a system directory, but if it's running as any other user, it defaults to being in the user's home directory\.
+The main OpenVox configuration directory\. The default for this setting is calculated based on the user\. If the process is running as root or the user that OpenVox is supposed to run as, it defaults to a system directory, but if it's running as any other user, it defaults to being in the user's home directory\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBUnix/Linux: /etc/puppetlabs/puppet \-\- Windows: C:\eProgramData\ePuppetLabs\epuppet\eetc \-\- Non\-root user: ~/\.puppetlabs/etc/puppet\fR
 .IP "" 0
 .SS "config"
-The configuration file for the current puppet application\.
+The configuration file for the current OpenVox application\.
 .IP "\(bu" 4
 \fIDefault\fR: \fB$confdir/${config_file_name}\fR
 .IP "" 0
 .SS "config_file_name"
-The name of the puppet config file\.
+The name of the OpenVox config file\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBpuppet\.conf\fR
 .IP "" 0
 .SS "config_version"
 How to determine the configuration version\. By default, it will be the time that the configuration is parsed, but you can provide a shell script to override how the version is determined\. The output of this script will be added to every log message in the reports, allowing you to correlate changes on your hosts to the source version on the server\.
 .P
-Setting a global value for config_version in puppet\.conf is not allowed (but it can be overridden from the commandline)\. Please set a per\-environment value in environment\.conf instead\. For more info, see \fIhttps://puppet\.com/docs/puppet/latest/environments_about\.html\fR
-.SS "configprint"
-Prints the value of a specific configuration setting\. If the name of a setting is provided for this, then the value is printed and puppet exits\. Comma\-separate multiple values\. For a list of all values, specify 'all'\. This setting is deprecated, the 'puppet config' command replaces this functionality\.
+Setting a global value for config_version in puppet\.conf is not allowed (but it can be overridden from the commandline)\. Please set a per\-environment value in environment\.conf instead\. For more info, see \fIhttps://docs\.openvoxproject\.org/openvox/latest/environments_about\.html\fR
 .SS "crl_refresh_interval"
-How often the Puppet agent refreshes its local Certificate Revocation List (CRL)\. By default, the CRL is refreshed every 24 hours\. If a different interval is specified, the agent refreshes its CRL on the next Puppet agent run if the elapsed time since the CRL was last refreshed exceeds the specified interval\.
+How often the OpenVox agent refreshes its local Certificate Revocation List (CRL)\. By default, the CRL is refreshed every 24 hours\. If a different interval is specified, the agent refreshes its CRL on the next OpenVox agent run if the elapsed time since the CRL was last refreshed exceeds the specified interval\.
 .P
 In general, the interval should be greater than the \fBruninterval\fR value\. Setting the \fBcrl_refresh_interval\fR value to 0 or an equal or lesser value than \fBruninterval\fR causes the CRL to be refreshed on every run\.
 .P
@@ -264,7 +261,7 @@ If the agent downloads a new CRL, the agent will use it for subsequent network r
 \fIDefault\fR: \fB1d\fR
 .IP "" 0
 .SS "csr_attributes"
-An optional file containing custom attributes to add to certificate signing requests (CSRs)\. You should ensure that this file does not exist on your CA Puppet Server; if it does, unwanted certificate extensions may leak into certificates created with the \fBpuppetserver ca generate\fR command\.
+An optional file containing custom attributes to add to certificate signing requests (CSRs)\. You should ensure that this file does not exist on your CA OpenVox Server; if it does, unwanted certificate extensions may leak into certificates created with the \fBpuppetserver ca generate\fR command\.
 .P
 If present, this file must be a YAML hash containing a \fBcustom_attributes\fR key and/or an \fBextension_requests\fR key\. The value of each key must be a hash, where each key is a valid OID and each value is an object that can be cast to a string\.
 .P
@@ -280,7 +277,7 @@ Where the CA stores certificate requests\.
 \fIDefault\fR: \fB$cadir/requests\fR
 .IP "" 0
 .SS "daemonize"
-Whether to send the process into the background\. This defaults to true on POSIX systems, and to false on Windows (where Puppet currently cannot daemonize)\.
+Whether to send the process into the background\. This defaults to true on POSIX systems, and to false on Windows (where OpenVox currently cannot daemonize)\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBtrue\fR
 .IP "" 0
@@ -297,7 +294,7 @@ The default source for files if no server is given in a uri, e\.g\. puppet:///fi
 .SS "default_manifest"
 The default main manifest for directory environments\. Any environment that doesn't set the \fBmanifest\fR setting in its \fBenvironment\.conf\fR file will use this manifest\.
 .P
-This setting's value can be an absolute or relative path\. An absolute path will make all environments default to the same main manifest; a relative path will allow each environment to use its own manifest, and Puppet will resolve the path relative to each environment's main directory\.
+This setting's value can be an absolute or relative path\. An absolute path will make all environments default to the same main manifest; a relative path will allow each environment to use its own manifest, and OpenVox will resolve the path relative to each environment's main directory\.
 .P
 In either case, the path can point to a single file or to a directory of manifests to be evaluated in alphabetical order\.
 .IP "\(bu" 4
@@ -324,7 +321,7 @@ The root directory of devices' $vardir\.
 \fIDefault\fR: \fB$vardir/devices\fR
 .IP "" 0
 .SS "diff"
-Which diff command to use when printing differences between files\. This setting has no default value on Windows, as standard \fBdiff\fR is not available, but Puppet can use many third\-party diff tools\.
+Which diff command to use when printing differences between files\. This setting has no default value on Windows, as standard \fBdiff\fR is not available, but OpenVox can use many third\-party diff tools\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBdiff\fR
 .IP "" 0
@@ -339,21 +336,21 @@ Which digest algorithm to use for file resources and the filebucket\. Valid valu
 \fIDefault\fR: \fBsha256\fR
 .IP "" 0
 .SS "disable_i18n"
-If true, turns off all translations of Puppet and module log messages, which affects error, warning, and info log messages, as well as any translations in the report and CLI\.
+If true, turns off all translations of OpenVox and module log messages, which affects error, warning, and info log messages, as well as any translations in the report and CLI\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBtrue\fR
 .IP "" 0
 .SS "disable_per_environment_manifest"
-Whether to disallow an environment\-specific main manifest\. When set to \fBtrue\fR, Puppet will use the manifest specified in the \fBdefault_manifest\fR setting for all environments\. If an environment specifies a different main manifest in its \fBenvironment\.conf\fR file, catalog requests for that environment will fail with an error\.
+Whether to disallow an environment\-specific main manifest\. When set to \fBtrue\fR, OpenVox will use the manifest specified in the \fBdefault_manifest\fR setting for all environments\. If an environment specifies a different main manifest in its \fBenvironment\.conf\fR file, catalog requests for that environment will fail with an error\.
 .P
 This setting requires \fBdefault_manifest\fR to be set to an absolute path\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBfalse\fR
 .IP "" 0
 .SS "disable_warnings"
-A comma\-separated list of warning types to suppress\. If large numbers of warnings are making Puppet's logs too large or difficult to use, you can temporarily silence them with this setting\.
+A comma\-separated list of warning types to suppress\. If large numbers of warnings are making OpenVox's logs too large or difficult to use, you can temporarily silence them with this setting\.
 .P
-If you are preparing to upgrade Puppet to a new major version, you should re\-enable all warnings for a while\.
+If you are preparing to upgrade OpenVox to a new major version, you should re\-enable all warnings for a while\.
 .P
 Valid values for this setting are:
 .IP "\(bu" 4
@@ -366,26 +363,26 @@ Valid values for this setting are:
 \fIDefault\fR: \fB[]\fR
 .IP "" 0
 .SS "dns_alt_names"
-A comma\-separated list of alternate DNS names for Puppet Server\. These are extra hostnames (in addition to its \fBcertname\fR) that the server is allowed to use when serving agents\. Puppet checks this setting when automatically creating a certificate for Puppet agent or Puppet Server\. These can be either IP or DNS, and the type should be specified and followed with a colon\. Untyped inputs will default to DNS\.
+A comma\-separated list of alternate DNS names for OpenVox Server\. These are extra hostnames (in addition to its \fBcertname\fR) that the server is allowed to use when serving agents\. OpenVox checks this setting when automatically creating a certificate for the OpenVox agent or OpenVox Server\. These can be either IP or DNS, and the type should be specified and followed with a colon\. Untyped inputs will default to DNS\.
 .P
-In order to handle agent requests at a given hostname (like "puppet\.example\.com"), Puppet Server needs a certificate that proves it's allowed to use that name; if a server shows a certificate that doesn't include its hostname, Puppet agents will refuse to trust it\. If you use a single hostname for Puppet traffic but load\-balance it to multiple Puppet Servers, each of those servers needs to include the official hostname in its list of extra names\.
+In order to handle agent requests at a given hostname (like "puppet\.example\.com"), OpenVox Server needs a certificate that proves it's allowed to use that name; if a server shows a certificate that doesn't include its hostname, OpenVox agents will refuse to trust it\. If you use a single hostname for OpenVox traffic but load\-balance it to multiple OpenVox Servers, each of those servers needs to include the official hostname in its list of extra names\.
 .P
-\fBNote:\fR The list of alternate names is locked in when the server's certificate is signed\. If you need to change the list later, you can't just change this setting; you also need to regenerate the certificate\. For more information on that process, see the cert regen docs \fIhttps://puppet\.com/docs/puppet/latest/ssl_regenerate_certificates\.html\fR\.
+\fBNote:\fR The list of alternate names is locked in when the server's certificate is signed\. If you need to change the list later, you can't just change this setting; you also need to regenerate the certificate\. For more information on that process, see the cert regen docs \fIhttps://docs\.openvoxproject\.org/openvox/latest/ssl_regenerate_certificates\.html\fR\.
 .P
-To see all the alternate names your servers are using, log into your CA server and run \fBpuppetserver ca list \-\-all\fR, then check the output for \fB(alt names: \|\.\|\.\|\.)\fR\. Most agent nodes should NOT have alternate names; the only certs that should have them are Puppet Server nodes that you want other agents to trust\.
+To see all the alternate names your servers are using, log into your CA server and run \fBpuppetserver ca list \-\-all\fR, then check the output for \fB(alt names: \|\.\|\.\|\.)\fR\. Most agent nodes should NOT have alternate names; the only certs that should have them are OpenVox Server nodes that you want other agents to trust\.
 .SS "document_all"
 Whether to document all resources when using \fBpuppet doc\fR to generate manifest documentation\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBfalse\fR
 .IP "" 0
 .SS "environment"
-The environment in which Puppet is running\. For clients, such as \fBpuppet agent\fR, this determines the environment itself, which Puppet uses to find modules and much more\. For servers, such as \fBpuppet server\fR, this provides the default environment for nodes that Puppet knows nothing about\.
+The environment in which OpenVox is running\. For clients, such as \fBpuppet agent\fR, this determines the environment itself, which OpenVox uses to find modules and much more\. For servers, such as \fBpuppet server\fR, this provides the default environment for nodes that OpenVox knows nothing about\.
 .P
 When defining an environment in the \fB[agent]\fR section, this refers to the environment that the agent requests from the primary server\. The environment doesn't have to exist on the local filesystem because the agent fetches it from the primary server\. This definition is used when running \fBpuppet agent\fR\.
 .P
-When defined in the \fB[user]\fR section, the environment refers to the path that Puppet uses to search for code and modules related to its execution\. This requires the environment to exist locally on the filesystem where puppet is being executed\. Puppet subcommands, including \fBpuppet module\fR and \fBpuppet apply\fR, use this definition\.
+When defined in the \fB[user]\fR section, the environment refers to the path that OpenVox uses to search for code and modules related to its execution\. This requires the environment to exist locally on the filesystem where puppet is being executed\. OpenVox subcommands, including \fBpuppet module\fR and \fBpuppet apply\fR, use this definition\.
 .P
-Given that the context and effects vary depending on the config section \fIhttps://puppet\.com/docs/puppet/latest/config_file_main\.html#config\-sections\fR in which the \fBenvironment\fR setting is defined, do not set it globally\.
+Given that the context and effects vary depending on the config section \fIhttps://docs\.openvoxproject\.org/openvox/latest/config_file_main\.html#config\-sections\fR in which the \fBenvironment\fR setting is defined, do not set it globally\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBproduction\fR
 .IP "" 0
@@ -395,25 +392,25 @@ The name of a registered environment data provider used when obtaining environme
 \fIDefault\fR: ``
 .IP "" 0
 .SS "environment_timeout"
-How long the Puppet server should cache data it loads from an environment\.
+How long the OpenVox server should cache data it loads from an environment\.
 .P
-A value of \fB0\fR will disable caching\. This setting can also be set to \fBunlimited\fR, which will cache environments until the server is restarted or told to refresh the cache\. All other values will result in Puppet server evicting environments that haven't been used within the last \fBenvironment_timeout\fR seconds\.
+A value of \fB0\fR will disable caching\. This setting can also be set to \fBunlimited\fR, which will cache environments until the server is restarted or told to refresh the cache\. All other values will result in the OpenVox server evicting environments that haven't been used within the last \fBenvironment_timeout\fR seconds\.
 .P
-You should change this setting once your Puppet deployment is doing non\-trivial work\. We chose the default value of \fB0\fR because it lets new users update their code without any extra steps, but it lowers the performance of your Puppet server\. We recommend either:
+You should change this setting once your OpenVox deployment is doing non\-trivial work\. We chose the default value of \fB0\fR because it lets new users update their code without any extra steps, but it lowers the performance of your OpenVox server\. We recommend either:
 .IP "\(bu" 4
-Setting this to \fBunlimited\fR and explicitly refreshing your Puppet server as part of your code deployment process\.
+Setting this to \fBunlimited\fR and explicitly refreshing your OpenVox server as part of your code deployment process\.
 .IP "\(bu" 4
 Setting this to a number that will keep your most actively used environments cached, but allow testing environments to fall out of the cache and reduce memory usage\. A value of 3 minutes (3m) is a reasonable value\.
 .IP "" 0
 .P
-Once you set \fBenvironment_timeout\fR to a non\-zero value, you need to tell Puppet server to read new code from disk using the \fBenvironment\-cache\fR API endpoint after you deploy new code\. See the docs for the Puppet Server administrative API \fIhttps://puppet\.com/docs/puppetserver/latest/admin\-api/v1/environment\-cache\.html\fR\.
+Once you set \fBenvironment_timeout\fR to a non\-zero value, you need to tell the OpenVox server to read new code from disk using the \fBenvironment\-cache\fR API endpoint after you deploy new code\. See the docs for the OpenVox Server administrative API \fIhttps://docs\.openvoxproject\.org/openvox\-server/latest/admin\-api/v1/environment\-cache\.html\fR\.
 .IP "\(bu" 4
 \fIDefault\fR: \fB0\fR
 .IP "" 0
 .SS "environmentpath"
 A search path for directory environments, as a list of directories separated by the system path separator character\. (The POSIX path separator is ':', and the Windows path separator is ';'\.)
 .P
-This setting must have a value set to enable \fBdirectory environments\.\fR The recommended value is \fB$codedir/environments\fR\. For more details, see \fIhttps://puppet\.com/docs/puppet/latest/environments_about\.html\fR
+This setting must have a value set to enable \fBdirectory environments\.\fR The recommended value is \fB$codedir/environments\fR\. For more details, see \fIhttps://docs\.openvoxproject\.org/openvox/latest/environments_about\.html\fR
 .IP "\(bu" 4
 \fIDefault\fR: \fB$codedir/environments\fR
 .IP "" 0
@@ -428,7 +425,7 @@ Specifies how unchanged resources are listed in reports\. When set to \fBtrue\fR
 \fIDefault\fR: \fBtrue\fR
 .IP "" 0
 .SS "external_nodes"
-The external node classifier (ENC) script to use for node data\. Puppet combines this data with the main manifest to produce node catalogs\.
+The external node classifier (ENC) script to use for node data\. OpenVox combines this data with the main manifest to produce node catalogs\.
 .P
 To enable this setting, set the \fBnode_terminus\fR setting to \fBexec\fR\.
 .P
@@ -451,7 +448,7 @@ For unknown nodes, exit with a non\-zero exit code\.
 .P
 Generally, an ENC script makes requests to an external data source\.
 .P
-For more info, see the ENC documentation \fIhttps://puppet\.com/docs/puppet/latest/nodes_external\.html\fR\.
+For more info, see the ENC documentation \fIhttps://docs\.openvoxproject\.org/openvox/latest/nodes_external\.html\fR\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBnone\fR
 .IP "" 0
@@ -466,7 +463,7 @@ The soft limit for the length of a fact value\.
 \fIDefault\fR: \fB4096\fR
 .IP "" 0
 .SS "factpath"
-Where Puppet should look for facts\. Multiple directories should be separated by the system path separator character\. (The POSIX path separator is ':', and the Windows path separator is ';'\.)
+Where OpenVox should look for facts\. Multiple directories should be separated by the system path separator character\. (The POSIX path separator is ':', and the Windows path separator is ';'\.)
 .IP "\(bu" 4
 \fIDefault\fR: \fB$vardir/lib/facter:$vardir/facts\fR
 .IP "" 0
@@ -481,7 +478,7 @@ Where the fileserver configuration is stored\.
 \fIDefault\fR: \fB$confdir/fileserver\.conf\fR
 .IP "" 0
 .SS "filetimeout"
-The minimum time to wait between checking for updates in configuration files\. This timeout determines how quickly Puppet checks whether a file (such as manifests or puppet\.conf) has changed on disk\. The default will change in a future release to be 'unlimited', requiring a reload of the Puppet service to pick up changes to its internal configuration\. Currently we do not accept a value of 'unlimited'\. To reparse files within an environment in Puppet Server please use the environment_cache endpoint
+The minimum time to wait between checking for updates in configuration files\. This timeout determines how quickly OpenVox checks whether a file (such as manifests or puppet\.conf) has changed on disk\. To reparse files within an environment in OpenVox Server please use the environment_cache endpoint
 .IP "\(bu" 4
 \fIDefault\fR: \fB15s\fR
 .IP "" 0
@@ -496,7 +493,7 @@ Freezes the 'main' class, disallowing any code to be added to it\. This essentia
 \fIDefault\fR: \fBfalse\fR
 .IP "" 0
 .SS "genconfig"
-When true, causes Puppet applications to print an example config file to stdout and exit\. The example will include descriptions of each setting, and the current (or default) value of each setting, incorporating any settings overridden on the CLI (with the exception of \fBgenconfig\fR itself)\. This setting only makes sense when specified on the command line as \fB\-\-genconfig\fR\.
+When true, causes OpenVox applications to print an example config file to stdout and exit\. The example will include descriptions of each setting, and the current (or default) value of each setting, incorporating any settings overridden on the CLI (with the exception of \fBgenconfig\fR itself)\. This setting only makes sense when specified on the command line as \fB\-\-genconfig\fR\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBfalse\fR
 .IP "" 0
@@ -506,11 +503,11 @@ Whether to just print a manifest to stdout and exit\. Only makes sense when spec
 \fIDefault\fR: \fBfalse\fR
 .IP "" 0
 .SS "graph"
-Whether to create \.dot graph files, which let you visualize the dependency and containment relationships in Puppet's catalog\. You can load and view these files with tools like OmniGraffle \fIhttp://www\.omnigroup\.com/applications/omnigraffle/\fR (OS X) or graphviz \fIhttp://www\.graphviz\.org/\fR (multi\-platform)\.
+Whether to create \.dot graph files, which let you visualize the dependency and containment relationships in OpenVox's catalog\. You can load and view these files with tools like OmniGraffle \fIhttp://www\.omnigroup\.com/applications/omnigraffle/\fR (OS X) or graphviz \fIhttp://www\.graphviz\.org/\fR (multi\-platform)\.
 .P
 Graph files are created when \fIapplying\fR a catalog, so this setting should be used on nodes running \fBpuppet agent\fR or \fBpuppet apply\fR\.
 .P
-The \fBgraphdir\fR setting determines where Puppet will save graphs\. Note that we don't save graphs for historical runs; Puppet will replace the previous \.dot files with new ones every time it applies a catalog\.
+The \fBgraphdir\fR setting determines where OpenVox will save graphs\. Note that we don't save graphs for historical runs; OpenVox will replace the previous \.dot files with new ones every time it applies a catalog\.
 .P
 See your graphing software's documentation for details on opening \.dot files\. If you're using GraphViz's \fBdot\fR command, you can do a quick PNG render with \fBdot \-Tpng <DOT FILE> \-o <OUTPUT FILE>\fR\.
 .IP "\(bu" 4
@@ -522,14 +519,14 @@ Where to save \.dot\-format graphs (when the \fBgraph\fR setting is enabled)\.
 \fIDefault\fR: \fB$statedir/graphs\fR
 .IP "" 0
 .SS "group"
-The group Puppet Server will run as\. Used to ensure the agent side processes (agent, apply, etc) create files and directories readable by Puppet Server when necessary\.
+The group OpenVox Server will run as\. Used to ensure the agent side processes (agent, apply, etc) create files and directories readable by OpenVox Server when necessary\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBpuppet\fR
 .IP "" 0
 .SS "hiera_config"
-The hiera configuration file\. Puppet only reads this file on startup, so you must restart the puppet server every time you edit it\.
+The hiera configuration file\. OpenVox only reads this file on startup, so you must restart the OpenVox server every time you edit it\.
 .IP "\(bu" 4
-\fIDefault\fR: \fB$confdir/hiera\.yaml\. However, for backwards compatibility, if a file exists at $codedir/hiera\.yaml, Puppet uses that instead\.\fR
+\fIDefault\fR: \fB$confdir/hiera\.yaml\. However, for backwards compatibility, if a file exists at $codedir/hiera\.yaml, OpenVox uses that instead\.\fR
 .IP "" 0
 .SS "hostcert"
 Where individual hosts store and look for their certificates\.
@@ -537,7 +534,7 @@ Where individual hosts store and look for their certificates\.
 \fIDefault\fR: \fB$certdir/$certname\.pem\fR
 .IP "" 0
 .SS "hostcert_renewal_interval"
-How often the Puppet agent renews its client certificate\. By default, the client certificate is renewed 30 days before the certificate expires\. If a different interval is specified, the agent renews its client certificate during the next agent run, assuming that the client certificate has expired within the specified duration\.
+How often the OpenVox agent renews its client certificate\. By default, the client certificate is renewed 30 days before the certificate expires\. If a different interval is specified, the agent renews its client certificate during the next agent run, assuming that the client certificate has expired within the specified duration\.
 .P
 In general, the \fBhostcert_renewal_interval\fR value should be greater than the \fBruninterval\fR value\. Setting the \fBhostcert_renewal_interval\fR value to 0 disables automatic renewal\.
 .P
@@ -618,7 +615,7 @@ The HTTP User\-Agent string to send when making network requests\.
 \fIDefault\fR: \fBPuppet/<version> Ruby/<version> (<architecture>)\fR
 .IP "" 0
 .SS "ignore_plugin_errors"
-Whether the puppet run should ignore errors during pluginsync\. If the setting is false and there are errors during pluginsync, then the agent will abort the run and submit a report containing information about the failed run\.
+Whether the OpenVox run should ignore errors during pluginsync\. If the setting is false and there are errors during pluginsync, then the agent will abort the run and submit a report containing information about the failed run\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBfalse\fR
 .IP "" 0
@@ -653,7 +650,7 @@ Where puppet agent stores the last run report summary in yaml format\.
 \fIDefault\fR: \fB$publicdir/last_run_summary\.yaml\fR
 .IP "" 0
 .SS "lastrunreport"
-Where Puppet Agent stores the last run report, by default, in yaml format\. The format of the report can be changed by setting the \fBcache\fR key of the \fBreport\fR terminus in the routes\.yaml \fIhttps://puppet\.com/docs/puppet/latest/config_file_routes\.html\fR file\. To avoid mismatches between content and file extension, this setting needs to be manually updated to reflect the terminus changes\.
+Where the OpenVox agent stores the last run report, by default, in yaml format\. The format of the report can be changed by setting the \fBcache\fR key of the \fBreport\fR terminus in the routes\.yaml \fIhttps://docs\.openvoxproject\.org/openvox/latest/config_file_routes\.html\fR file\. To avoid mismatches between content and file extension, this setting needs to be manually updated to reflect the terminus changes\.
 .IP "\(bu" 4
 \fIDefault\fR: \fB$statedir/last_run_report\.yaml\fR
 .IP "" 0
@@ -709,7 +706,7 @@ Whether TLS should be used when searching for nodes\. Defaults to false because 
 .SS "ldapuser"
 The user to use to connect to LDAP\. Must be specified as a full DN\.
 .SS "libdir"
-An extra search path for Puppet\. This is only useful for those files that Puppet will load on demand, and is only guaranteed to work for those cases\. In fact, the autoload mechanism is responsible for making sure this directory is in Ruby's search path
+An extra search path for OpenVox\. This is only useful for those files that OpenVox will load on demand, and is only guaranteed to work for those cases\. In fact, the autoload mechanism is responsible for making sure this directory is in Ruby's search path
 .IP "\(bu" 4
 \fIDefault\fR: \fB$vardir/lib\fR
 .IP "" 0
@@ -719,22 +716,22 @@ Where each client stores the CA certificate\.
 \fIDefault\fR: \fB$certdir/ca\.pem\fR
 .IP "" 0
 .SS "localedest"
-Where Puppet should store translation files that it pulls down from the central server\.
+Where OpenVox should store translation files that it pulls down from the central server\.
 .IP "\(bu" 4
 \fIDefault\fR: \fB$vardir/locales\fR
 .IP "" 0
 .SS "localesource"
-From where to retrieve translation files\. The standard Puppet \fBfile\fR type is used for retrieval, so anything that is a valid file source can be used here\.
+From where to retrieve translation files\. The standard OpenVox \fBfile\fR type is used for retrieval, so anything that is a valid file source can be used here\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBpuppet:///locales\fR
 .IP "" 0
 .SS "location_trusted"
-This will allow sending the name + password and the cookie header to all hosts that puppet may redirect to\. This may or may not introduce a security breach if puppet redirects you to a site to which you'll send your authentication info and cookies\.
+This will allow sending the name + password and the cookie header to all hosts that OpenVox may redirect to\. This may or may not introduce a security breach if OpenVox redirects you to a site to which you'll send your authentication info and cookies\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBfalse\fR
 .IP "" 0
 .SS "log_level"
-Default logging level for messages from Puppet\. Allowed values are:
+Default logging level for messages from OpenVox\. Allowed values are:
 .IP "\(bu" 4
 debug
 .IP "\(bu" 4
@@ -765,19 +762,19 @@ The directory in which to store log files
 \fIDefault\fR: \fBUnix/Linux: /var/log/puppetlabs/puppet \-\- Windows: C:\eProgramData\ePuppetLabs\epuppet\evar\elog \-\- Non\-root user: ~/\.puppetlabs/var/log\fR
 .IP "" 0
 .SS "manage_internal_file_permissions"
-Whether Puppet should manage the owner, group, and mode of files it uses internally\. \fBNote\fR: For Windows agents, the default is \fBfalse\fR for versions 4\.10\.13 and greater, versions 5\.5\.6 and greater, and versions 6\.0 and greater\.
+Whether OpenVox should manage the owner, group, and mode of files it uses internally\. \fBNote\fR: For Windows agents, the default is \fBfalse\fR for versions 4\.10\.13 and greater, versions 5\.5\.6 and greater, and versions 6\.0 and greater\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBtrue\fR
 .IP "" 0
 .SS "manifest"
-The entry\-point manifest for the primary server\. This can be one file or a directory of manifests to be evaluated in alphabetical order\. Puppet manages this path as a directory if one exists or if the path ends with a / or \.
+The entry\-point manifest for the primary server\. This can be one file or a directory of manifests to be evaluated in alphabetical order\. OpenVox manages this path as a directory if one exists or if the path ends with a / or \.
 .P
-Setting a global value for \fBmanifest\fR in puppet\.conf is not allowed (but it can be overridden from the commandline)\. Please use directory environments instead\. If you need to use something other than the environment's \fBmanifests\fR directory as the main manifest, you can set \fBmanifest\fR in environment\.conf\. For more info, see \fIhttps://puppet\.com/docs/puppet/latest/environments_about\.html\fR
+Setting a global value for \fBmanifest\fR in puppet\.conf is not allowed (but it can be overridden from the commandline)\. Please use directory environments instead\. If you need to use something other than the environment's \fBmanifests\fR directory as the main manifest, you can set \fBmanifest\fR in environment\.conf\. For more info, see \fIhttps://docs\.openvoxproject\.org/openvox/latest/environments_about\.html\fR
 .IP "\(bu" 4
 \fIDefault\fR: ``
 .IP "" 0
 .SS "masterport"
-The default port puppet subcommands use to communicate with Puppet Server\. (eg \fBpuppet facts upload\fR, \fBpuppet agent\fR)\. May be overridden by more specific settings (see \fBca_port\fR, \fBreport_port\fR)\.
+The default port puppet subcommands use to communicate with OpenVox Server\. (eg \fBpuppet facts upload\fR, \fBpuppet agent\fR)\. May be overridden by more specific settings (see \fBca_port\fR, \fBreport_port\fR)\.
 .IP "\(bu" 4
 \fIDefault\fR: \fB8140\fR
 .IP "" 0
@@ -802,7 +799,7 @@ The maximum allowed UID\. Some platforms use negative UIDs but then ship with to
 \fIDefault\fR: \fB4294967290\fR
 .IP "" 0
 .SS "maxwaitforcert"
-The maximum amount of time the Puppet agent should wait for its certificate request to be signed\. A value of \fBunlimited\fR will cause puppet agent to ask for a signed certificate indefinitely\. This setting can be a time interval in seconds (30 or 30s), minutes (30m), hours (6h), days (2d), or years (5y)\.
+The maximum amount of time the OpenVox agent should wait for its certificate request to be signed\. A value of \fBunlimited\fR will cause puppet agent to ask for a signed certificate indefinitely\. This setting can be a time interval in seconds (30 or 30s), minutes (30m), hours (6h), days (2d), or years (5y)\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBunlimited\fR
 .IP "" 0
@@ -843,7 +840,7 @@ The directory into which module tool data is stored
 .SS "modulepath"
 The search path for modules, as a list of directories separated by the system path separator character\. (The POSIX path separator is ':', and the Windows path separator is ';'\.)
 .P
-Setting a global value for \fBmodulepath\fR in puppet\.conf is not allowed (but it can be overridden from the commandline)\. Please use directory environments instead\. If you need to use something other than the default modulepath of \fB<ACTIVE ENVIRONMENT'S MODULES DIR>:$basemodulepath\fR, you can set \fBmodulepath\fR in environment\.conf\. For more info, see \fIhttps://puppet\.com/docs/puppet/latest/environments_about\.html\fR
+Setting a global value for \fBmodulepath\fR in puppet\.conf is not allowed (but it can be overridden from the commandline)\. Please use directory environments instead\. If you need to use something other than the default modulepath of \fB<ACTIVE ENVIRONMENT'S MODULES DIR>:$basemodulepath\fR, you can set \fBmodulepath\fR in environment\.conf\. For more info, see \fIhttps://docs\.openvoxproject\.org/openvox/latest/environments_about\.html\fR
 .SS "name"
 The name of the application, if we are running as one\. The default is essentially $0 without the path or \fB\.rb\fR\.
 .IP "\(bu" 4
@@ -865,20 +862,20 @@ How to store cached nodes\. Valid values are (none), 'json', 'msgpack', or 'yaml
 \fIDefault\fR: ``
 .IP "" 0
 .SS "node_name_fact"
-The fact name used to determine the node name used for all requests the agent makes to the primary server\. WARNING: This setting is mutually exclusive with node_name_value\. Changing this setting also requires changes to Puppet Server's default auth\.conf \fIhttps://puppet\.com/docs/puppetserver/latest/config_file_auth\.html\fR\.
+The fact name used to determine the node name used for all requests the agent makes to the primary server\. WARNING: This setting is mutually exclusive with node_name_value\. Changing this setting also requires changes to OpenVox Server's default auth\.conf \fIhttps://docs\.openvoxproject\.org/openvox\-server/latest/config_file_auth\.html\fR\.
 .SS "node_name_value"
-The explicit value used for the node name for all requests the agent makes to the primary server\. WARNING: This setting is mutually exclusive with node_name_fact\. Changing this setting also requires changes to Puppet Server's default auth\.conf \fIhttps://puppet\.com/docs/puppetserver/latest/config_file_auth\.html\fR\.
+The explicit value used for the node name for all requests the agent makes to the primary server\. WARNING: This setting is mutually exclusive with node_name_fact\. Changing this setting also requires changes to OpenVox Server's default auth\.conf \fIhttps://docs\.openvoxproject\.org/openvox\-server/latest/config_file_auth\.html\fR\.
 .IP "\(bu" 4
 \fIDefault\fR: \fB$certname\fR
 .IP "" 0
 .SS "node_terminus"
 Which node data plugin to use when compiling node catalogs\.
 .P
-When Puppet compiles a catalog, it combines two primary sources of info: the main manifest, and a node data plugin (often called a "node terminus," for historical reasons)\. Node data plugins provide three things for a given node name:
+When OpenVox compiles a catalog, it combines two primary sources of info: the main manifest, and a node data plugin (often called a "node terminus," for historical reasons)\. Node data plugins provide three things for a given node name:
 .IP "1." 4
 A list of classes to add to that node's catalog (and, optionally, values for their parameters)\.
 .IP "2." 4
-Which Puppet environment the node should use\.
+Which environment the node should use\.
 .IP "3." 4
 A list of additional top\-scope variables to set\.
 .IP "" 0
@@ -887,18 +884,16 @@ The three main node data plugins are:
 .IP "\(bu" 4
 \fBplain\fR \-\- Returns no data, so that the main manifest controls all node configuration\.
 .IP "\(bu" 4
-\fBexec\fR \-\- Uses an external node classifier (ENC) \fIhttps://puppet\.com/docs/puppet/latest/nodes_external\.html\fR, configured by the \fBexternal_nodes\fR setting\. This lets you pull a list of Puppet classes from any external system, using a small glue script to perform the request and format the result as YAML\.
-.IP "\(bu" 4
-\fBclassifier\fR (formerly \fBconsole\fR) \-\- Specific to Puppet Enterprise\. Uses the PE console for node data\."
+\fBexec\fR \-\- Uses an external node classifier (ENC) \fIhttps://docs\.openvoxproject\.org/openvox/latest/nodes_external\.html\fR, configured by the \fBexternal_nodes\fR setting\. This lets you pull a list of Puppet classes from any external system, using a small glue script to perform the request and format the result as YAML\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBplain\fR
 .IP "" 0
 .SS "noop"
-Whether to apply catalogs in noop mode, which allows Puppet to partially simulate a normal run\. This setting affects puppet agent and puppet apply\.
+Whether to apply catalogs in noop mode, which allows OpenVox to partially simulate a normal run\. This setting affects puppet agent and puppet apply\.
 .P
-When running in noop mode, Puppet will check whether each resource is in sync, like it does when running normally\. However, if a resource attribute is not in the desired state (as declared in the catalog), Puppet will take no action, and will instead report the changes it \fIwould\fR have made\. These simulated changes will appear in the report sent to the primary Puppet server, or be shown on the console if running puppet agent or puppet apply in the foreground\. The simulated changes will not send refresh events to any subscribing or notified resources, although Puppet will log that a refresh event \fIwould\fR have been sent\.
+When running in noop mode, OpenVox will check whether each resource is in sync, like it does when running normally\. However, if a resource attribute is not in the desired state (as declared in the catalog), OpenVox will take no action, and will instead report the changes it \fIwould\fR have made\. These simulated changes will appear in the report sent to the primary OpenVox server, or be shown on the console if running puppet agent or puppet apply in the foreground\. The simulated changes will not send refresh events to any subscribing or notified resources, although OpenVox will log that a refresh event \fIwould\fR have been sent\.
 .P
-\fBImportant note:\fR The \fBnoop\fR metaparameter \fIhttps://puppet\.com/docs/puppet/latest/metaparameter\.html#noop\fR allows you to apply individual resources in noop mode, and will override the global value of the \fBnoop\fR setting\. This means a resource with \fBnoop => false\fR \fIwill\fR be changed if necessary, even when running puppet agent with \fBnoop = true\fR or \fB\-\-noop\fR\. (Conversely, a resource with \fBnoop => true\fR will only be simulated, even when noop mode is globally disabled\.)
+\fBImportant note:\fR The \fBnoop\fR metaparameter \fIhttps://docs\.openvoxproject\.org/openvox/latest/metaparameter\.html#noop\fR allows you to apply individual resources in noop mode, and will override the global value of the \fBnoop\fR setting\. This means a resource with \fBnoop => false\fR \fIwill\fR be changed if necessary, even when running puppet agent with \fBnoop = true\fR or \fB\-\-noop\fR\. (Conversely, a resource with \fBnoop => true\fR will only be simulated, even when noop mode is globally disabled\.)
 .IP "\(bu" 4
 \fIDefault\fR: \fBfalse\fR
 .IP "" 0
@@ -930,17 +925,17 @@ The soft limit for the size of the payload\.
 \fIDefault\fR: \fB16777216\fR
 .IP "" 0
 .SS "pidfile"
-The file containing the PID of a running process\. This file is intended to be used by service management frameworks and monitoring systems to determine if a puppet process is still in the process table\.
+The file containing the PID of a running process\. This file is intended to be used by service management frameworks and monitoring systems to determine if an OpenVox process is still in the process table\.
 .IP "\(bu" 4
 \fIDefault\fR: \fB$rundir/${run_mode}\.pid\fR
 .IP "" 0
 .SS "plugindest"
-Where Puppet should store plugins that it pulls down from the central server\.
+Where OpenVox should store plugins that it pulls down from the central server\.
 .IP "\(bu" 4
 \fIDefault\fR: \fB$libdir\fR
 .IP "" 0
 .SS "pluginfactdest"
-Where Puppet should store external facts that are being handled by pluginsync
+Where OpenVox should store external facts that are being handled by pluginsync
 .IP "\(bu" 4
 \fIDefault\fR: \fB$vardir/facts\.d\fR
 .IP "" 0
@@ -955,36 +950,31 @@ What files to ignore when pulling down plugins\.
 \fIDefault\fR: \fB\.svn CVS \.git \.hg\fR
 .IP "" 0
 .SS "pluginsource"
-From where to retrieve plugins\. The standard Puppet \fBfile\fR type is used for retrieval, so anything that is a valid file source can be used here\.
+From where to retrieve plugins\. The standard OpenVox \fBfile\fR type is used for retrieval, so anything that is a valid file source can be used here\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBpuppet:///plugins\fR
 .IP "" 0
-.SS "pluginsync"
-Whether plugins should be synced with the central server\. This setting is deprecated\.
-.IP "\(bu" 4
-\fIDefault\fR: \fBtrue\fR
-.IP "" 0
 .SS "postrun_command"
-A command to run after every agent run\. If this command returns a non\-zero return code, the entire Puppet run will be considered to have failed, even though it might have performed work during the normal run\.
+A command to run after every agent run\. If this command returns a non\-zero return code, the entire OpenVox run will be considered to have failed, even though it might have performed work during the normal run\.
 .SS "preferred_serialization_format"
 The preferred means of serializing ruby instances for passing over the wire\. This won't guarantee that all instances will be serialized using this method, since not all classes can be guaranteed to support this format, but it will be used for all classes that support it\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBjson\fR
 .IP "" 0
 .SS "preprocess_deferred"
-Whether Puppet should call deferred functions before applying the catalog\. If set to \fBtrue\fR, all prerequisites required for the deferred function must be satisfied before the Puppet run\. If set to \fBfalse\fR, deferred functions follow Puppet relationships and ordering\. In this way, Puppet can install the prerequisites required for a deferred function and call the deferred function in the same run\.
+Whether OpenVox should call deferred functions before applying the catalog\. If set to \fBtrue\fR, all prerequisites required for the deferred function must be satisfied before the OpenVox run\. If set to \fBfalse\fR, deferred functions follow OpenVox relationships and ordering\. In this way, OpenVox can install the prerequisites required for a deferred function and call the deferred function in the same run\. Please note that many functions that return complex datatypes will fail when disabling preprocessing and this option may be removed in the future\.
 .IP "\(bu" 4
-\fIDefault\fR: \fBfalse\fR
+\fIDefault\fR: \fBtrue\fR
 .IP "" 0
 .SS "prerun_command"
-A command to run before every agent run\. If this command returns a non\-zero return code, the entire Puppet run will fail\.
+A command to run before every agent run\. If this command returns a non\-zero return code, the entire OpenVox run will fail\.
 .SS "preview_outputdir"
 The directory where catalog previews per node are generated\.
 .IP "\(bu" 4
 \fIDefault\fR: \fB$vardir/preview\fR
 .IP "" 0
 .SS "priority"
-The scheduling priority of the process\. Valid values are 'high', 'normal', 'low', or 'idle', which are mapped to platform\-specific values\. The priority can also be specified as an integer value and will be passed as is, e\.g\. \-5\. Puppet must be running as a privileged user in order to increase scheduling priority\.
+The scheduling priority of the process\. Valid values are 'high', 'normal', 'low', or 'idle', which are mapped to platform\-specific values\. The priority can also be specified as an integer value and will be passed as is, e\.g\. \-5\. OpenVox must be running as a privileged user in order to increase scheduling priority\.
 .IP "\(bu" 4
 \fIDefault\fR: ``
 .IP "" 0
@@ -1004,7 +994,7 @@ Whether to enable experimental performance profiling
 \fIDefault\fR: \fBfalse\fR
 .IP "" 0
 .SS "publicdir"
-Where Puppet stores public files\.
+Where OpenVox stores public files\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBUnix/Linux: /opt/puppetlabs/puppet/public \-\- Windows: C:\eProgramData\ePuppetLabs\epuppet\epublic \-\- Non\-root user: ~/\.puppetlabs/opt/puppet/public\fR
 .IP "" 0
@@ -1019,11 +1009,11 @@ Whether to print the Puppet stack trace on some errors\. This is a noop if \fBtr
 \fIDefault\fR: \fBfalse\fR
 .IP "" 0
 .SS "puppetdlog"
-The fallback log file\. This is only used when the \fB\-\-logdest\fR option is not specified AND Puppet is running on an operating system where both the POSIX syslog service and the Windows Event Log are unavailable\. (Currently, no supported operating systems match that description\.)
+The fallback log file\. This is only used when the \fB\-\-logdest\fR option is not specified AND OpenVox is running on an operating system where both the POSIX syslog service and the Windows Event Log are unavailable\. (Currently, no supported operating systems match that description\.)
 .P
 Despite the name, both puppet agent and puppet server will use this file as the fallback logging destination\.
 .P
-For control over logging destinations, see the \fB\-\-logdest\fR command line option in the manual pages for puppet server, puppet agent, and puppet apply\. You can see man pages by running \fBpuppet <SUBCOMMAND> \-\-help\fR, or read them online at https://puppet\.com/docs/puppet/latest/man/\.
+For control over logging destinations, see the \fB\-\-logdest\fR command line option in the manual pages for puppet server, puppet agent, and puppet apply\. You can see man pages by running \fBpuppet <SUBCOMMAND> \-\-help\fR, or read them online at https://docs\.openvoxproject\.org/openvox/latest/man/\.
 .IP "\(bu" 4
 \fIDefault\fR: \fB$logdir/puppetd\.log\fR
 .IP "" 0
@@ -1033,14 +1023,14 @@ Whether to send reports after every transaction\.
 \fIDefault\fR: \fBtrue\fR
 .IP "" 0
 .SS "report_configured_environmentpath"
-Specifies how environment paths are reported\. When the value of \fBversioned_environment_dirs\fR is \fBtrue\fR, Puppet applies the readlink function to the \fBenvironmentpath\fR setting when constructing the environment's modulepath\. The full readlinked path is referred to as the "resolved path," and the configured path potentially containing symlinks is the "configured path\." When reporting where resources come from, users may choose between the configured and resolved path\.
+Specifies how environment paths are reported\. When the value of \fBversioned_environment_dirs\fR is \fBtrue\fR, OpenVox applies the readlink function to the \fBenvironmentpath\fR setting when constructing the environment's modulepath\. The full readlinked path is referred to as the "resolved path," and the configured path potentially containing symlinks is the "configured path\." When reporting where resources come from, users may choose between the configured and resolved path\.
 .P
 When set to \fBfalse\fR, the resolved paths are reported instead of the configured paths\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBtrue\fR
 .IP "" 0
 .SS "report_include_system_store"
-Whether the 'http' report processor should include the system certificate store when submitting reports to HTTPS URLs\. If false, then the 'http' processor will only trust HTTPS report servers whose certificates are issued by the puppet CA or one of its intermediate CAs\. If true, the processor will additionally trust CA certificates in the system's certificate store\.
+Whether the 'http' report processor should include the system certificate store when submitting reports to HTTPS URLs\. If false, then the 'http' processor will only trust HTTPS report servers whose certificates are issued by the OpenVox CA or one of its intermediate CAs\. If true, the processor will additionally trust CA certificates in the system's certificate store\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBfalse\fR
 .IP "" 0
@@ -1062,7 +1052,7 @@ The directory in which to store reports\. Each node gets a separate subdirectory
 .SS "reports"
 The list of report handlers to use\. When using multiple report handlers, their names should be comma\-separated, with whitespace allowed\. (For example, \fBreports = http, store\fR\.)
 .P
-This setting is relevant to puppet server and puppet apply\. The primary Puppet server will call these report handlers with the reports it receives from agent nodes, and puppet apply will call them with its own report\. (In all cases, the node applying the catalog must have \fBreport = true\fR\.)
+This setting is relevant to puppet server and puppet apply\. The primary OpenVox server will call these report handlers with the reports it receives from agent nodes, and puppet apply will call them with its own report\. (In all cases, the node applying the catalog must have \fBreport = true\fR\.)
 .P
 See the report reference for information on the built\-in report handlers; custom report handlers can also be loaded from modules\. (Report handlers are loaded from the lib directory, at \fBpuppet/reports/NAME\.rb\fR\.)
 .P
@@ -1086,7 +1076,7 @@ The file in which puppet agent stores a list of the resources associated with th
 \fIDefault\fR: \fB$statedir/resources\.txt\fR
 .IP "" 0
 .SS "resubmit_facts"
-Whether to send updated facts after every transaction\. By default puppet only submits facts at the beginning of the transaction before applying a catalog\. Since puppet can modify the state of the system, the value of the facts may change after puppet finishes\. Therefore, any facts stored in puppetdb may not be consistent until the agent next runs, typically in 30 minutes\. If this feature is enabled, puppet will resubmit facts after applying its catalog, ensuring facts for the node stored in puppetdb are current\. However, this will double the fact submission load on puppetdb, so it is disabled by default\.
+Whether to send updated facts after every transaction\. By default OpenVox only submits facts at the beginning of the transaction before applying a catalog\. Since OpenVox can modify the state of the system, the value of the facts may change after OpenVox finishes\. Therefore, any facts stored in OpenVoxDB may not be consistent until the agent next runs, typically in 30 minutes\. If this feature is enabled, OpenVox will resubmit facts after applying its catalog, ensuring facts for the node stored in OpenVoxDB are current\. However, this will double the fact submission load on OpenVoxDB, so it is disabled by default\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBfalse\fR
 .IP "" 0
@@ -1101,7 +1091,7 @@ The YAML file containing indirector route configuration\.
 \fIDefault\fR: \fB$confdir/routes\.yaml\fR
 .IP "" 0
 .SS "rundir"
-Where Puppet PID files are kept\.
+Where OpenVox PID files are kept\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBUnix/Linux: /var/run/puppetlabs \-\- Windows: C:\eProgramData\ePuppetLabs\epuppet\evar\erun \-\- Non\-root user: ~/\.puppetlabs/var/run\fR
 .IP "" 0
@@ -1111,7 +1101,7 @@ How often puppet agent applies the catalog\. Note that a runinterval of 0 means 
 \fIDefault\fR: \fB30m\fR
 .IP "" 0
 .SS "runtimeout"
-The maximum amount of time an agent run is allowed to take\. A Puppet agent run that exceeds this timeout will be aborted\. A value of 0 disables the timeout\. Defaults to 1 hour\. This setting can be a time interval in seconds (30 or 30s), minutes (30m), hours (6h), days (2d), or years (5y)\.
+The maximum amount of time an agent run is allowed to take\. An OpenVox agent run that exceeds this timeout will be aborted\. A value of 0 disables the timeout\. Defaults to 1 hour\. This setting can be a time interval in seconds (30 or 30s), minutes (30m), hours (6h), days (2d), or years (5y)\.
 .IP "\(bu" 4
 \fIDefault\fR: \fB1h\fR
 .IP "" 0
@@ -1121,7 +1111,7 @@ Where the serial number for certificates is stored\.
 \fIDefault\fR: \fB$cadir/serial\fR
 .IP "" 0
 .SS "server"
-The primary Puppet server to which the Puppet agent should connect\.
+The primary OpenVox server to which the OpenVox agent should connect\. This setting is ignored when \fBserver_list\fR is specified\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBpuppet\fR
 .IP "" 0
@@ -1131,12 +1121,12 @@ The directory in which serialized data is stored, usually in a subdirectory\.
 \fIDefault\fR: \fB$vardir/server_data\fR
 .IP "" 0
 .SS "server_list"
-The list of primary Puppet servers to which the Puppet agent should connect, in the order that they will be tried\. Each value should be a fully qualified domain name, followed by an optional ':' and port number\. If a port is omitted, Puppet uses masterport for that host\.
+The list of primary OpenVox servers to which the OpenVox agent should connect, in the order that they will be tried\. Each value should be a fully qualified domain name, followed by an optional ':' and port number\. If a port is omitted, OpenVox uses masterport for that host\. This setting takes precedence over \fBserver\fR\.
 .IP "\(bu" 4
 \fIDefault\fR: \fB[]\fR
 .IP "" 0
 .SS "serverport"
-The default port puppet subcommands use to communicate with Puppet Server\. (eg \fBpuppet facts upload\fR, \fBpuppet agent\fR)\. May be overridden by more specific settings (see \fBca_port\fR, \fBreport_port\fR)\.
+The default port puppet subcommands use to communicate with OpenVox Server\. (eg \fBpuppet facts upload\fR, \fBpuppet agent\fR)\. May be overridden by more specific settings (see \fBca_port\fR, \fBreport_port\fR)\.
 .IP "\(bu" 4
 \fIDefault\fR: \fB8140\fR
 .IP "" 0
@@ -1146,7 +1136,7 @@ Whether to compile and apply the settings catalog
 \fIDefault\fR: \fBtrue\fR
 .IP "" 0
 .SS "show_diff"
-Whether to log and report a contextual diff when files are being replaced\. This causes partial file contents to pass through Puppet's normal logging and reporting system, so this setting should be used with caution if you are sending Puppet's reports to an insecure destination\. This feature currently requires the \fBdiff/lcs\fR Ruby library\.
+Whether to log and report a contextual diff when files are being replaced\. This causes partial file contents to pass through OpenVox's normal logging and reporting system, so this setting should be used with caution if you are sending OpenVox's reports to an insecure destination\. This feature currently requires the \fBdiff/lcs\fR Ruby library\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBfalse\fR
 .IP "" 0
@@ -1174,7 +1164,7 @@ For example, assume a default 30\-minute \fB$runinterval\fR, \fBsplay\fR set to 
 .P
 With \fBsplay\fR enabled, it waits any amount of time up to its \fB$splaylimit\fR before its first run\. For example, it might randomly wait 8 minutes, then start its first run at :08 past the hour\. With the \fB$runinterval\fR at its default 30 minutes, its next run will be at :38 past the hour\.
 .P
-If you restart an agent's puppet service with \fBsplay\fR enabled, it recalculates its splay period and delays its first agent run after restarting for this new period\. If you simultaneously restart a group of puppet agents with \fBsplay\fR enabled, their checkins to your primary servers can be distributed more evenly\.
+If you restart an agent's puppet service with \fBsplay\fR enabled, it recalculates its splay period and delays its first agent run after restarting for this new period\. If you simultaneously restart a group of OpenVox agents with \fBsplay\fR enabled, their checkins to your primary servers can be distributed more evenly\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBfalse\fR
 .IP "" 0
@@ -1189,7 +1179,7 @@ The domain which will be queried to find the SRV records of servers to use\.
 \fIDefault\fR: \fBexample\.com\fR
 .IP "" 0
 .SS "ssl_client_header"
-The header containing an authenticated client's SSL DN\. This header must be set by the proxy to the authenticated client's SSL DN (e\.g\., \fB/CN=puppet\.puppetlabs\.com\fR)\. Puppet will parse out the Common Name (CN) from the Distinguished Name (DN) and use the value of the CN field for authorization\.
+The header containing an authenticated client's SSL DN\. This header must be set by the proxy to the authenticated client's SSL DN (e\.g\., \fB/CN=puppet\.puppetlabs\.com\fR)\. OpenVox will parse out the Common Name (CN) from the Distinguished Name (DN) and use the value of the CN field for authorization\.
 .P
 Note that the name of the HTTP header gets munged by the web server common gateway interface: an \fBHTTP_\fR prefix is added, dashes are converted to underscores, and all letters are uppercased\. Thus, to use the \fBX\-Client\-DN\fR header, this setting should be \fBHTTP_X_CLIENT_DN\fR\.
 .IP "\(bu" 4
@@ -1208,7 +1198,7 @@ A lock file to indicate that the ssl bootstrap process is currently in progress\
 \fIDefault\fR: \fB$ssldir/ssl\.lock\fR
 .IP "" 0
 .SS "ssl_trust_store"
-A file containing CA certificates in PEM format that puppet should trust when making HTTPS requests\. This \fBonly\fR applies to https requests to non\-puppet infrastructure, such as retrieving file metadata and content from https file sources, puppet module tool and the 'http' report processor\. This setting is ignored when making requests to puppet:// URLs such as catalog and report requests\.
+A file containing CA certificates in PEM format that OpenVox should trust when making HTTPS requests\. This \fBonly\fR applies to https requests to non\-OpenVox infrastructure, such as retrieving file metadata and content from https file sources, puppet module tool and the 'http' report processor\. This setting is ignored when making requests to puppet:// URLs such as catalog and report requests\.
 .IP "\(bu" 4
 \fIDefault\fR: ``
 .IP "" 0
@@ -1218,24 +1208,24 @@ Where SSL certificates are kept\.
 \fIDefault\fR: \fB$confdir/ssl\fR
 .IP "" 0
 .SS "statedir"
-The directory where Puppet state is stored\. Generally, this directory can be removed without causing harm (although it might result in spurious service restarts)\.
+The directory where OpenVox state is stored\. Generally, this directory can be removed without causing harm (although it might result in spurious service restarts)\.
 .IP "\(bu" 4
 \fIDefault\fR: \fB$vardir/state\fR
 .IP "" 0
 .SS "statefile"
-Where Puppet agent and Puppet Server store state associated with the running configuration\. In the case of Puppet Server, this file reflects the state discovered through interacting with clients\.
+Where the OpenVox agent and OpenVox Server store state associated with the running configuration\. In the case of OpenVox Server, this file reflects the state discovered through interacting with clients\.
 .IP "\(bu" 4
 \fIDefault\fR: \fB$statedir/state\.yaml\fR
 .IP "" 0
 .SS "statettl"
-How long the Puppet agent should cache when a resource was last checked or synced\. This setting can be a time interval in seconds (30 or 30s), minutes (30m), hours (6h), days (2d), or years (5y)\. A value of \fB0\fR or \fBunlimited\fR will disable cache pruning\.
+How long the OpenVox agent should cache when a resource was last checked or synced\. This setting can be a time interval in seconds (30 or 30s), minutes (30m), hours (6h), days (2d), or years (5y)\. A value of \fB0\fR or \fBunlimited\fR will disable cache pruning\.
 .P
 This setting affects the usage of \fBschedule\fR resources, as the information about when a resource was last checked (and therefore when it needs to be checked again) is stored in the \fBstatefile\fR\. The \fBstatettl\fR needs to be large enough to ensure that a resource will not trigger multiple times during a schedule due to its entry expiring from the cache\.
 .IP "\(bu" 4
 \fIDefault\fR: \fB32d\fR
 .IP "" 0
 .SS "static_catalogs"
-Whether to compile a static catalog \fIhttps://puppet\.com/docs/puppet/latest/static_catalogs\.html#enabling\-or\-disabling\-static\-catalogs\fR, which occurs only on Puppet Server when the \fBcode\-id\-command\fR and \fBcode\-content\-command\fR settings are configured in its \fBpuppetserver\.conf\fR file\.
+Whether to compile a static catalog \fIhttps://docs\.openvoxproject\.org/openvox/latest/static_catalogs\.html#enabling\-or\-disabling\-static\-catalogs\fR, which occurs only on OpenVox Server when the \fBcode\-id\-command\fR and \fBcode\-content\-command\fR settings are configured in its \fBpuppetserver\.conf\fR file\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBtrue\fR
 .IP "" 0
@@ -1249,12 +1239,12 @@ You can adjust the backend using the storeconfigs_backend setting\.
 \fIDefault\fR: \fBfalse\fR
 .IP "" 0
 .SS "storeconfigs_backend"
-Configure the backend terminus used for StoreConfigs\. By default, this uses the PuppetDB store, which must be installed and configured before turning on StoreConfigs\.
+Configure the backend terminus used for StoreConfigs\. By default, this uses the OpenVoxDB store, which must be installed and configured before turning on StoreConfigs\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBpuppetdb\fR
 .IP "" 0
 .SS "strict"
-The strictness level of puppet\. Allowed values are:
+The strictness level of OpenVox\. Allowed values are:
 .IP "\(bu" 4
 off \- do not perform extra validation, do not report
 .IP "\(bu" 4
@@ -1285,7 +1275,7 @@ Whether to print a transaction summary\.
 \fIDefault\fR: \fBfalse\fR
 .IP "" 0
 .SS "supported_checksum_types"
-Checksum types supported by this agent for use in file resources of a static catalog\. Values must be comma\-separated\. Valid types are sha256, sha256lite, sha384, sha512, sha224, sha1, sha1lite, md5, md5lite, mtime, ctime\. Default is sha256, sha384, sha512, sha224, md5\.
+Checksum types supported by this agent for use in file resources of a static catalog\. Values must be comma\-separated\. Valid types are sha256, sha256lite, sha384, sha512, sha224, sha1, sha1lite, md5, md5lite, mtime, ctime, etag\. Default is sha256, sha384, sha512, sha224, md5\.
 .IP "\(bu" 4
 \fIDefault\fR: \fB["sha256", "sha384", "sha512", "sha224", "md5"]\fR
 .IP "" 0
@@ -1336,12 +1326,12 @@ File that provides mapping between custom SSL oids and user\-friendly names
 \fIDefault\fR: \fB$confdir/custom_trusted_oid_mapping\.yaml\fR
 .IP "" 0
 .SS "use_cached_catalog"
-Whether to only use the cached catalog rather than compiling a new catalog on every run\. Puppet can be run with this enabled by default and then selectively disabled when a recompile is desired\. Because a Puppet agent using cached catalogs does not contact the primary server for a new catalog, it also does not upload facts at the beginning of the Puppet run\.
+Whether to only use the cached catalog rather than compiling a new catalog on every run\. OpenVox can be run with this enabled by default and then selectively disabled when a recompile is desired\. Because an OpenVox agent using cached catalogs does not contact the primary server for a new catalog, it also does not upload facts at the beginning of the OpenVox run\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBfalse\fR
 .IP "" 0
 .SS "use_last_environment"
-Puppet saves both the initial and converged environment in the last_run_summary file\. If they differ, and this setting is set to true, we will use the last converged environment and skip the node request\.
+OpenVox saves both the initial and converged environment in the last_run_summary file\. If they differ, and this setting is set to true, we will use the last converged environment and skip the node request\.
 .P
 When set to false, we will do the node request and ignore the environment data from the last_run_summary file\.
 .IP "\(bu" 4
@@ -1358,12 +1348,12 @@ Whether to use the cached configuration when the remote configuration will not c
 \fIDefault\fR: \fBtrue\fR
 .IP "" 0
 .SS "user"
-The user Puppet Server will run as\. Used to ensure the agent side processes (agent, apply, etc) create files and directories readable by Puppet Server when necessary\.
+The user OpenVox Server will run as\. Used to ensure the agent side processes (agent, apply, etc) create files and directories readable by OpenVox Server when necessary\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBpuppet\fR
 .IP "" 0
 .SS "vardir"
-Where Puppet stores dynamic and growing data\. The default for this setting is calculated specially, like \fBconfdir\fR_\.
+Where OpenVox stores dynamic and growing data\. The default for this setting is calculated specially, like \fBconfdir\fR_\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBUnix/Linux: /opt/puppetlabs/puppet/cache \-\- Windows: C:\eProgramData\ePuppetLabs\epuppet\ecache \-\- Non\-root user: ~/\.puppetlabs/opt/puppet/cache\fR
 .IP "" 0
@@ -1380,9 +1370,9 @@ Whether or not to look for versioned environment directories, symlinked from \fB
 .SS "waitforcert"
 How frequently puppet agent should ask for a signed certificate\.
 .P
-When starting for the first time, puppet agent will submit a certificate signing request (CSR) to the server named in the \fBca_server\fR setting (usually the primary Puppet server); this may be autosigned, or may need to be approved by a human, depending on the CA server's configuration\.
+When starting for the first time, puppet agent will submit a certificate signing request (CSR) to the server named in the \fBca_server\fR setting (usually the primary OpenVox server); this may be autosigned, or may need to be approved by a human, depending on the CA server's configuration\.
 .P
-Puppet agent cannot apply configurations until its approved certificate is available\. Since the certificate may or may not be available immediately, puppet agent will repeatedly try to fetch it at this interval\. You can turn off waiting for certificates by specifying a time of 0, or a maximum amount of time to wait in the \fBmaxwaitforcert\fR setting, in which case puppet agent will exit if it cannot get a cert\. This setting can be a time interval in seconds (30 or 30s), minutes (30m), hours (6h), days (2d), or years (5y)\.
+The OpenVox agent cannot apply configurations until its approved certificate is available\. Since the certificate may or may not be available immediately, puppet agent will repeatedly try to fetch it at this interval\. You can turn off waiting for certificates by specifying a time of 0, or a maximum amount of time to wait in the \fBmaxwaitforcert\fR setting, in which case puppet agent will exit if it cannot get a cert\. This setting can be a time interval in seconds (30 or 30s), minutes (30m), hours (6h), days (2d), or years (5y)\.
 .IP "\(bu" 4
 \fIDefault\fR: \fB2m\fR
 .IP "" 0

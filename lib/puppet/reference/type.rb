@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Puppet::Util::Reference.newreference :type, :doc => "All Puppet resource types and all their details" do
+Puppet::Util::Reference.newreference :type, :doc => "All OpenVox resource types and all their details" do
   types = {}
   Puppet::Type.loadall
 
@@ -41,7 +41,7 @@ Puppet::Util::Reference.newreference :type, :doc => "All Puppet resource types a
 
   When required binaries are specified for providers, fully qualified paths
   indicate that the binary must exist at that specific path and unqualified
-  binaries indicate that Puppet will search for the binary using the shell
+  binaries indicate that OpenVox will search for the binary using the shell
   path.
 
 - *Features* are abilities that some providers might not support.  You can use the list

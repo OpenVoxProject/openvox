@@ -6,7 +6,7 @@ require_relative '../../../puppet/util/package'
 Puppet::Type.type(:package).provide :aix, :parent => Puppet::Provider::Package do
   desc "Installation from an AIX software directory, using the AIX `installp`
        command.  The `source` parameter is required for this provider, and should
-       be set to the absolute path (on the puppet agent machine) of a directory
+       be set to the absolute path (on the OpenVox agent machine) of a directory
        containing one or more BFF package files.
 
        The `installp` command will generate a table of contents file (named `.toc`)

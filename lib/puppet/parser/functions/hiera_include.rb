@@ -24,7 +24,7 @@ module Puppet::Parser::Functions
 
       1. A string key that Hiera searches for in the hierarchy. **Required**.
       2. An optional default value to return if Hiera doesn't find anything matching the key.
-          * If this argument isn't provided and this function results in a lookup failure, Puppet
+          * If this argument isn't provided and this function results in a lookup failure, OpenVox
           fails with a compilation error.
       3. The optional name of an arbitrary
       [hierarchy level](https://puppet.com/docs/hiera/latest/hierarchy.html) to insert at the
@@ -57,11 +57,11 @@ module Puppet::Parser::Functions
       # In site.pp, outside of any node definitions and below any top-scope variables:
       hiera_include('classes', undef)
 
-      # Puppet assigns the apache and apache::mod::php classes to the web01.example.com node.
+      # OpenVox assigns the apache and apache::mod::php classes to the web01.example.com node.
       ~~~
 
       You can optionally generate the default value with a
-      [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html) that
+      [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html) that
       takes one parameter.
 
       **Example**: Using `hiera_include` with a lambda
@@ -72,7 +72,7 @@ module Puppet::Parser::Functions
       # In site.pp, outside of any node definitions and below any top-scope variables:
       hiera_include('classes') | $key | {"Key \'${key}\' not found" }
 
-      # Puppet assigns the apache and apache::mod::php classes to the web01.example.com node.
+      # OpenVox assigns the apache and apache::mod::php classes to the web01.example.com node.
       # If hiera_include couldn't match its key, it would return the lambda result,
       # "Key 'classes' not found".
       ~~~
@@ -87,7 +87,7 @@ module Puppet::Parser::Functions
       | hiera_include($key, $default, $level) | override level not supported |
 
       See
-      [the Upgrading to Hiera 5 migration guide](https://puppet.com/docs/puppet/5.5/hiera_migrate.html)
+      [the Upgrading to Hiera 5 migration guide](https://docs.openvoxproject.org/openvox/latest/hiera_migrate.html)
       for more information.
 
       Note that calls using the 'override level' option are not directly supported by 'lookup' and the produced

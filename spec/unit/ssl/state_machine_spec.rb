@@ -279,7 +279,7 @@ describe Puppet::SSL::StateMachine, unless: Puppet::Util::Platform.jruby? do
       it 'raises a puppet exception' do
         expect {
           machine.ensure_ca_certificates
-        }.to raise_error(Puppet::Error, /Another puppet instance is already running and the waitforlock setting is set to 0; exiting/)
+        }.to raise_error(Puppet::Error, /Another OpenVox instance is already running and the waitforlock setting is set to 0; exiting/)
       end
 
       it 'sleeps and retries successfully' do
@@ -289,7 +289,7 @@ describe Puppet::SSL::StateMachine, unless: Puppet::Util::Platform.jruby? do
         allow(Time).to receive(:now).and_return(now, future)
 
         expect(Kernel).to receive(:sleep).with(1)
-        expect(Puppet).to receive(:info).with("Another puppet instance is already running; waiting for it to finish")
+        expect(Puppet).to receive(:info).with("Another OpenVox instance is already running; waiting for it to finish")
         expect(Puppet).to receive(:info).with("Will try again in 1 seconds.")
 
         allow(lockfile).to receive(:lock).and_return(false, true)
@@ -302,13 +302,13 @@ describe Puppet::SSL::StateMachine, unless: Puppet::Util::Platform.jruby? do
         allow(Time).to receive(:now).and_return(now, future)
 
         expect(Kernel).to receive(:sleep).with(1)
-        expect(Puppet).to receive(:info).with("Another puppet instance is already running; waiting for it to finish")
+        expect(Puppet).to receive(:info).with("Another OpenVox instance is already running; waiting for it to finish")
         expect(Puppet).to receive(:info).with("Will try again in 1 seconds.")
 
         allow(lockfile).to receive(:lock).and_return(false)
         expect {
           machine.ensure_ca_certificates
-        }.to raise_error(Puppet::Error, /Another puppet instance is already running and the maxwaitforlock timeout has been exceeded; exiting/)
+        }.to raise_error(Puppet::Error, /Another OpenVox instance is already running and the maxwaitforlock timeout has been exceeded; exiting/)
       end
 
       it 'defaults the waitlock deadline to 60 seconds' do

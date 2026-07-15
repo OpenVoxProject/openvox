@@ -7,7 +7,7 @@ tag 'audit:high',
     'shard:group3' # For splitting out groups of tests for slow test runners
 
 # doc:
-# https://puppet.com/docs/puppet/latest/hiera_automatic.html
+# https://docs.openvoxproject.org/openvox/latest/hiera_automatic.html
 
 @module_name = "puppet_lookup_command_test"
 

@@ -37,8 +37,8 @@ module Puppet
           }
 
       ...but for larger files, this attribute is more useful when combined with the
-      [template](https://puppet.com/docs/puppet/latest/function.html#template)
-      or [file](https://puppet.com/docs/puppet/latest/function.html#file)
+      [template](https://docs.openvoxproject.org/openvox/latest/function.html#template)
+      or [file](https://docs.openvoxproject.org/openvox/latest/function.html#file)
       function.
     EOT
 
@@ -59,7 +59,7 @@ module Puppet
           _('The literal value of the "content" property will be written to the file.'),
           # TRANSLATORS "static catalogs" should not be translated.
           _('The checksum retrieval functionality is being replaced by the use of static catalogs.'),
-          _('See https://puppet.com/docs/puppet/latest/static_catalogs.html for more information.')
+          _('See https://docs.openvoxproject.org/openvox/latest/static_catalogs.html for more information.')
         ].join(" "),
                                           :file => @resource.file,
                                           :line => @resource.line) if !@actual_content && !resource.parameter(:source)

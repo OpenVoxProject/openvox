@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# A module to centralize heuristics/practices for managing character encoding in Puppet
+# A module to centralize heuristics/practices for managing character encoding in OpenVox
 
 module Puppet::Util::CharacterEncoding
   class << self
@@ -22,7 +22,7 @@ module Puppet::Util::CharacterEncoding
         if original_encoding == Encoding::UTF_8
           unless string_copy.valid_encoding?
             Puppet.debug {
-              _("%{value} is already labeled as UTF-8 but this encoding is invalid. It cannot be transcoded by Puppet.") % { value: string.dump }
+              _("%{value} is already labeled as UTF-8 but this encoding is invalid. It cannot be transcoded by OpenVox.") % { value: string.dump }
             }
           end
           # String is already valid UTF-8 - noop
@@ -44,7 +44,7 @@ module Puppet::Util::CharacterEncoding
         # error on ruby's part, ie Encoding::UndefinedConversionError on a
         # failure to encode!.
         Puppet.debug {
-          _("%{error}: %{value} cannot be transcoded by Puppet.") % { error: detail.inspect, value: string.dump }
+          _("%{error}: %{value} cannot be transcoded by OpenVox.") % { error: detail.inspect, value: string.dump }
         }
         string_copy
       end

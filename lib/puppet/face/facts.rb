@@ -50,7 +50,7 @@ Puppet::Indirector::Face.define(:facts, '0.0.1') do
 
       For details on configuring OpenVox Server's `auth.conf`, see:
 
-      <https://puppet.com/docs/puppetserver/latest/config_file_auth.html>
+      <https://docs.openvoxproject.org/openvox-server/latest/config_file_auth.html>
     EOT
     examples <<-'EOT'
       Upload facts:
@@ -106,7 +106,7 @@ Puppet::Indirector::Face.define(:facts, '0.0.1') do
 
     option("--config-file " + _("<path>")) do
       default_to { nil }
-      summary _("The location of the config file for Facter.")
+      summary _("The location of the config file for OpenFact.")
     end
 
     option("--custom-dir " + _("<path>")) do

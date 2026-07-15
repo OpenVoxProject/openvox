@@ -81,7 +81,7 @@ class Puppet::Application::Apply < Puppet::Application
       as an argument.
 
       See the configuration file documentation at
-      https://puppet.com/docs/puppet/latest/configuration.html for the
+      https://docs.openvoxproject.org/openvox/latest/configuration.html for the
       full list of acceptable parameters. You can generate a commented list of all
       configuration options by running puppet with
       '--genconfig'.
@@ -128,8 +128,8 @@ class Puppet::Application::Apply < Puppet::Application
         format.
 
       * --noop:
-        Use 'noop' mode where Puppet runs in a no-op or dry-run mode. This
-        is useful for seeing what changes Puppet will make without actually
+        Use 'noop' mode where OpenVox runs in a no-op or dry-run mode. This
+        is useful for seeing what changes OpenVox will make without actually
         executing the changes.
 
       * --execute:

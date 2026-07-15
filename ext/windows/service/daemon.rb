@@ -5,7 +5,7 @@ require 'fileutils'
 require 'puppet/util/windows/daemon'
 
 # This file defines utilities for logging to eventlog. While it lives inside
-# Puppet, it is completely independent and loads no other parts of Puppet, so we
+# OpenVox, it is completely independent and loads no other parts of OpenVox, so we
 # can safely require *just* it.
 require 'puppet/util/windows/eventlog'
 
@@ -83,7 +83,7 @@ class WindowsDaemon < Puppet::Util::Windows::Daemon
           pid = Process.create(:command_line => "#{ruby_puppet_cmd} agent --onetime #{args}", :creation_flags => CREATE_NEW_CONSOLE).process_id
           service.log_debug("Process created: #{pid}")
         else
-          service.log_debug("Service is paused.  Not invoking Puppet agent")
+          service.log_debug("Service is paused.  Not invoking OpenVox agent")
         end
 
         service.log_debug("Service worker thread waiting for #{runinterval} seconds")
@@ -131,7 +131,7 @@ class WindowsDaemon < Puppet::Util::Windows::Daemon
     if LEVELS.index(level) >= @loglevel
       if @LOG_TO_FILE
         # without this change its possible that we get Encoding errors trying to write UTF-8 messages in current codepage
-        File.open(LOG_FILE, 'a:UTF-8') { |f| f.puts("#{Time.now} Puppet (#{level}): #{msg}") }
+        File.open(LOG_FILE, 'a:UTF-8') { |f| f.puts("#{Time.now} OpenVox (#{level}): #{msg}") }
       end
 
       native_type, native_id = Puppet::Util::Windows::EventLog.to_native(level)
@@ -157,8 +157,8 @@ class WindowsDaemon < Puppet::Util::Windows::Daemon
 
   # Parses runinterval.
   #
-  # @param puppet_path [String] The file path for the Puppet executable.
-  # @return runinterval [Integer] How often to do a Puppet run, in seconds.
+  # @param puppet_path [String] The file path for the puppet executable.
+  # @return runinterval [Integer] How often to do an OpenVox run, in seconds.
   def parse_runinterval(puppet_path)
     begin
       runinterval = %x(#{puppet_path} config --section agent --log_level notice print runinterval).chomp

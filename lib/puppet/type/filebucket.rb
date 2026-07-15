@@ -6,19 +6,18 @@ module Puppet
   Type.newtype(:filebucket) do
     @doc = <<-EOT
       A repository for storing and retrieving file content by cryptographic checksum. Can
-      be local to each agent node, or centralized on a primary Puppet server. All
-      puppet servers provide a filebucket service that agent nodes can access
+      be local to each agent node, or centralized on a primary OpenVox server. All
+      OpenVox servers provide a filebucket service that agent nodes can access
       via HTTP, but you must declare a filebucket resource before any agents
       will do so.
 
       Filebuckets are used for the following features:
 
       - **Content backups.** If the `file` type's `backup` attribute is set to
-        the name of a filebucket, Puppet will back up the _old_ content whenever
+        the name of a filebucket, OpenVox will back up the _old_ content whenever
         it rewrites a file; see the documentation for the `file` type for more
         details. These backups can be used for manual recovery of content, but
-        are more commonly used to display changes and differences in a tool like
-        Puppet Dashboard.
+        are more commonly used to display changes and differences.
 
       To use a central filebucket for backups, you will usually want to declare
       a filebucket resource and a resource default for the `backup` attribute
@@ -32,9 +31,9 @@ module Puppet
 
           File { backup => main, }
 
-      Puppet Servers automatically provide the filebucket service, so
+      OpenVox Servers automatically provide the filebucket service, so
       this will work in a default configuration. If you have a heavily
-      restricted Puppet Server `auth.conf` file, you may need to allow access to the
+      restricted OpenVox Server `auth.conf` file, you may need to allow access to the
       `file_bucket_file` endpoint.
     EOT
 
@@ -98,7 +97,7 @@ module Puppet
     def mkbucket
       # Default is a local filebucket, if no server is given.
       # If the default path has been removed, too, then
-      # the puppetmaster is used as default server
+      # the OpenVox server is used as default server
 
       type = "local"
       args = {}

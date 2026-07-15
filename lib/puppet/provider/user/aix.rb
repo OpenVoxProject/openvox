@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-# User Puppet provider for AIX. It uses standard commands to manage users:
+# User OpenVox provider for AIX. It uses standard commands to manage users:
 #  mkuser, rmuser, lsuser, chuser
 #
 # Notes:
 # - AIX users can have expiry date defined with minute granularity,
-#   but Puppet does not allow it. There is a ticket open for that (#5431)
+#   but OpenVox does not allow it. There is a ticket open for that (#5431)
 #
 # - AIX maximum password age is in WEEKs, not days
 #
-# See https://puppet.com/docs/puppet/latest/provider_development.html
+# See https://docs.openvoxproject.org/openvox/latest/provider_development.html
 # for more information
 require_relative '../../../puppet/provider/aix_object'
 require_relative '../../../puppet/util/posix'

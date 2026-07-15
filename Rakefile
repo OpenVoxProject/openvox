@@ -32,7 +32,7 @@ end
 
 Dir.glob(File.join('tasks/**/*.rake')).each { |file| load file }
 
-### Puppetlabs stuff ###
+### Packaging stuff ###
 
 if Rake.application.top_level_tasks.grep(/^(pl:|package:)/).any?
   begin
@@ -57,7 +57,7 @@ task :default do
 end
 
 namespace :pl_ci do
-  desc 'Build puppet gems'
+  desc 'Build openvox gems'
   task :gem_build, [:gemspec] do |t, args|
     args.with_defaults(gemspec: 'openvox.gemspec')
     stdout, stderr, status = Open3.capture3(<<~END)
@@ -74,7 +74,7 @@ namespace :pl_ci do
     end
   end
 
-  desc 'build the nightly puppet gems'
+  desc 'build the nightly openvox gems'
   task :nightly_gem_build do
     # this is taken from `rake package:nightly_gem`
     extended_dot_version = %x{git describe --tags --dirty --abbrev=7}.chomp.tr('-', '.')

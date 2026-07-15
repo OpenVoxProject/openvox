@@ -4,7 +4,7 @@ Puppet::Parser::Functions.newfunction(:create_resources, :arity => -3, :doc => <
     Converts a hash into a set of resources and adds them to the catalog.
 
     **Note**: Use this function selectively. It's generally better to write resources in
-     [Puppet](https://puppet.com/docs/puppet/latest/lang_resources.html), as
+     [Puppet](https://docs.openvoxproject.org/openvox/latest/lang_resources.html), as
      resources created with `create_resource` are difficult to read and troubleshoot.
 
     This function takes two mandatory arguments: a resource type, and a hash describing

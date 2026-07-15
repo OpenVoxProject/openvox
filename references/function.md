@@ -1,19 +1,19 @@
 ---
 layout: default
-built_from_commit: 812d7420ea5d7e19e8003b26486a7c8847afdb25
+built_from_commit: f7b1a950d990274b9f352eb7aa0cd93ee6067df1
 title: Built-in function reference
-canonical: "/puppet/latest/function.html"
+canonical: "/openvox/latest/function.html"
 toc_levels: 2
 toc: columns
 ---
 
 # Built-in function reference
 
-> **NOTE:** This page was generated from the Puppet source code on 2024-10-18 17:22:47 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-07-14 18:42:23 +0000
 
 
 
-This page is a list of Puppet's built-in functions, with descriptions of what they do and how to use them.
+This page is a list of OpenVox's built-in functions, with descriptions of what they do and how to use them.
 
 Functions are plugins you can call during catalog compilation. A call to any function is an expression that resolves to a value. For more information on how to call functions, see [the language reference page about function calls.](lang_functions.dita) 
 
@@ -91,7 +91,7 @@ Return type(s): `Undef`.
 
 ## `all`
 
-Runs a [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html)
+Runs a [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html)
 repeatedly using each value in a data structure until the lambda returns a non "truthy" value which
 makes the function return `false`, or if the end of the iteration is reached, `true` is returned.
 
@@ -115,7 +115,7 @@ notice $data.all |$item| { $item % 10 == 0 }
 
 Would notice `true`.
 
-When the first argument is a `Hash`, Puppet passes each key and value pair to the lambda
+When the first argument is a `Hash`, OpenVox passes each key and value pair to the lambda
 as an array in the form `[key, value]`.
 
 ```puppet
@@ -138,8 +138,8 @@ notice $data.all |$key, $value| { $value % 10 == 0  and $key =~ /^abc/ }
 
 Would notice `true`.
 
-For an general examples that demonstrates iteration, see the Puppet
-[iteration](https://puppet.com/docs/puppet/latest/lang_iteration.html)
+For an general examples that demonstrates iteration, see the OpenVox
+[iteration](https://docs.openvoxproject.org/openvox/latest/lang_iteration.html)
 documentation.
 
 
@@ -229,7 +229,7 @@ Signature 3
 
 ## `any`
 
-Runs a [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html)
+Runs a [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html)
 repeatedly using each value in a data structure until the lambda returns a "truthy" value which
 makes the function return `true`, or if the end of the iteration is reached, false is returned.
 
@@ -256,7 +256,7 @@ Would notice `true` if the looked up hash had a value that is neither `false` no
 one of the keys. That is, it is equivalent to the expression
 `$looked_up[routers] || $looked_up[servers] || $looked_up[workstations]`.
 
-When the first argument is a `Hash`, Puppet passes each key and value pair to the lambda
+When the first argument is a `Hash`, OpenVox passes each key and value pair to the lambda
 as an array in the form `[key, value]`.
 
 ```puppet
@@ -281,8 +281,8 @@ notice $data.any |$index, $value| { $index % 2 == 0 and $value !~ String }
 
 Would notice true as the index `2` is even and not a `String`
 
-For an general examples that demonstrates iteration, see the Puppet
-[iteration](https://puppet.com/docs/puppet/latest/lang_iteration.html)
+For an general examples that demonstrates iteration, see the OpenVox
+[iteration](https://docs.openvoxproject.org/openvox/latest/lang_iteration.html)
 documentation.
 
 
@@ -305,9 +305,9 @@ Signature 4
 ## `assert_type`
 
 Returns the given value if it is of the given
-[data type](https://puppet.com/docs/puppet/latest/lang_data.html), or
+[data type](https://docs.openvoxproject.org/openvox/latest/lang_data.html), or
 otherwise either raises an error or executes an optional two-parameter
-[lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html).
+[lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html).
 
 The function takes two mandatory arguments, in this order:
 
@@ -321,7 +321,7 @@ $raw_username = 'Amy Berry'
 $valid_username = assert_type(String[1], $raw_username)
 
 # $valid_username contains "Amy Berry".
-# If $raw_username was an empty string or a different data type, the Puppet run would
+# If $raw_username was an empty string or a different data type, the OpenVox run would
 # fail with an "Expected type does not match actual" error.
 ```
 
@@ -342,13 +342,13 @@ $valid_username = assert_type(String[1], $raw_username) |$expected, $actual| {
 }
 
 # $valid_username contains "Amy Berry".
-# If $raw_username was an empty string, the Puppet run would set $valid_username to
+# If $raw_username was an empty string, the OpenVox run would set $valid_username to
 # "anonymous" and output a warning: "The username should be 'String[1, default]', not
 # 'String[0, 0]'. Using 'anonymous'."
 ```
 
 For more information about data types, see the
-[documentation](https://puppet.com/docs/puppet/latest/lang_data.html).
+[documentation](https://docs.openvoxproject.org/openvox/latest/lang_data.html).
 
 
 Signature 1
@@ -751,7 +751,7 @@ returns what the lambda returns, otherwise the converted value.
 Converts a hash into a set of resources and adds them to the catalog.
 
 **Note**: Use this function selectively. It's generally better to write resources in
- [Puppet](https://puppet.com/docs/puppet/latest/lang_resources.html), as
+ [Puppet](https://docs.openvoxproject.org/openvox/latest/lang_resources.html), as
  resources created with `create_resource` are difficult to read and troubleshoot.
 
 This function takes two mandatory arguments: a resource type, and a hash describing
@@ -863,7 +863,7 @@ defined('$name')
 defined(File['/tmp/file'])
 ```
 
-Puppet depends on the configuration's evaluation order when checking whether a resource
+OpenVox depends on the configuration's evaluation order when checking whether a resource
 is declared.
 
 ```puppet
@@ -958,7 +958,7 @@ exists in a structure without mandating that it always exists.
 
 ## `digest`
 
-Returns a hash value from a provided string using the digest_algorithm setting from the Puppet config file.
+Returns a hash value from a provided string using the digest_algorithm setting from the OpenVox config file.
 
 
 `digest()`
@@ -1025,7 +1025,7 @@ Signature 4
 
 ## `each`
 
-Runs a [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html)
+Runs a [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html)
 repeatedly using each value in a data structure, then returns the values unchanged.
 
 This function takes two mandatory arguments, in this order:
@@ -1040,7 +1040,7 @@ or
 
 `each($data) |$parameter| { <PUPPET CODE BLOCK> }`
 
-When the first argument (`$data` in the above example) is an array, Puppet passes each
+When the first argument (`$data` in the above example) is an array, OpenVox passes each
 value in turn to the lambda, then returns the original values.
 
 ```puppet
@@ -1051,11 +1051,11 @@ $data.each |$item| {
    message => $item
  }
 }
-# Puppet creates one resource for each of the three items in $data. Each resource is
+# OpenVox creates one resource for each of the three items in $data. Each resource is
 # named after the item's value and uses the item's value in a parameter.
 ```
 
-When the first argument is a hash, Puppet passes each key and value pair to the lambda
+When the first argument is a hash, OpenVox passes each key and value pair to the lambda
 as an array in the form `[key, value]` and returns the original hash.
 
 ```puppet
@@ -1067,11 +1067,11 @@ $data.each |$items| {
    message => $items[1]
  }
 }
-# Puppet creates one resource for each of the three items in $data, each named after the
+# OpenVox creates one resource for each of the three items in $data, each named after the
 # item's key and containing a parameter using the item's value.
 ```
 
-When the first argument is an array and the lambda has two parameters, Puppet passes the
+When the first argument is an array and the lambda has two parameters, OpenVox passes the
 array's indexes (enumerated from 0) in the first parameter and its values in the second
 parameter.
 
@@ -1084,11 +1084,11 @@ $data.each |$index, $value| {
    message => $index
  }
 }
-# Puppet creates one resource for each of the three items in $data, each named after the
+# OpenVox creates one resource for each of the three items in $data, each named after the
 # item's value and containing a parameter using the item's index.
 ```
 
-When the first argument is a hash, Puppet passes its keys to the first parameter and its
+When the first argument is a hash, OpenVox passes its keys to the first parameter and its
 values to the second parameter.
 
 ```puppet
@@ -1100,13 +1100,13 @@ $data.each |$key, $value| {
    message => $value
  }
 }
-# Puppet creates one resource for each of the three items in $data, each named after the
+# OpenVox creates one resource for each of the three items in $data, each named after the
 # item's key and containing a parameter using the item's value.
 ```
 
 For an example that demonstrates how to create multiple `file` resources using `each`,
-see the Puppet
-[iteration](https://puppet.com/docs/puppet/latest/lang_iteration.html)
+see the OpenVox
+[iteration](https://docs.openvoxproject.org/openvox/latest/lang_iteration.html)
 documentation.
 
 
@@ -1196,12 +1196,12 @@ result as a String.
 The first argument to this function should be a `<MODULE NAME>/<TEMPLATE FILE>`
 reference, which loads `<TEMPLATE FILE>` from `<MODULE NAME>`'s `templates`
 directory. In most cases, the last argument is optional; if used, it should be a
-[hash](https://puppet.com/docs/puppet/latest/lang_data_hash.html) that contains parameters to
+[hash](https://docs.openvoxproject.org/openvox/latest/lang_data_hash.html) that contains parameters to
 pass to the template.
 
-- See the [template](https://puppet.com/docs/puppet/latest/lang_template.html)
+- See the [template](https://docs.openvoxproject.org/openvox/latest/lang_template.html)
 documentation for general template usage information.
-- See the [EPP syntax](https://puppet.com/docs/puppet/latest/lang_template_epp.html)
+- See the [EPP syntax](https://docs.openvoxproject.org/openvox/latest/lang_template_epp.html)
 documentation for examples of EPP.
 
 For example, to call the apache module's `templates/vhost/_docroot.epp`
@@ -1214,12 +1214,12 @@ function like this:
 This function can also accept an absolute path, which can load a template file
 from anywhere on disk.
 
-Puppet produces a syntax error if you pass more parameters than are declared in
+OpenVox produces a syntax error if you pass more parameters than are declared in
 the template's parameter tag. When passing parameters to a template that
 contains a parameter tag, use the same names as the tag's declared parameters.
 
 Parameters are required only if they are declared in the called template's
-parameter tag without default values. Puppet produces an error if the `epp`
+parameter tag without default values. OpenVox produces an error if the `epp`
 function fails to pass any required parameter.
 
 
@@ -1242,7 +1242,7 @@ Return type(s): `Undef`.
 ## `eyaml_lookup_key`
 
 The `eyaml_lookup_key` is a hiera 5 `lookup_key` data provider function.
-See [the configuration guide documentation](https://puppet.com/docs/puppet/latest/hiera_config_yaml_5.html#configuring-a-hierarchy-level-hiera-eyaml) for
+See [the configuration guide documentation](https://docs.openvoxproject.org/openvox/latest/hiera_config_yaml_5.html#configuring-a-hierarchy-level-hiera-eyaml) for
 how to use this function.
 
 
@@ -1276,7 +1276,7 @@ found, skipping any files that don't exist.
 
 ## `filter`
 
-Applies a [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html)
+Applies a [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html)
 to every value in a data structure and returns an array or hash containing any elements
 for which the lambda evaluates to a truthy value (not `false` or `undef`).
 
@@ -1292,7 +1292,7 @@ or
 
 `$filtered_data = filter($data) |$parameter| { <PUPPET CODE BLOCK> }`
 
-When the first argument (`$data` in the above example) is an array, Puppet passes each
+When the first argument (`$data` in the above example) is an array, OpenVox passes each
 value in turn to the lambda and returns an array containing the results.
 
 ```puppet
@@ -1302,7 +1302,7 @@ $filtered_data = $data.filter |$items| { $items =~ /berry$/ }
 # $filtered_data = [blueberry, raspberry]
 ```
 
-When the first argument is a hash, Puppet passes each key and value pair to the lambda
+When the first argument is a hash, OpenVox passes each key and value pair to the lambda
 as an array in the form `[key, value]` and returns a hash containing the results.
 
 ```puppet
@@ -1312,7 +1312,7 @@ $filtered_data = $data.filter |$items| { $items[0] =~ /berry$/ }
 # $filtered_data = {blueberry => 1, raspberry => 2}
 ```
 
-When the first argument is an array and the lambda has two parameters, Puppet passes the
+When the first argument is an array and the lambda has two parameters, OpenVox passes the
 array's indexes (enumerated from 0) in the first parameter and its values in the second
 parameter.
 
@@ -1324,7 +1324,7 @@ $filtered_data = $data.filter |$indexes, $values| { $indexes % 2 == 0 and $value
 # $filtered_data = [raspberry]
 ```
 
-When the first argument is a hash, Puppet passes its keys to the first parameter and its
+When the first argument is a hash, OpenVox passes its keys to the first parameter and its
 values to the second parameter.
 
 ```puppet
@@ -1362,7 +1362,7 @@ directory. (For example, the reference `mysql/mysqltuner.pl` will search for the
 file `<MODULES DIRECTORY>/mysql/files/mysqltuner.pl`.)
 
 If this function is run via puppet agent, it checks for file existence on the
-Puppet Primary server. If run via puppet apply, it checks on the local host.
+OpenVox server. If run via puppet apply, it checks on the local host.
 In both cases, the check is performed before any resources are changed.
 
 This function can also accept:
@@ -1528,7 +1528,7 @@ node. (For example, `fqdn_rand(30)`, `fqdn_rand(30, 'expensive job 1')`, and
 
 ## `generate`
 
-Calls an external command on the Puppet server and returns
+Calls an external command on the OpenVox server and returns
 the results of the command. Any arguments are passed to the external command as
 arguments. If the generator does not exit with return code of 0,
 the generator is considered to have failed and a parse error is
@@ -1764,7 +1764,7 @@ The function takes up to three arguments, in this order:
 
 1. A string key that Hiera searches for in the hierarchy. **Required**.
 2. An optional default value to return if Hiera doesn't find anything matching the key.
-    * If this argument isn't provided and this function results in a lookup failure, Puppet
+    * If this argument isn't provided and this function results in a lookup failure, OpenVox
     fails with a compilation error.
 3. The optional name of an arbitrary
 [hierarchy level](https://puppet.com/docs/hiera/latest/hierarchy.html) to insert at the
@@ -1807,7 +1807,7 @@ $users = hiera('users', undef)
 ```
 
 You can optionally generate the default value with a
-[lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html) that
+[lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html) that
 takes one parameter.
 
 ```puppet
@@ -1825,9 +1825,9 @@ The returned value's data type depends on the types of the results. In the examp
 above, Hiera matches the 'users' key and returns it as a hash.
 
 See
-[the 'Using the lookup function' documentation](https://puppet.com/docs/puppet/latest/hiera_automatic.html) for how to perform lookup of data.
+[the 'Using the lookup function' documentation](https://docs.openvoxproject.org/openvox/latest/hiera_automatic.html) for how to perform lookup of data.
 Also see
-[the 'Using the deprecated hiera functions' documentation](https://puppet.com/docs/puppet/latest/hiera_automatic.html)
+[the 'Using the deprecated hiera functions' documentation](https://docs.openvoxproject.org/openvox/latest/hiera_automatic.html)
 for more information about the Hiera 3 functions.
 
 
@@ -1849,7 +1849,7 @@ The `hiera_array` function takes up to three arguments, in this order:
 
 1. A string key that Hiera searches for in the hierarchy. **Required**.
 2. An optional default value to return if Hiera doesn't find anything matching the key.
-    * If this argument isn't provided and this function results in a lookup failure, Puppet
+    * If this argument isn't provided and this function results in a lookup failure, OpenVox
     fails with a compilation error.
 3. The optional name of an arbitrary
 [hierarchy level](https://puppet.com/docs/hiera/latest/hierarchy.html) to insert at the
@@ -1879,7 +1879,7 @@ $allusers = hiera_array('users', undef)
 ```
 
 You can optionally generate the default value with a
-[lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html) that
+[lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html) that
 takes one parameter.
 
 ```puppet
@@ -1893,12 +1893,12 @@ $allusers = hiera_array('users') | $key | { "Key \'${key}\' not found" }
 ```
 
 `hiera_array` expects that all values returned will be strings or arrays. If any matched
-value is a hash, Puppet raises a type mismatch error.
+value is a hash, OpenVox raises a type mismatch error.
 
 See
-[the 'Using the lookup function' documentation](https://puppet.com/docs/puppet/latest/hiera_automatic.html) for how to perform lookup of data.
+[the 'Using the lookup function' documentation](https://docs.openvoxproject.org/openvox/latest/hiera_automatic.html) for how to perform lookup of data.
 Also see
-[the 'Using the deprecated hiera functions' documentation](https://puppet.com/docs/puppet/latest/hiera_automatic.html)
+[the 'Using the deprecated hiera functions' documentation](https://docs.openvoxproject.org/openvox/latest/hiera_automatic.html)
 for more information about the Hiera 3 functions.
 
 
@@ -1925,7 +1925,7 @@ The `hiera_hash` function takes up to three arguments, in this order:
 
 1. A string key that Hiera searches for in the hierarchy. **Required**.
 2. An optional default value to return if Hiera doesn't find anything matching the key.
-    * If this argument isn't provided and this function results in a lookup failure, Puppet
+    * If this argument isn't provided and this function results in a lookup failure, OpenVox
     fails with a compilation error.
 3. The optional name of an arbitrary
 [hierarchy level](https://puppet.com/docs/hiera/latest/hierarchy.html) to insert at the
@@ -1960,7 +1960,7 @@ $allusers = hiera_hash('users', undef)
 ```
 
 You can optionally generate the default value with a
-[lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html) that
+[lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html) that
 takes one parameter.
 
 ```puppet
@@ -1975,12 +1975,12 @@ $allusers = hiera_hash('users') | $key | { "Key \'${key}\' not found" }
 ```
 
 `hiera_hash` expects that all values returned will be hashes. If any of the values
-found in the data sources are strings or arrays, Puppet raises a type mismatch error.
+found in the data sources are strings or arrays, OpenVox raises a type mismatch error.
 
 See
-[the 'Using the lookup function' documentation](https://puppet.com/docs/puppet/latest/hiera_automatic.html) for how to perform lookup of data.
+[the 'Using the lookup function' documentation](https://docs.openvoxproject.org/openvox/latest/hiera_automatic.html) for how to perform lookup of data.
 Also see
-[the 'Using the deprecated hiera functions' documentation](https://puppet.com/docs/puppet/latest/hiera_automatic.html)
+[the 'Using the deprecated hiera functions' documentation](https://docs.openvoxproject.org/openvox/latest/hiera_automatic.html)
 for more information about the Hiera 3 functions.
 
 
@@ -2015,7 +2015,7 @@ The function takes up to three arguments, in this order:
 
 1. A string key that Hiera searches for in the hierarchy. **Required**.
 2. An optional default value to return if Hiera doesn't find anything matching the key.
-    * If this argument isn't provided and this function results in a lookup failure, Puppet
+    * If this argument isn't provided and this function results in a lookup failure, OpenVox
     fails with a compilation error.
 3. The optional name of an arbitrary
 [hierarchy level](https://puppet.com/docs/hiera/latest/hierarchy.html) to insert at the
@@ -2046,11 +2046,11 @@ to retrieve the `classes` array, so every node gets every class from the hierarc
 # In site.pp, outside of any node definitions and below any top-scope variables:
 hiera_include('classes', undef)
 
-# Puppet assigns the apache and apache::mod::php classes to the web01.example.com node.
+# OpenVox assigns the apache and apache::mod::php classes to the web01.example.com node.
 ```
 
 You can optionally generate the default value with a
-[lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html) that
+[lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html) that
 takes one parameter.
 
 ```puppet
@@ -2059,15 +2059,15 @@ takes one parameter.
 # In site.pp, outside of any node definitions and below any top-scope variables:
 hiera_include('classes') | $key | {"Key \'${key}\' not found" }
 
-# Puppet assigns the apache and apache::mod::php classes to the web01.example.com node.
+# OpenVox assigns the apache and apache::mod::php classes to the web01.example.com node.
 # If hiera_include couldn't match its key, it would return the lambda result,
 # "Key 'classes' not found".
 ```
 
 See
-[the 'Using the lookup function' documentation](https://puppet.com/docs/puppet/latest/hiera_automatic.html) for how to perform lookup of data.
+[the 'Using the lookup function' documentation](https://docs.openvoxproject.org/openvox/latest/hiera_automatic.html) for how to perform lookup of data.
 Also see
-[the 'Using the deprecated hiera functions' documentation](https://puppet.com/docs/puppet/latest/hiera_automatic.html)
+[the 'Using the deprecated hiera functions' documentation](https://docs.openvoxproject.org/openvox/latest/hiera_automatic.html)
 for more information about the Hiera 3 functions.
 
 
@@ -2076,7 +2076,7 @@ for more information about the Hiera 3 functions.
 ## `hocon_data`
 
 The `hocon_data` is a hiera 5 `data_hash` data provider function.
-See [the configuration guide documentation](https://puppet.com/docs/puppet/latest/hiera_config_yaml_5.html#configuring-a-hierarchy-level-built-in-backends) for
+See [the configuration guide documentation](https://docs.openvoxproject.org/openvox/latest/hiera_config_yaml_5.html#configuring-a-hierarchy-level-built-in-backends) for
 how to use this function.
 
 Note that this function is not supported without a hocon library being present.
@@ -2099,7 +2099,7 @@ names, or a comma-separated list of class names.
 
 The `include` function can be used multiple times on the same class and will
 only declare a given class once. If a class declared with `include` has any
-parameters, Puppet will automatically look up values for them in Hiera, using
+parameters, OpenVox will automatically look up values for them in Hiera, using
 `<class name>::<parameter name>` as the lookup key.
 
 Contrast this behavior with resource-like class declarations
@@ -2128,7 +2128,7 @@ the resource and relationship expressions.
 
 Returns the index (or key in a hash) to a first-found value in an `Iterable` value.
 
-When called with a  [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html)
+When called with a  [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html)
 the lambda is called repeatedly using each value in a data structure until the lambda returns a "truthy" value which
 makes the function return the index or key, or if the end of the iteration is reached, undef is returned.
 
@@ -2197,8 +2197,8 @@ notice $data.index('servers')      # notices 1
 notice $data.index('workstations') # notices undef (not matching case)
 ```
 
-For an general examples that demonstrates iteration, see the Puppet
-[iteration](https://puppet.com/docs/puppet/latest/lang_iteration.html)
+For an general examples that demonstrates iteration, see the OpenVox
+[iteration](https://docs.openvoxproject.org/openvox/latest/lang_iteration.html)
 documentation.
 
 
@@ -2249,12 +2249,12 @@ text result as a String.
 
 The first argument to this function should be a string containing an EPP
 template. In most cases, the last argument is optional; if used, it should be a
-[hash](https://puppet.com/docs/puppet/latest/lang_data_hash.html) that contains parameters to
+[hash](https://docs.openvoxproject.org/openvox/latest/lang_data_hash.html) that contains parameters to
 pass to the template.
 
-- See the [template](https://puppet.com/docs/puppet/latest/lang_template.html)
+- See the [template](https://docs.openvoxproject.org/openvox/latest/lang_template.html)
 documentation for general template usage information.
-- See the [EPP syntax](https://puppet.com/docs/puppet/latest/lang_template_epp.html)
+- See the [EPP syntax](https://docs.openvoxproject.org/openvox/latest/lang_template_epp.html)
 documentation for examples of EPP.
 
 For example, to evaluate an inline EPP template and pass it the `docroot` and
@@ -2263,16 +2263,16 @@ For example, to evaluate an inline EPP template and pass it the `docroot` and
 `inline_epp('docroot: <%= $docroot %> Virtual docroot: <%= $virtual_docroot %>',
 { 'docroot' => '/var/www/html', 'virtual_docroot' => '/var/www/example' })`
 
-Puppet produces a syntax error if you pass more parameters than are declared in
+OpenVox produces a syntax error if you pass more parameters than are declared in
 the template's parameter tag. When passing parameters to a template that
 contains a parameter tag, use the same names as the tag's declared parameters.
 
 Parameters are required only if they are declared in the called template's
-parameter tag without default values. Puppet produces an error if the
+parameter tag without default values. OpenVox produces an error if the
 `inline_epp` function fails to pass any required parameter.
 
 An inline EPP template should be written as a single-quoted string or
-[heredoc](https://puppet.com/docs/puppet/latest/lang_data_string.html#heredocs).
+[heredoc](https://docs.openvoxproject.org/openvox/latest/lang_data_string.html#heredocs).
 A double-quoted string is subject to expression interpolation before the string
 is parsed as an EPP template.
 
@@ -2293,7 +2293,7 @@ END
 ## `inline_template`
 
 Evaluate a template string and return its value.  See
-[the templating docs](https://puppet.com/docs/puppet/latest/lang_template.html) for
+[the templating docs](https://docs.openvoxproject.org/openvox/latest/lang_template.html) for
 more information. Note that if multiple template strings are specified, their
 output is all concatenated and returned as the output of the function.
 
@@ -2346,7 +2346,7 @@ see the `new` function for `String` and its formatting options for `Array` and `
 ## `json_data`
 
 The `json_data` is a hiera 5 `data_hash` data provider function.
-See [the configuration guide documentation](https://puppet.com/docs/puppet/latest/hiera_config_yaml_5.html#configuring-a-hierarchy-level-built-in-backends) for
+See [the configuration guide documentation](https://docs.openvoxproject.org/openvox/latest/hiera_config_yaml_5.html#configuring-a-hierarchy-level-built-in-backends) for
 how to use this function.
 
 
@@ -2402,7 +2402,7 @@ Signature 3
 
 ## `lest`
 
-Calls a [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html)
+Calls a [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html)
 without arguments if the value given to `lest` is `undef`.
 Returns the result of calling the lambda if the argument is `undef`, otherwise the
 given argument.
@@ -2444,12 +2444,12 @@ Would notice the value `20`
 
 ## `lookup`
 
-Uses the Puppet lookup system to retrieve a value for a given key. By default,
+Uses the OpenVox lookup system to retrieve a value for a given key. By default,
 this returns the first value found (and fails compilation if no values are
 available), but you can configure it to merge multiple values into one, fail
 gracefully, and more.
 
-When looking up a key, Puppet will search up to three tiers of data, in the
+When looking up a key, OpenVox will search up to three tiers of data, in the
 following order:
 
 1. Hiera.
@@ -2471,22 +2471,22 @@ Arguments in `[square brackets]` are optional.
 The arguments accepted by `lookup` are as follows:
 
 1. `<NAME>` (string or array) --- The name of the key to look up.
-    * This can also be an array of keys. If Puppet doesn't find anything for the
+    * This can also be an array of keys. If OpenVox doesn't find anything for the
     first key, it will try again with the subsequent ones, only resorting to a
     default value if none of them succeed.
 2. `<VALUE TYPE>` (data type) --- A
-[data type](https://puppet.com/docs/puppet/latest/lang_data_type.html)
+[data type](https://docs.openvoxproject.org/openvox/latest/lang_data_type.html)
 that must match the retrieved value; if not, the lookup (and catalog
 compilation) will fail. Defaults to `Data` (accepts any normal value).
 3. `<MERGE BEHAVIOR>` (string or hash; see **"Merge Behaviors"** below) ---
 Whether (and how) to combine multiple values. If present, this overrides any
-merge behavior specified in the data sources. Defaults to no value; Puppet will
+merge behavior specified in the data sources. Defaults to no value; OpenVox will
 use merge behavior from the data sources if present, and will otherwise do a
 first-found lookup.
 4. `<DEFAULT VALUE>` (any normal value) --- If present, `lookup` returns this
 when it can't find a normal value. Default values are never merged with found
 values. Like a normal value, the default must match the value type. Defaults to
-no value; if Puppet can't find a normal value, the lookup (and compilation) will
+no value; if OpenVox can't find a normal value, the lookup (and compilation) will
 fail.
 5. `<OPTIONS HASH>` (hash) --- Alternate way to set the arguments above, plus
 some less-common extra options. If you pass an options hash, you can't combine
@@ -2498,24 +2498,24 @@ following keys:
     * `'merge'` --- Same as `<MERGE BEHAVIOR>` (argument 3).
     * `'default_value'` --- Same as `<DEFAULT VALUE>` (argument 4).
     * `'default_values_hash'` (hash) --- A hash of lookup keys and default
-    values. If Puppet can't find a normal value, it will check this hash for the
+    values. If OpenVox can't find a normal value, it will check this hash for the
     requested key before giving up. You can combine this with `default_value` or
     a lambda, which will be used if the key isn't present in this hash. Defaults
     to an empty hash.
-    * `'override'` (hash) --- A hash of lookup keys and override values. Puppet
+    * `'override'` (hash) --- A hash of lookup keys and override values. OpenVox
     will check for the requested key in the overrides hash _first;_ if found, it
     returns that value as the _final_ value, ignoring merge behavior. Defaults
     to an empty hash.
 
 Finally, `lookup` can take a lambda, which must accept a single parameter.
 This is yet another way to set a default value for the lookup; if no results are
-found, Puppet will pass the requested key to the lambda and use its result as
+found, OpenVox will pass the requested key to the lambda and use its result as
 the default value.
 
 ### Merge Behaviors
 
-Puppet lookup uses a hierarchy of data sources, and a given key might have
-values in multiple sources. By default, Puppet returns the first value it finds,
+OpenVox lookup uses a hierarchy of data sources, and a given key might have
+values in multiple sources. By default, OpenVox returns the first value it finds,
 but it can also continue searching and merge all the values together.
 
 > **Note:** Data sources can use the special `lookup_options` metadata key to
@@ -2524,17 +2524,17 @@ requested behavior unless you explicitly specify one.
 
 The valid merge behaviors are:
 
-* `'first'` --- Returns the first value found, with no merging. Puppet lookup's
+* `'first'` --- Returns the first value found, with no merging. OpenVox lookup's
 default behavior.
 * `'unique'` (called "array merge" in classic Hiera) --- Combines any number of
 arrays and scalar values to return a merged, flattened array with all duplicate
 values removed. The lookup will fail if any hash values are found.
 * `'hash'` --- Combines the keys and values of any number of hashes to return a
-merged hash. If the same key exists in multiple source hashes, Puppet will use
+merged hash. If the same key exists in multiple source hashes, OpenVox will use
 the value from the highest-priority data source; it won't recursively merge the
 values.
 * `'deep'` --- Combines the keys and values of any number of hashes to return a
-merged hash. If the same key exists in multiple source hashes, Puppet will
+merged hash. If the same key exists in multiple source hashes, OpenVox will
 recursively merge hash or array values (with duplicate values removed from
 arrays). For conflicting scalar values, the highest-priority value will win.
 * `{'strategy' => 'first'}`, `{'strategy' => 'unique'}`,
@@ -2612,7 +2612,7 @@ Signature 3
 
 ## `map`
 
-Applies a [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html)
+Applies a [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html)
 to every value in a data structure and returns an array containing the results.
 
 This function takes two mandatory arguments, in this order:
@@ -2627,7 +2627,7 @@ or
 
 `$transformed_data = map($data) |$parameter| { <PUPPET CODE BLOCK> }`
 
-When the first argument (`$data` in the above example) is an array, Puppet passes each
+When the first argument (`$data` in the above example) is an array, OpenVox passes each
 value in turn to the lambda.
 
 ```puppet
@@ -2637,7 +2637,7 @@ $transformed_data = $data.map |$items| { $items * 10 }
 # $transformed_data contains [10,20,30]
 ```
 
-When the first argument is a hash, Puppet passes each key and value pair to the lambda
+When the first argument is a hash, OpenVox passes each key and value pair to the lambda
 as an array in the form `[key, value]`.
 
 ```puppet
@@ -2647,7 +2647,7 @@ $transformed_data = $data.map |$items| { $items[0] }
 # $transformed_data contains ['a','b','c']
 ```
 
-When the first argument is an array and the lambda has two parameters, Puppet passes the
+When the first argument is an array and the lambda has two parameters, OpenVox passes the
 array's indexes (enumerated from 0) in the first parameter and its values in the second
 parameter.
 
@@ -2658,7 +2658,7 @@ $transformed_data = $data.map |$index,$value| { $index }
 # $transformed_data contains [0,1,2]
 ```
 
-When the first argument is a hash, Puppet passes its keys to the first parameter and its
+When the first argument is a hash, OpenVox passes its keys to the first parameter and its
 values to the second parameter.
 
 ```puppet
@@ -4058,7 +4058,7 @@ reference; e.g.: `realize User[luke]`.
 
 ## `reduce`
 
-Applies a [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html)
+Applies a [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html)
 to every value in a data structure from the first argument, carrying over the returned
 value of each iteration, and returns the result of the lambda's final iteration. This
 lets you create a new value or data structure by combining values from the first
@@ -4087,16 +4087,16 @@ or
 
 `reduce($data, start) |$memo, $value| { ... }`
 
-When the first argument (`$data` in the above example) is an array, Puppet passes each
+When the first argument (`$data` in the above example) is an array, OpenVox passes each
 of the data structure's values in turn to the lambda's parameters. When the first
-argument is a hash, Puppet converts each of the hash's values to an array in the form
+argument is a hash, OpenVox converts each of the hash's values to an array in the form
 `[key, value]`.
 
-If you pass a start memo value, Puppet executes the lambda with the provided memo value
-and the data structure's first value. Otherwise, Puppet passes the structure's first two
+If you pass a start memo value, OpenVox executes the lambda with the provided memo value
+and the data structure's first value. Otherwise, OpenVox passes the structure's first two
 values to the lambda.
 
-Puppet calls the lambda for each of the data structure's remaining values. For each
+OpenVox calls the lambda for each of the data structure's remaining values. For each
 call, it passes the result of the previous call as the first parameter (`$memo` in the
 above examples) and the next value from the data structure as the second parameter
 (`$value`).
@@ -4191,7 +4191,7 @@ Performs regexp replacement on a string or array of strings.
 
 Signature 1
 
-`regsubst(Variant[Array[String],String] $target, String $pattern, Variant[String,Hash[String,String]] $replacement, Optional[Optional[Pattern[/^[GEIM]*$/]]] $flags, Optional[Enum['N','E','S','U']] $encoding)`
+`regsubst(Variant[Array[Variant[String,Sensitive[String]]],Sensitive[Array[Variant[String,Sensitive[String]]]],Variant[String,Sensitive[String]]] $target, String $pattern, Variant[String,Hash[String,String]] $replacement, Optional[Optional[Pattern[/^[GEIM]*$/]]] $flags)`
 
 ### Parameters
 
@@ -4213,8 +4213,6 @@ if pattern is a precompiled regexp):
   - *M*         Multiline regexps
   - *G*         Global replacement; all occurrences of the regexp in each target string will be replaced.  Without this, only the first occurrence will be replaced.
 
-* `encoding` --- Deprecated and ignored parameter, included only for compatibility.
-
 Return type(s): `Array[String]`, `String`. The result of the substitution. Result type is the same as for the target parameter.
 
 
@@ -4229,7 +4227,7 @@ $i3 = regsubst($ipaddress,'^(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)$','\\3')
 
 Signature 2
 
-`regsubst(Variant[Array[String],String] $target, Variant[Regexp,Type[Regexp]] $pattern, Variant[String,Hash[String,String]] $replacement, Optional[Pattern[/^G?$/]] $flags)`
+`regsubst(Variant[Array[Variant[String,Sensitive[String]]],Sensitive[Array[Variant[String,Sensitive[String]]]],Variant[String,Sensitive[String]]] $target, Variant[Regexp,Type[Regexp]] $pattern, Variant[String,Hash[String,String]] $replacement, Optional[Pattern[/^G?$/]] $flags)`
 
 ### Parameters
 
@@ -4315,7 +4313,7 @@ If a value is not given it defaults to `undef`
 ## `reverse_each`
 
 Reverses the order of the elements of something that is iterable and optionally runs a
-[lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html) for each
+[lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html) for each
 element.
 
 This function takes one to two arguments:
@@ -4346,20 +4344,20 @@ or
 $reverse_data = reverse_each($data)
 ```
 
-When no second argument is present, Puppet returns an `Iterable` that represents the reverse
+When no second argument is present, OpenVox returns an `Iterable` that represents the reverse
 order of its first argument. This allows methods on `Iterable` to be chained.
 
-When a lambda is given as the second argument, Puppet iterates the first argument in reverse
+When a lambda is given as the second argument, OpenVox iterates the first argument in reverse
 order and passes each value in turn to the lambda, then returns `undef`.
 
 ```puppet
-# Puppet will log a notice for each of the three items
+# OpenVox will log a notice for each of the three items
 # in $data in reverse order.
 $data = [1,2,3]
 $data.reverse_each |$item| { notice($item) }
 ```
 
-When no second argument is present, Puppet returns a new `Iterable` which allows it to
+When no second argument is present, OpenVox returns a new `Iterable` which allows it to
 be directly chained into another function that takes an `Iterable` as an argument.
 
 ```puppet
@@ -4444,7 +4442,7 @@ Signature 3
 
 Scans a string and returns an array of one or more converted values based on the given format string.
 See the documentation of Ruby's String#scanf method for details about the supported formats (which
-are similar but not identical to the formats used in Puppet's `sprintf` function.)
+are similar but not identical to the formats used in OpenVox's `sprintf` function.)
 
 This function takes two mandatory arguments: the first is the string to convert, and the second is
 the format string. The result of the scan is an array, with each successfully scanned and transformed value.
@@ -4671,7 +4669,7 @@ This statement produces a notice of `value is : 42`.
 
 ## `step`
 
-When no block is given, Puppet returns a new `Iterable` which allows it to be directly chained into
+When no block is given, OpenVox returns a new `Iterable` which allows it to be directly chained into
 another function that takes an `Iterable` as an argument.
 
 ```puppet
@@ -4967,7 +4965,7 @@ return their outputs concatenated into a single string.
 
 ## `then`
 
-Calls a [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html)
+Calls a [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html)
 with the given argument unless the argument is `undef`.
 Returns `undef` if the argument is `undef`, and otherwise the result of giving the
 argument to the lambda.
@@ -5034,7 +5032,7 @@ was not a String.
 
 ## `tree_each`
 
-Runs a [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html)
+Runs a [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html)
 recursively and repeatedly using values from a data structure, then returns the unchanged data structure, or if
 a lambda is not given, returns an `Iterator` for the tree.
 
@@ -5155,8 +5153,8 @@ Would notice `[[[1], {name => user2, status => active, id => 20}]]`, which can t
 further as each filtered result appears as a `Tuple` with `[path, value]`.
 
 
-For general examples that demonstrates iteration see the Puppet
-[iteration](https://puppet.com/docs/puppet/latest/lang_iteration.html)
+For general examples that demonstrates iteration see the OpenVox
+[iteration](https://docs.openvoxproject.org/openvox/latest/lang_iteration.html)
 documentation.
 
 
@@ -5449,7 +5447,7 @@ This function returns:
 * `0` if the versions are equal
 * `-1` if version a is less than version b
 
-This function uses the same version comparison algorithm used by Puppet's
+This function uses the same version comparison algorithm used by OpenVox's
 `package` type.
 
 
@@ -5471,11 +5469,11 @@ Return type(s): `Undef`.
 
 ## `with`
 
-Calls a [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html)
+Calls a [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html)
 with the given arguments and returns the result.
 
 Since a lambda's scope is
-[local](https://puppet.com/docs/puppet/latest/lang_lambdas.html#lambda-scope)
+[local](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html#lambda-scope)
 to the lambda, you can use the `with` function to create private blocks of code within a
 class using variables whose values cannot be accessed outside of the lambda.
 
@@ -5495,7 +5493,7 @@ $check_var = $x
 ## `yaml_data`
 
 The `yaml_data` is a hiera 5 `data_hash` data provider function.
-See [the configuration guide documentation](https://puppet.com/docs/puppet/latest/hiera_config_yaml_5.html#configuring-a-hierarchy-level-built-in-backends) for
+See [the configuration guide documentation](https://docs.openvoxproject.org/openvox/latest/hiera_config_yaml_5.html#configuring-a-hierarchy-level-built-in-backends) for
 how to use this function.
 
 

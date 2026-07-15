@@ -1,13 +1,13 @@
 ---
 layout: default
-built_from_commit: 812d7420ea5d7e19e8003b26486a7c8847afdb25
+built_from_commit: f7b1a950d990274b9f352eb7aa0cd93ee6067df1
 title: 'Resource Type: service'
 canonical: "/puppet/latest/types/service.html"
 ---
 
 # Resource Type: service
 
-> **NOTE:** This page was generated from the Puppet source code on 2024-10-18 17:23:49 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-07-14 18:42:41 +0000
 
 
 
@@ -22,24 +22,24 @@ canonical: "/puppet/latest/types/service.html"
 Manage running services.  Service support unfortunately varies
 widely by platform --- some platforms have very little if any concept of a
 running service, and some have a very codified and powerful concept.
-Puppet's service support is usually capable of doing the right thing, but
+OpenVox's service support is usually capable of doing the right thing, but
 the more information you can provide, the better behaviour you will get.
 
 Puppet 2.7 and newer expect init scripts to have a working status command.
 If this isn't the case for any of your services' init scripts, you will
 need to set `hasstatus` to false and possibly specify a custom status
-command in the `status` attribute. As a last resort, Puppet will attempt to
+command in the `status` attribute. As a last resort, OpenVox will attempt to
 search the process table by calling whatever command is listed in the `ps`
 fact. The default search pattern is the name of the service, but you can
 specify it with the `pattern` attribute.
 
 **Refresh:** `service` resources can respond to refresh events (via
 `notify`, `subscribe`, or the `~>` arrow). If a `service` receives an
-event from another resource, Puppet will restart the service it manages.
+event from another resource, OpenVox will restart the service it manages.
 The actual command used to restart the service depends on the platform and
 can be configured:
 
-* If you set `hasrestart` to true, Puppet will use the init script's restart command.
+* If you set `hasrestart` to true, OpenVox will use the init script's restart command.
 * You can provide an explicit command for restarting with the `restart` attribute.
 * If you do neither, the service's stop and start commands will be used.
 
@@ -65,7 +65,7 @@ can be configured:
   <a href="#service-attribute-status">status</a>        =&gt; <em># Specify a *status* command manually.  This...</em>
   <a href="#service-attribute-stop">stop</a>          =&gt; <em># Specify a *stop* command...</em>
   <a href="#service-attribute-timeout">timeout</a>       =&gt; <em># Specify an optional minimum timeout (in seconds) </em>
-  # ...plus any applicable <a href="https://puppet.com/docs/puppet/latest/metaparameter.html">metaparameters</a>.
+  # ...plus any applicable <a href="https://docs.openvoxproject.org/openvox/latest/metaparameter.html">metaparameters</a>.
 }</code></pre>
 
 
@@ -127,7 +127,7 @@ This property behaves differently depending on the platform;
 wherever possible, it relies on local tools to enable or disable
 a given service. Default values depend on the platform.
 
-If you don't specify a value for the `enable` attribute, Puppet leaves
+If you don't specify a value for the `enable` attribute, OpenVox leaves
 that aspect of the service alone and your operating system determines
 the behavior.
 
@@ -177,12 +177,12 @@ command. This attribute's default value changed in Puppet 2.7.0.
 The init script's status command must return 0 if the service is
 running and a nonzero value otherwise. Ideally, these exit codes
 should conform to [the LSB's specification][lsb-exit-codes] for init
-script status actions, but Puppet only considers the difference
+script status actions, but OpenVox only considers the difference
 between 0 and nonzero to be relevant.
 
 If a service's init script does not support any kind of status command,
 you should set `hasstatus` to false and either provide a specific
-command using the `status` attribute or expect that Puppet will look for
+command using the `status` attribute or expect that OpenVox will look for
 the service name in the process table. Be aware that 'virtual' init
 scripts (like 'network' under Red Hat systems) will respond poorly to
 refresh events from other resources if you override the default behavior
@@ -301,7 +301,7 @@ Specify a *status* command manually.  This command must
 return 0 if the service is running and a nonzero value otherwise.
 Ideally, these exit codes should conform to [the LSB's
 specification][lsb-exit-codes] for init script status actions, but
-Puppet only considers the difference between 0 and nonzero to be
+OpenVox only considers the difference between 0 and nonzero to be
 relevant.
 
 If left unspecified, the status of the service will be determined
@@ -448,7 +448,7 @@ This provider supports:
 * status
 * restart
 
-Here is how the Puppet states correspond to `launchd` states:
+Here is how the OpenVox states correspond to `launchd` states:
 
 * stopped --- job unloaded
 * started --- job loaded

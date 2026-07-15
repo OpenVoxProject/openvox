@@ -241,12 +241,6 @@ namespace :references do
   task :man do
     FileUtils.mkdir_p(MANDIR)
 
-    begin
-      require 'pandoc-ruby'
-    rescue LoadError
-      abort("Run `bundle config set with documentation` and `bundle update` to install the `pandoc-ruby` gem.")
-    end
-
     pandoc = %x{which pandoc}.chomp
     unless File.executable?(pandoc)
       abort("Please install the `pandoc` package.")
@@ -309,7 +303,7 @@ namespace :references do
       app = File.basename(f).delete_prefix('puppet-').delete_suffix(".8")
 
       body =
-        PandocRuby.convert([f], from: :man, to: :markdown)
+        %x{#{pandoc} --from man --to markdown #{f}}
         .gsub(/#(.*?)\n/, '##\1')
         .gsub(/:\s\s\s\n\n```\{=html\}\n<!--\s-->\n```/, '')
         .gsub(/\n:\s\s\s\s/, '')
@@ -319,7 +313,7 @@ namespace :references do
         sha: sha,
         now: now,
         title: "Man Page: puppet #{app}",
-        canonical: "/puppet/latest/man/#{app}.html",
+        canonical: "/openvox/latest/man/#{app}.html",
         body: body
       }
 
@@ -393,7 +387,7 @@ namespace :references do
           type: type,
           sha: sha,
           now: now,
-          canonical: "/puppet/latest/types/#{type}.html",
+          canonical: "/openvox/latest/types/#{type}.html",
           body: render_resource_type(type, type_data[type])
         }
 

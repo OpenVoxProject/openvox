@@ -19,7 +19,7 @@ Puppet::Type.type(:package).provide :pkgdmg, :parent => Puppet::Provider::Packag
 
     This provider works by checking the contents of a DMG image for Apple pkg or
     mpkg files. Any number of pkg or mpkg files may exist in the root directory
-    of the DMG file system, and Puppet will install all of them. Subdirectories
+    of the DMG file system, and OpenVox will install all of them. Subdirectories
     are not checked for packages.
 
     This provider can also accept plain .pkg (but not .mpkg) files in addition
@@ -32,7 +32,7 @@ Puppet::Type.type(:package).provide :pkgdmg, :parent => Puppet::Provider::Packag
     * The `name` of the resource must be the filename (without path) of the DMG file.
     * When installing the packages from a DMG, this provider writes a file to
       disk at `/var/db/.puppet_pkgdmg_installed_NAME`. If that file is present,
-      Puppet assumes all packages from that DMG are already installed.
+      OpenVox assumes all packages from that DMG are already installed.
     * This provider is not versionable and uses DMG filenames to determine
       whether a package has been installed. Thus, to install new a version of a
       package, you must create a new DMG with a different filename."

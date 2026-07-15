@@ -202,7 +202,7 @@ class Puppet::SSL::CertificateRequest < Puppet::SSL::Base
 
   private
 
-  # Exclude OIDs that may conflict with how Puppet creates CSRs.
+  # Exclude OIDs that may conflict with how OpenVox creates CSRs.
   #
   # We only have nominal support for Microsoft extension requests, but since we
   # ultimately respect that field when looking for extension requests in a CSR

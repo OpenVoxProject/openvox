@@ -74,18 +74,18 @@ module Puppet
     :confdir => {
         :default  => nil,
         :type     => :directory,
-        :desc     => "The main Puppet configuration directory.  The default for this setting
+        :desc     => "The main OpenVox configuration directory.  The default for this setting
           is calculated based on the user.  If the process is running as root or
-          the user that Puppet is supposed to run as, it defaults to a system
+          the user that OpenVox is supposed to run as, it defaults to a system
           directory, but if it's running as any other user, it defaults to being
           in the user's home directory.",
     },
     :codedir => {
         :default  => nil,
         :type     => :directory,
-        :desc     => "The main Puppet code directory.  The default for this setting
+        :desc     => "The main OpenVox code directory.  The default for this setting
           is calculated based on the user.  If the process is running as root or
-          the user that Puppet is supposed to run as, it defaults to a system
+          the user that OpenVox is supposed to run as, it defaults to a system
           directory, but if it's running as any other user, it defaults to being
           in the user's home directory.",
     },
@@ -94,7 +94,7 @@ module Puppet
         :type     => :directory,
         :owner    => "service",
         :group    => "service",
-        :desc     => "Where Puppet stores dynamic and growing data.  The default for this
+        :desc     => "Where OpenVox stores dynamic and growing data.  The default for this
           setting is calculated specially, like `confdir`_.",
     },
 
@@ -120,7 +120,7 @@ module Puppet
       :default    => 'notice',
       :type       => :enum,
       :values     => %w[debug info notice warning err alert emerg crit],
-      :desc       => "Default logging level for messages from Puppet. Allowed values are:
+      :desc       => "Default logging level for messages from OpenVox. Allowed values are:
 
         * debug
         * info
@@ -138,10 +138,10 @@ module Puppet
       :default => [],
       :type    => :array,
       :desc    => "A comma-separated list of warning types to suppress. If large numbers
-        of warnings are making Puppet's logs too large or difficult to use, you
+        of warnings are making OpenVox's logs too large or difficult to use, you
         can temporarily silence them with this setting.
 
-        If you are preparing to upgrade Puppet to a new major version, you
+        If you are preparing to upgrade OpenVox to a new major version, you
         should re-enable all warnings for a while.
 
         Valid values for this setting are:
@@ -182,7 +182,7 @@ module Puppet
       :default    => :error,
       :type       => :symbolic_enum,
       :values     => [:off, :warning, :error],
-      :desc       => "The strictness level of puppet. Allowed values are:
+      :desc       => "The strictness level of OpenVox. Allowed values are:
 
         * off     - do not perform extra validation, do not report
         * warning - perform extra validation, report as warning
@@ -205,7 +205,7 @@ module Puppet
     :disable_i18n => {
       :default => true,
       :type    => :boolean,
-      :desc    => "If true, turns off all translations of Puppet and module
+      :desc    => "If true, turns off all translations of OpenVox and module
         log messages, which affects error, warning, and info log messages,
         as well as any translations in the report and CLI.",
       :hook    => proc do |value|
@@ -224,7 +224,7 @@ module Puppet
       :desc    => "The scheduling priority of the process.  Valid values are 'high',
         'normal', 'low', or 'idle', which are mapped to platform-specific
         values.  The priority can also be specified as an integer value and
-        will be passed as is, e.g. -5.  Puppet must be running as a privileged
+        will be passed as is, e.g. -5.  OpenVox must be running as a privileged
         user in order to increase scheduling priority.",
     },
     :trace => {
@@ -233,7 +233,7 @@ module Puppet
         :desc     => "Whether to print stack traces on some errors. Will print
           internal Ruby stack trace interleaved with Puppet function frames.",
         :hook     => proc do |value|
-          # Enable or disable Facter's trace option too
+          # Enable or disable OpenFact's trace option too
           Puppet.runtime[:facter].trace(value)
         end
     },
@@ -258,8 +258,8 @@ module Puppet
     :static_catalogs => {
       :default    => true,
       :type       => :boolean,
-      :desc       => "Whether to compile a [static catalog](https://puppet.com/docs/puppet/latest/static_catalogs.html#enabling-or-disabling-static-catalogs),
-        which occurs only on Puppet Server when the `code-id-command` and
+      :desc       => "Whether to compile a [static catalog](https://docs.openvoxproject.org/openvox/latest/static_catalogs.html#enabling-or-disabling-static-catalogs),
+        which occurs only on OpenVox Server when the `code-id-command` and
         `code-content-command` settings are configured in its `puppetserver.conf` file.",
     },
     :settings_catalog => {
@@ -289,7 +289,7 @@ module Puppet
         :default  => "$vardir/state",
         :type     => :directory,
         :mode     => "01755",
-        :desc     => "The directory where Puppet state is stored.  Generally,
+        :desc     => "The directory where OpenVox state is stored.  Generally,
           this directory can be removed without causing harm (although it
           might result in spurious service restarts)."
     },
@@ -299,12 +299,12 @@ module Puppet
       :mode     => "0755",
       :owner    => "service",
       :group    => "service",
-      :desc     => "Where Puppet PID files are kept."
+      :desc     => "Where OpenVox PID files are kept."
     },
     :genconfig => {
         :default  => false,
         :type     => :boolean,
-        :desc     => "When true, causes Puppet applications to print an example config file
+        :desc     => "When true, causes OpenVox applications to print an example config file
           to stdout and exit. The example will include descriptions of each
           setting, and the current (or default) value of each setting,
           incorporating any settings overridden on the CLI (with the exception
@@ -332,7 +332,7 @@ module Puppet
     :manage_internal_file_permissions => {
         :default  => ! Puppet::Util::Platform.windows?,
         :type     => :boolean,
-        :desc     => "Whether Puppet should manage the owner, group, and mode of files it uses internally.
+        :desc     => "Whether OpenVox should manage the owner, group, and mode of files it uses internally.
           **Note**: For Windows agents, the default is `false` for versions 4.10.13 and greater, versions 5.5.6 and greater, and versions 6.0 and greater.",
     },
     :onetime => {
@@ -366,18 +366,18 @@ module Puppet
     :libdir => {
         :type           => :directory,
         :default        => "$vardir/lib",
-        :desc           => "An extra search path for Puppet.  This is only useful
-          for those files that Puppet will load on demand, and is only
+        :desc           => "An extra search path for OpenVox.  This is only useful
+          for those files that OpenVox will load on demand, and is only
           guaranteed to work for those cases.  In fact, the autoload
           mechanism is responsible for making sure this directory
           is in Ruby's search path\n"
     },
     :environment => {
         :default  => "production",
-        :desc     => "The environment in which Puppet is running. For clients,
+        :desc     => "The environment in which OpenVox is running. For clients,
           such as `puppet agent`, this determines the environment itself, which
-          Puppet uses to find modules and much more. For servers, such as `puppet server`,
-          this provides the default environment for nodes that Puppet knows nothing about.
+          OpenVox uses to find modules and much more. For servers, such as `puppet server`,
+          this provides the default environment for nodes that OpenVox knows nothing about.
 
           When defining an environment in the `[agent]` section, this refers to the
           environment that the agent requests from the primary server. The environment doesn't
@@ -385,13 +385,13 @@ module Puppet
           primary server. This definition is used when running `puppet agent`.
 
           When defined in the `[user]` section, the environment refers to the path that
-          Puppet uses to search for code and modules related to its execution. This
+          OpenVox uses to search for code and modules related to its execution. This
           requires the environment to exist locally on the filesystem where puppet is
-          being executed. Puppet subcommands, including `puppet module` and
+          being executed. OpenVox subcommands, including `puppet module` and
           `puppet apply`, use this definition.
 
           Given that the context and effects vary depending on the
-          [config section](https://puppet.com/docs/puppet/latest/config_file_main.html#config-sections)
+          [config section](https://docs.openvoxproject.org/openvox/latest/config_file_main.html#config-sections)
           in which the `environment` setting is defined, do not set it globally.",
         :short    => "E"
     },
@@ -403,7 +403,7 @@ module Puppet
 
         This setting must have a value set to enable **directory environments.** The
         recommended value is `$codedir/environments`. For more details, see
-        <https://puppet.com/docs/puppet/latest/environments_about.html>",
+        <https://docs.openvoxproject.org/openvox/latest/environments_about.html>",
       :type    => :path,
     },
     :report_configured_environmentpath => {
@@ -411,7 +411,7 @@ module Puppet
       :default  => true,
       :desc     => <<-'EOT'
       Specifies how environment paths are reported. When the value of
-      `versioned_environment_dirs` is `true`, Puppet applies the readlink function to
+      `versioned_environment_dirs` is `true`, OpenVox applies the readlink function to
       the `environmentpath` setting when constructing the environment's modulepath. The
       full readlinked path is referred to as the "resolved path," and the configured
       path potentially containing symlinks is the "configured path." When reporting
@@ -425,7 +425,7 @@ module Puppet
       :type     => :boolean,
       :default  => true,
       :desc     => <<-'EOT'
-      Puppet saves both the initial and converged environment in the last_run_summary file.
+      OpenVox saves both the initial and converged environment in the last_run_summary file.
       If they differ, and this setting is set to true, we will use the last converged
       environment and skip the node request.
 
@@ -436,7 +436,7 @@ module Puppet
         :type     => :boolean,
         :default  => true,
         :desc     => <<-'EOT'
-        Affects how we cache attempts to load Puppet resource types and features.  If
+        Affects how we cache attempts to load OpenVox resource types and features.  If
         true, then calls to `Puppet.type.<type>?` `Puppet.feature.<feature>?`
         will always attempt to load the type or feature (which can be an
         expensive operation) unless it has already been loaded successfully.
@@ -461,16 +461,16 @@ module Puppet
     :diff => {
       :default => (Puppet::Util::Platform.windows? ? "" : "diff"),
       :desc    => "Which diff command to use when printing differences between files. This setting
-          has no default value on Windows, as standard `diff` is not available, but Puppet can use many
+          has no default value on Windows, as standard `diff` is not available, but OpenVox can use many
           third-party diff tools.",
     },
     :show_diff => {
         :type     => :boolean,
         :default  => false,
         :desc     => "Whether to log and report a contextual diff when files are being replaced.
-          This causes partial file contents to pass through Puppet's normal
+          This causes partial file contents to pass through OpenVox's normal
           logging and reporting system, so this setting should be used with
-          caution if you are sending Puppet's reports to an insecure
+          caution if you are sending OpenVox's reports to an insecure
           destination. This feature currently requires the `diff/lcs` Ruby
           library.",
     },
@@ -478,7 +478,7 @@ module Puppet
         :type     => :boolean,
         :default  => !Puppet::Util::Platform.windows?,
         :desc     => "Whether to send the process into the background.  This defaults
-          to true on POSIX systems, and to false on Windows (where Puppet
+          to true on POSIX systems, and to false on Windows (where OpenVox
           currently cannot daemonize).",
         :short    => "D",
         :hook     => proc do |value|
@@ -506,25 +506,23 @@ module Puppet
       :desc       => <<-'EOT',
         Which node data plugin to use when compiling node catalogs.
 
-        When Puppet compiles a catalog, it combines two primary sources of info: the main manifest,
+        When OpenVox compiles a catalog, it combines two primary sources of info: the main manifest,
         and a node data plugin (often called a "node terminus," for historical reasons). Node data
         plugins provide three things for a given node name:
 
         1. A list of classes to add to that node's catalog (and, optionally, values for their
            parameters).
-        2. Which Puppet environment the node should use.
+        2. Which environment the node should use.
         3. A list of additional top-scope variables to set.
 
         The three main node data plugins are:
 
         * `plain` --- Returns no data, so that the main manifest controls all node configuration.
         * `exec` --- Uses an
-          [external node classifier (ENC)](https://puppet.com/docs/puppet/latest/nodes_external.html),
+          [external node classifier (ENC)](https://docs.openvoxproject.org/openvox/latest/nodes_external.html),
           configured by the `external_nodes` setting. This lets you pull a list of Puppet classes
           from any external system, using a small glue script to perform the request and format the
           result as YAML.
-        * `classifier` (formerly `console`) --- Specific to Puppet Enterprise. Uses the PE console
-          for node data."
       EOT
     },
     :node_cache_terminus => {
@@ -566,12 +564,12 @@ module Puppet
         config = File.expand_path(File.join(settings[:confdir], 'hiera.yaml')) if config.nil?
         config
       end,
-      :desc    => "The hiera configuration file. Puppet only reads this file on startup, so you must restart the puppet server every time you edit it.",
+      :desc    => "The hiera configuration file. OpenVox only reads this file on startup, so you must restart the OpenVox server every time you edit it.",
       :type    => :file,
     },
     :binder_config => {
       :default => nil,
-      :desc    => "The binder configuration file. Puppet reads this file on each request to configure the bindings system.
+      :desc    => "The binder configuration file. OpenVox reads this file on each request to configure the bindings system.
       If set to nil (the default), a $confdir/binder_config.yaml is optionally loaded. If it does not exists, a default configuration
       is used. If the setting :binding_config is specified, it must reference a valid and existing yaml file.",
       :type => :file,
@@ -685,28 +683,28 @@ module Puppet
       :default    => "15s",
       :type       => :duration,
       :desc       => "The minimum time to wait between checking for updates in
-      configuration files.  This timeout determines how quickly Puppet checks whether
+      configuration files.  This timeout determines how quickly OpenVox checks whether
       a file (such as manifests or puppet.conf) has changed on disk. To reparse files
-      within an environment in Puppet Server please use the environment_cache endpoint",
+      within an environment in OpenVox Server please use the environment_cache endpoint",
     },
     :environment_timeout => {
       :default    => "0",
       :type       => :ttl,
-      :desc       => "How long the Puppet server should cache data it loads from an
+      :desc       => "How long the OpenVox server should cache data it loads from an
       environment.
 
       A value of `0` will disable caching. This setting can also be set to
       `unlimited`, which will cache environments until the server is restarted
-      or told to refresh the cache. All other values will result in Puppet
+      or told to refresh the cache. All other values will result in the OpenVox
       server evicting environments that haven't been used within the last
       `environment_timeout` seconds.
 
-      You should change this setting once your Puppet deployment is doing
+      You should change this setting once your OpenVox deployment is doing
       non-trivial work. We chose the default value of `0` because it lets new
       users update their code without any extra steps, but it lowers the
-      performance of your Puppet server. We recommend either:
+      performance of your OpenVox server. We recommend either:
 
-      * Setting this to `unlimited` and explicitly refreshing your Puppet server
+      * Setting this to `unlimited` and explicitly refreshing your OpenVox server
         as part of your code deployment process.
 
       * Setting this to a number that will keep your most actively used
@@ -715,9 +713,9 @@ module Puppet
         value.
 
       Once you set `environment_timeout` to a non-zero value, you need to tell
-      Puppet server to read new code from disk using the `environment-cache` API
-      endpoint after you deploy new code. See the docs for the Puppet Server
-      [administrative API](https://puppet.com/docs/puppetserver/latest/admin-api/v1/environment-cache.html).
+      the OpenVox server to read new code from disk using the `environment-cache` API
+      endpoint after you deploy new code. See the docs for the OpenVox Server
+      [administrative API](https://docs.openvoxproject.org/openvox-server/latest/admin-api/v1/environment-cache.html).
       "
     },
     :environment_data_provider => {
@@ -737,12 +735,12 @@ module Puppet
     :prerun_command => {
       :default    => "",
       :desc       => "A command to run before every agent run.  If this command returns a non-zero
-      return code, the entire Puppet run will fail.",
+      return code, the entire OpenVox run will fail.",
     },
     :postrun_command => {
       :default    => "",
       :desc       => "A command to run after every agent run.  If this command returns a non-zero
-      return code, the entire Puppet run will be considered to have failed, even though it might have
+      return code, the entire OpenVox run will be considered to have failed, even though it might have
       performed work during the normal run.",
     },
     :freeze_main => {
@@ -763,8 +761,8 @@ module Puppet
     :location_trusted => {
       :default => false,
       :type => :boolean,
-      :desc => "This will allow sending the name + password and the cookie header to all hosts that puppet may redirect to.
-        This may or may not introduce a security breach if puppet redirects you to a site to which you'll send your authentication info and cookies."
+      :desc => "This will allow sending the name + password and the cookie header to all hosts that OpenVox may redirect to.
+        This may or may not introduce a security breach if OpenVox redirects you to a site to which you'll send your authentication info and cookies."
     }
   )
 
@@ -794,19 +792,19 @@ module Puppet
     :certname => {
       :default => -> { Puppet::Settings.default_certname.downcase },
       :desc => "The name to use when handling certificates. When a node
-        requests a certificate from the CA Puppet Server, it uses the value of the
+        requests a certificate from the CA OpenVox Server, it uses the value of the
         `certname` setting as its requested Subject CN.
 
         This is the name used when managing a node's permissions in
-        Puppet Server's [auth.conf](https://puppet.com/docs/puppetserver/latest/config_file_auth.html).
+        OpenVox Server's [auth.conf](https://docs.openvoxproject.org/openvox-server/latest/config_file_auth.html).
         In most cases, it is also used as the node's name when matching
-        [node definitions](https://puppet.com/docs/puppet/latest/lang_node_definitions.html)
+        [node definitions](https://docs.openvoxproject.org/openvox/latest/lang_node_definitions.html)
         and requesting data from an ENC. (This can be changed with the `node_name_value`
         and `node_name_fact` settings, although you should only do so if you have
         a compelling reason.)
 
         A node's certname is available in Puppet manifests as `$trusted['certname']`. (See
-        [Facts and Built-In Variables](https://puppet.com/docs/puppet/latest/lang_facts_and_builtin_vars.html)
+        [Facts and Built-In Variables](https://docs.openvoxproject.org/openvox/latest/lang_facts_and_builtin_vars.html)
         for more details.)
 
         * For best compatibility, you should limit the value of `certname` to
@@ -825,17 +823,17 @@ module Puppet
     :dns_alt_names => {
       :default => '',
       :desc    => <<EOT,
-A comma-separated list of alternate DNS names for Puppet Server. These are extra
+A comma-separated list of alternate DNS names for OpenVox Server. These are extra
 hostnames (in addition to its `certname`) that the server is allowed to use when
-serving agents. Puppet checks this setting when automatically creating a
-certificate for Puppet agent or Puppet Server. These can be either IP or DNS, and the type
+serving agents. OpenVox checks this setting when automatically creating a
+certificate for the OpenVox agent or OpenVox Server. These can be either IP or DNS, and the type
 should be specified and followed with a colon. Untyped inputs will default to DNS.
 
 In order to handle agent requests at a given hostname (like
-"puppet.example.com"), Puppet Server needs a certificate that proves it's
+"puppet.example.com"), OpenVox Server needs a certificate that proves it's
 allowed to use that name; if a server shows a certificate that doesn't include
-its hostname, Puppet agents will refuse to trust it. If you use a single
-hostname for Puppet traffic but load-balance it to multiple Puppet Servers, each
+its hostname, OpenVox agents will refuse to trust it. If you use a single
+hostname for OpenVox traffic but load-balance it to multiple OpenVox Servers, each
 of those servers needs to include the official hostname in its list of extra
 names.
 
@@ -843,12 +841,12 @@ names.
 certificate is signed. If you need to change the list later, you can't just
 change this setting; you also need to regenerate the certificate. For more
 information on that process, see the 
-[cert regen docs](https://puppet.com/docs/puppet/latest/ssl_regenerate_certificates.html).
+[cert regen docs](https://docs.openvoxproject.org/openvox/latest/ssl_regenerate_certificates.html).
 
 To see all the alternate names your servers are using, log into your CA server
 and run `puppetserver ca list --all`, then check the output for `(alt names: ...)`.
 Most agent nodes should NOT have alternate names; the only certs that should
-have them are Puppet Server nodes that you want other agents to trust.
+have them are OpenVox Server nodes that you want other agents to trust.
 EOT
     },
     :csr_attributes => {
@@ -857,7 +855,7 @@ EOT
       :desc => <<EOT
 An optional file containing custom attributes to add to certificate signing
 requests (CSRs). You should ensure that this file does not exist on your CA
-Puppet Server; if it does, unwanted certificate extensions may leak into
+OpenVox Server; if it does, unwanted certificate extensions may leak into
 certificates created with the `puppetserver ca generate` command.
 
 If present, this file must be a YAML hash containing a `custom_attributes` key
@@ -999,8 +997,8 @@ EOT
     :ssl_trust_store => {
       :default => nil,
       :type => :file,
-      :desc => "A file containing CA certificates in PEM format that puppet should trust
-        when making HTTPS requests. This **only** applies to https requests to non-puppet
+      :desc => "A file containing CA certificates in PEM format that OpenVox should trust
+        when making HTTPS requests. This **only** applies to https requests to non-OpenVox
         infrastructure, such as retrieving file metadata and content from https file sources,
         puppet module tool and the 'http' report processor. This setting is ignored when
         making requests to puppet:// URLs such as catalog and report requests.",
@@ -1021,27 +1019,27 @@ EOT
           Whether certificate revocation checking should be enabled, and what level of
           checking should be performed.
 
-          When certificate revocation is enabled, Puppet expects the contents of its CRL
+          When certificate revocation is enabled, OpenVox expects the contents of its CRL
           to be one or more PEM-encoded CRLs concatenated together. When using a cert
           bundle, CRLs for all CAs in the chain of trust must be included in the crl file.
           The chain should be ordered from least to most authoritative, with the first CRL
           listed being for the root of the chain and the last being for the leaf CA.
 
-          When certificate_revocation is set to 'true' or 'chain', Puppet ensures
+          When certificate_revocation is set to 'true' or 'chain', OpenVox ensures
           that each CA in the chain of trust has not been revoked by its issuing CA.
 
-          When certificate_revocation is set to 'leaf', Puppet verifies certs against
+          When certificate_revocation is set to 'leaf', OpenVox verifies certs against
           the issuing CA's revocation list, but it does not verify the revocation status
           of the issuing CA or any CA above it within the chain of trust.
 
-          When certificate_revocation is set to 'false', Puppet disables all
+          When certificate_revocation is set to 'false', OpenVox disables all
           certificate revocation checking and does not attempt to download the CRL.
         EOT
     },
     :ciphers => {
       :default => 'ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA256:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256',
       :type => :string,
-      :desc => "The list of ciphersuites for TLS connections initiated by puppet. The
+      :desc => "The list of ciphersuites for TLS connections initiated by OpenVox. The
                 default value is chosen to support TLS 1.0 and up, but can be made
                 more restrictive if needed. The ciphersuites must be specified in OpenSSL
                 format, not IANA."
@@ -1146,18 +1144,18 @@ EOT
       :default => "$confdir/autosign.conf",
       :type => :autosign,
       :desc => "Whether (and how) to autosign certificate requests. This setting
-        is only relevant on a Puppet Server acting as a certificate authority (CA).
+        is only relevant on an OpenVox Server acting as a certificate authority (CA).
 
         Valid values are true (autosigns all certificate requests; not recommended),
         false (disables autosigning certificates), or the absolute path to a file.
 
         The file specified in this setting may be either a **configuration file**
-        or a **custom policy executable.** Puppet will automatically determine
-        what it is: If the Puppet user (see the `user` setting) can execute the
+        or a **custom policy executable.** OpenVox will automatically determine
+        what it is: If the OpenVox user (see the `user` setting) can execute the
         file, it will be treated as a policy executable; otherwise, it will be
         treated as a config file.
 
-        If a custom policy executable is configured, the CA Puppet Server will run it
+        If a custom policy executable is configured, the CA OpenVox Server will run it
         every time it receives a CSR. The executable will be passed the subject CN of the
         request _as a command line argument,_ and the contents of the CSR in PEM format
         _on stdin._ It should exit with a status of 0 if the cert should be autosigned
@@ -1168,7 +1166,7 @@ EOT
         the request.
 
         For info on autosign configuration files, see
-        [the guide to Puppet's config files](https://puppet.com/docs/puppet/latest/config_file_autosign.html).",
+        [the guide to OpenVox's config files](https://docs.openvoxproject.org/openvox/latest/config_file_autosign.html).",
     },
     :allow_duplicate_certs => {
       :default    => false,
@@ -1186,7 +1184,7 @@ EOT
     :ca_refresh_interval => {
       :default    => "1d",
       :type       => :duration,
-      :desc       => "How often the Puppet agent refreshes its local CA
+      :desc       => "How often the OpenVox agent refreshes its local CA
          certificates. By default, CA certificates are refreshed every 24 hours. If a
          different interval is specified, the agent refreshes its CA certificates during
          the next agent run if the elapsed time since the certificates were last
@@ -1205,10 +1203,10 @@ EOT
     :crl_refresh_interval => {
       :default    => "1d",
       :type       => :duration,
-      :desc       => "How often the Puppet agent refreshes its local Certificate
+      :desc       => "How often the OpenVox agent refreshes its local Certificate
          Revocation List (CRL). By default, the CRL is refreshed every 24 hours. If
          a different interval is specified, the agent refreshes its CRL on the next
-         Puppet agent run if the elapsed time since the CRL was last refreshed
+         OpenVox agent run if the elapsed time since the CRL was last refreshed
          exceeds the specified interval.
 
          In general, the interval should be greater than the `runinterval` value.
@@ -1223,7 +1221,7 @@ EOT
     :hostcert_renewal_interval => {
       :default => "30d",
       :type    => :duration,
-      :desc => "How often the Puppet agent renews its client certificate. By
+      :desc => "How often the OpenVox agent renews its client certificate. By
          default, the client certificate is renewed 30 days before the certificate
          expires. If a different interval is specified, the agent renews its client
          certificate during the next agent run, assuming that the client certificate has
@@ -1256,19 +1254,19 @@ EOT
       :config_file_name => {
           :type     => :string,
           :default  => Puppet::Settings.default_config_file_name,
-          :desc     => "The name of the puppet config file.",
+          :desc     => "The name of the OpenVox config file.",
       },
       :config => {
           :type => :file,
           :default  => "$confdir/${config_file_name}",
-          :desc     => "The configuration file for the current puppet application.",
+          :desc     => "The configuration file for the current OpenVox application.",
       },
       :pidfile => {
           :type => :file,
           :default  => "$rundir/${run_mode}.pid",
           :desc     => "The file containing the PID of a running process.
             This file is intended to be used by service management frameworks
-            and monitoring systems to determine if a puppet process is still in
+            and monitoring systems to determine if an OpenVox process is still in
             the process table.",
       },
       :sourceaddress => {
@@ -1282,7 +1280,7 @@ EOT
       :default    => nil,
       :type       => :file_or_directory,
       :desc       => "The entry-point manifest for the primary server. This can be one file
-        or a directory of manifests to be evaluated in alphabetical order. Puppet manages
+        or a directory of manifests to be evaluated in alphabetical order. OpenVox manages
         this path as a directory if one exists or if the path ends with a / or \\.
 
         Setting a global value for `manifest` in puppet.conf is not allowed
@@ -1290,7 +1288,7 @@ EOT
         directory environments instead. If you need to use something other than the
         environment's `manifests` directory as the main manifest, you can set
         `manifest` in environment.conf. For more info, see
-        <https://puppet.com/docs/puppet/latest/environments_about.html>",
+        <https://docs.openvoxproject.org/openvox/latest/environments_about.html>",
     },
     :modulepath => {
       :default => "",
@@ -1304,7 +1302,7 @@ EOT
         directory environments instead. If you need to use something other than the
         default modulepath of `<ACTIVE ENVIRONMENT'S MODULES DIR>:$basemodulepath`,
         you can set `modulepath` in environment.conf. For more info, see
-        <https://puppet.com/docs/puppet/latest/environments_about.html>",
+        <https://docs.openvoxproject.org/openvox/latest/environments_about.html>",
     },
     :config_version => {
       :default    => "",
@@ -1316,22 +1314,22 @@ EOT
       Setting a global value for config_version in puppet.conf is not allowed
       (but it can be overridden from the commandline). Please set a
       per-environment value in environment.conf instead. For more info, see
-      <https://puppet.com/docs/puppet/latest/environments_about.html>",
+      <https://docs.openvoxproject.org/openvox/latest/environments_about.html>",
     }
   )
 
   settings.define_settings(:server,
     :user => {
       :default    => "puppet",
-      :desc       => "The user Puppet Server will run as. Used to ensure
+      :desc       => "The user OpenVox Server will run as. Used to ensure
       the agent side processes (agent, apply, etc) create files and
-      directories readable by Puppet Server when necessary.",
+      directories readable by OpenVox Server when necessary.",
     },
     :group => {
       :default    => "puppet",
-      :desc       => "The group Puppet Server will run as. Used to ensure
+      :desc       => "The group OpenVox Server will run as. Used to ensure
       the agent side processes (agent, apply, etc) create files and
-      directories readable by Puppet Server when necessary.",
+      directories readable by OpenVox Server when necessary.",
     },
     :default_manifest => {
       :default    => "./manifests",
@@ -1342,7 +1340,7 @@ EOT
 
         This setting's value can be an absolute or relative path. An absolute path
         will make all environments default to the same main manifest; a relative
-        path will allow each environment to use its own manifest, and Puppet will
+        path will allow each environment to use its own manifest, and OpenVox will
         resolve the path relative to each environment's main directory.
 
         In either case, the path can point to a single file or to a directory of
@@ -1352,7 +1350,7 @@ EOT
       :default    => false,
       :type       => :boolean,
       :desc       => "Whether to disallow an environment-specific main manifest. When set
-        to `true`, Puppet will use the manifest specified in the `default_manifest` setting
+        to `true`, OpenVox will use the manifest specified in the `default_manifest` setting
         for all environments. If an environment specifies a different main manifest in its
         `environment.conf` file, catalog requests for that environment will fail with an error.
 
@@ -1367,14 +1365,14 @@ EOT
     :code => {
       :default    => "",
       :desc       => "Code to parse directly.  This is essentially only used
-      by `puppet`, and should only be set if you're writing your own Puppet
+      by `puppet`, and should only be set if you're writing your own OpenVox
       executable.",
     },
     :masterport => {
       :default    => 8140,
       :type       => :port,
       :desc       => "The default port puppet subcommands use to communicate
-      with Puppet Server. (eg `puppet facts upload`, `puppet agent`). May be
+      with OpenVox Server. (eg `puppet facts upload`, `puppet agent`). May be
       overridden by more specific settings (see `ca_port`, `report_port`).",
     },
     :serverport => {
@@ -1404,7 +1402,7 @@ EOT
         These are the modules that will be used by _all_ environments. Note that
         the `modules` directory of the active environment will have priority over
         any global directories. For more info, see
-        <https://puppet.com/docs/puppet/latest/environments_about.html>",
+        <https://docs.openvoxproject.org/openvox/latest/environments_about.html>",
     },
     :vendormoduledir => {
       :default => -> { default_vendormoduledir },
@@ -1418,7 +1416,7 @@ EOT
       :default    => "HTTP_X_CLIENT_DN",
       :desc       => "The header containing an authenticated client's SSL DN.
       This header must be set by the proxy to the authenticated client's SSL
-      DN (e.g., `/CN=puppet.puppetlabs.com`).  Puppet will parse out the Common
+      DN (e.g., `/CN=puppet.puppetlabs.com`).  OpenVox will parse out the Common
       Name (CN) from the Distinguished Name (DN) and use the value of the CN
       field for authorization.
 
@@ -1461,7 +1459,7 @@ EOT
         their names should be comma-separated, with whitespace allowed. (For example,
         `reports = http, store`.)
 
-        This setting is relevant to puppet server and puppet apply. The primary Puppet
+        This setting is relevant to puppet server and puppet apply. The primary OpenVox
         server will call these report handlers with the reports it receives from
         agent nodes, and puppet apply will call them with its own report. (In
         all cases, the node applying the catalog must have `report = true`.)
@@ -1524,14 +1522,14 @@ EOT
       :desc => "The explicit value used for the node name for all requests the agent
         makes to the primary server. WARNING: This setting is mutually exclusive with
         node_name_fact.  Changing this setting also requires changes to
-        Puppet Server's default [auth.conf](https://puppet.com/docs/puppetserver/latest/config_file_auth.html)."
+        OpenVox Server's default [auth.conf](https://docs.openvoxproject.org/openvox-server/latest/config_file_auth.html)."
     },
     :node_name_fact => {
       :default => "",
       :desc => "The fact name used to determine the node name used for all requests the agent
         makes to the primary server. WARNING: This setting is mutually exclusive with
         node_name_value.  Changing this setting also requires changes to
-        Puppet Server's default [auth.conf](https://puppet.com/docs/puppetserver/latest/config_file_auth.html).",
+        OpenVox Server's default [auth.conf](https://docs.openvoxproject.org/openvox-server/latest/config_file_auth.html).",
       :hook => proc do |value|
         if !value.empty? and Puppet[:node_name_value] != Puppet[:certname]
           raise "Cannot specify both the node_name_value and node_name_fact settings"
@@ -1542,15 +1540,15 @@ EOT
       :default => "$statedir/state.yaml",
       :type => :file,
       :mode => "0640",
-      :desc => "Where Puppet agent and Puppet Server store state associated
-        with the running configuration.  In the case of Puppet Server,
+      :desc => "Where the OpenVox agent and OpenVox Server store state associated
+        with the running configuration.  In the case of OpenVox Server,
         this file reflects the state discovered through interacting
         with clients."
     },
     :statettl => {
       :default => "32d",
       :type    => :ttl,
-      :desc    => "How long the Puppet agent should cache when a resource was last checked or synced.
+      :desc    => "How long the OpenVox agent should cache when a resource was last checked or synced.
       #{AS_DURATION}
       A value of `0` or `unlimited` will disable cache pruning.
 
@@ -1608,7 +1606,7 @@ EOT
       :owner => "root",
       :mode => "0640",
       :desc => "The fallback log file. This is only used when the `--logdest` option
-        is not specified AND Puppet is running on an operating system where both
+        is not specified AND OpenVox is running on an operating system where both
         the POSIX syslog service and the Windows Event Log are unavailable. (Currently,
         no supported operating systems match that description.)
 
@@ -1618,7 +1616,7 @@ EOT
         For control over logging destinations, see the `--logdest` command line
         option in the manual pages for puppet server, puppet agent, and puppet
         apply. You can see man pages by running `puppet <SUBCOMMAND> --help`,
-        or read them online at https://puppet.com/docs/puppet/latest/man/."
+        or read them online at https://docs.openvoxproject.org/openvox/latest/man/."
     },
     :deviceconfdir => {
       :default  => "$confdir/devices",
@@ -1630,14 +1628,14 @@ EOT
     },
     :server => {
       :default => "puppet",
-      :desc => "The primary Puppet server to which the Puppet agent should connect. This setting is ignored when `server_list` is specified.",
+      :desc => "The primary OpenVox server to which the OpenVox agent should connect. This setting is ignored when `server_list` is specified.",
     },
     :server_list => {
       :default => [],
       :type => :server_list,
-      :desc => "The list of primary Puppet servers to which the Puppet agent should connect,
+      :desc => "The list of primary OpenVox servers to which the OpenVox agent should connect,
         in the order that they will be tried. Each value should be a fully qualified domain name, followed by an optional ':' and port number.
-        If a port is omitted, Puppet uses masterport for that host. This setting takes precedence over `server`.",
+        If a port is omitted, OpenVox uses masterport for that host. This setting takes precedence over `server`.",
     },
     :use_srv_records => {
       :default    => false,
@@ -1669,22 +1667,22 @@ EOT
     :noop => {
       :default    => false,
       :type       => :boolean,
-      :desc       => "Whether to apply catalogs in noop mode, which allows Puppet to
+      :desc       => "Whether to apply catalogs in noop mode, which allows OpenVox to
         partially simulate a normal run. This setting affects puppet agent and
         puppet apply.
 
-        When running in noop mode, Puppet will check whether each resource is in sync,
+        When running in noop mode, OpenVox will check whether each resource is in sync,
         like it does when running normally. However, if a resource attribute is not in
-        the desired state (as declared in the catalog), Puppet will take no
+        the desired state (as declared in the catalog), OpenVox will take no
         action, and will instead report the changes it _would_ have made. These
-        simulated changes will appear in the report sent to the primary Puppet server, or
+        simulated changes will appear in the report sent to the primary OpenVox server, or
         be shown on the console if running puppet agent or puppet apply in the
         foreground. The simulated changes will not send refresh events to any
-        subscribing or notified resources, although Puppet will log that a refresh
+        subscribing or notified resources, although OpenVox will log that a refresh
         event _would_ have been sent.
 
         **Important note:**
-        [The `noop` metaparameter](https://puppet.com/docs/puppet/latest/metaparameter.html#noop)
+        [The `noop` metaparameter](https://docs.openvoxproject.org/openvox/latest/metaparameter.html#noop)
         allows you to apply individual resources in noop mode, and will override
         the global value of the `noop` setting. This means a resource with
         `noop => false` _will_ be changed if necessary, even when running puppet
@@ -1702,7 +1700,7 @@ EOT
       :default  => "1h",
       :type     => :duration,
       :desc     => "The maximum amount of time an agent run is allowed to take.
-          A Puppet agent run that exceeds this timeout will be aborted. A value
+          An OpenVox agent run that exceeds this timeout will be aborted. A value
           of 0 disables the timeout. Defaults to 1 hour. #{AS_DURATION}",
     },
     :ca_server => {
@@ -1733,8 +1731,8 @@ EOT
       :default    => false,
       :type       => :boolean,
       :desc => "Whether to allow PSON serialization. When unable to serialize to
-        JSON or other formats, Puppet falls back to PSON. This option affects the
-        configuration management service responses of Puppet Server and the process by
+        JSON or other formats, OpenVox falls back to PSON. This option affects the
+        configuration management service responses of OpenVox Server and the process by
         which the agent saves its cached catalog. With a default value of `false`, this
         option is useful in preventing the loss of data because rich data cannot be
         serialized via PSON.",
@@ -1798,10 +1796,10 @@ EOT
       :default    => false,
       :type       => :boolean,
       :desc       => "Whether to only use the cached catalog rather than compiling a new catalog
-        on every run.  Puppet can be run with this enabled by default and then selectively
-        disabled when a recompile is desired. Because a Puppet agent using cached catalogs
+        on every run.  OpenVox can be run with this enabled by default and then selectively
+        disabled when a recompile is desired. Because an OpenVox agent using cached catalogs
         does not contact the primary server for a new catalog, it also does not upload facts at
-        the beginning of the Puppet run.",
+        the beginning of the OpenVox run.",
     },
     :ignoremissingtypes => {
       :default    => false,
@@ -1838,7 +1836,7 @@ EOT
         If you restart an agent's puppet service with `splay` enabled, it
         recalculates its splay period and delays its first agent run after
         restarting for this new period. If you simultaneously restart a group of
-        puppet agents with `splay` enabled, their checkins to your primary servers
+        OpenVox agents with `splay` enabled, their checkins to your primary servers
         can be distributed more evenly.",
     },
     :clientbucketdir => {
@@ -1867,7 +1865,7 @@ EOT
       :desc     => "Whether the 'http' report processor should include the system
         certificate store when submitting reports to HTTPS URLs. If false, then
         the 'http' processor will only trust HTTPS report servers whose certificates
-        are issued by the puppet CA or one of its intermediate CAs. If true, the
+        are issued by the OpenVox CA or one of its intermediate CAs. If true, the
         processor will additionally trust CA certificates in the system's
         certificate store."
     },
@@ -1875,19 +1873,19 @@ EOT
       :default  => false,
       :type     => :boolean,
       :desc     => "Whether to send updated facts after every transaction. By default
-        puppet only submits facts at the beginning of the transaction before applying a
-        catalog. Since puppet can modify the state of the system, the value of the facts
-        may change after puppet finishes. Therefore, any facts stored in puppetdb may not
+        OpenVox only submits facts at the beginning of the transaction before applying a
+        catalog. Since OpenVox can modify the state of the system, the value of the facts
+        may change after OpenVox finishes. Therefore, any facts stored in OpenVoxDB may not
         be consistent until the agent next runs, typically in 30 minutes. If this feature
-        is enabled, puppet will resubmit facts after applying its catalog, ensuring facts
-        for the node stored in puppetdb are current. However, this will double the fact
-        submission load on puppetdb, so it is disabled by default.",
+        is enabled, OpenVox will resubmit facts after applying its catalog, ensuring facts
+        for the node stored in OpenVoxDB are current. However, this will double the fact
+        submission load on OpenVoxDB, so it is disabled by default.",
     },
     :publicdir => {
       :default  => nil,
       :type     => :directory,
       :mode     => "0755",
-      :desc     => "Where Puppet stores public files."
+      :desc     => "Where OpenVox stores public files."
     },
     :lastrunfile =>  {
       :default  => "$publicdir/last_run_summary.yaml",
@@ -1899,9 +1897,9 @@ EOT
       :default  => "$statedir/last_run_report.yaml",
       :type     => :file,
       :mode     => "0640",
-      :desc     => "Where Puppet Agent stores the last run report, by default, in yaml format.
+      :desc     => "Where the OpenVox agent stores the last run report, by default, in yaml format.
         The format of the report can be changed by setting the `cache` key of the `report` terminus
-        in the [routes.yaml](https://puppet.com/docs/puppet/latest/config_file_routes.html) file.
+        in the [routes.yaml](https://docs.openvoxproject.org/openvox/latest/config_file_routes.html) file.
         To avoid mismatches between content and file extension, this setting needs to be
         manually updated to reflect the terminus changes."
     },
@@ -1909,7 +1907,7 @@ EOT
       :default  => false,
       :type     => :boolean,
       :desc     => "Whether to create .dot graph files, which let you visualize the
-        dependency and containment relationships in Puppet's catalog. You
+        dependency and containment relationships in OpenVox's catalog. You
         can load and view these files with tools like
         [OmniGraffle](http://www.omnigroup.com/applications/omnigraffle/) (OS X)
         or [graphviz](http://www.graphviz.org/) (multi-platform).
@@ -1917,8 +1915,8 @@ EOT
         Graph files are created when _applying_ a catalog, so this setting
         should be used on nodes running `puppet agent` or `puppet apply`.
 
-        The `graphdir` setting determines where Puppet will save graphs. Note
-        that we don't save graphs for historical runs; Puppet will replace the
+        The `graphdir` setting determines where OpenVox will save graphs. Note
+        that we don't save graphs for historical runs; OpenVox will replace the
         previous .dot files with new ones every time it applies a catalog.
 
         See your graphing software's documentation for details on opening .dot
@@ -1937,10 +1935,10 @@ EOT
 
       When starting for the first time, puppet agent will submit a certificate
       signing request (CSR) to the server named in the `ca_server` setting
-      (usually the primary Puppet server); this may be autosigned, or may need to be
+      (usually the primary OpenVox server); this may be autosigned, or may need to be
       approved by a human, depending on the CA server's configuration.
 
-      Puppet agent cannot apply configurations until its approved certificate is
+      The OpenVox agent cannot apply configurations until its approved certificate is
       available. Since the certificate may or may not be available immediately,
       puppet agent will repeatedly try to fetch it at this interval. You can
       turn off waiting for certificates by specifying a time of 0, or a maximum
@@ -1951,7 +1949,7 @@ EOT
     :maxwaitforcert => {
       :default  => "unlimited",
       :type     => :ttl,
-      :desc     => "The maximum amount of time the Puppet agent should wait for its
+      :desc     => "The maximum amount of time the OpenVox agent should wait for its
       certificate request to be signed. A value of `unlimited` will cause puppet agent
       to ask for a signed certificate indefinitely.
       #{AS_DURATION}",
@@ -1984,19 +1982,19 @@ EOT
     :plugindest => {
       :type       => :directory,
       :default    => "$libdir",
-      :desc       => "Where Puppet should store plugins that it pulls down from the central
+      :desc       => "Where OpenVox should store plugins that it pulls down from the central
       server.",
     },
     :pluginsource => {
       :default    => "puppet:///plugins",
-      :desc       => "From where to retrieve plugins.  The standard Puppet `file` type
+      :desc       => "From where to retrieve plugins.  The standard OpenVox `file` type
       is used for retrieval, so anything that is a valid file source can
       be used here.",
     },
     :pluginfactdest => {
       :type     => :directory,
       :default  => "$vardir/facts.d",
-      :desc     => "Where Puppet should store external facts that are being handled by pluginsync",
+      :desc     => "Where OpenVox should store external facts that are being handled by pluginsync",
     },
     :pluginfactsource => {
       :default  => "puppet:///pluginfacts",
@@ -2005,12 +2003,12 @@ EOT
     :localedest => {
       :type       => :directory,
       :default    => "$vardir/locales",
-      :desc       => "Where Puppet should store translation files that it pulls down from the central
+      :desc       => "Where OpenVox should store translation files that it pulls down from the central
       server.",
     },
     :localesource => {
       :default    => "puppet:///locales",
-      :desc       => "From where to retrieve translation files.  The standard Puppet `file` type
+      :desc       => "From where to retrieve translation files.  The standard OpenVox `file` type
       is used for retrieval, so anything that is a valid file source can
       be used here.",
     },
@@ -2021,7 +2019,7 @@ EOT
     :ignore_plugin_errors => {
       :default    => false,
       :type       => :boolean,
-      :desc       => "Whether the puppet run should ignore errors during pluginsync. If the setting
+      :desc       => "Whether the OpenVox run should ignore errors during pluginsync. If the setting
         is false and there are errors during pluginsync, then the agent will abort the run and
         submit a report containing information about the failed run."
     }
@@ -2034,7 +2032,7 @@ EOT
     :factpath => {
       :type     => :path,
       :default  => "$vardir/lib/facter#{File::PATH_SEPARATOR}$vardir/facts",
-      :desc     => "Where Puppet should look for facts.  Multiple directories should
+      :desc     => "Where OpenVox should look for facts.  Multiple directories should
         be separated by the system path separator character. (The POSIX path
         separator is ':', and the Windows path separator is ';'.)",
 
@@ -2071,11 +2069,11 @@ EOT
     :preprocess_deferred => {
       :default => true,
       :type => :boolean,
-      :desc => "Whether Puppet should call deferred functions before applying
+      :desc => "Whether OpenVox should call deferred functions before applying
         the catalog. If set to `true`, all prerequisites required for the
-        deferred function must be satisfied before the Puppet run. If set to
-        `false`, deferred functions follow Puppet relationships and
-        ordering. In this way, Puppet can install the prerequisites required for a
+        deferred function must be satisfied before the OpenVox run. If set to
+        `false`, deferred functions follow OpenVox relationships and
+        ordering. In this way, OpenVox can install the prerequisites required for a
         deferred function and call the deferred function in the same run.
         Please note that many functions that return complex datatypes will fail
         when disabling preprocessing and this option may be removed in the future.",
@@ -2092,7 +2090,7 @@ EOT
     :external_nodes => {
         :default  => "none",
         :desc     => "The external node classifier (ENC) script to use for node data.
-          Puppet combines this data with the main manifest to produce node catalogs.
+          OpenVox combines this data with the main manifest to produce node catalogs.
 
           To enable this setting, set the `node_terminus` setting to `exec`.
 
@@ -2110,7 +2108,7 @@ EOT
 
           Generally, an ENC script makes requests to an external data source.
 
-          For more info, see [the ENC documentation](https://puppet.com/docs/puppet/latest/nodes_external.html).",
+          For more info, see [the ENC documentation](https://docs.openvoxproject.org/openvox/latest/nodes_external.html).",
     }
   )
 
@@ -2212,7 +2210,7 @@ EOT
       :type => :terminus,
       :default => "puppetdb",
       :desc => "Configure the backend terminus used for StoreConfigs.
-        By default, this uses the PuppetDB store, which must be installed
+        By default, this uses the OpenVoxDB store, which must be installed
         and configured before turning on StoreConfigs."
     }
   )

@@ -76,7 +76,7 @@ trace = true
 
     expect(Puppet).to receive(:warning).with("No section specified; defaulting to 'main'.\nSet the config section " +
       "by using the `--section` flag.\nFor example, `puppet config --section user print foo`.\nFor more " +
-      "information, see https://puppet.com/docs/puppet/latest/configuration.html")
+      "information, see https://docs.openvoxproject.org/openvox/latest/configuration.html")
     expect {
       result = subject.print("trace")
       expect(render(:print, result)).to eq("true\n")

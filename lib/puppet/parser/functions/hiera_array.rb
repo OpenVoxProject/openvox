@@ -17,7 +17,7 @@ module Puppet::Parser::Functions
 
       1. A string key that Hiera searches for in the hierarchy. **Required**.
       2. An optional default value to return if Hiera doesn't find anything matching the key.
-          * If this argument isn't provided and this function results in a lookup failure, Puppet
+          * If this argument isn't provided and this function results in a lookup failure, OpenVox
           fails with a compilation error.
       3. The optional name of an arbitrary
       [hierarchy level](https://puppet.com/docs/hiera/latest/hierarchy.html) to insert at the
@@ -49,7 +49,7 @@ module Puppet::Parser::Functions
       ~~~
 
       You can optionally generate the default value with a
-      [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html) that
+      [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html) that
       takes one parameter.
 
       **Example**: Using `hiera_array` with a lambda
@@ -65,10 +65,10 @@ module Puppet::Parser::Functions
       ~~~
 
       `hiera_array` expects that all values returned will be strings or arrays. If any matched
-      value is a hash, Puppet raises a type mismatch error.
+      value is a hash, OpenVox raises a type mismatch error.
 
       `hiera_array` is deprecated in favor of using `lookup` and will be removed in 6.0.0.
-      See https://puppet.com/docs/puppet/#{Puppet.minor_version}/deprecated_language.html.
+      See https://docs.openvoxproject.org/openvox/latest/deprecated_language.html.
       Replace the calls as follows:
 
       | from  | to |

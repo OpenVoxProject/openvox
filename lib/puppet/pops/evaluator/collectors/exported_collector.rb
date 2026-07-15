@@ -27,7 +27,7 @@ class Puppet::Pops::Evaluator::Collectors::ExportedCollector < Puppet::Pops::Eva
   end
 
   # Collect exported resources as defined by an exported
-  # collection. Used with PuppetDB
+  # collection. Used with OpenVoxDB
   def collect
     resources = []
 

@@ -6,7 +6,7 @@ require_relative '../../../puppet/util/package'
 Puppet::Type.type(:package).provide :nim, :parent => :aix, :source => :aix do
   desc "Installation from an AIX NIM LPP source.  The `source` parameter is required
       for this provider, and should specify the name of a NIM `lpp_source` resource
-      that is visible to the puppet agent machine.  This provider supports the
+      that is visible to the OpenVox agent machine.  This provider supports the
       management of both BFF/installp and RPM packages.
 
       Note that package downgrades are *not* supported; if your resource specifies

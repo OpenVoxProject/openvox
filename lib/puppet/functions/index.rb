@@ -2,7 +2,7 @@
 
 # Returns the index (or key in a hash) to a first-found value in an `Iterable` value.
 #
-# When called with a  [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html)
+# When called with a  [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html)
 # the lambda is called repeatedly using each value in a data structure until the lambda returns a "truthy" value which
 # makes the function return the index or key, or if the end of the iteration is reached, undef is returned.
 #
@@ -85,8 +85,8 @@
 # notice $data.index('workstations') # notices undef (not matching case)
 # ```
 #
-# For an general examples that demonstrates iteration, see the Puppet
-# [iteration](https://puppet.com/docs/puppet/latest/lang_iteration.html)
+# For an general examples that demonstrates iteration, see the OpenVox
+# [iteration](https://docs.openvoxproject.org/openvox/latest/lang_iteration.html)
 # documentation.
 #
 # @since 6.3.0

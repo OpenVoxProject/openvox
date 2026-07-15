@@ -9,14 +9,14 @@ end
 report.header = "
 OpenVox can generate a report after applying a catalog. This report includes
 events, log messages, resource statuses, and metrics and metadata about the run.
-OpenVox agent sends its report to a OpenVox server, and puppet apply
+OpenVox agent sends its report to an OpenVox server, and puppet apply
 processes its own reports.
 
 OpenVox Server and puppet apply will handle every report with a set of report
 processors, configurable with the `reports` setting in puppet.conf. This page
 documents the built-in report processors.
 
-See [About Reporting](https://puppet.com/docs/puppet/latest/reporting_about.html)
+See [About Reporting](https://docs.openvoxproject.org/openvox/latest/reporting_about.html)
 for more details.
 
 "

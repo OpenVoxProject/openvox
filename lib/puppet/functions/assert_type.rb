@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 # Returns the given value if it is of the given
-# [data type](https://puppet.com/docs/puppet/latest/lang_data.html), or
+# [data type](https://docs.openvoxproject.org/openvox/latest/lang_data.html), or
 # otherwise either raises an error or executes an optional two-parameter
-# [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html).
+# [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html).
 #
 # The function takes two mandatory arguments, in this order:
 #
@@ -19,7 +19,7 @@
 # $valid_username = assert_type(String[1], $raw_username)
 #
 # # $valid_username contains "Amy Berry".
-# # If $raw_username was an empty string or a different data type, the Puppet run would
+# # If $raw_username was an empty string or a different data type, the OpenVox run would
 # # fail with an "Expected type does not match actual" error.
 # ```
 #
@@ -42,13 +42,13 @@
 # }
 #
 # # $valid_username contains "Amy Berry".
-# # If $raw_username was an empty string, the Puppet run would set $valid_username to
+# # If $raw_username was an empty string, the OpenVox run would set $valid_username to
 # # "anonymous" and output a warning: "The username should be 'String[1, default]', not
 # # 'String[0, 0]'. Using 'anonymous'."
 # ```
 #
 # For more information about data types, see the
-# [documentation](https://puppet.com/docs/puppet/latest/lang_data.html).
+# [documentation](https://docs.openvoxproject.org/openvox/latest/lang_data.html).
 #
 # @since 4.0.0
 #

@@ -41,7 +41,7 @@ class Puppet::Settings::BaseSetting
       value = :on_write_only
     end
     unless HOOK_TYPES.include?(value)
-      # TRANSLATORS 'call_hook' is a Puppet option name and should not be translated
+      # TRANSLATORS 'call_hook' is an OpenVox option name and should not be translated
       raise ArgumentError, _("Invalid option %{value} for call_hook") % { value: value }
     end
 
@@ -199,7 +199,7 @@ class Puppet::Settings::BaseSetting
 
   def deprecated=(deprecation)
     unless [:completely, :allowed_on_commandline].include?(deprecation)
-      # TRANSLATORS 'deprecated' is a Puppet setting and ':completely' and ':allowed_on_commandline' are possible values and should not be translated
+      # TRANSLATORS 'deprecated' is an OpenVox setting and ':completely' and ':allowed_on_commandline' are possible values and should not be translated
       raise ArgumentError, _("Unsupported deprecated value '%{deprecation}'.") % { deprecation: deprecation } +
                            ' ' + _("Supported values for deprecated are ':completely' or ':allowed_on_commandline'")
     end

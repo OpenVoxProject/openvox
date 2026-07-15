@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Runs a [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html)
+# Runs a [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html)
 # recursively and repeatedly using values from a data structure, then returns the unchanged data structure, or if
 # a lambda is not given, returns an `Iterator` for the tree.
 #
@@ -135,8 +135,8 @@
 # further as each filtered result appears as a `Tuple` with `[path, value]`.
 #
 #
-# For general examples that demonstrates iteration see the Puppet
-# [iteration](https://puppet.com/docs/puppet/latest/lang_iteration.html)
+# For general examples that demonstrates iteration see the OpenVox
+# [iteration](https://docs.openvoxproject.org/openvox/latest/lang_iteration.html)
 # documentation.
 #
 # @since 5.0.0

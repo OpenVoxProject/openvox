@@ -117,7 +117,7 @@ class Puppet::Module
         end
 
         unless MOUNTS.include? mount
-          msg = _("Files must be saved in module directories that Puppet makes available via mount points: %{mounts}" %
+          msg = _("Files must be saved in module directories that OpenVox makes available via mount points: %{mounts}" %
                   { mounts: MOUNTS.join(', ') })
           raise InvalidMetadata.new(msg, 'puppet.tasks/invalid-metadata')
         end

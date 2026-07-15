@@ -1,13 +1,13 @@
 ---
 layout: default
-built_from_commit: 812d7420ea5d7e19e8003b26486a7c8847afdb25
+built_from_commit: f7b1a950d990274b9f352eb7aa0cd93ee6067df1
 title: 'Resource Type: package'
 canonical: "/puppet/latest/types/package.html"
 ---
 
 # Resource Type: package
 
-> **NOTE:** This page was generated from the Puppet source code on 2024-10-18 17:23:49 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-07-14 18:42:41 +0000
 
 
 
@@ -25,7 +25,7 @@ retrieve their own package files, while others (such as rpm and sun)
 cannot.  For those package formats that cannot retrieve their own files,
 you can use the `source` parameter to point to the correct file.
 
-Puppet will automatically guess the packaging format that you are
+OpenVox will automatically guess the packaging format that you are
 using based on the platform you are on, but you can override it
 using the `provider` parameter; each provider defines what it
 requires in order to function, and you must meet those requirements
@@ -38,7 +38,7 @@ Note that you must use the _title_ to make a reference to a package
 resource; `Package[<NAME>]` is not a synonym for `Package[<TITLE>]` like
 it is for many other resource types.
 
-**Autorequires:** If Puppet is managing the files specified as a
+**Autorequires:** If OpenVox is managing the files specified as a
 package's `adminfile`, `responsefile`, or `source`, the package
 resource will autorequire those files.
 
@@ -55,6 +55,7 @@ resource will autorequire those files.
   <a href="#package-attribute-configfiles">configfiles</a>          =&gt; <em># Whether to keep or replace modified config files </em>
   <a href="#package-attribute-description">description</a>          =&gt; <em># A read-only parameter set by the...</em>
   <a href="#package-attribute-enable_only">enable_only</a>          =&gt; <em># Tells `dnf module` to only enable a specific...</em>
+  <a href="#package-attribute-environment">environment</a>          =&gt; <em># An array of additional environment variables to...</em>
   <a href="#package-attribute-flavor">flavor</a>               =&gt; <em># OpenBSD and DNF modules support 'flavors', which </em>
   <a href="#package-attribute-install_only">install_only</a>         =&gt; <em># It should be set for packages that should only...</em>
   <a href="#package-attribute-install_options">install_options</a>      =&gt; <em># An array of additional options to pass when...</em>
@@ -70,7 +71,7 @@ resource will autorequire those files.
   <a href="#package-attribute-status">status</a>               =&gt; <em># A read-only parameter set by the...</em>
   <a href="#package-attribute-uninstall_options">uninstall_options</a>    =&gt; <em># An array of additional options to pass when...</em>
   <a href="#package-attribute-vendor">vendor</a>               =&gt; <em># A read-only parameter set by the...</em>
-  # ...plus any applicable <a href="https://puppet.com/docs/puppet/latest/metaparameter.html">metaparameters</a>.
+  # ...plus any applicable <a href="https://docs.openvoxproject.org/openvox/latest/metaparameter.html">metaparameters</a>.
 }</code></pre>
 
 
@@ -268,6 +269,22 @@ Allowed values:
 * `false`
 * `yes`
 * `no`
+
+([↑ Back to package attributes](#package-attributes))
+
+
+#### environment {#package-attribute-environment}
+
+An array of additional environment variables to set for package
+commands, such as `[ 'HOME=/root', 'DISABLE_TELEMETRY=1']`.
+
+    package { 'opensearch':
+      ensure      => installed,
+      environment => [ 'OPENSEARCH_INITIAL_ADMIN_PASSWORD=myStrongP@ss!' ],
+    }
+
+These variables are applied to all package management commands
+(install, update, uninstall, purge) executed by the provider.
 
 ([↑ Back to package attributes](#package-attributes))
 
@@ -494,12 +511,12 @@ A read-only parameter set by the package.
 
 Where to find the package file. This is mostly used by providers that don't
 automatically download packages from a central repository. (For example:
-the `yum` provider ignores this attribute, `apt` provider uses it if present
+the `macports` provider ignores this attribute, `apt` provider uses it if present
 and the `rpm` and `dpkg` providers require it.)
 
 Different providers accept different values for `source`. Most providers
 accept paths to local files stored on the target system. Some providers
-may also accept URLs or network drive paths. Puppet will not
+may also accept URLs or network drive paths. OpenVox will not
 automatically retrieve source files for you, and usually just passes the
 value of `source` to the package installation command.
 
@@ -532,7 +549,7 @@ key and value pair are interpreted in a provider specific way.  Each
 option will automatically be quoted when passed to the uninstall
 command.
 
-On Windows, this is the **only** place in Puppet where backslash
+On Windows, this is the **only** place in OpenVox where backslash
 separators should be used.  Note that backslashes in double-quoted
 strings _must_ be double-escaped and backslashes in single-quoted
 strings _may_ be double-escaped.
@@ -555,7 +572,7 @@ A read-only parameter set by the package.
 
 Installation from an AIX software directory, using the AIX `installp`
 command.  The `source` parameter is required for this provider, and should
-be set to the absolute path (on the puppet agent machine) of a directory
+be set to the absolute path (on the OpenVox agent machine) of a directory
 containing one or more BFF package files.
 
 The `installp` command will generate a table of contents file (named `.toc`)
@@ -714,7 +731,7 @@ Revisions are only used internally for ensuring the latest version/revision of a
 
 Installation from an AIX NIM LPP source.  The `source` parameter is required
 for this provider, and should specify the name of a NIM `lpp_source` resource
-that is visible to the puppet agent machine.  This provider supports the
+that is visible to the OpenVox agent machine.  This provider supports the
 management of both BFF/installp and RPM packages.
 
 Note that package downgrades are *not* supported; if your resource specifies
@@ -729,6 +746,10 @@ installed on the machine, the resource will fail with an error message.
 
 OpenBSD's form of `pkg_add` support.
 
+OpenBSD has the concept of package branches, providing multiple versions of the
+same package, i.e. `stable` vs. `snapshot`. To select a specific branch,
+suffix the package name with % sign follwed by the branch name, i.e. `gimp%stable`.
+
 This provider supports the `install_options` and `uninstall_options`
 attributes, which allow command-line flags to be passed to pkg_add and pkg_delete.
 These options should be specified as an array where each element is either a
@@ -737,15 +758,15 @@ These options should be specified as an array where each element is either a
 * Required binaries: `pkg_add`, `pkg_delete`, `pkg_info`
 * Confined to: `os.name == openbsd`
 * Default for: `["os.name", "openbsd"] == `
-* Supported features: `install_options`, `supports_flavors`, `uninstall_options`, `upgradeable`, `versionable`
+* Supported features: `install_options`, `supports_flavors`, `uninstall_options`
 
 #### opkg {#package-provider-opkg}
 
-Opkg packaging support. Common on OpenWrt and OpenEmbedded platforms
+Opkg packaging support. Common on OpenWrt, TurrisOS, and OpenEmbedded platforms
 
 * Required binaries: `opkg`
-* Confined to: `os.name == openwrt`
-* Default for: `["os.name", "openwrt"] == `
+* Confined to: `os.name == [:openwrt, :turrisos]`
+* Default for: `["os.name", "[:openwrt, :turrisos]"] == `
 
 #### pacman {#package-provider-pacman}
 
@@ -802,7 +823,7 @@ Package management based on Apple's Installer.app and DiskUtility.app.
 
 This provider works by checking the contents of a DMG image for Apple pkg or
 mpkg files. Any number of pkg or mpkg files may exist in the root directory
-of the DMG file system, and Puppet will install all of them. Subdirectories
+of the DMG file system, and OpenVox will install all of them. Subdirectories
 are not checked for packages.
 
 This provider can also accept plain .pkg (but not .mpkg) files in addition
@@ -815,7 +836,7 @@ Notes:
 * The `name` of the resource must be the filename (without path) of the DMG file.
 * When installing the packages from a DMG, this provider writes a file to
   disk at `/var/db/.puppet_pkgdmg_installed_NAME`. If that file is present,
-  Puppet assumes all packages from that DMG are already installed.
+  OpenVox assumes all packages from that DMG are already installed.
 * This provider is not versionable and uses DMG filenames to determine
   whether a package has been installed. Thus, to install new a version of a
   package, you must create a new DMG with a different filename.
@@ -874,8 +895,8 @@ for the portupgrade port.
 
 #### puppet_gem {#package-provider-puppet_gem}
 
-Puppet Ruby Gem support. This provider is useful for managing
-gems needed by the ruby provided in the puppet-agent package.
+OpenVox Ruby Gem support. This provider is useful for managing
+gems needed by the ruby provided in the openvox-agent package.
 
 * Required binaries: `Puppet.run_mode.gem_cmd`
 * Confined to: `true == Puppet.runtime[:facter].value(:aio_agent_version)`
@@ -883,7 +904,7 @@ gems needed by the ruby provided in the puppet-agent package.
 
 #### puppetserver_gem {#package-provider-puppetserver_gem}
 
-Puppet Server Ruby Gem support. If a URL is passed via `source`, then
+OpenVox Server Ruby Gem support. If a URL is passed via `source`, then
 that URL is appended to the list of remote gem repositories which by default
 contains rubygems.org; To ensure that only the specified source is used also
 pass `--clear-sources` in via `install_options`; if a source is present but
@@ -982,7 +1003,7 @@ a string or a hash.
 
 If the executable requires special arguments to perform a silent install or
 uninstall, then the appropriate arguments should be specified using the
-`install_options` or `uninstall_options` attributes, respectively.  Puppet
+`install_options` or `uninstall_options` attributes, respectively.  OpenVox
 will automatically quote any option that contains spaces.
 
 * Confined to: `os.name == windows`
@@ -1068,7 +1089,7 @@ Provider support:
 * **hpux** - No supported Provider features
 * **macports** - _installable, uninstallable, upgradeable, versionable_
 * **nim** - _versionable_
-* **openbsd** - _versionable, install options, uninstall options, upgradeable, supports flavors_
+* **openbsd** - _install options, uninstall options, supports flavors_
 * **opkg** - No supported Provider features
 * **pacman** - _install options, uninstall options, upgradeable, virtual packages, purgeable_
 * **pip** - _installable, uninstallable, upgradeable, versionable, version ranges, install options, targetable_

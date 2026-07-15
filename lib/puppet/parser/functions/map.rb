@@ -5,7 +5,7 @@ Puppet::Parser::Functions.newfunction(
   :type => :rvalue,
   :arity => -3,
   :doc => <<~DOC
-    Applies a [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html)
+    Applies a [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html)
     to every value in a data structure and returns an array containing the results.
 
     This function takes two mandatory arguments, in this order:
@@ -22,7 +22,7 @@ Puppet::Parser::Functions.newfunction(
 
     `$transformed_data = map($data) |$parameter| { <PUPPET CODE BLOCK> }`
 
-    When the first argument (`$data` in the above example) is an array, Puppet passes each
+    When the first argument (`$data` in the above example) is an array, OpenVox passes each
     value in turn to the lambda.
 
     **Example**: Using the `map` function with an array and a one-parameter lambda
@@ -34,7 +34,7 @@ Puppet::Parser::Functions.newfunction(
     # $transformed_data contains [10,20,30]
     ~~~
 
-    When the first argument is a hash, Puppet passes each key and value pair to the lambda
+    When the first argument is a hash, OpenVox passes each key and value pair to the lambda
     as an array in the form `[key, value]`.
 
     **Example**: Using the `map` function with a hash and a one-parameter lambda
@@ -46,7 +46,7 @@ Puppet::Parser::Functions.newfunction(
     # $transformed_data contains ['a','b','c']
     ~~~
 
-    When the first argument is an array and the lambda has two parameters, Puppet passes the
+    When the first argument is an array and the lambda has two parameters, OpenVox passes the
     array's indexes (enumerated from 0) in the first parameter and its values in the second
     parameter.
 
@@ -59,7 +59,7 @@ Puppet::Parser::Functions.newfunction(
     # $transformed_data contains [0,1,2]
     ~~~
 
-    When the first argument is a hash, Puppet passes its keys to the first parameter and its
+    When the first argument is a hash, OpenVox passes its keys to the first parameter and its
     values to the second parameter.
 
     **Example**: Using the `map` function with a hash and a two-parameter lambda

@@ -1,6 +1,6 @@
 # Windows
 
-If you'd like to run Puppet from source on Windows platforms, follow the [Quickstart](./quickstart.md) to using bundler and installing the necessary gems on Windows.
+If you'd like to run OpenVox from source on Windows platforms, follow the [Quickstart](./quickstart.md) to using bundler and installing the necessary gems on Windows.
 
 You will need to install Ruby on Windows from [rubyinstaller.org](http://rubyinstaller.org)
 or from [Choclately](https://chocolatey.org/packages/ruby).

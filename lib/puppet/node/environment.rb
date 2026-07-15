@@ -206,10 +206,10 @@ class Puppet::Node::Environment
   end
 
   # Checks to make sure that this environment did not have a manifest set in
-  # its original environment.conf if Puppet is configured with
+  # its original environment.conf if OpenVox is configured with
   # +disable_per_environment_manifest+ set true.  If it did, the environment's
   # modules may not function as intended by the original authors, and we may
-  # seek to halt a puppet compilation for a node in this environment.
+  # seek to halt an OpenVox compilation for a node in this environment.
   #
   # The only exception to this would be if the environment.conf manifest is an exact,
   # uninterpolated match for the current +default_manifest+ setting.
@@ -272,7 +272,7 @@ class Puppet::Node::Environment
     @rich_data = rich_data_from_env_conf.nil? ? Puppet[:rich_data] : rich_data_from_env_conf
   end
 
-  # Return an environment-specific Puppet setting.
+  # Return an environment-specific OpenVox setting.
   #
   # @api public
   #
@@ -571,11 +571,11 @@ class Puppet::Node::Environment
   #
   # There are two sources that can be used for the initial parse:
   #
-  #   1. The value of `Puppet[:code]`: Puppet can take a string from
+  #   1. The value of `Puppet[:code]`: OpenVox can take a string from
   #     its settings and parse that as a manifest. This is used by various
-  #     Puppet applications to read in a manifest and pass it to the
+  #     OpenVox applications to read in a manifest and pass it to the
   #     environment as a side effect. This is attempted first.
-  #   2. The contents of this environment's +manifest+ attribute: Puppet will
+  #   2. The contents of this environment's +manifest+ attribute: OpenVox will
   #     try to load the environment manifest.
   #
   # @return [Puppet::Parser::AST::Hostclass] The AST hostclass object

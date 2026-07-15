@@ -6,7 +6,7 @@ Puppet::Parser::Functions.newfunction(
   :arity => -1,
   :doc => <<~DOC
     Reverses the order of the elements of something that is iterable and optionally runs a
-    [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html) for each
+    [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html) for each
     element.
 
     This function takes one to two arguments:
@@ -39,22 +39,22 @@ Puppet::Parser::Functions.newfunction(
     $reverse_data = reverse_each($data)
     ```
 
-    When no second argument is present, Puppet returns an `Iterable` that represents the reverse
+    When no second argument is present, OpenVox returns an `Iterable` that represents the reverse
     order of its first argument. This allows methods on `Iterable` to be chained.
 
-    When a lambda is given as the second argument, Puppet iterates the first argument in reverse
+    When a lambda is given as the second argument, OpenVox iterates the first argument in reverse
     order and passes each value in turn to the lambda, then returns `undef`.
 
     **Example:** Using the `reverse_each` function with an array and a one-parameter lambda
 
     ``` puppet
-    # Puppet will log a notice for each of the three items
+    # OpenVox will log a notice for each of the three items
     # in $data in reverse order.
     $data = [1,2,3]
     $data.reverse_each |$item| { notice($item) }
     ```
 
-    When no second argument is present, Puppet returns a new `Iterable` which allows it to
+    When no second argument is present, OpenVox returns a new `Iterable` which allows it to
     be directly chained into another function that takes an `Iterable` as an argument.
 
     **Example:** Using the `reverse_each` function chained with a `map` function.
