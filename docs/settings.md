@@ -21,13 +21,13 @@ Settings
 
 <!-- markdown-toc end -->
 
-Puppet can be configured via settings. All settings are defined in
+OpenVox can be configured via settings. All settings are defined in
 `lib/puppet/defaults.rb`. All settings have a type, value, description, etc.
 Settings can come from multiple sources such as the command line, configuration
 file, programmatically, etc, and are looked up in a specific order, so that the
 command line takes precedence over what's specified in puppet.conf.
 
-Puppet settings can be looked up using `Puppet[:name]` and set using
+OpenVox settings can be looked up using `Puppet[:name]` and set using
 `Puppet[:name] = 'value'`.
 
 # Definitions
@@ -38,7 +38,7 @@ description, etc.
 
 # Sections
 
-Puppet settings can be specified in INI file format based on a section, for example:
+OpenVox settings can be specified in INI file format based on a section, for example:
 
 ```inifile
 [main]
@@ -63,7 +63,7 @@ strict = true
 The purpose of the section name is when applying a settings catalog, see
 'File/Directory Settings' below.
 
-Puppet predefines section names like `main`, `user`, `agent` and `server`. Only
+OpenVox predefines section names like `main`, `user`, `agent` and `server`. Only
 these sections are allowed in `puppet.conf`.
 
 # Initialization
@@ -72,13 +72,13 @@ The entry point for initializing settings is `Puppet.initialize_settings`. It is
 possible to pass in command line arguments, as well as inject dependencies, such
 as an alternate facter implementation.
 
-Puppet initializes its settings in three phases: global options, loading its
+OpenVox initializes its settings in three phases: global options, loading its
 `puppet.conf`, and application options.
 
 First, puppet parses command line arguments using our vendored trollop library.
 Any argument with the same name as a puppet setting is automatically set. The
 argument and its optional value are "consumed" and unknown arguments are
-ignored. Puppet handles boolean arguments specially, so it's possible to pass
+ignored. OpenVox handles boolean arguments specially, so it's possible to pass
 `--onetime` or `--no-onetime`, and puppet will set the value to `true` or
 `false`, respectively.
 
@@ -96,7 +96,7 @@ last, so it "wins".
 
 # Dashes & Underscores
 
-Puppet settings are always defined using underscores, but application options
+OpenVox settings are always defined using underscores, but application options
 should always be defined using dashes, e.g. `option("--job-id ID")`
 
 As long as you're using Ruby 2.5 or above, `OptionParser` will automatically
@@ -120,19 +120,19 @@ You may also want to implement the `print` method, which is invoked when running
 
 # Setting Values
 
-Puppet defines several "root" settings that must be defined, such as `confdir`.
+OpenVox defines several "root" settings that must be defined, such as `confdir`.
 These settings default to directories based on whether puppet is running as a
 privileged user and is running on Windows or not.
 
 Non-root settings may be defined in terms of other settings. For example, the
 `ssldir` setting's value is defined to be `"$confdir/ssl"`. So in order to
 resolve the value of the `ssldir`, puppet will recursively resolve `confdir`.
-Puppet supports multiple levels of recursion, but will raise if it detects a
+OpenVox supports multiple levels of recursion, but will raise if it detects a
 cycle.
 
 ## Duration & TTL Settings
 
-Puppet's duration and ttl-based settings assume the value is specified in
+OpenVox's duration and ttl-based settings assume the value is specified in
 seconds unless units are specified, such as `5m`, `1h`, etc.
 
 ## File/Directory Settings
@@ -174,7 +174,7 @@ and interpolated default values.
 
 # Run Mode
 
-Puppet can be configured to run in different "modes". The default run mode is
+OpenVox can be configured to run in different "modes". The default run mode is
 `:user`, but can be switched to `:agent` or `:server`. If the run mode is
 switched, then it changes how settings are resolved. For example, given
 `puppet.conf` containing:
@@ -198,7 +198,7 @@ starts in, though it may change later on.
 
 # Precedence
 
-Puppet settings can be defined in multiple sources (command line, puppet.conf,
+OpenVox settings can be defined in multiple sources (command line, puppet.conf,
 etc). When looking up a value, puppet searches based on the precedence of each
 source, roughly in order of high to low:
 

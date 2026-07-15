@@ -7,7 +7,7 @@ Report Format 12 in technical terms. Also see the
 The `report` endpoint allows clients to send reports to the server via `http`
 or `https`. Once received by the server they are processed by the *report
 processors* configured to be triggered when a report is received. As an
-example, storing reports in PuppetDB is handled by one such report processor.
+example, storing reports in OpenVoxDB is handled by one such report processor.
 
 Save
 ----

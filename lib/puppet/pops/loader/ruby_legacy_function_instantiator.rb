@@ -99,7 +99,7 @@ class Puppet::Pops::Loader::RubyLegacyFunctionInstantiator
         method_name: mname,
         source_ref: source_ref,
         line: mline,
-        url: "https://puppet.com/docs/puppet/latest/functions_refactor_legacy.html"
+        url: "https://docs.openvoxproject.org/openvox/latest/functions_refactor_legacy.html"
       }
     end
     x.each { |v| walk(v, source_ref, result) }

@@ -10,7 +10,7 @@
         "type": "string"
       },
       "minItems": 1,
-      "description": "An array of the paths where the master looked for environments."
+      "description": "An array of the paths where the server looked for environments."
     },
     "environments": {
       "type": "object",

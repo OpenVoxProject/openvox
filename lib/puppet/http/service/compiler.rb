@@ -138,11 +138,11 @@ class Puppet::HTTP::Service::Compiler < Puppet::HTTP::Service
   # @param [String] certname The name of the node for which to compile the catalog.
   # @param [Hash] persistent A hash containing two required keys, facts and catalog,
   #   which when set to true will cause the facts and reports to be stored in
-  #   PuppetDB, or discarded if set to false.
+  #   OpenVoxDB, or discarded if set to false.
   # @param [String] environment The name of the environment for which to compile the catalog.
   # @param [Hash] facts A hash with a required values key, containing a hash of all the
-  #    facts for the node. If not provided, Puppet will attempt to fetch facts for the node
-  #    from PuppetDB.
+  #    facts for the node. If not provided, OpenVox will attempt to fetch facts for the node
+  #    from OpenVoxDB.
   # @param [Hash] trusted_facts A hash with a required values key containing a hash of
   #    the trusted facts for a node
   # @param [String] transaction_uuid The id for tracking the catalog compilation and

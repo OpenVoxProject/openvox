@@ -5,7 +5,7 @@ Puppet::Parser::Functions.newfunction(
   :type => :rvalue,
   :arity => -3,
   :doc => <<~DOC
-    Applies a [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html)
+    Applies a [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html)
     to every value in a data structure from the first argument, carrying over the returned
     value of each iteration, and returns the result of the lambda's final iteration. This
     lets you create a new value or data structure by combining values from the first
@@ -36,21 +36,21 @@ Puppet::Parser::Functions.newfunction(
 
     `reduce($data, start) |$memo, $value| { ... }`
 
-    When the first argument (`$data` in the above example) is an array, Puppet passes each
+    When the first argument (`$data` in the above example) is an array, OpenVox passes each
     of the data structure's values in turn to the lambda's parameters. When the first
-    argument is a hash, Puppet converts each of the hash's values to an array in the form
+    argument is a hash, OpenVox converts each of the hash's values to an array in the form
     `[key, value]`.
 
-    If you pass a start memo value, Puppet executes the lambda with the provided memo value
-    and the data structure's first value. Otherwise, Puppet passes the structure's first two
+    If you pass a start memo value, OpenVox executes the lambda with the provided memo value
+    and the data structure's first value. Otherwise, OpenVox passes the structure's first two
     values to the lambda.
 
-    Puppet calls the lambda for each of the data structure's remaining values. For each
+    OpenVox calls the lambda for each of the data structure's remaining values. For each
     call, it passes the result of the previous call as the first parameter ($memo in the
     above examples) and the next value from the data structure as the second parameter
     ($value).
 
-    If the structure has one value, Puppet returns the value and does not call the lambda.
+    If the structure has one value, OpenVox returns the value and does not call the lambda.
 
     **Example**: Using the `reduce` function
 

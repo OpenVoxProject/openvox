@@ -17,7 +17,7 @@ providers = Puppet::Util::Reference.newreference :providers, :title => "Provider
 
   # Throw some facts in there, so we know where the report is from.
   ret << option('Ruby Version', Facter.value('ruby.version'))
-  ret << option('Puppet Version', Facter.value('puppetversion'))
+  ret << option('OpenVox Version', Facter.value('puppetversion'))
   ret << option('Operating System', Facter.value('os.name'))
   ret << option('Operating System Release', Facter.value('os.release.full'))
   ret << "\n"
@@ -91,7 +91,7 @@ providers = Puppet::Util::Reference.newreference :providers, :title => "Provider
 
     ret << markdown_header(type.name.to_s + "_", 2)
 
-    ret << "[#{type.name}](https://puppet.com/docs/puppet/latest/type.html##{type.name})\n\n"
+    ret << "[#{type.name}](https://docs.openvoxproject.org/openvox/latest/type.html##{type.name})\n\n"
     ret << option("Default provider", default)
     ret << doctable(headers, table_data)
 
@@ -107,7 +107,7 @@ providers = Puppet::Util::Reference.newreference :providers, :title => "Provider
   ret
 end
 providers.header = "
-Puppet resource types are usually backed by multiple implementations called `providers`,
+OpenVox resource types are usually backed by multiple implementations called `providers`,
 which handle variance between platforms and tools.
 
 Different providers are suitable or unsuitable on different platforms based on things

@@ -263,7 +263,7 @@ class Puppet::Provider::NameService::DirectoryService < Puppet::Provider::NameSe
         # converted_hash_plist['SALTED-SHA512'] is a Base64 encoded
         # string. The password_hash provided as a resource attribute is a
         # hex value. We need to convert the Base64 encoded string to a
-        # hex value and provide it back to Puppet.
+        # hex value and provide it back to OpenVox.
         converted_hash_plist['SALTED-SHA512'].unpack1("H*")
 
       end
@@ -393,7 +393,7 @@ class Puppet::Provider::NameService::DirectoryService < Puppet::Provider::NameSe
     # of the password hash if required
     # Shelling out sucks, but for a single use case it doesn't seem worth
     # requiring people install a UUID library that doesn't come with the system.
-    # This should be revisited if Puppet starts managing UUIDs for other platform
+    # This should be revisited if OpenVox starts managing UUIDs for other platform
     # user records.
     guid = %x(/usr/bin/uuidgen).chomp
 

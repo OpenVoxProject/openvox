@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Provides utility functions to help interface Puppet to SELinux.
+# Provides utility functions to help interface OpenVox to SELinux.
 #
 # This requires the very new SELinux Ruby bindings.  These bindings closely
 # mirror the SELinux C library interface.
@@ -111,7 +111,7 @@ module Puppet::Util::SELinux
   # This updates the actual SELinux label on the file.  You can update
   # only a single component or update the entire context.
   # The caveat is that since setting a partial context makes no sense the
-  # file has to already exist.  Puppet (via the File resource) will always
+  # file has to already exist.  OpenVox (via the File resource) will always
   # just try to set components, even if all values are specified by the manifest.
   # I believe that the OS should always provide at least a fall-through context
   # though on any well-running system.
@@ -123,7 +123,7 @@ module Puppet::Util::SELinux
       context = Selinux.lgetfilecon(file)[1]
       if context == -1
         # We can't set partial context components when no context exists
-        # unless/until we can find a way to make Puppet call this method
+        # unless/until we can find a way to make OpenVox call this method
         # once for all selinux file label attributes.
         Puppet.warning _("Can't set SELinux context on file unless the file already has some kind of context")
         return nil
@@ -157,7 +157,7 @@ module Puppet::Util::SELinux
 
   # Since this call relies on get_selinux_default_context it also needs a
   # full non-relative path to the file.  Fortunately, that seems to be all
-  # Puppet uses.  This will set the file's SELinux context to the policy's
+  # OpenVox uses.  This will set the file's SELinux context to the policy's
   # default context (if any) if it differs from the context currently on
   # the file.
   def set_selinux_default_context(file, resource_ensure = nil)
@@ -178,7 +178,7 @@ module Puppet::Util::SELinux
   # potential issues when mcstransd is not functional.
   #
   # It is not marked private because it is needed by File's
-  # selcontext.rb, but it is not intended for use outside of Puppet's
+  # selcontext.rb, but it is not intended for use outside of OpenVox's
   # code.
   #
   # @param category [String] An selinux category, such as "s0" or "SystemLow"

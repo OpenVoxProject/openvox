@@ -145,7 +145,7 @@ module Logging
   end
 
   # Logs a warning whose origin comes from Puppet source rather than somewhere
-  # internal within Puppet.  Otherwise the same as deprecation_warning()
+  # internal within OpenVox.  Otherwise the same as deprecation_warning()
   #
   # @param message [String] The message to log (logs via warning)
   # @param options [Hash]
@@ -253,8 +253,8 @@ module Logging
     end
   end
 
-  # Sets up Facter logging.
-  # This method causes Facter output to be forwarded to Puppet.
+  # Sets up OpenFact logging.
+  # This method causes OpenFact output to be forwarded to OpenVox.
   def self.setup_facter_logging!
     Puppet.runtime[:facter]
     true

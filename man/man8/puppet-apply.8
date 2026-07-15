@@ -1,6 +1,6 @@
 .\" generated with Ronn-NG/v0.10.1
 .\" http://github.com/apjanke/ronn-ng/tree/0.10.1
-.TH "PUPPET\-APPLY" "8" "January 2025" "Vox Pupuli" "OpenVox manual"
+.TH "PUPPET\-APPLY" "8" "July 2026" "Vox Pupuli" "OpenVox manual"
 .SH "NAME"
 \fBpuppet\-apply\fR \- Apply Puppet manifests locally via OpenVox
 .SH "SYNOPSIS"
@@ -11,14 +11,12 @@ puppet apply [\-h|\-\-help] [\-V|\-\-version] [\-d|\-\-debug] [\-v|\-\-verbose] 
 This is the standalone puppet execution tool; use it to apply individual manifests\.
 .P
 When provided with a modulepath, via command line or config file, puppet apply can effectively mimic the catalog that would be served by OpenVox server with access to the same modules, although there are some subtle differences\. When combined with scheduling and an automated system for pushing manifests, this can be used to implement a serverless site\.
-.
 .P
-Most users should use \'puppet agent\' and \'puppet server\' for site\-wide manifests\.
-.
+Most users should use 'puppet agent' and 'puppet server' for site\-wide manifests\.
 .SH "OPTIONS"
 Any setting that's valid in the configuration file is a valid long argument for puppet apply\. For example, 'tags' is a valid setting, so you can specify '\-\-tags \fIclass\fR,\fItag\fR' as an argument\.
 .P
-See the configuration file documentation at https://puppet\.com/docs/puppet/latest/configuration\.html for the full list of acceptable parameters\. You can generate a commented list of all configuration options by running puppet with '\-\-genconfig'\.
+See the configuration file documentation at https://docs\.openvoxproject\.org/openvox/latest/configuration\.html for the full list of acceptable parameters\. You can generate a commented list of all configuration options by running puppet with '\-\-genconfig'\.
 .IP "\(bu" 4
 \-\-debug: Enable full debugging\.
 .IP "\(bu" 4
@@ -44,7 +42,7 @@ A path ending with '\.json' will receive structured output in JSON format\. The 
 .IP
 A path ending with '\.jsonl' will receive structured output in JSON Lines format\.
 .IP "\(bu" 4
-\-\-noop: Use 'noop' mode where Puppet runs in a no\-op or dry\-run mode\. This is useful for seeing what changes Puppet will make without actually executing the changes\.
+\-\-noop: Use 'noop' mode where OpenVox runs in a no\-op or dry\-run mode\. This is useful for seeing what changes OpenVox will make without actually executing the changes\.
 .IP "\(bu" 4
 \-\-execute: Execute a specific piece of Puppet code
 .IP "\(bu" 4
@@ -52,8 +50,7 @@ A path ending with '\.jsonl' will receive structured output in JSON Lines format
 .IP "\(bu" 4
 \-\-verbose: Print extra information\.
 .IP "\(bu" 4
-\-\-catalog: Apply a JSON catalog (such as one generated with \'puppet catalog compile\')\. You can either specify a JSON file or pipe in JSON from standard input\.
-.
+\-\-catalog: Apply a JSON catalog (such as one generated with 'puppet catalog compile')\. You can either specify a JSON file or pipe in JSON from standard input\.
 .IP "\(bu" 4
 \-\-write\-catalog\-summary After compiling the catalog saves the resource list and classes list to the node in the state directory named classes\.txt and resources\.txt
 .IP "" 0

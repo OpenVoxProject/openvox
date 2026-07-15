@@ -9,7 +9,7 @@ Puppet::Parser::Functions.newfunction(
   :doc => <<~DOC
     Scans a string and returns an array of one or more converted values based on the given format string.
     See the documentation of Ruby's String#scanf method for details about the supported formats (which
-    are similar but not identical to the formats used in Puppet's `sprintf` function.)
+    are similar but not identical to the formats used in OpenVox's `sprintf` function.)
 
     This function takes two mandatory arguments: the first is the string to convert, and the second is
     the format string. The result of the scan is an array, with each successfully scanned and transformed value.

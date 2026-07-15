@@ -17,7 +17,7 @@ module Puppet
       cannot.  For those package formats that cannot retrieve their own files,
       you can use the `source` parameter to point to the correct file.
 
-      Puppet will automatically guess the packaging format that you are
+      OpenVox will automatically guess the packaging format that you are
       using based on the platform you are on, but you can override it
       using the `provider` parameter; each provider defines what it
       requires in order to function, and you must meet those requirements
@@ -30,7 +30,7 @@ module Puppet
       resource; `Package[<NAME>]` is not a synonym for `Package[<TITLE>]` like
       it is for many other resource types.
 
-      **Autorequires:** If Puppet is managing the files specified as a
+      **Autorequires:** If OpenVox is managing the files specified as a
       package's `adminfile`, `responsefile`, or `source`, the package
       resource will autorequire those files."
 
@@ -431,7 +431,7 @@ module Puppet
 
         Different providers accept different values for `source`. Most providers
         accept paths to local files stored on the target system. Some providers
-        may also accept URLs or network drive paths. Puppet will not
+        may also accept URLs or network drive paths. OpenVox will not
         automatically retrieve source files for you, and usually just passes the
         value of `source` to the package installation command.
 
@@ -598,7 +598,7 @@ module Puppet
         option will automatically be quoted when passed to the uninstall
         command.
 
-        On Windows, this is the **only** place in Puppet where backslash
+        On Windows, this is the **only** place in OpenVox where backslash
         separators should be used.  Note that backslashes in double-quoted
         strings _must_ be double-escaped and backslashes in single-quoted
         strings _may_ be double-escaped.

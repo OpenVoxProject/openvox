@@ -3,7 +3,7 @@
 # subscriptions are permanent associations determining how different
 # objects react to an event
 
-# This is Puppet's class for modeling edges in its configuration graph.
+# This is OpenVox's class for modeling edges in its configuration graph.
 # It used to be a subclass of GRATR::Edge, but that class has weird hash
 # overrides that dramatically slow down the graphing.
 class Puppet::Relationship

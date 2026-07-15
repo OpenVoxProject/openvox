@@ -4,7 +4,7 @@ Puppet::Type.newtype(:stage) do
   desc "A resource type for creating new run stages.  Once a stage is available,
     classes can be assigned to it by declaring them with the resource-like syntax
     and using
-    [the `stage` metaparameter](https://puppet.com/docs/puppet/latest/metaparameter.html#stage).
+    [the `stage` metaparameter](https://docs.openvoxproject.org/openvox/latest/metaparameter.html#stage).
 
     Note that new stages are not useful unless you also declare their order
     in relation to the default `main` stage.

@@ -1,22 +1,22 @@
-# Quick Start to Developing on Puppet
+# Quick Start to Developing on OpenVox
 
 Before diving into the code, you should first take the time to make sure you
 have an environment where you can run puppet as a developer. In a nutshell you
-need: the puppet codebase, ruby versions, and dependencies. Once you've got all
+need: the OpenVox codebase, ruby versions, and dependencies. Once you've got all
 of that in place you can make sure that you have a working development system
 by running the puppet spec tests.
 
-## The Puppet Codebase
+## The OpenVox Codebase
 
-In order to contribute to puppet you'll need to have a GitHub account. Once you
-have your account, fork the puppetlabs/puppet repo, and clone it onto your
+In order to contribute to OpenVox you'll need to have a GitHub account. Once you
+have your account, fork the OpenVoxProject/openvox repo, and clone it onto your
 local machine. The [GitHub docs have a good
 explanation](https://help.github.com/articles/fork-a-repo) of how to do all of
 this.
 
 ## Ruby versions
 
-Puppet needs to work across a variety of ruby versions. Popular ways of making
+OpenVox needs to work across a variety of ruby versions. Popular ways of making
 sure you have access to the various versions of ruby are to use either
 [rbenv](https://github.com/sstephenson/rbenv) or [rvm](https://rvm.io/). You can
 read up on the linked sites for how to get them installed on your system.
@@ -50,7 +50,7 @@ To apply a test manifest:
 
 ## Running Spec Tests
 
-Puppet projects use a common convention of using Rake to run unit tests.
+OpenVox projects use a common convention of using Rake to run unit tests.
 The tests can be run with the following rake task:
 
     $ bundle exec rake spec
@@ -67,11 +67,11 @@ To run all tests in parallel, process count is the number of processes to use wh
 
     $ bundle exec rake parallel:spec[process_count]
 
-When tests fail, it is often useful to capture Puppet's log of a test
+When tests fail, it is often useful to capture OpenVox's log of a test
 run. The test harness pays attention to two environment variables that can
 be used to send logs to a file, and to adjust the log level:
 
-* `PUPPET_TEST_LOG`: when set, must be an absolute path to a file. Puppet's
+* `PUPPET_TEST_LOG`: when set, must be an absolute path to a file. OpenVox's
   log messages will be sent to that file. Note that the log file will
   contain lots of spurious warnings `Unable to set ownership of log file`
   - you can safely ignore them.

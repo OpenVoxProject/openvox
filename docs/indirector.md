@@ -2,7 +2,7 @@
 
 > This document describes OpenVox's indirector subsystem, but it has a number of limitations described below. As a result, don't introduce any new indirections or termini.
 
-OpenVox's indirector supports pluggable backends (termini) for a variety of key-value stores (indirections). Each indirection type corresponds to a particular Ruby class (the "Indirected Class" below) and values are instances of that class. Each instance's key is available from its name method. The termini can be local (e.g., on-disk files) or remote (e.g., using a REST interface to talk to a OpenVox server).
+OpenVox's indirector supports pluggable backends (termini) for a variety of key-value stores (indirections). Each indirection type corresponds to a particular Ruby class (the "Indirected Class" below) and values are instances of that class. Each instance's key is available from its name method. The termini can be local (e.g., on-disk files) or remote (e.g., using a REST interface to talk to an OpenVox server).
 
 An indirector has five methods, which are mapped into HTTP verbs for the REST interface:
 

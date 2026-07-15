@@ -59,13 +59,13 @@ should be using persistent connections, but aren't.
 
 ### Routing
 
-Puppet supports 3 ways of routing connections: DNS SRV records, server list, and
+OpenVox supports 3 ways of routing connections: DNS SRV records, server list, and
 static puppet settings. However, some routing methods are not consistently
 applied. For example, `puppet plugin download` and `puppet report upload` don't
 observe server list.
 
 Once a route has been determined, puppet stores the last used server and port in
-Puppet's context system, but it's more of a hack than anything. As a result,
+OpenVox's context system, but it's more of a hack than anything. As a result,
 it's difficult to know how the last used server and port were set and when to
 invalidate them.
 
@@ -85,7 +85,7 @@ result, it's hard for clients to build higher level abstractions.
 
 ### SSL Trust Stores
 
-Puppet only trusts the puppet PKI when connecting to puppet infrastructure, but
+OpenVox only trusts the puppet PKI when connecting to puppet infrastructure, but
 needs to additionally trust the system cert store for requests like PMT and
 downloading files from https sources. However, the current API doesn't allow the
 caller to do that, which is why `Puppet::Util::HttpProxy#request_with_redirects`
@@ -251,11 +251,11 @@ with this service, but otherwise the flow is similar to that of other services.
 
 ### Generic HTTP(S) Requests
 
-Puppet agents support downloading file content from 3rd party file servers,
+OpenVox agents support downloading file content from 3rd party file servers,
 which reduces load on the compiler. The `Client` will provide a low-level API
 for making `GET` requests for an arbitrary URL, and streaming the response body.
 
-Puppet only trusts the puppet PKI for its REST requests. However, it should be
+OpenVox only trusts the puppet PKI for its REST requests. However, it should be
 possible to additionally trust the system store when making HTTPS requests:
 
 ```ruby
@@ -268,10 +268,10 @@ end
 
 ### Puppetserver
 
-Puppet ruby code running in puppetserver sometimes make outbound connections
+OpenVox ruby code running in puppetserver sometimes make outbound connections
 such as the [puppetdb
-terminus](https://github.com/puppetlabs/puppetdb/blob/6.5.0/puppet/lib/puppet/util/puppetdb/http.rb#L138),
-PE classifier terminus, and ['http' report
+terminus](https://github.com/puppetlabs/puppetdb/blob/6.5.0/puppet/lib/puppet/util/puppetdb/http.rb#L138)
+and ['http' report
 processor](https://github.com/puppetlabs/puppet/blob/6.7.0/lib/puppet/reports/http.rb#L32).
 Currently, puppetserver registers its own http client class, so that it can
 perform the HTTP request using Apache HttpClient.
@@ -280,7 +280,7 @@ In order to preserve this capability, puppetserver should have a way of
 overriding the `get` and `post` methods of `Puppet::HTTP::Client` to call the
 Apache HttpClient instead.
 
-One way might be to create an adapter that overrides Puppet's implementation and
+One way might be to create an adapter that overrides OpenVox's implementation and
 delegates to [puppetserver's
 client](https://github.com/puppetlabs/puppetserver/blob/f718994c0f32f8c697daa662ec4074e4596350fc/src/ruby/puppetserver-lib/puppet/server/http_client.rb#L23):
 

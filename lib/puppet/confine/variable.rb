@@ -2,8 +2,8 @@
 
 require_relative '../../puppet/confine'
 
-# Require a specific value for a variable, either a Puppet setting
-# or a Facter value.  This class is a bit weird because the name
+# Require a specific value for a variable, either an OpenVox setting
+# or an OpenFact value.  This class is a bit weird because the name
 # is set explicitly by the ConfineCollection class -- from this class,
 # it's not obvious how the name would ever get set.
 class Puppet::Confine::Variable < Puppet::Confine

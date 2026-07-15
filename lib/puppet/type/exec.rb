@@ -13,11 +13,11 @@ module Puppet
 
       * The command itself is already idempotent. (For example, `apt-get update`.)
       * The exec has an `onlyif`, `unless`, or `creates` attribute, which prevents
-        Puppet from running the command unless some condition is met. The
+        OpenVox from running the command unless some condition is met. The
         `onlyif` and `unless` commands of an `exec` are used in the process of
         determining whether the `exec` is already in sync, therefore they must be run
-        during a noop Puppet run.
-      * The exec has `refreshonly => true`, which allows Puppet to run the
+        during a noop OpenVox run.
+      * The exec has `refreshonly => true`, which allows OpenVox to run the
         command only when some other resource is changed. (See the notes on refreshing
         below.)
 
@@ -40,7 +40,7 @@ module Puppet
       consider developing a custom resource type instead, as it is much
       more predictable and maintainable.
 
-      **Duplication:** Even though `command` is the namevar, Puppet allows
+      **Duplication:** Even though `command` is the namevar, OpenVox allows
       multiple `exec` resources with the same `command` value.
 
       **Refresh:** `exec` resources can respond to refresh events (via
@@ -65,9 +65,9 @@ module Puppet
       In short: If there's a possibility of your exec receiving refresh events,
       it is extremely important to make sure the run conditions are restricted.
 
-      **Autorequires:** If Puppet is managing an exec's cwd or the executable
+      **Autorequires:** If OpenVox is managing an exec's cwd or the executable
       file used in an exec's command, the exec resource autorequires those
-      files. If Puppet is managing the user that an exec should run as, the
+      files. If OpenVox is managing the user that an exec should run as, the
       exec resource autorequires that user."
 
     # Create a new check mechanism.  It's basically a parameter that
@@ -109,13 +109,13 @@ module Puppet
         both the cmd.exe shell and the .NET runtime cast them to signed
         integers. This means some tools will report negative numbers for exit
         codes above 2147483647. (For example, cmd.exe reports 4294967295 as -1.)
-        Since Puppet uses the plain Win32 APIs, it will report the very large
+        Since OpenVox uses the plain Win32 APIs, it will report the very large
         number instead of the negative number, which might not be what you
         expect if you got the exit code from a cmd.exe session.
 
         Microsoft recommends against using negative/very large exit codes, and
         you should avoid them when possible. To convert a negative exit code to
-        the positive one Puppet will use, add it to 4294967296."
+        the positive one OpenVox will use, add it to 4294967296."
 
       # Make output a bit prettier
       def change_to_s(currentvalue, newvalue)
@@ -202,11 +202,11 @@ module Puppet
         (meaning its return code does not match the specified code) then
         any output is logged at the `err` log level.
 
-        Multiple `exec` resources can use the same `command` value; Puppet
+        Multiple `exec` resources can use the same `command` value; OpenVox
         only uses the resource title to ensure `exec`s are unique.
 
         On *nix platforms, the command can be specified as an array of
-        strings and Puppet will invoke it using the more secure method of
+        strings and OpenVox will invoke it using the more secure method of
         parameterized system calls. For example, rather than executing the
         malicious injected code, this command will echo it out:
 
@@ -236,10 +236,10 @@ module Puppet
     newparam(:user) do
       desc "The user to run the command as.
 
-        > **Note:** Puppet cannot execute commands as other users on Windows.
+        > **Note:** OpenVox cannot execute commands as other users on Windows.
 
         Note that if you use this attribute, any error output is not captured
-        due to a bug within Ruby. If you use Puppet to create this user, the
+        due to a bug within Ruby. If you use OpenVox to create this user, the
         exec automatically requires the user, as long as it is specified by
         name.
 
@@ -258,7 +258,7 @@ module Puppet
     newparam(:group) do
       desc "The group to run the command as.  This seems to work quite
         haphazardly on different platforms -- it is a platform issue
-        not a Ruby or Puppet one, since the same variety exists when
+        not a Ruby or OpenVox one, since the same variety exists when
         running commands as different users in the shell."
       # Validation is handled by the SUIDManager class.
     end
@@ -282,7 +282,7 @@ module Puppet
 
     newparam(:refresh) do
       desc "An alternate command to run when the `exec` receives a refresh event
-        from another resource. By default, Puppet runs the main command again.
+        from another resource. By default, OpenVox runs the main command again.
         For more details, see the notes about refresh behavior above, in the
         description for this resource type.
 
@@ -422,7 +422,7 @@ module Puppet
         A file to look for before running the command. The command will
         only run if the file **doesn't exist.**
 
-        This parameter doesn't cause Puppet to create a file; it is only
+        This parameter doesn't cause OpenVox to create a file; it is only
         useful if **the command itself** creates a file.
 
             exec { 'tar -xf /Volumes/nfs02/important.tar':
@@ -435,7 +435,7 @@ module Puppet
         `important.tar`. If it is ever deleted, the exec will bring it
         back by re-extracting the tarball. If `important.tar` does **not**
         actually contain `myfile`, the exec will keep running every time
-        Puppet runs.
+        OpenVox runs.
 
         This parameter can also take an array of files, and the command will
         not run if **any** of these files exist. Consider this example:
@@ -459,7 +459,7 @@ module Puppet
     newcheck(:unless) do
       desc <<-'EOT'
         A test command that checks the state of the target system and restricts
-        when the `exec` can run. If present, Puppet runs this test command
+        when the `exec` can run. If present, OpenVox runs this test command
         first, then runs the main command unless the test has an exit code of 0
         (success). For example:
 
@@ -476,7 +476,7 @@ module Puppet
         must fully qualify the command's name.
 
         Since this command is used in the process of determining whether the
-        `exec` is already in sync, it must be run during a noop Puppet run.
+        `exec` is already in sync, it must be run during a noop OpenVox run.
 
         This parameter can also take an array of commands. For example:
 
@@ -522,7 +522,7 @@ module Puppet
     newcheck(:onlyif) do
       desc <<-'EOT'
         A test command that checks the state of the target system and restricts
-        when the `exec` can run. If present, Puppet runs this test command
+        when the `exec` can run. If present, OpenVox runs this test command
         first, and only runs the main command if the test has an exit code of 0
         (success). For example:
 
@@ -539,7 +539,7 @@ module Puppet
         must fully qualify the command's name.
 
         Since this command is used in the process of determining whether the
-        `exec` is already in sync, it must be run during a noop Puppet run.
+        `exec` is already in sync, it must be run during a noop OpenVox run.
 
         This parameter can also take an array of commands. For example:
 

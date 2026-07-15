@@ -97,7 +97,7 @@ module Pal
       internal_compiler.evaluate_additions
     end
 
-    # Attempts to evaluate AST for node defnintions https://puppet.com/docs/puppet/latest/lang_node_definitions.html
+    # Attempts to evaluate AST for node defnintions https://docs.openvoxproject.org/openvox/latest/lang_node_definitions.html
     # if there are any.
     def evaluate_ast_node
       internal_compiler.evaluate_ast_node

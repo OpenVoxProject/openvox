@@ -2,7 +2,7 @@
 
 require_relative '../../puppet/ssl'
 
-# This module defines OIDs for use within Puppet.
+# This module defines OIDs for use within OpenVox.
 #
 # # ASN.1 Definition
 #

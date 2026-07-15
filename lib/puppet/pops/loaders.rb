@@ -56,7 +56,7 @@ class Loaders
     # 2. Cache loader(optional) - i.e. what puppet stores on disk via pluginsync; gate behind the for_agent flag.
     # 3. Environment loader - i.e. what is bound across the environment, may change for each setup
     #    TODO: loaders need to work when also running in an agent doing catalog application. There is no
-    #    concept of environment the same way as when running as a master (except when doing apply).
+    #    concept of environment the same way as when running as a server (except when doing apply).
     #    The creation mechanisms should probably differ between the two.
     @private_environment_loader =
       if for_agent
@@ -274,11 +274,11 @@ class Loaders
   #
   # There are two sources that can be used for the initial parse:
   #
-  #   1. The value of `Puppet[:code]`: Puppet can take a string from
+  #   1. The value of `Puppet[:code]`: OpenVox can take a string from
   #     its settings and parse that as a manifest. This is used by various
-  #     Puppet applications to read in a manifest and pass it to the
+  #     OpenVox applications to read in a manifest and pass it to the
   #     environment as a side effect. This is attempted first.
-  #   2. The contents of the environment's +manifest+ attribute: Puppet will
+  #   2. The contents of the environment's +manifest+ attribute: OpenVox will
   #     try to load the environment manifest. The manifest must be a file.
   #
   # @return [Model::Program] The manifest parsed into a model object

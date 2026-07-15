@@ -86,10 +86,10 @@ module Puppet
   end
 
   Puppet::Type.type(:file).newparam(:selinux_ignore_defaults) do
-    desc "If this is set, Puppet will not call the SELinux function selabel_lookup to
+    desc "If this is set, OpenVox will not call the SELinux function selabel_lookup to
       supply defaults for the SELinux attributes (seluser, selrole,
       seltype, and selrange). In general, you should leave this set at its
-      default and only set it to true when you need Puppet to not try to fix
+      default and only set it to true when you need OpenVox to not try to fix
       SELinux labels automatically."
     newvalues(:true, :false)
 

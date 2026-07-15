@@ -1207,9 +1207,9 @@ describe Puppet::Configurer do
 
       expect {
         configurer.run
-      }.to raise_error(Puppet::Error, /Could not select a functional puppet server from server_list:/)
+      }.to raise_error(Puppet::Error, /Could not select a functional OpenVox server from server_list:/)
 
-      expect(@logs).to include(an_object_having_attributes(level: :err, message: /Puppet server myserver:123 is unavailable: 500 Internal Server Error/))
+      expect(@logs).to include(an_object_having_attributes(level: :err, message: /OpenVox server myserver:123 is unavailable: 500 Internal Server Error/))
     end
 
     it "should error when no servers in 'server_list' are reachable" do
@@ -1221,7 +1221,7 @@ describe Puppet::Configurer do
 
       expect{
         configurer.run
-      }.to raise_error(Puppet::Error, /Could not select a functional puppet server from server_list: 'myserver:123,someotherservername'/)
+      }.to raise_error(Puppet::Error, /Could not select a functional OpenVox server from server_list: 'myserver:123,someotherservername'/)
     end
 
     it "should warn when servers in 'server_list' are unreachable" do
@@ -1243,7 +1243,7 @@ describe Puppet::Configurer do
       stub_request(:get, 'https://mybadserver:123/status/v1/simple/server').to_return(status: 400)
       stub_request(:get, 'https://someotherservername:8140/status/v1/simple/server').to_return(status: 200)
 
-      expect(Puppet).to receive(:warning).with(/^Puppet server mybadserver:123 is unavailable: 400  Trying with next server from server_list.$/)
+      expect(Puppet).to receive(:warning).with(/^OpenVox server mybadserver:123 is unavailable: 400  Trying with next server from server_list.$/)
       configurer.run
     end
 

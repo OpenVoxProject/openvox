@@ -9,7 +9,7 @@ require 'uri'
 
 # Ruby gems support.
 Puppet::Type.type(:package).provide :puppetserver_gem, :parent => :gem do
-  desc "Puppet Server Ruby Gem support. If a URL is passed via `source`, then
+  desc "OpenVox Server Ruby Gem support. If a URL is passed via `source`, then
     that URL is appended to the list of remote gem repositories which by default
     contains rubygems.org; To ensure that only the specified source is used also
     pass `--clear-sources` in via `install_options`; if a source is present but

@@ -8,7 +8,7 @@ Puppet::Reports.register_report(:http) do
   desc <<-DESC
     Send reports via HTTP or HTTPS. This report processor submits reports as
     POST requests to the address in the `reporturl` setting. When a HTTPS URL
-    is used, the remote server must present a certificate issued by the Puppet
+    is used, the remote server must present a certificate issued by the OpenVox
     CA or the connection will fail validation. The body of each POST request
     is the YAML dump of a Puppet::Transaction::Report object, and the
     Content-Type is set as `application/x-yaml`.
@@ -17,8 +17,8 @@ Puppet::Reports.register_report(:http) do
   def process
     url = URI.parse(Puppet[:reporturl])
     headers = { "Content-Type" => "application/x-yaml" }
-    # This metric_id option is silently ignored by Puppet's http client
-    # (Puppet::Network::HTTP) but is used by Puppet Server's http client
+    # This metric_id option is silently ignored by OpenVox's http client
+    # (Puppet::Network::HTTP) but is used by OpenVox Server's http client
     # (Puppet::Server::HttpClient) to track metrics on the request made to the
     # `reporturl` to store a report.
     options = {
@@ -26,7 +26,7 @@ Puppet::Reports.register_report(:http) do
       :include_system_store => Puppet[:report_include_system_store],
     }
 
-    # Puppet's http client implementation accepts userinfo in the URL
+    # OpenVox's http client implementation accepts userinfo in the URL
     # but puppetserver's does not. So pass credentials explicitly.
     if url.user && url.password
       options[:basic_auth] = {

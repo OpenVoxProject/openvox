@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Represents an abstract Puppet web service.
+# Represents an abstract OpenVox web service.
 #
 # @abstract Subclass and implement methods for the service's REST APIs.
 # @api public

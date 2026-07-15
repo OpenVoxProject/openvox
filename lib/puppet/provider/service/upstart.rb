@@ -36,7 +36,7 @@ Puppet::Type.type(:service).provide :upstart, :parent => :debian do
     # Puppet::Util::Execution.execute does not currently work on jRuby.
     # Unfortunately, since this confine is invoked whenever we check for
     # provider suitability and since provider suitability is still checked
-    # on the master, this confine will still be invoked on the master. Thus
+    # on the server, this confine will still be invoked on the server. Thus
     # to avoid raising an exception, we do an early return if we're running
     # on jRuby.
     return false if Puppet::Util::Platform.jruby?
@@ -60,7 +60,7 @@ Puppet::Type.type(:service).provide :upstart, :parent => :debian do
   def self.excludes
     excludes = super
     if Puppet.runtime[:facter].value('os.family') == 'RedHat'
-      # Puppet cannot deal with services that have instances, so we have to
+      # OpenVox cannot deal with services that have instances, so we have to
       # ignore these services using instances on redhat based systems.
       excludes += %w[serial tty]
     end

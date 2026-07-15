@@ -3,8 +3,8 @@
 module Puppet
   Type.newtype(:schedule) do
     @doc = <<-'EOT'
-      Define schedules for Puppet. Resources can be limited to a schedule by using the
-      [`schedule`](https://puppet.com/docs/puppet/latest/metaparameter.html#schedule)
+      Define schedules for OpenVox. Resources can be limited to a schedule by using the
+      [`schedule`](https://docs.openvoxproject.org/openvox/latest/metaparameter.html#schedule)
       metaparameter.
 
       Currently, **schedules can only be used to stop a resource from being
@@ -12,11 +12,11 @@ module Puppet
       wouldn't be, and they cannot accurately specify a time when a resource
       should run.
 
-      Every time Puppet applies its configuration, it will apply the
+      Every time OpenVox applies its configuration, it will apply the
       set of resources whose schedule does not eliminate them from
       running right then, but there is currently no system in place to
       guarantee that a given resource runs at a given time.  If you
-      specify a very  restrictive schedule and Puppet happens to run at a
+      specify a very  restrictive schedule and OpenVox happens to run at a
       time within that schedule, then the resources will get applied;
       otherwise, that work may never get done.
 
@@ -31,13 +31,13 @@ module Puppet
             repeat => 1,
           }
 
-      With this schedule, the first time that Puppet runs between 2 and 4 AM,
+      With this schedule, the first time that OpenVox runs between 2 and 4 AM,
       all resources with this schedule will get applied, but they won't
       get applied again between 2 and 4 because they will have already
       run once that day, and they won't get applied outside that schedule
       because they will be outside the scheduled range.
 
-      Puppet automatically creates a schedule for each of the valid periods
+      OpenVox automatically creates a schedule for each of the valid periods
       with the same name as that period (such as hourly and daily).
       Additionally, a schedule named `puppet` is created and used as the
       default, with the following attributes:
@@ -195,7 +195,7 @@ module Puppet
     newparam(:period) do
       desc <<-EOT
         The period of repetition for resources on this schedule. The default is
-        for resources to get applied every time Puppet runs.
+        for resources to get applied every time OpenVox runs.
 
         Note that the period defines how often a given resource will get
         applied but not when; if you would like to restrict the hours
@@ -203,7 +203,7 @@ module Puppet
         during a maintenance window), then use the `range` attribute.
 
         If the provided periods are not sufficient, you can provide a
-        value to the *repeat* attribute, which will cause Puppet to
+        value to the *repeat* attribute, which will cause OpenVox to
         schedule the affected resources evenly in the period the
         specified number of times.  Take this schedule:
 
@@ -212,12 +212,12 @@ module Puppet
               repeat => 6,
             }
 
-        This can cause Puppet to apply that resource up to every 10 minutes.
+        This can cause OpenVox to apply that resource up to every 10 minutes.
 
-        At the moment, Puppet cannot guarantee that level of repetition; that
+        At the moment, OpenVox cannot guarantee that level of repetition; that
         is, the resource can applied _up to_ every 10 minutes, but internal
         factors might prevent it from actually running that often (for instance,
-        if a Puppet run is still in progress when the next run is scheduled to
+        if an OpenVox run is still in progress when the next run is scheduled to
         start, that next run will be suppressed).
 
         See the `periodmatch` attribute for tuning whether to match

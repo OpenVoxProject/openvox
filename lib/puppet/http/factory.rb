@@ -7,7 +7,7 @@ require_relative '../../puppet/http'
 # Factory for `Net::HTTP` objects.
 #
 # Encapsulates the logic for creating a `Net::HTTP` object based on the
-# specified {Site} and puppet settings.
+# specified {Site} and OpenVox settings.
 #
 # @api private
 class Puppet::HTTP::Factory

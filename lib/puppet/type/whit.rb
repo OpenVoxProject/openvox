@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 Puppet::Type.newtype(:whit) do
-  desc "Whits are internal artifacts of Puppet's current implementation, and
-    Puppet suppresses their appearance in all logs. We make no guarantee of
+  desc "Whits are internal artifacts of OpenVox's current implementation, and
+    OpenVox suppresses their appearance in all logs. We make no guarantee of
     the whit's continued existence, and it should never be used in an actual
     manifest. Use the `anchor` type from the puppetlabs-stdlib module if you
     need arbitrary whit-like no-op resources."

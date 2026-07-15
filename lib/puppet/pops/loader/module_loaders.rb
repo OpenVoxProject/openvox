@@ -38,8 +38,8 @@ module ModuleLoaders
   end
 
   def self.system_loader_from(parent_loader, loaders)
-    # Puppet system may be installed in a fixed location via RPM, installed as a Gem, via source etc.
-    # The only way to find this across the different ways puppet can be installed is
+    # OpenVox may be installed in a fixed location via RPM, installed as a Gem, via source etc.
+    # The only way to find this across the different ways OpenVox can be installed is
     # to search up the path from this source file's __FILE__ location until it finds the base of
     # puppet.
     #

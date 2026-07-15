@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Runs a [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html)
+# Runs a [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html)
 # repeatedly using each value in a data structure until the lambda returns a "truthy" value which
 # makes the function return `true`, or if the end of the iteration is reached, false is returned.
 #
@@ -31,7 +31,7 @@
 # one of the keys. That is, it is equivalent to the expression
 # `$looked_up[routers] || $looked_up[servers] || $looked_up[workstations]`.
 #
-# When the first argument is a `Hash`, Puppet passes each key and value pair to the lambda
+# When the first argument is a `Hash`, OpenVox passes each key and value pair to the lambda
 # as an array in the form `[key, value]`.
 #
 # @example Using the `any` function with a `Hash` and a one-parameter lambda
@@ -60,8 +60,8 @@
 #
 # Would notice true as the index `2` is even and not a `String`
 #
-# For an general examples that demonstrates iteration, see the Puppet
-# [iteration](https://puppet.com/docs/puppet/latest/lang_iteration.html)
+# For an general examples that demonstrates iteration, see the OpenVox
+# [iteration](https://docs.openvoxproject.org/openvox/latest/lang_iteration.html)
 # documentation.
 #
 # @since 5.2.0

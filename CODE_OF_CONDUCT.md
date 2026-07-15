@@ -1,6 +1,6 @@
 # Community Guidelines and Code of Conduct
 
-We want to keep the Puppet communities awesome, and we need your help to keep it
+We want to keep the OpenVox communities awesome, and we need your help to keep it
 that way. While we have specific guidelines for various tools (see links below),
 in general, you should:
 

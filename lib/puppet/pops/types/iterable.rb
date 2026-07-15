@@ -136,7 +136,7 @@ module Puppet::Pops::Types
       end
     end
 
-    # Answers the question if there is an end to the iteration. Puppet does not currently provide any unbounded
+    # Answers the question if there is an end to the iteration. OpenVox does not currently provide any unbounded
     # iterables.
     #
     # @return [Boolean] `true` if the iteration is unbounded

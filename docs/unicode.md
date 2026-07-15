@@ -1,6 +1,6 @@
 # UTF-8 Handling #
 
-Now that Puppet only supports Ruby 1.9+, developers should be aware
+Now that OpenVox only supports Ruby 1.9+, developers should be aware
 of how Ruby handles Strings and Regexp objects. Specifically, every 
 instance of these two classes will have an encoding attribute determined
 in a number of ways.

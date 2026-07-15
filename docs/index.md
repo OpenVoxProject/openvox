@@ -1,4 +1,4 @@
-# Puppet Developer Documentation
+# OpenVox Developer Documentation
 
 Setting up and running tests
 

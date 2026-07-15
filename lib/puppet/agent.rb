@@ -78,7 +78,7 @@ class Puppet::Agent
                 # NOTE: Timeout is pretty heinous as the location in which it
                 # throws an error is entirely unpredictable, which means that
                 # it can interrupt code blocks that perform cleanup or enforce
-                # sanity. The only thing a Puppet agent should do after this
+                # sanity. The only thing an OpenVox agent should do after this
                 # error is thrown is die with as much dignity as possible.
                 Timeout.timeout(Puppet[:runtimeout], RunTimeoutError) do
                   Puppet.override(ssl_context: ssl_context) do
@@ -98,7 +98,7 @@ class Puppet::Agent
               Puppet.notice _("Exiting now because the maxwaitforlock timeout has been exceeded.")
               nil
             else
-              Puppet.info _("Another puppet instance is already running; --waitforlock flag used, waiting for running instance to finish.")
+              Puppet.info _("Another OpenVox instance is already running; --waitforlock flag used, waiting for running instance to finish.")
               Puppet.info _("Will try again in %{time} seconds.") % { time: Puppet[:waitforlock] }
               sleep Puppet[:waitforlock]
               retry

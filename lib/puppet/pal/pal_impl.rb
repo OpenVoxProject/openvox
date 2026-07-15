@@ -387,7 +387,7 @@ module Pal
       $LOAD_PATH << dir unless $LOAD_PATH.include?(dir)
     end
 
-    # Puppet requires Facter, which initializes its lookup paths. Reset Facter to
+    # OpenVox requires OpenFact, which initializes its lookup paths. Reset OpenFact to
     # pickup the new $LOAD_PATH.
     Puppet.runtime[:facter].reset
 

@@ -26,7 +26,7 @@ module Puppet::ModuleTranslations
   # @api private
   # Loads translation files that have been pluginsync'd for modules
   # from the $vardir.
-  # @param [String] vardir the path to Puppet's vardir
+  # @param [String] vardir the path to OpenVox's vardir
   def self.load_from_vardir(vardir)
     locale = Puppet::GettextConfig.current_locale
     Dir.glob("#{vardir}/locales/#{locale}/*.po") do |f|

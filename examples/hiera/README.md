@@ -11,7 +11,7 @@ This demo consists of:
 Below various usage scenarios can be tested using this module.
 
 The examples below assume you:
-- Have the puppet-agent already installed
+- Have the openvox-agent already installed
 - You have this repository cloned from github
 - Are running these commands from within the *examples/hiera* directory as cwd.
 

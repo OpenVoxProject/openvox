@@ -6,7 +6,7 @@
 #
 # The `include` function can be used multiple times on the same class and will
 # only declare a given class once. If a class declared with `include` has any
-# parameters, Puppet will automatically look up values for them in Hiera, using
+# parameters, OpenVox will automatically look up values for them in Hiera, using
 # `<class name>::<parameter name>` as the lookup key.
 #
 # Contrast this behavior with resource-like class declarations

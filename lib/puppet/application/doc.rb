@@ -63,7 +63,7 @@ class Puppet::Application::Doc < Puppet::Application
 
       SYNOPSIS
       --------
-      Generates a reference for all Puppet types. Largely meant for internal use. (Deprecated)
+      Generates a reference for all resource types. Largely meant for internal use. (Deprecated)
 
 
       USAGE
@@ -75,7 +75,7 @@ class Puppet::Application::Doc < Puppet::Application
       DESCRIPTION
       -----------
       This deprecated command generates a Markdown document to stdout
-      describing all installed Puppet types or all allowable arguments to
+      describing all installed resource types or all allowable arguments to
       puppet executables. It is largely meant for internal use and is used to
       generate the reference documents which can be posted to a website.
 
@@ -83,9 +83,7 @@ class Puppet::Application::Doc < Puppet::Application
       has been superseded by the "puppet-strings"
       module - see https://github.com/puppetlabs/puppetlabs-strings for more information.
 
-      This command (puppet-doc) will be removed once the
-      puppetlabs internal documentation processing pipeline is completely based
-      on puppet-strings.
+      This command (puppet-doc) will be removed in a future release.
 
       OPTIONS
       -------

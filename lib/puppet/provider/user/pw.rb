@@ -94,7 +94,7 @@ Puppet::Type.type(:user).provide :pw, :parent => Puppet::Provider::NameService::
     end
   end
 
-  # Get expiry from system and convert to Puppet-style date
+  # Get expiry from system and convert to OpenVox-style date
   def expiry
     expiry = get(:expiry)
     expiry = :absent if expiry == 0

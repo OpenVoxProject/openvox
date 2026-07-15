@@ -1,35 +1,35 @@
 ---
 layout: default
-built_from_commit: 812d7420ea5d7e19e8003b26486a7c8847afdb25
+built_from_commit: f7b1a950d990274b9f352eb7aa0cd93ee6067df1
 title: Report Reference
 toc: columns
-canonical: "/puppet/latest/report.html"
+canonical: "/openvox/latest/report.html"
 ---
 
 # Report Reference
 
-> **NOTE:** This page was generated from the Puppet source code on 2024-10-18 17:22:49 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-07-14 18:42:24 +0000
 
 
 
 
-Puppet can generate a report after applying a catalog. This report includes
+OpenVox can generate a report after applying a catalog. This report includes
 events, log messages, resource statuses, and metrics and metadata about the run.
-Puppet agent sends its report to a Puppet server, and Puppet apply
+OpenVox agent sends its report to an OpenVox server, and puppet apply
 processes its own reports.
 
-Puppet Server and Puppet apply will handle every report with a set of report
+OpenVox Server and puppet apply will handle every report with a set of report
 processors, configurable with the `reports` setting in puppet.conf. This page
 documents the built-in report processors.
 
-See [About Reporting](https://puppet.com/docs/puppet/latest/reporting_about.html)
+See [About Reporting](https://docs.openvoxproject.org/openvox/latest/reporting_about.html)
 for more details.
 
 http
 ----
 Send reports via HTTP or HTTPS. This report processor submits reports as
 POST requests to the address in the `reporturl` setting. When a HTTPS URL
-is used, the remote server must present a certificate issued by the Puppet
+is used, the remote server must present a certificate issued by the OpenVox
 CA or the connection will fail validation. The body of each POST request
 is the YAML dump of a Puppet::Transaction::Report object, and the
 Content-Type is set as `application/x-yaml`.

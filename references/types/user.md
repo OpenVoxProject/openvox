@@ -1,13 +1,13 @@
 ---
 layout: default
-built_from_commit: 812d7420ea5d7e19e8003b26486a7c8847afdb25
+built_from_commit: f7b1a950d990274b9f352eb7aa0cd93ee6067df1
 title: 'Resource Type: user'
 canonical: "/puppet/latest/types/user.html"
 ---
 
 # Resource Type: user
 
-> **NOTE:** This page was generated from the Puppet source code on 2024-10-18 17:23:49 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-07-14 18:42:41 +0000
 
 
 
@@ -27,9 +27,9 @@ This resource type uses the prescribed native tools for creating
 groups and generally uses POSIX APIs for retrieving information
 about them.  It does not directly modify `/etc/passwd` or anything.
 
-**Autorequires:** If Puppet is managing the user's primary group (as
+**Autorequires:** If OpenVox is managing the user's primary group (as
 provided in the `gid` attribute) or any group listed in the `groups`
-attribute then the user resource will autorequire that group. If Puppet
+attribute then the user resource will autorequire that group. If OpenVox
 is managing any role accounts corresponding to the user's roles, the
 user resource will autorequire those role accounts.
 
@@ -54,8 +54,8 @@ user resource will autorequire those role accounts.
   <a href="#user-attribute-key_membership">key_membership</a>       =&gt; <em># Whether specified key/value pairs should be...</em>
   <a href="#user-attribute-keys">keys</a>                 =&gt; <em># Specify user attributes in an array of key ...</em>
   <a href="#user-attribute-loginclass">loginclass</a>           =&gt; <em># The name of login class to which the user...</em>
-  <a href="#user-attribute-managehome">managehome</a>           =&gt; <em># Whether to manage the home directory when Puppet </em>
-  <a href="#user-attribute-membership">membership</a>           =&gt; <em># If `minimum` is specified, Puppet will ensure...</em>
+  <a href="#user-attribute-managehome">managehome</a>           =&gt; <em># Whether to manage the home directory when...</em>
+  <a href="#user-attribute-membership">membership</a>           =&gt; <em># If `minimum` is specified, OpenVox will ensure...</em>
   <a href="#user-attribute-password">password</a>             =&gt; <em># The user's password, in whatever encrypted...</em>
   <a href="#user-attribute-password_max_age">password_max_age</a>     =&gt; <em># The maximum number of days a password may be...</em>
   <a href="#user-attribute-password_min_age">password_min_age</a>     =&gt; <em># The minimum number of days a password must be...</em>
@@ -71,7 +71,7 @@ user resource will autorequire those role accounts.
   <a href="#user-attribute-shell">shell</a>                =&gt; <em># The user's login shell.  The shell must exist...</em>
   <a href="#user-attribute-system">system</a>               =&gt; <em># Whether the user is a system user, according to...</em>
   <a href="#user-attribute-uid">uid</a>                  =&gt; <em># The user ID; must be specified numerically. If...</em>
-  # ...plus any applicable <a href="https://puppet.com/docs/puppet/latest/metaparameter.html">metaparameters</a>.
+  # ...plus any applicable <a href="https://docs.openvoxproject.org/openvox/latest/metaparameter.html">metaparameters</a>.
 }</code></pre>
 
 
@@ -83,7 +83,7 @@ The user name. While naming limitations vary by operating system,
 it is advisable to restrict names to the lowest common denominator,
 which is a maximum of 8 characters beginning with a letter.
 
-Note that Puppet considers user names to be case-sensitive, regardless
+Note that OpenVox considers user names to be case-sensitive, regardless
 of the platform's own rules; be sure to always use the same case when
 referring to a given user.
 
@@ -244,7 +244,7 @@ The user's primary group.  Can be specified numerically or by name.
 
 This attribute is not supported on Windows systems; use the `groups`
 attribute instead. (On Windows, designating a primary group is only
-meaningful for domain accounts, which Puppet does not currently manage.)
+meaningful for domain accounts, which OpenVox does not currently manage.)
 
 ([↑ Back to user attributes](#user-attributes))
 
@@ -334,14 +334,14 @@ Requires features manages_loginclass.
 
 #### managehome {#user-attribute-managehome}
 
-Whether to manage the home directory when Puppet creates or removes the user.
-This creates the home directory if Puppet also creates the user account, and deletes the
-home directory if Puppet also removes the user account.
+Whether to manage the home directory when OpenVox creates or removes the user.
+This creates the home directory if OpenVox also creates the user account, and deletes the
+home directory if OpenVox also removes the user account.
 
-This parameter has no effect unless Puppet is also creating or removing the user in the
-resource at the same time. For instance, Puppet creates a home directory for a managed
-user if `ensure => present` and the user does not exist at the time of the Puppet run.
-If the home directory is then deleted manually, Puppet will not recreate it on the next
+This parameter has no effect unless OpenVox is also creating or removing the user in the
+resource at the same time. For instance, OpenVox creates a home directory for a managed
+user if `ensure => present` and the user does not exist at the time of the OpenVox run.
+If the home directory is then deleted manually, OpenVox will not recreate it on the next
 run.
 
 Note that on Windows, this manages creation/deletion of the user profile instead of the
@@ -361,11 +361,11 @@ Allowed values:
 
 #### membership {#user-attribute-membership}
 
-If `minimum` is specified, Puppet will ensure that the user is a
+If `minimum` is specified, OpenVox will ensure that the user is a
 member of all specified groups, but will not remove any other groups
 that the user is a part of.
 
-If `inclusive` is specified, Puppet will ensure that the user is a
+If `inclusive` is specified, OpenVox will ensure that the user is a
 member of **only** specified groups.
 
 Default: `minimum`
@@ -387,15 +387,15 @@ requires. Consult your operating system's documentation for acceptable password
 encryption formats and requirements.
 
 * Mac OS X 10.5 and 10.6, and some older Linux distributions, use salted SHA1
-  hashes. You can use Puppet's built-in `sha1` function to generate a salted SHA1
+  hashes. You can use OpenVox's built-in `sha1` function to generate a salted SHA1
   hash from a password.
 * Mac OS X 10.7 (Lion), and many recent Linux distributions, use salted SHA512
-  hashes. The Puppet Labs [stdlib][] module contains a `str2saltedsha512` function
+  hashes. The puppetlabs [stdlib][] module contains a `str2saltedsha512` function
   which can generate password hashes for these operating systems.
 * OS X 10.8 and higher use salted SHA512 PBKDF2 hashes. When managing passwords
   on these systems, the `salt` and `iterations` attributes need to be specified as
   well as the password.
-* macOS 10.15 and later require the salt to be 32 bytes. Because Puppet's user
+* macOS 10.15 and later require the salt to be 32 bytes. Because OpenVox's user
   resource requires the value to be hex encoded, the length of the salt's
   string must be 64.
 * Windows passwords can be managed only in cleartext, because there is no Windows
@@ -406,7 +406,7 @@ encryption formats and requirements.
 Enclose any value that includes a dollar sign ($) in single quotes (') to avoid
 accidental variable interpolation.
 
-To redact passwords from reports to PuppetDB, use the `Sensitive` data type. For
+To redact passwords from reports to OpenVoxDB, use the `Sensitive` data type. For
 example, this resource protects the password:
 
 ```puppet
@@ -641,7 +641,7 @@ specified when creating a new user, then one will be chosen
 automatically. This will likely result in the same user having
 different UIDs on different systems, which is not recommended. This is
 especially noteworthy when managing the same user on both Darwin and
-other platforms, since Puppet does UID generation on Darwin, but
+other platforms, since OpenVox does UID generation on Darwin, but
 the underlying tools do so on other platforms.
 
 On Windows, this property is read-only and will return the user's

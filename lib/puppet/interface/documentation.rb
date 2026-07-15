@@ -58,7 +58,7 @@ class Puppet::Interface
     # @dsl Faces
     attr_doc :summary do |value|
       value =~ /\n/ and
-        # TRANSLATORS 'Face' refers to a programming API in Puppet, 'summary' and 'description' are specifc attribute names and should not be translated
+        # TRANSLATORS 'Face' refers to a programming API in OpenVox, 'summary' and 'description' are specifc attribute names and should not be translated
         raise ArgumentError, _("Face summary should be a single line; put the long text in 'description' instead.")
       value
     end

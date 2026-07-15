@@ -79,7 +79,7 @@ module Puppet::GettextConfig
 
   # @api private
   # Resets the thread's configured text_domain to the default text domain.
-  # In Puppet Server, thread A may process a compile request that configures
+  # In OpenVox Server, thread A may process a compile request that configures
   # a domain, while thread B may invalidate that environment and delete the
   # domain. That leaves thread A with an invalid text_domain selected.
   # To avoid that, clear_text_domain after any processing that needs the
@@ -92,12 +92,12 @@ module Puppet::GettextConfig
 
   # @api private
   # Creates a default text domain containing the translations for
-  # Puppet as the start of chain. When semantic_puppet gets initialized,
+  # OpenVox as the start of chain. When semantic_puppet gets initialized,
   # its translations are added to this chain. This is used as a cache
   # so that all non-module translations only need to be loaded once as
   # we create and reset environment-specific text domains.
   #
-  # @return true if Puppet translations were successfully loaded, false
+  # @return true if OpenVox translations were successfully loaded, false
   # otherwise
   def self.create_default_text_domain
     return if @gettext_disabled || !gettext_loaded?
@@ -169,10 +169,10 @@ module Puppet::GettextConfig
   # @api private
   # Adds translations from the default text domain to the specified
   # text domain. Creates the default text domain if one does not exist
-  # (this will load Puppet's translations).
+  # (this will load OpenVox's translations).
   #
   # Since we are currently (Nov 2017) vendoring semantic_puppet, in normal
-  # flows these translations will be copied along with Puppet's.
+  # flows these translations will be copied along with OpenVox's.
   #
   # @param [Symbol] domain_name the name of the domain to add translations to
   def self.copy_default_translations(domain_name)

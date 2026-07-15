@@ -1,7 +1,7 @@
 {
     "$schema":     "http://json-schema.org/draft-04/schema#",
     "title":       "Node",
-    "description": "A Puppet node object",
+    "description": "An OpenVox node object",
     "type":        "object",
     "properties": {
         "environment": {
