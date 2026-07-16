@@ -129,7 +129,7 @@ module Puppet::Util::Windows::COM
   module Instance
     def self.[](iface)
       Class.new(iface) do
-        send(:include, Helpers)
+        include Helpers
 
         def initialize(pointer)
           self.pointer = pointer
@@ -158,7 +158,7 @@ module Puppet::Util::Windows::COM
   module Factory
     def self.[](iface, clsid)
       Class.new(iface) do
-        send(:include, Helpers)
+        include Helpers
 
         const_set(:CLSID, clsid)
 
