@@ -379,3 +379,10 @@ Style/LineEndConcatenation:
 
 Style/MapToHash:
   Enabled: true
+
+Style/OptionalArguments:
+  Enabled: true
+  Exclude:
+    # Moving optional arguments to the end of the method signature would be
+    # a breaking change.
+    - 'lib/puppet/util/windows/principal.rb'
