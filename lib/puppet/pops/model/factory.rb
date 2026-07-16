@@ -532,15 +532,15 @@ class Factory
 
   def and(r)    f_build_binary(AndExpression, self, r);         end
 
-  def not();    f_build_unary(NotExpression, self);             end
+  def not;    f_build_unary(NotExpression, self);             end
 
-  def minus();  f_build_unary(UnaryMinusExpression, self);      end
+  def minus;  f_build_unary(UnaryMinusExpression, self);      end
 
-  def unfold(); f_build_unary(UnfoldExpression, self);          end
+  def unfold; f_build_unary(UnfoldExpression, self);          end
 
-  def text();   f_build_unary(TextExpression, self);            end
+  def text;   f_build_unary(TextExpression, self);            end
 
-  def var();    f_build_unary(VariableExpression, self);        end
+  def var;    f_build_unary(VariableExpression, self);        end
 
   def access(r); f_build_binary(AccessExpression, self, r);     end
 
