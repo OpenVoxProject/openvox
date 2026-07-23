@@ -98,7 +98,7 @@ describe Puppet::Type.type(:package).provider(:pacman) do
             resource[:source] = source
 
             expect(executor).to receive(:execute).
-              with(include("--update") & include(source), no_extra_options).
+              with(include("--upgrade") & include(source), no_extra_options).
               ordered.
               and_return("")
 
@@ -116,7 +116,7 @@ describe Puppet::Type.type(:package).provider(:pacman) do
 
         it "should install from the path segment of the URL" do
           expect(executor).to receive(:execute).
-            with(include("--update") & include(actual_file_path), no_extra_options).
+            with(include("--upgrade") & include(actual_file_path), no_extra_options).
             ordered.
             and_return("")
 
