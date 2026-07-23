@@ -149,9 +149,9 @@ Puppet::Type.type(:package).provide :apt, :parent => :dpkg, :source => :dpkg do
     when true, false, Symbol
       # pass
     else
-      # Add the package version and --force-yes option
+      # Add the package version and --allow-downgrades option (it was --force-yes before)
       str += "=#{should}"
-      cmd << "--force-yes"
+      cmd << "--allow-downgrades"
     end
 
     cmd += install_options if @resource[:install_options]

@@ -12,7 +12,7 @@ test_name "dpkg ensure hold package is latest installed" do
 
   agents.each do |agent|
     teardown do
-      package_absent(agent, package, '--force-yes')
+      package_absent(agent, package, '--allow-downgrades')
     end
   end
 

@@ -20,7 +20,7 @@ test_name "apt can install range if package is not installed" do
     on(agent, 'apt-get update')
 
     teardown do
-      package_absent(agent, package, '--force-yes')
+      package_absent(agent, package, '--allow-downgrades')
       file_manifest = resource_manifest('file', '/etc/apt/sources.list.d/tmp.list', ensure: 'absent')
       apply_manifest_on(agent, file_manifest)
       on(agent, 'rm -rf /tmp/debian-repo')
