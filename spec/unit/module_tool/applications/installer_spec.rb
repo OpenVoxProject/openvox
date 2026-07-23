@@ -2,13 +2,13 @@ require 'spec_helper'
 require 'puppet/module_tool/applications'
 require 'puppet_spec/module_tool/shared_functions'
 require 'puppet_spec/module_tool/stub_source'
+require 'puppet_spec/tarball'
 
 require 'tmpdir'
 
 describe Puppet::ModuleTool::Applications::Installer, :unless => RUBY_PLATFORM == 'java' do
   include PuppetSpec::ModuleTool::SharedFunctions
   include PuppetSpec::Files
-  include PuppetSpec::Fixtures
 
   before do
     FileUtils.mkdir_p(primary_dir)
@@ -41,6 +41,26 @@ describe Puppet::ModuleTool::Applications::Installer, :unless => RUBY_PLATFORM =
   def installer(modname, target_dir, options)
     Puppet::ModuleTool.set_option_defaults(options)
     Puppet::ModuleTool::Applications::Installer.new(modname, target_dir, options)
+  end
+
+  # Build a minimal module tarball containing only a metadata.json, which is
+  # all the installer reads from a local tarball.
+  def module_tarball(name, version, dependencies = {})
+    metadata = {
+      'name' => name,
+      'version' => version,
+      'source' => "git://github.com/puppetlabs/#{name}",
+      'author' => name[/\A[^-]+/],
+      'license' => 'Apache-2.0',
+      'summary' => 'A minimal module for exercising tarball installation',
+      'dependencies' => dependencies.map do |dep_name, requirement|
+        { 'name' => dep_name, 'version_requirement' => requirement }
+      end
+    }
+    PuppetSpec::Tarball.create(
+      File.join(tmpdir('module_tarballs'), "#{name}-#{version}.tar.gz"),
+      "#{name}-#{version}/metadata.json" => Puppet::Util::Json.dump(metadata)
+    )
   end
 
   let(:environment) do
@@ -78,7 +98,7 @@ describe Puppet::ModuleTool::Applications::Installer, :unless => RUBY_PLATFORM =
     end
 
     context 'with a tarball file' do
-      let(:module) { fixtures('stdlib.tgz') }
+      let(:module) { module_tarball('puppetlabs-stdlib', '3.2.0') }
 
       it 'installs the specified tarball' do
         expect(subject).to include :result => :success
@@ -98,7 +118,7 @@ describe Puppet::ModuleTool::Applications::Installer, :unless => RUBY_PLATFORM =
       end
 
       context 'with dependencies' do
-        let(:module) { fixtures('java.tgz') }
+        let(:module) { module_tarball('puppetlabs-java', '1.0.0', 'puppetlabs/stdlib' => '>= 0.1.6') }
 
         it 'installs the specified tarball' do
           expect(subject).to include :result => :success

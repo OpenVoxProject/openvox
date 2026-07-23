@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'puppet/module_tool'
+require 'puppet_spec/tarball'
 
 describe Puppet::ModuleTool::Tar::Mini, :if => (Puppet.features.minitar? and Puppet.features.zlib?) do
   let(:sourcefile) { '/the/module.tar.gz' }
@@ -88,9 +89,16 @@ describe Puppet::ModuleTool::Tar::Mini, :if => (Puppet.features.minitar? and Pup
   end
 
   describe "Extracts tars with long and short pathnames" do
-    let (:sourcetar) { fixtures('module.tar.gz') }
     let (:longfilepath)  { "puppetlabs-dsc-1.0.0/lib/puppet_x/dsc_resources/xWebAdministration/DSCResources/MSFT_xWebAppPoolDefaults/MSFT_xWebAppPoolDefaults.schema.mof" }
     let (:shortfilepath) { "puppetlabs-dsc-1.0.0/README.md" }
+
+    let (:sourcetar) do
+      PuppetSpec::Tarball.create(
+        File.join(PuppetSpec::Files.tmpdir('minitar-fixture'), 'module.tar.gz'),
+        shortfilepath => "README\n",
+        longfilepath  => "class MSFT_xWebAppPoolDefaults {}\n"
+      )
+    end
 
     it "unpacks a tar with a short path length" do
       extractdir = PuppetSpec::Files.tmpdir('minitar')
