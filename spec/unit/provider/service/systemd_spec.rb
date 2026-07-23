@@ -342,10 +342,7 @@ Jun 14 21:43:23 foo.example.com systemd[1]: sshd.service lacks both ExecStart= a
 
     it "should consider nonexistent services to be disabled" do
       provider = provider_class.new(Puppet::Type.type(:service).new(:name => 'doesnotexist'))
-      allow(Facter).to receive(:value).with('os.family').and_return('debian')
       expect(provider).to receive(:execute).with(['/bin/systemctl','is-enabled', '--', 'doesnotexist'], {:failonfail => false})
-                            .and_return(Puppet::Util::Execution::ProcessOutput.new("", 1))
-      expect(provider).to receive(:execute).with(["/usr/sbin/invoke-rc.d", "--quiet", "--query", "doesnotexist", "start"], {:failonfail => false})
                             .and_return(Puppet::Util::Execution::ProcessOutput.new("", 1))
 
       expect(provider.enabled?).to be(:false)
@@ -457,32 +454,6 @@ Jun 14 21:43:23 foo.example.com systemd[1]: sshd.service lacks both ExecStart= a
     end
   end
 
-  describe "#debian_enabled?" do
-    [104, 106].each do |status|
-      it "should return true when invoke-rc.d returns #{status}" do
-        provider = provider_class.new(Puppet::Type.type(:service).new(:name => 'sshd.service'))
-        allow(provider).to receive(:execute).and_return(Puppet::Util::Execution::ProcessOutput.new('', status))
-        expect(provider.debian_enabled?).to eq(:true)
-      end
-    end
-
-    [101, 105].each do |status|
-      it "should return true when status is #{status} and there are at least 4 start links" do
-        provider = provider_class.new(Puppet::Type.type(:service).new(:name => 'sshd.service'))
-        allow(provider).to receive(:execute).and_return(Puppet::Util::Execution::ProcessOutput.new('', status))
-        expect(provider).to receive(:get_start_link_count).and_return(4)
-        expect(provider.debian_enabled?).to eq(:true)
-      end
-
-      it "should return false when status is #{status} and there are less than 4 start links" do
-        provider = provider_class.new(Puppet::Type.type(:service).new(:name => 'sshd.service'))
-        allow(provider).to receive(:execute).and_return(Puppet::Util::Execution::ProcessOutput.new('', status))
-        expect(provider).to receive(:get_start_link_count).and_return(1)
-        expect(provider.debian_enabled?).to eq(:false)
-      end
-    end
-  end
-
   describe "#insync_enabled?" do
     let(:provider) do
       provider_class.new(Puppet::Type.type(:service).new(:name => 'sshd.service', :enable => false))
@@ -563,20 +534,6 @@ Jun 14 21:43:23 foo.example.com systemd[1]: sshd.service lacks both ExecStart= a
         expect(Puppet).not_to receive(:debug)
         provider.enabled_insync?(:true)
       end
-    end
-  end
-
-  describe "#get_start_link_count" do
-    it "should strip the '.service' from the search if present in the resource name" do
-      provider = provider_class.new(Puppet::Type.type(:service).new(:name => 'sshd.service'))
-      expect(Dir).to receive(:glob).with("/etc/rc*.d/S??sshd").and_return(['files'])
-      provider.get_start_link_count
-    end
-
-    it "should use the full service name if it does not include '.service'" do
-      provider = provider_class.new(Puppet::Type.type(:service).new(:name => 'sshd'))
-      expect(Dir).to receive(:glob).with("/etc/rc*.d/S??sshd").and_return(['files'])
-      provider.get_start_link_count
     end
   end
 
