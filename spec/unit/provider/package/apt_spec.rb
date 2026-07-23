@@ -222,10 +222,10 @@ Version table:
       provider.install
     end
 
-    it "should use --force-yes if a package version is specified" do
+    it "should use --allow-downgrades if a package version is specified" do
       resource[:ensure] = '1.0'
       expect(provider).to receive(:aptget) do |*command|
-        expect(command).to include("--force-yes")
+        expect(command).to include("--allow-downgrades")
       end
       expect(provider).to receive(:properties).and_return({:mark => :none})
 
