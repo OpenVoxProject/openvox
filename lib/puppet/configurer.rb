@@ -253,7 +253,8 @@ class Puppet::Configurer
 
   def prepare_and_retrieve_catalog(cached_catalog, facts, options, query_options)
     # set report host name now that we have the fact
-    options[:report].host = Puppet[:node_name_value]
+    node_name = Puppet[:node_name_value]
+    options[:report].host = node_name
 
     query_options[:transaction_uuid] = @transaction_uuid
     query_options[:job_id] = @job_id
@@ -270,6 +271,11 @@ class Puppet::Configurer
       catalog = retrieve_catalog(facts, query_options)
       Puppet.err _("Could not retrieve catalog; skipping run") unless catalog
     end
+
+    if catalog.name != node_name
+      Puppet.err _("Catalog name '#{catalog.name}' does not match this node's certname '#{node_name}'")
+    end
+
     catalog
   end
 
