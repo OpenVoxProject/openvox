@@ -83,17 +83,6 @@ Puppet::Type.type(:service).provide :systemd, :parent => :base do
     systemctl_change_enable(:disable)
   end
 
-  def get_start_link_count
-    # Start links don't include '.service'. Just search for the service name.
-    if @resource[:name] =~ /\.service/
-      link_name = @resource[:name].split('.')[0]
-    else
-      link_name = @resource[:name]
-    end
-
-    Dir.glob("/etc/rc*.d/S??#{link_name}").length
-  end
-
   def cached_enabled?
     return @cached_enabled if @cached_enabled
 
@@ -118,37 +107,7 @@ Puppet::Type.type(:service).provide :systemd, :parent => :base do
     return :false if output == 'indirect'
     return :true if code == 0
 
-    if output.empty? && (code > 0) && Puppet.runtime[:facter].value('os.family').casecmp('debian').zero?
-      ret = debian_enabled?
-      return ret if ret
-    end
-
     :false
-  end
-
-  # This method is required for Debian systems due to the way the SysVInit-Systemd
-  # compatibility layer works. When we are trying to manage a service which does not
-  # have a Systemd unit file, we need to go through the old init script to determine
-  # whether it is enabled or not. See PUP-5016 for more details.
-  #
-  def debian_enabled?
-    status = execute(["/usr/sbin/invoke-rc.d", "--quiet", "--query", @resource[:name], "start"], :failonfail => false)
-    if [104, 106].include?(status.exitstatus)
-      :true
-    elsif [101, 105].include?(status.exitstatus)
-      # 101 is action not allowed, which means we have to do the check manually.
-      # 105 is unknown, which generally means the initscript does not support query
-      # The debian policy states that the initscript should support methods of query
-      # For those that do not, perform the checks manually
-      # http://www.debian.org/doc/debian-policy/ch-opersys.html
-      if get_start_link_count >= 4
-        :true
-      else
-        :false
-      end
-    else
-      :false
-    end
   end
 
   # Define the daemon_reload? function to check if the unit is requiring to trigger a "systemctl daemon-reload"
