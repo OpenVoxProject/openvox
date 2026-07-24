@@ -5062,7 +5062,7 @@ or
 `tree_each($data) |$value| { <PUPPET CODE BLOCK> }`
 
 The parameter `$path` is always given as an `Array` containing the path that when applied to
-the tree as `$data.dig(*$path) yields the `$value`.
+the tree as `$data.dig(*$path)` yields the `$value`.
 The `$value` is the value at that path.
 
 For `Array` values, the path will contain `Integer` entries with the array index,
