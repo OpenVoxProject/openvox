@@ -15,7 +15,7 @@ task :gen_manpages do
   ronn_args = '--manual="OpenVox manual" --organization="Vox Pupuli" --roff'
 
   unless ENV['SOURCE_DATE_EPOCH'].nil?
-    source_date = Time.at(ENV['SOURCE_DATE_EPOCH'].to_i).strftime('%Y-%m-%d')
+    source_date = Time.at(ENV['SOURCE_DATE_EPOCH'].to_i, in: 'UTC').strftime('%Y-%m-%d')
     ronn_args += " --date=#{source_date}"
   end
 
