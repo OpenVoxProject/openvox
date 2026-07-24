@@ -177,20 +177,6 @@ describe Puppet::Network::HTTP::API::IndirectedRoutes do
       expect(response.type).to eq(Puppet::Network::FormatHandler.format(:json))
     end
 
-    it "falls back to the next supported format", if: Puppet.features.pson? do
-      Puppet[:allow_pson_serialization] = true
-      data = Puppet::IndirectorTesting.new("my data")
-      indirection.save(data, "my data")
-      request = a_request_that_finds(data, :accept_header => "application/json, text/pson")
-      allow(data).to receive(:to_json).and_raise(Puppet::Network::FormatHandler::FormatError, 'Could not render to Puppet::Network::Format[json]: source sequence is illegal/malformed utf-8')
-      expect(Puppet).to receive(:warning).with(/Failed to serialize Puppet::IndirectorTesting for 'my data': Could not render to Puppet::Network::Format\[json\]/)
-
-      handler.call(request, response)
-
-      expect(response.body).to eq(data.render(:pson))
-      expect(response.type).to eq(Puppet::Network::FormatHandler.format(:pson))
-    end
-
     it "should pass the result through without rendering it if the result is a string" do
       data = Puppet::IndirectorTesting.new("my data")
       data_string = "my data string"
@@ -212,17 +198,16 @@ describe Puppet::Network::HTTP::API::IndirectedRoutes do
       }.to raise_error(not_found_error)
     end
 
-    it "should raise FormatError if tries to fallback" do
+    it "should raise FormatError if serialization fails" do
       data = Puppet::IndirectorTesting.new("my data")
       indirection.save(data, "my data")
-      request = a_request_that_finds(data, :accept_header => "unknown, text/pson")
-      allow(Puppet.features).to receive(:pson?).and_return(true)
-      allow(data).to receive(:to_pson).and_raise(Puppet::Network::FormatHandler::FormatError, 'Could not render to Puppet::Network::Format[pson]: source sequence is illegal/malformed utf-8')
+      request = a_request_that_finds(data, :accept_header => "application/json")
+      allow(data).to receive(:to_json).and_raise(Puppet::Network::FormatHandler::FormatError, 'Could not render to Puppet::Network::Format[json]: source sequence is illegal/malformed utf-8')
 
       expect {
         handler.call(request, response)
       }.to raise_error(Puppet::Network::FormatHandler::FormatError,
-                       %r{Failed to serialize Puppet::IndirectorTesting for 'my data': Could not render to Puppet::Network::Format\[pson\]})
+                       %r{Failed to serialize Puppet::IndirectorTesting for 'my data': Could not render to Puppet::Network::Format\[json\]})
     end
   end
 
@@ -238,20 +223,6 @@ describe Puppet::Network::HTTP::API::IndirectedRoutes do
       expect(response.body).to eq(Puppet::IndirectorTesting.render_multiple(:json, [data]))
     end
 
-    it "falls back to the next supported format", if: Puppet.features.pson? do
-      Puppet[:allow_pson_serialization] = true
-      data = Puppet::IndirectorTesting.new("my data")
-      indirection.save(data, "my data")
-      request = a_request_that_searches(Puppet::IndirectorTesting.new("my"), :accept_header => "application/json, text/pson")
-      allow(data).to receive(:to_json).and_raise(Puppet::Network::FormatHandler::FormatError, 'Could not render to Puppet::Network::Format[json]: source sequence is illegal/malformed utf-8')
-      expect(Puppet).to receive(:warning).with(/Failed to serialize Puppet::IndirectorTesting for 'my': Could not render_multiple to Puppet::Network::Format\[json\]/)
-
-      handler.call(request, response)
-
-      expect(response.type).to eq(Puppet::Network::FormatHandler.format(:pson))
-      expect(response.body).to eq(Puppet::IndirectorTesting.render_multiple(:pson, [data]))
-    end
-
     it "raises 406 not acceptable if no formats are accceptable" do
       data = Puppet::IndirectorTesting.new("my data")
       indirection.save(data, "my data")
@@ -263,17 +234,16 @@ describe Puppet::Network::HTTP::API::IndirectedRoutes do
                        %r{No supported formats are acceptable \(Accept: unknown\)})
     end
 
-    it "raises FormatError if tries to fallback" do
+    it "raises FormatError if serialization fails" do
       data = Puppet::IndirectorTesting.new("my data")
       indirection.save(data, "my data")
-      request = a_request_that_searches(Puppet::IndirectorTesting.new("my"), :accept_header => "unknown, text/pson")
-      allow(Puppet.features).to receive(:pson?).and_return(true)
-      allow(data).to receive(:to_pson).and_raise(Puppet::Network::FormatHandler::FormatError, 'Could not render to Puppet::Network::Format[pson]: source sequence is illegal/malformed utf-8')
+      request = a_request_that_searches(Puppet::IndirectorTesting.new("my"), :accept_header => "application/json")
+      allow(data).to receive(:to_json).and_raise(Puppet::Network::FormatHandler::FormatError, 'Could not render to Puppet::Network::Format[json]: source sequence is illegal/malformed utf-8')
 
       expect {
         handler.call(request, response)
       }.to raise_error(Puppet::Network::FormatHandler::FormatError,
-                       %r{Failed to serialize Puppet::IndirectorTesting for 'my': Could not render_multiple to Puppet::Network::Format\[pson\]})
+                       %r{Failed to serialize Puppet::IndirectorTesting for 'my': Could not render_multiple to Puppet::Network::Format\[json\]})
     end
 
     it "should return [] when searching returns an empty array" do

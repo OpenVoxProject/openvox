@@ -2,5 +2,5 @@
 
 require_relative '../../puppet/util/feature'
 
-# PSON is deprecated, use JSON instead
-Puppet.features.add(:pson, :libs => ['puppet/external/pson'])
+# PSON has been removed. This feature is always false.
+Puppet.features.add(:pson) { false }
