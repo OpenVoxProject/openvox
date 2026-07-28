@@ -4,9 +4,12 @@ describe "puppet ssl", unless: Puppet::Util::Platform.jruby? do
   context "print" do
     it 'translates custom oids to their long name' do
       basedir = File.expand_path("#{__FILE__}/../../../fixtures/ssl")
+      puppet = File.expand_path("#{__FILE__}/../../../../bin/puppet")
+      libdir = File.expand_path("#{__FILE__}/../../../../lib")
+      ruby = Puppet::Util::Execution.ruby_path
       # registering custom oids changes global state, so shell out
       output =
-        %x{puppet ssl show \
+        %x{#{ruby} -I#{libdir} #{puppet} ssl show \
            --certname oid \
            --localcacert #{basedir}/ca.pem \
            --hostcrl #{basedir}/crl.pem \
