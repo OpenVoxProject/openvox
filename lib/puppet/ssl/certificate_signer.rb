@@ -13,8 +13,6 @@ class Puppet::SSL::CertificateSigner
   def initialize
     if OpenSSL::Digest.const_defined?('SHA256')
       @digest = OpenSSL::Digest::SHA256
-    elsif OpenSSL::Digest.const_defined?('SHA1')
-      @digest = OpenSSL::Digest::SHA1
     elsif OpenSSL::Digest.const_defined?('SHA512')
       @digest = OpenSSL::Digest::SHA512
     elsif OpenSSL::Digest.const_defined?('SHA384')
