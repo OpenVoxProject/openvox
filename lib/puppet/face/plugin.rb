@@ -19,7 +19,7 @@ Puppet::Face.define(:plugin, '0.0.1') do
   EOT
 
   action :download do
-    summary _("Download plugins from the puppet master.")
+    summary _("Download plugins from the Puppet server.")
     description <<-'EOT'
       Downloads plugins from the configured OpenVox server. Any plugins
       downloaded in this way will be used in all subsequent OpenVox activity.
@@ -31,11 +31,11 @@ Puppet::Face.define(:plugin, '0.0.1') do
       the files downloaded, which will be empty if none were retrieved.
     EOT
     examples <<-'EOT'
-      Retrieve plugins from the puppet master:
+      Retrieve plugins from the Puppet server:
 
       $ puppet plugin download
 
-      Retrieve plugins from the puppet master (API example):
+      Retrieve plugins from the Puppet server (API example):
 
       $ Puppet::Face[:plugin, '0.0.1'].download
     EOT

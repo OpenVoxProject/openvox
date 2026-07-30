@@ -355,7 +355,7 @@ class Puppet::Application::Agent < Puppet::Application
       * SIGINT and SIGTERM:
         Shut down the puppet agent daemon.
       * SIGUSR1:
-        Immediately retrieve and apply configurations from the puppet master.
+        Immediately retrieve and apply configurations from the Puppet server.
       * SIGUSR2:
         Close file descriptors for log files and reopen them. Used with logrotate.
 
