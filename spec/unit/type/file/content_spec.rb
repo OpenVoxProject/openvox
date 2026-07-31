@@ -37,11 +37,6 @@ describe Puppet::Type.type(:file).attrclass(:content), :uses_checksums => true d
   describe "when setting the desired content" do
     let(:content) { described_class.new(:resource => resource) }
 
-    before do
-      allow_any_instance_of(Puppet::Type.type(:file)).to receive(:file).and_return('my/file.pp')
-      allow_any_instance_of(Puppet::Type.type(:file)).to receive(:line).and_return(5)
-    end
-
     it "should make the actual content available via an attribute" do
       content.should = "this is some content"
 
@@ -63,12 +58,24 @@ describe Puppet::Type.type(:file).attrclass(:content), :uses_checksums => true d
         expect(content.should).to eq(:absent)
       end
 
-      it "should accept a checksum as the desired content" do
+      it "should treat a checksum as literal content when no source is set" do
         d = digest("this is some content")
 
         string = "{#{digest_algorithm}}#{d}"
         content.should = string
 
+        expect(content.actual_content).to eq(string)
+        expect(content.should).to eq("{#{digest_algorithm}}#{digest(string)}")
+      end
+
+      it "should accept a checksum as the desired content when a source is set" do
+        resource[:source] = make_absolute('/foo/bar')
+        d = digest("this is some content")
+
+        string = "{#{digest_algorithm}}#{d}"
+        content.should = string
+
+        expect(content.actual_content).to be_nil
         expect(content.should).to eq(string)
       end
     end
@@ -381,16 +388,11 @@ describe Puppet::Type.type(:file).attrclass(:content), :uses_checksums => true d
 
     let(:fh) { File.open(filename, 'wb') }
 
-    before do
-      allow_any_instance_of(Puppet::Type.type(:file)).to receive(:file).and_return('my/file.pp')
-      allow_any_instance_of(Puppet::Type.type(:file)).to receive(:line).and_return(5)
-    end
-
-    it "should attempt to read from the filebucket if no actual content nor source exists" do
+    it "should write content that looks like a checksum literally" do
       content.should = "{md5}foo"
-      allow_any_instance_of(content.resource.bucket.class).to receive(:getfile).and_return("foo")
       content.write(fh)
       fh.close
+      expect(File.read(filename)).to eq("{md5}foo")
     end
 
     describe "from actual content" do
@@ -407,33 +409,6 @@ describe Puppet::Type.type(:file).attrclass(:content), :uses_checksums => true d
       it "should return the current checksum value" do
         expect(resource.parameter(:checksum)).to receive(:sum_stream).and_return("checksum")
         expect(content.write(fh)).to eq("checksum")
-      end
-    end
-
-    describe "from a file bucket" do
-      it "should fail if a file bucket cannot be retrieved" do
-        content.should = "{md5}foo"
-        expect(content.resource).to receive(:bucket).and_return(nil)
-        expect { content.write(fh) }.to raise_error(Puppet::Error)
-      end
-
-      it "should fail if the file bucket cannot find any content" do
-        content.should = "{md5}foo"
-        bucket = double('bucket')
-        expect(content.resource).to receive(:bucket).and_return(bucket)
-        expect(bucket).to receive(:getfile).with("foo").and_raise("foobar")
-        expect { content.write(fh) }.to raise_error(Puppet::Error)
-      end
-
-      it "should write the returned content to the file" do
-        content.should = "{md5}foo"
-        bucket = double('bucket')
-        expect(content.resource).to receive(:bucket).and_return(bucket)
-        expect(bucket).to receive(:getfile).with("foo").and_return("mycontent")
-
-        fh = double('filehandle')
-        expect(fh).to receive(:print).with("mycontent")
-        content.write(fh)
       end
     end
   end

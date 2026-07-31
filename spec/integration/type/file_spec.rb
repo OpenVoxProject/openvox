@@ -630,15 +630,24 @@ describe Puppet::Type.type(:file), :uses_checksums => true do
       end
     end
 
-    it "should not give a checksum deprecation warning when given actual content" do
-      expect(Puppet).not_to receive(:puppet_deprecation_warning)
-      catalog.add_resource described_class.new(:path => path, :content => 'this is content')
+    it "should write content that looks like a checksum literally" do
+      file = described_class.new(:path => path, :content => '{ABCD}X')
+      catalog.add_resource file
       catalog.apply
+      expect(File.read(path)).to eq('{ABCD}X')
     end
 
     with_digest_algorithms do
       it_should_behave_like "files are backed up", {} do
         let(:filebucket_digest) { method(:digest) }
+      end
+
+      it "should write content that is a valid checksum literally" do
+        d = digest("this is some content")
+        file = described_class.new(:path => path, :content => "{#{digest_algorithm}}#{d}")
+        catalog.add_resource file
+        catalog.apply
+        expect(File.read(path)).to eq("{#{digest_algorithm}}#{d}")
       end
     end
 

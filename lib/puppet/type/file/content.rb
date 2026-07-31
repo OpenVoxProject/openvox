@@ -47,20 +47,14 @@ module Puppet
     munge do |value|
       if value == :absent
         value
-      elsif value.is_a?(String) && checksum?(value)
-        # Our argument looks like a checksum. Is it the value of the content
-        # attribute in Puppet code, that happens to look like a checksum, or is
-        # it an actual checksum computed on the actual content?
-        if @actual_content || resource.parameter(:source)
-          # Actual content is already set, value contains it's checksum
-          value
-        else
-          # The content only happens to look like a checksum by chance.
-          @actual_content = value.is_a?(Puppet::Pops::Types::PBinaryType::Binary) ? value.binary_buffer : value
-          resource.parameter(:checksum).sum(@actual_content)
-        end
+      elsif value.is_a?(String) && checksum?(value) && (@actual_content || resource.parameter(:source))
+        # The actual content is already known, either because it was
+        # previously set or because it comes from a source, and the value is
+        # its checksum.
+        value
       else
-        # Our argument is definitely not a checksum: set actual_value and return calculated checksum.
+        # The value is the desired file content, even if it happens to look
+        # like a checksum.
         @actual_content = value.is_a?(Puppet::Pops::Types::PBinaryType::Binary) ? value.binary_buffer : value
         resource.parameter(:checksum).sum(@actual_content)
       end
@@ -146,27 +140,14 @@ module Puppet
 
     private
 
-    # the content is munged so if it's a checksum source_or_content is nil
-    # unless the checksum indirectly comes from source
+    # actual_content is only nil when the munged value is a checksum of
+    # content that comes from a source
     def each_chunk_from
       if actual_content.is_a?(String)
         yield actual_content
       elsif actual_content.nil?
-        yield read_file_from_filebucket
-      elsif actual_content.nil?
         yield ''
       end
-    end
-
-    def read_file_from_filebucket
-      dipper = resource.bucket
-      raise "Could not get filebucket from file" unless dipper
-
-      sum = should.sub(/\{\w+\}/, '')
-
-      dipper.getfile(sum)
-    rescue => detail
-      self.fail Puppet::Error, "Could not retrieve content for #{should} from filebucket: #{detail}", detail
     end
   end
 end
