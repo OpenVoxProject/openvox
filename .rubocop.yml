@@ -386,3 +386,8 @@ Style/OptionalArguments:
     # Moving optional arguments to the end of the method signature would be
     # a breaking change.
     - 'lib/puppet/util/windows/principal.rb'
+
+# Interpolated _() strings are all over the codebase.
+# This would be incredibly noisy, and FastGettext handles interpolation just fine.
+I18n/GetText/DecorateStringFormattingUsingInterpolation:
+  Enabled: false
