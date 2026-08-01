@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Provides stepping with given interval over elements in an iterable and optionally runs a
-# [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html) for each
+# [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html) for each
 # element.
 #
 # This function takes two to three arguments:
@@ -35,9 +35,9 @@
 # $stepped_data = step($data, <n>)
 # ```
 #
-# When no block is given, Puppet returns an `Iterable` that yields the first element and every nth successor
+# When no block is given, OpenVox returns an `Iterable` that yields the first element and every nth successor
 # element, from its first argument. This allows functions on iterables to be chained.
-# When a block is given, Puppet iterates and calls the block with the first element and then with
+# When a block is given, OpenVox iterates and calls the block with the first element and then with
 # every nth successor element. It then returns `undef`.
 #
 # @example Using the `step` function with an array, a step factor, and a one-parameter block
@@ -48,10 +48,10 @@
 # $data.step(3) |$item| {
 #  notice($item)
 # }
-# # Puppet notices the values '1', '4', '7'.
+# # OpenVox notices the values '1', '4', '7'.
 # ```
 
-# When no block is given, Puppet returns a new `Iterable` which allows it to be directly chained into
+# When no block is given, OpenVox returns a new `Iterable` which allows it to be directly chained into
 # another function that takes an `Iterable` as an argument.
 #
 # @example Using the `step` function chained with a `map` function.

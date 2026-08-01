@@ -1,22 +1,22 @@
 ---
 layout: default
-built_from_commit: 812d7420ea5d7e19e8003b26486a7c8847afdb25
-title: Puppet Man Pages
+built_from_commit: f7b1a950d990274b9f352eb7aa0cd93ee6067df1
+title: OpenVox Man Pages
 canonical: "/puppet/latest/man/overview.html"
 ---
 
-# Puppet Man Pages
+# OpenVox Man Pages
 
-> **NOTE:** This page was generated from the Puppet source code on 2024-10-18 17:22:50 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-07-14 18:42:24 +0000
 
 
 
-Puppet's command line tools consist of a single `puppet` binary with many subcommands. The following subcommands are available in this version of Puppet:
+OpenVox's command line tools consist of a single `puppet` binary with many subcommands. The following subcommands are available in this version of OpenVox:
 
 Core Tools
 -----
 
-These subcommands form the core of Puppet's tool set, and every user should understand what they do.
+These subcommands form the core of OpenVox's tool set, and every user should understand what they do.
 
 - [puppet agent](agent.md)
 - [puppet apply](apply.md)
@@ -25,7 +25,7 @@ These subcommands form the core of Puppet's tool set, and every user should unde
 - [puppet resource](resource.md)
 
 
-> Note: The `puppet cert` command is available only in Puppet versions prior to 6.0. For 6.0 and later, use the [`puppetserver cert`command](https://puppet.com/docs/puppet/6/puppet_server_ca_cli.html).
+> Note: The `puppet cert` command is available only in Puppet versions prior to 6.0. For 6.0 and later, use the [`puppetserver cert`command](https://docs.openvoxproject.org/openvox/latest/puppet_server_ca_cli.html).
 
 Secondary subcommands
 -----
@@ -49,7 +49,7 @@ Many or most users need to use these subcommands at some point, but they aren't 
 Niche subcommands
 -----
 
-Most users can ignore these subcommands. They're only useful for certain niche workflows, and most of them are interfaces to Puppet's internal subsystems.
+Most users can ignore these subcommands. They're only useful for certain niche workflows, and most of them are interfaces to OpenVox's internal subsystems.
 
 - [puppet catalog](catalog.md)
 - [puppet facts](facts.md)

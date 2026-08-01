@@ -24,7 +24,7 @@ POST, GET
 The POST and GET methods are functionally equivalent. Both provide the 3 parameters specified below: the POST in the
 request body, the GET in the query string.
 
-Puppet originally used GET; POST was added because some web servers have a maximum URI length of
+OpenVox originally used GET; POST was added because some web servers have a maximum URI length of
 1024 bytes (which is easily exceeded with the `facts` parameter).
 
 The examples below use the POST method.
@@ -41,7 +41,7 @@ Four parameters should be provided to the POST or GET:
 
 Two optional parameters are required for static catalogs:
 - `static_catalog`: a boolean requesting a
-[static catalog](https://puppet.com/docs/puppet/latest/static_catalogs.html) if available; should always
+[static catalog](https://docs.openvoxproject.org/openvox/latest/static_catalogs.html) if available; should always
 be `true`.
 - `checksum_type`: a dot-separated list of checksum types supported by the agent, for use in file resources of a static
 catalog. The order signifies preference, highest first.

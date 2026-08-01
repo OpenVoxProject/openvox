@@ -185,7 +185,7 @@ class Puppet::Application::Describe < Puppet::Application
 
       SYNOPSIS
       --------
-      Prints help about Puppet resource types, providers, and metaparameters
+      Prints help about resource types, providers, and metaparameters
       installed on an OpenVox node.
 
 

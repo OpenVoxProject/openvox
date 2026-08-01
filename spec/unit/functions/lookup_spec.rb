@@ -642,7 +642,7 @@ describe "The lookup function" do
 
           it 'fails and reports the reserved option key' do
             expect { lookup('a') }.to raise_error do |e|
-              expect(e.message).to match(/Option key 'path' used in hierarchy 'Illegal' is reserved by Puppet/)
+              expect(e.message).to match(/Option key 'path' used in hierarchy 'Illegal' is reserved by OpenVox/)
             end
           end
         end
@@ -652,7 +652,7 @@ describe "The lookup function" do
 
           it 'fails and reports the reserved option key' do
             expect { lookup('a') }.to raise_error do |e|
-              expect(e.message).to match(/Option key 'uri' used in hierarchy 'Illegal' is reserved by Puppet/)
+              expect(e.message).to match(/Option key 'uri' used in hierarchy 'Illegal' is reserved by OpenVox/)
             end
           end
         end
@@ -675,7 +675,7 @@ describe "The lookup function" do
 
           it 'fails and reports the reserved option key' do
             expect { lookup('a') }.to raise_error do |e|
-              expect(e.message).to match(/Option key 'path' used in defaults is reserved by Puppet/)
+              expect(e.message).to match(/Option key 'path' used in defaults is reserved by OpenVox/)
             end
           end
         end
@@ -685,7 +685,7 @@ describe "The lookup function" do
 
           it 'fails and reports the reserved option key' do
             expect { lookup('a') }.to raise_error do |e|
-              expect(e.message).to match(/Option key 'uri' used in defaults is reserved by Puppet/)
+              expect(e.message).to match(/Option key 'uri' used in defaults is reserved by OpenVox/)
             end
           end
         end

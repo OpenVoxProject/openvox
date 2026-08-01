@@ -14,7 +14,7 @@ require 'hiera/puppet_function'
 #
 # 1. A string key that Hiera searches for in the hierarchy. **Required**.
 # 2. An optional default value to return if Hiera doesn't find anything matching the key.
-#     * If this argument isn't provided and this function results in a lookup failure, Puppet
+#     * If this argument isn't provided and this function results in a lookup failure, OpenVox
 #     fails with a compilation error.
 # 3. The optional name of an arbitrary
 # [hierarchy level](https://puppet.com/docs/hiera/latest/hierarchy.html) to insert at the
@@ -59,7 +59,7 @@ require 'hiera/puppet_function'
 # ```
 #
 # You can optionally generate the default value with a
-# [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html) that
+# [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html) that
 # takes one parameter.
 #
 # @example Using `hiera` with a lambda
@@ -79,9 +79,9 @@ require 'hiera/puppet_function'
 # above, Hiera matches the 'users' key and returns it as a hash.
 #
 # See
-# [the 'Using the lookup function' documentation](https://puppet.com/docs/puppet/latest/hiera_automatic.html) for how to perform lookup of data.
+# [the 'Using the lookup function' documentation](https://docs.openvoxproject.org/openvox/latest/hiera_automatic.html) for how to perform lookup of data.
 # Also see
-# [the 'Using the deprecated hiera functions' documentation](https://puppet.com/docs/puppet/latest/hiera_automatic.html)
+# [the 'Using the deprecated hiera functions' documentation](https://docs.openvoxproject.org/openvox/latest/hiera_automatic.html)
 # for more information about the Hiera 3 functions.
 #
 # @since 4.0.0

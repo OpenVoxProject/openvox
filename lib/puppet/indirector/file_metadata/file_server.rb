@@ -5,5 +5,5 @@ require_relative '../../../puppet/indirector/file_metadata'
 require_relative '../../../puppet/indirector/file_server'
 
 class Puppet::Indirector::FileMetadata::FileServer < Puppet::Indirector::FileServer
-  desc "Retrieve file metadata using Puppet's fileserver."
+  desc "Retrieve file metadata using OpenVox's fileserver."
 end

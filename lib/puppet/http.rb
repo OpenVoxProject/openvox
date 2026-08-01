@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Puppet
-  # Contains an HTTP client for making network requests to puppet and other
+  # Contains an HTTP client for making network requests to OpenVox and other
   # HTTP servers.
   #
   # @see Puppet::HTTP::Client

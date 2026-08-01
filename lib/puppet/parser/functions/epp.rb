@@ -9,12 +9,12 @@ result as a String.
 The first argument to this function should be a `<MODULE NAME>/<TEMPLATE FILE>`
 reference, which loads `<TEMPLATE FILE>` from `<MODULE NAME>`'s `templates`
 directory. In most cases, the last argument is optional; if used, it should be a
-[hash](https://puppet.com/docs/puppet/latest/lang_data_hash.html) that contains parameters to
+[hash](https://docs.openvoxproject.org/openvox/latest/lang_data_hash.html) that contains parameters to
 pass to the template.
 
-- See the [template](https://puppet.com/docs/puppet/latest/lang_template.html) documentation
+- See the [template](https://docs.openvoxproject.org/openvox/latest/lang_template.html) documentation
 for general template usage information.
-- See the [EPP syntax](https://puppet.com/docs/puppet/latest/lang_template_epp.html)
+- See the [EPP syntax](https://docs.openvoxproject.org/openvox/latest/lang_template_epp.html)
 documentation for examples of EPP.
 
 For example, to call the apache module's `templates/vhost/_docroot.epp`
@@ -27,12 +27,12 @@ function like this:
 This function can also accept an absolute path, which can load a template file
 from anywhere on disk.
 
-Puppet produces a syntax error if you pass more parameters than are declared in
+OpenVox produces a syntax error if you pass more parameters than are declared in
 the template's parameter tag. When passing parameters to a template that
 contains a parameter tag, use the same names as the tag's declared parameters.
 
 Parameters are required only if they are declared in the called template's
-parameter tag without default values. Puppet produces an error if the `epp`
+parameter tag without default values. OpenVox produces an error if the `epp`
 function fails to pass any required parameter.
 
 - Since 4.0.0") do |_args|

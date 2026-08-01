@@ -1,13 +1,13 @@
-# A brief introduction to testing in Puppet
+# A brief introduction to testing in OpenVox
 
-Puppet relies heavily on automated testing to ensure that Puppet behaves as
+OpenVox relies heavily on automated testing to ensure that OpenVox behaves as
 expected and that new features don't interfere with existing behavior. There are
-three primary sets of tests that Puppet uses: _unit tests_, _integration tests_,
+three primary sets of tests that OpenVox uses: _unit tests_, _integration tests_,
 and _acceptance tests_.
 
 - - -
 
-Unit tests are used to test the individual components of Puppet to ensure that
+Unit tests are used to test the individual components of OpenVox to ensure that
 they function as expected in isolation. Unit tests are designed to hide the
 actual system implementations and provide canned information so that only the
 intended behavior is tested, rather than the targeted code and everything else
@@ -22,38 +22,37 @@ used with the rest of the system they might fail, so integration tests are a
 higher level version of unit tests that serve to check the behavior of
 individual subsystems.
 
-All of the unit and integration tests for Puppet are kept in the spec/ directory.
+All of the unit and integration tests for OpenVox are kept in the spec/ directory.
 
 - - -
 
-Acceptance tests are used to test high level behaviors of Puppet that deal with
+Acceptance tests are used to test high level behaviors of OpenVox that deal with
 a number of concerns and aren't easily tested with normal unit tests. Acceptance
 tests function by changing system state and checking the system after
 the fact to make sure that the intended behavior occurred. Because of this
 acceptance tests can be destructive, so the systems being tested should be
 throwaway systems.
 
-All of the acceptance tests for Puppet are kept in the acceptance/tests/
+All of the acceptance tests for OpenVox are kept in the acceptance/tests/
 directory. Running the acceptance tests is much more involved than running the
 spec tests. Information about how to run them can be found in the [acceptance
-testing documentation](https://github.com/puppetlabs/puppet/blob/master/acceptance/README.md).
+testing documentation](../acceptance/README.md).
 
 ## Testing dependency version requirements
 
-Puppet is only compatible with a specific version of RSpec. If you are not
+OpenVox is only compatible with a specific version of RSpec. If you are not
 using Bundler to install the required test libraries you must ensure that you
 are using the right library version. Using an unsupported version of RSpec will
 probably display many spurious failures. The supported version of RSpec can be
 found in the project Gemfile.
 
-## Puppet Continuous integration
+## OpenVox Continuous integration
 
-  * GitHub Actions (spec tests only): https://github.com/puppetlabs/puppet/actions
-  * Jenkins (spec and acceptance tests): https://jenkins.puppetlabs.com/view/Puppet%20FOSS/
+  * GitHub Actions (spec tests only): https://github.com/OpenVoxProject/openvox/actions
 
 ## RSpec
 
-Puppet uses RSpec to perform unit and integration tests. RSpec handles a number
+OpenVox uses RSpec to perform unit and integration tests. RSpec handles a number
 of concerns to make testing easier:
 
   * Executing examples and ensuring the actual behavior matches the expected behavior (examples)
@@ -85,7 +84,7 @@ things; it makes tests easier to understand and easier to debug.
 
 More complete documentation on expectations is available at https://www.relishapp.com/rspec/rspec-expectations/docs
 
-Note Puppet supports the [RSpec 3](http://rspec.info/blog/2013/07/the-plan-for-rspec-3/)
+Note OpenVox supports the [RSpec 3](http://rspec.info/blog/2013/07/the-plan-for-rspec-3/)
 API, so please do not use RSpec 2 "should" syntax like `1.should == 1`.
 
 ### Example groups
@@ -302,7 +301,7 @@ for help on IRC or the mailing list.
 
 #### Using instance variables
 
-Puppet has a number of older tests that use `before` blocks and instance
+OpenVox has a number of older tests that use `before` blocks and instance
 variables to set up fixture data, instead of `let` blocks. These can retain
 state between tests, which can lead to test failures when tests are run out of
 order.

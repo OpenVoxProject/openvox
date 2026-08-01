@@ -5,8 +5,8 @@ The `certificate_request` endpoint submits a Certificate Signing Request (CSR)
 to the server. The server must be configured to be a CA. The returned
 CSR is always in the `.pem` format.
 
-Under Puppet Server's CA service, the `environment` parameter is ignored and can
-be omitted. Under a Rack or WEBrick Puppet server, `environment` is required and
+Under OpenVox Server's CA service, the `environment` parameter is ignored and can
+be omitted. Under a Rack or WEBrick OpenVox server, `environment` is required and
 must be a valid environment, but it has no effect on the response.
 
 Find
@@ -33,7 +33,7 @@ specifically a CSR in PEM format.
 Search
 ----
 
-**Note:** The plural `certificate_requests` endpoint is a legacy feature. Puppet
+**Note:** The plural `certificate_requests` endpoint is a legacy feature. OpenVox
 Server doesn't support it, and we don't plan to add support in the future.
 
 List submitted CSRs
@@ -54,7 +54,7 @@ Delete a submitted CSR
 ### Supported HTTP Methods
 
 The default configuration only allows requests that result in a Find and a
-Save. You need to modify Puppet Server's `auth.conf` in order to allow clients to use Search and
+Save. You need to modify OpenVox Server's `auth.conf` in order to allow clients to use Search and
 Destroy actions. It is not recommended that you change the default settings.
 
 GET, PUT, DELETE

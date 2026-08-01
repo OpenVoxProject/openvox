@@ -37,8 +37,8 @@ class Puppet::Resource::Catalog < Puppet::Graph::SimpleGraph
   attr_accessor :catalog_uuid
 
   # @return [Integer] catalog format version number. This value is constant
-  #  for a given version of Puppet; it is incremented when a new release of
-  #  Puppet changes the API for the various objects that make up the catalog.
+  #  for a given version of OpenVox; it is incremented when a new release of
+  #  OpenVox changes the API for the various objects that make up the catalog.
   attr_accessor :catalog_format
 
   # Inlined file metadata for non-recursive find
@@ -521,7 +521,7 @@ class Puppet::Resource::Catalog < Puppet::Graph::SimpleGraph
   # Store the classes in the classfile.
   def write_class_file
     # classfile paths may contain UTF-8
-    # https://puppet.com/docs/puppet/latest/configuration.html#classfile
+    # https://docs.openvoxproject.org/openvox/latest/configuration.html#classfile
     classfile = Puppet.settings.setting(:classfile)
     Puppet::FileSystem.open(classfile.value, classfile.mode.to_i(8), "w:UTF-8") do |f|
       f.puts classes.join("\n")
@@ -533,7 +533,7 @@ class Puppet::Resource::Catalog < Puppet::Graph::SimpleGraph
   # Store the list of resources we manage
   def write_resource_file
     # resourcefile contains resources that may be UTF-8 names
-    # https://puppet.com/docs/puppet/latest/configuration.html#resourcefile
+    # https://docs.openvoxproject.org/openvox/latest/configuration.html#resourcefile
     resourcefile = Puppet.settings.setting(:resourcefile)
     Puppet::FileSystem.open(resourcefile.value, resourcefile.mode.to_i(8), "w:UTF-8") do |f|
       to_print = resources.filter_map do |resource|

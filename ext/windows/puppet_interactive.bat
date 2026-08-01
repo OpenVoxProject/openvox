@@ -1,6 +1,6 @@
 @echo off
 SETLOCAL
-echo Running Puppet agent on demand ...
+echo Running OpenVox agent on demand ...
 cd "%~dp0"
 call puppet.bat agent --test %*
 PAUSE

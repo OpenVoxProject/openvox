@@ -20,7 +20,7 @@ class Puppet::Configurer
 
   # Provide more helpful strings to the logging that the Agent does
   def self.to_s
-    _("Puppet configuration client")
+    _("OpenVox configuration client")
   end
 
   def self.should_pluginsync?
@@ -318,7 +318,7 @@ class Puppet::Configurer
       if options[:catalog].nil? && do_failover
         server, port = find_functional_server
         if server.nil?
-          detail = _("Could not select a functional puppet server from server_list: '%{server_list}'") % { server_list: Puppet.settings.value(:server_list, Puppet[:environment].to_sym, true) }
+          detail = _("Could not select a functional OpenVox server from server_list: '%{server_list}'") % { server_list: Puppet.settings.value(:server_list, Puppet[:environment].to_sym, true) }
           if Puppet[:usecacheonfailure]
             options[:pluginsync] = false
             @running_failure = true
@@ -332,7 +332,7 @@ class Puppet::Configurer
           end
         else
           # TRANSLATORS 'server_list' is the name of a setting and should not be translated
-          Puppet.debug _("Selected puppet server from the `server_list` setting: %{server}:%{port}") % { server: server, port: port }
+          Puppet.debug _("Selected OpenVox server from the `server_list` setting: %{server}:%{port}") % { server: server, port: port }
           report.server_used = "#{server}:#{port}"
         end
         Puppet.override(server: server, serverport: port) do
@@ -557,7 +557,7 @@ class Puppet::Configurer
       service = session.route_to(:puppet)
       return [service.url.host, service.url.port]
     rescue Puppet::HTTP::ResponseError => e
-      Puppet.debug(_("Puppet server %{host}:%{port} is unavailable: %{code} %{reason}") %
+      Puppet.debug(_("OpenVox server %{host}:%{port} is unavailable: %{code} %{reason}") %
                    { host: e.response.url.host, port: e.response.url.port, code: e.response.code, reason: e.response.reason })
     rescue => detail
       # TRANSLATORS 'server_list' is the name of a setting and should not be translated
@@ -653,10 +653,10 @@ class Puppet::Configurer
     Puppet.log_exception(detail, _("Could not save last run local report: %{detail}") % { detail: detail })
   end
 
-  # Submit updated facts to the Puppet Server
+  # Submit updated facts to the OpenVox Server
   #
   # This method will clear all current fact values, load a fresh set of
-  # fact data, and then submit it to the Puppet Server.
+  # fact data, and then submit it to the OpenVox Server.
   #
   # @return [true] If fact submission succeeds.
   # @return [false] If an exception is raised during fact generation or

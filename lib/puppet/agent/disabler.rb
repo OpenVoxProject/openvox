@@ -8,7 +8,7 @@ require_relative '../../puppet/util/json_lockfile'
 #  "has the puppet agent been administratively disabled?"
 #
 # The implementation involves writing a lockfile with JSON
-#  contents, and is considered part of the public Puppet API
+#  contents, and is considered part of the public OpenVox API
 #  because it used by external tools such as mcollective.
 #
 # For more information, please see docs on the website.
@@ -18,14 +18,14 @@ module Puppet::Agent::Disabler
 
   # Let the daemon run again, freely in the filesystem.
   def enable
-    Puppet.notice _("Enabling Puppet.")
+    Puppet.notice _("Enabling OpenVox.")
     disable_lockfile.unlock
   end
 
   # Stop the daemon from making any catalog runs.
   def disable(msg = nil)
     data = {}
-    Puppet.notice _("Disabling Puppet.")
+    Puppet.notice _("Disabling OpenVox.")
     unless msg.nil?
       data[DISABLED_MESSAGE_JSON_KEY] = msg
     end

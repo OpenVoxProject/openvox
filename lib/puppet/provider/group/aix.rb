@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Group Puppet provider for AIX. It uses standard commands to manage groups:
+# Group OpenVox provider for AIX. It uses standard commands to manage groups:
 #  mkgroup, rmgroup, lsgroup, chgroup
 require_relative '../../../puppet/provider/aix_object'
 
@@ -94,7 +94,7 @@ Puppet::Type.type(:group).provide :aix, :parent => Puppet::Provider::AixObject d
   # to do it this way so that we do not accidentally break something.
   # This is ok for now, since we do plan on moving this and the
   # auth_membership management over to the property class in a future
-  # Puppet release.
+  # OpenVox release.
   def members_insync?(current, should)
     current.sort == @resource.parameter(:members).actual_should(current, should)
   end

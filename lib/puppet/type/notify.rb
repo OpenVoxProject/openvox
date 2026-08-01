@@ -5,7 +5,7 @@
 
 module Puppet
   Type.newtype(:notify) do
-    @doc = "Sends an arbitrary message, specified as a string, to the agent run-time log. It's important to note that the notify resource type is not idempotent. As a result, notifications are shown as a change on every Puppet run."
+    @doc = "Sends an arbitrary message, specified as a string, to the agent run-time log. It's important to note that the notify resource type is not idempotent. As a result, notifications are shown as a change on every OpenVox run."
 
     apply_to_all
 

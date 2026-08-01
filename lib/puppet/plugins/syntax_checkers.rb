@@ -7,7 +7,7 @@ module SyntaxCheckers
   # @api public
   SYNTAX_CHECKERS_KEY = :'puppet::syntaxcheckers'
 
-  # SyntaxChecker is a Puppet Extension Point for the purpose of extending Puppet with syntax checkers.
+  # SyntaxChecker is an OpenVox Extension Point for the purpose of extending OpenVox with syntax checkers.
   # The intended use is to create a class derived from this class and then register it with the Puppet context
   #
   # Creating the Extension Class
@@ -17,7 +17,7 @@ module SyntaxCheckers
   # e.g. 'Puppetx::Exampleorg::XmlData::XmlChecker" and
   # be located in `lib/puppetx/exampleorg/xml_data/xml_checker.rb`. The Puppet Binder will auto-load this file when it
   # has a binding to the class `Puppetx::Exampleorg::XmlData::XmlChecker'
-  # The Ruby Module `Puppetx` is created by Puppet, the remaining modules should be created by the loaded logic - e.g.:
+  # The Ruby Module `Puppetx` is created by OpenVox, the remaining modules should be created by the loaded logic - e.g.:
   #
   # @example Defining an XmlChecker
   #   module Puppetx::Exampleorg

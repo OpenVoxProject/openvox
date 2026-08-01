@@ -8,7 +8,7 @@ module Puppet::Network
         @authconfigloader_class = klass
       end
 
-      # Verify something external to puppet is authorizing REST requests, so
+      # Verify something external to OpenVox is authorizing REST requests, so
       # we don't fail insecurely due to misconfiguration.
       def check_external_authorization(method, path)
         if @authconfigloader_class.nil?

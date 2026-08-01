@@ -9,11 +9,11 @@ configurations) based on a centralized specification.
 As of now, OpenVox is effectively the same as the original Puppet™️ packages, aside from some minor build pipeline changes and package renaming.
 This means that aside from the installation, all Puppet™️ docs and tutorials will still be completely applicable.
 As the OpenVox project matures, we will create more documentation, guides, and tutorials.
-For the time being though, now you’ll want to hop over to [Puppet’s own documentation](https://puppet.com/docs) and go from there.
+For the time being though, now you’ll want to hop over to [the OpenVox documentation](https://docs.openvoxproject.org/) and go from there.
 
 ### HTTP API
 
-[HTTP API Index](https://puppet.com/docs/puppet/latest/http_api/http_api_index.html)
+[HTTP API Index](https://docs.openvoxproject.org/openvox/latest/http_api/http_api_index.html)
 
 ## Installation
 
@@ -21,7 +21,7 @@ To install OpenVox,
 [see our installation guide.](https://voxpupuli.org/openvox/install/) and [quickstart page](https://voxpupuli.org/openvox/quickstart/).
 
 If you need to run OpenVox from source as a tester or developer,
-see the [Quick Start to Developing on Puppet](docs/quickstart.md) guide.
+see the [Quick Start to Developing on OpenVox](docs/quickstart.md) guide.
 
 ## Developing and Contributing
 
@@ -31,7 +31,7 @@ Guide](docs/quickstart.md). Once you are up and running, take a look at the
 [Contribution Documents](https://github.com/OpenVoxProject/.github/blob/main/CONTRIBUTING.md) to see how to get your changes merged
 in.
 
-For more complete docs on developing with Puppet, take a look at the
+For more complete docs on developing with OpenVox, take a look at the
 rest of the [developer documents](docs/index.md).
 
 ## Licensing
@@ -57,7 +57,7 @@ Bug fixes and ongoing development will occur in minor releases for the current
 major version. Security fixes will be backported to a previous major version on
 a best-effort basis, until the previous major version is no longer maintained.
 
-For example: If a security vulnerability is discovered in Puppet 8.1.1, we
+For example: If a security vulnerability is discovered in OpenVox 8.1.1, we
 would fix it in the 8 series, most likely as 8.1.2. Maintainers would then make
 a best effort to backport that fix onto earlier releases that haven't reached
 their respective end-of-life dates.

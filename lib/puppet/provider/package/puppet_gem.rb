@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 Puppet::Type.type(:package).provide :puppet_gem, :parent => :gem do
-  desc "Puppet Ruby Gem support. This provider is useful for managing
-        gems needed by the ruby provided in the puppet-agent package."
+  desc "OpenVox Ruby Gem support. This provider is useful for managing
+        gems needed by the ruby provided in the openvox-agent package."
 
   has_feature :versionable, :install_options, :uninstall_options
 

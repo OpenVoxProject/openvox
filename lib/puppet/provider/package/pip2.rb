@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Puppet package provider for Python's `pip2` package management frontend.
+# OpenVox package provider for Python's `pip2` package management frontend.
 # <http://pip.pypa.io/>
 
 Puppet::Type.type(:package).provide :pip2,

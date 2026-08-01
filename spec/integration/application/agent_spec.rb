@@ -86,7 +86,7 @@ describe "puppet agent", unless: Puppet::Util::Platform.jruby? do
         agent.run
       }.to exit_with(1)
        .and output(a_string_matching(%r{Unable to connect to server from server_list setting})
-       .and matching(/Error: Could not run Puppet configuration client: Could not select a functional puppet server from server_list: 'puppet.example.com'/)).to_stderr
+       .and matching(/Error: Could not run OpenVox configuration client: Could not select a functional OpenVox server from server_list: 'puppet.example.com'/)).to_stderr
 
       # I'd expect puppet to update the last run report even if the server_list was
       # exhausted, but it doesn't work that way currently, see PUP-6708
@@ -575,7 +575,7 @@ describe "puppet agent", unless: Puppet::Util::Platform.jruby? do
         expect {
           agent.command_line.args << '--test'
           agent.run
-        }.to exit_with(1).and output(/Run of Puppet configuration client already in progress; skipping/).to_stdout
+        }.to exit_with(1).and output(/Run of OpenVox configuration client already in progress; skipping/).to_stdout
       end
     end
 

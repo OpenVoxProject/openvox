@@ -1,19 +1,19 @@
 ---
 layout: default
-built_from_commit: 812d7420ea5d7e19e8003b26486a7c8847afdb25
+built_from_commit: f7b1a950d990274b9f352eb7aa0cd93ee6067df1
 title: 'Man Page: puppet device'
-canonical: "/puppet/latest/man/device.html"
+canonical: "/openvox/latest/man/device.html"
 ---
 
 # Man Page: puppet device
 
-> **NOTE:** This page was generated from the Puppet source code on 2024-10-18 17:22:50 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-07-14 18:42:24 +0000
 
 ## NAME
-**puppet-device** - Manage remote network devices
+**puppet-device** - Manage remote network devices via OpenVox
 
 ## SYNOPSIS
-Retrieves catalogs from the Puppet server and applies them to remote
+Retrieves catalogs from the OpenVox server and applies them to remote
 devices.
 
 This subcommand can be run manually; or periodically using cron, a
@@ -28,11 +28,11 @@ puppet device \[-h\|\--help\] \[-v\|\--verbose\] \[-d\|\--debug\]
 \[-V\|\--version\]
 
 ## DESCRIPTION
-Devices require a proxy Puppet agent to request certificates, collect
+Devices require a proxy OpenVox agent to request certificates, collect
 facts, retrieve and apply catalogs, and store reports.
 
 ## USAGE NOTES
-Devices managed by the puppet-device subcommand on a Puppet agent are
+Devices managed by the puppet-device subcommand on an OpenVox agent are
 configured in device.conf, which is located at \$confdir/device.conf by
 default, and is configurable with the \$deviceconfig setting.
 
@@ -48,8 +48,9 @@ device.
 The optional debug property specifies transport-level debugging, and is
 limited to telnet and ssh transports.
 
-See https://puppet.com/docs/puppet/latest/config_file_device.html for
-details.
+See
+https://docs.openvoxproject.org/openvox/latest/config_file_device.html
+for details.
 
 ## OPTIONS
 Note that any setting that\'s valid in the configuration file is also a
@@ -143,12 +144,11 @@ parameter, so you can specify \'\--server *servername*\' as an argument.
 :   The user to run as.
 
 ## EXAMPLE
-
       $ puppet device --target remotehost --verbose
 
 ## AUTHOR
 Brice Figureau
 
 ## COPYRIGHT
-Copyright (c) 2011-2018 Puppet Inc., LLC Licensed under the Apache 2.0
-License
+Copyright (c) 2011-2018 Puppet Inc., Copyright (c) 2024 Vox Pupuli
+Licensed under the Apache 2.0 License

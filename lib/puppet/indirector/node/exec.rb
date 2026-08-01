@@ -5,7 +5,7 @@ require_relative '../../../puppet/indirector/exec'
 
 class Puppet::Node::Exec < Puppet::Indirector::Exec
   desc "Call an external program to get node information.  See
-  the [External Nodes](https://puppet.com/docs/puppet/latest/lang_write_functions_in_puppet.html) page for more information."
+  the [External Nodes](https://docs.openvoxproject.org/openvox/latest/lang_write_functions_in_puppet.html) page for more information."
   include Puppet::Util
 
   def command

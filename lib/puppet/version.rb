@@ -2,7 +2,7 @@
 
 # The version method and constant are isolated in puppet/version.rb so that a
 # simple `require 'puppet/version'` allows a rubygems gemspec or bundler
-# Gemfile to get the Puppet version of the gem install.
+# Gemfile to get the OpenVox version of the gem install.
 #
 # The version can be set programmatically because we want to allow the
 # Raketasks and such to set the version based on the output of `git describe`
@@ -13,10 +13,10 @@ module Puppet
 
   ##
   # version is a public API method intended to always provide a fast and
-  # lightweight way to determine the version of Puppet.
+  # lightweight way to determine the version of OpenVox.
   #
-  # The intent is that software external to Puppet be able to determine the
-  # Puppet version with no side-effects.  The expected use is:
+  # The intent is that software external to OpenVox be able to determine the
+  # OpenVox version with no side-effects.  The expected use is:
   #
   #     require 'puppet/version'
   #     version = Puppet.version
@@ -40,7 +40,7 @@ module Puppet
   #
   # By design the version identifier is _not_ intended to vary during the life
   # a process.  There is no guarantee provided that writing to the VERSION file
-  # while a Puppet process is running will cause the version string to be
+  # while an OpenVox process is running will cause the version string to be
   # updated.  On the contrary, the contents of the VERSION are cached to reduce
   # filesystem accesses.
   #
@@ -60,7 +60,7 @@ module Puppet
   #
   # @api public
   #
-  # @return [String] containing the puppet version, e.g. "3.0.1"
+  # @return [String] containing the OpenVox version, e.g. "3.0.1"
   def self.version
     version_file = File.join(File.dirname(__FILE__), 'VERSION')
     return @puppet_version if @puppet_version
@@ -68,7 +68,7 @@ module Puppet
     @puppet_version = read_version_file(version_file) || PUPPETVERSION
   end
 
-  # @return [String] containing the puppet version to minor specificity, e.g. "3.0"
+  # @return [String] containing the OpenVox version to minor specificity, e.g. "3.0"
   def self.minor_version
     version.split('.')[0..1].join('.')
   end

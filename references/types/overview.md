@@ -1,13 +1,13 @@
 ---
 layout: default
-built_from_commit: 812d7420ea5d7e19e8003b26486a7c8847afdb25
+built_from_commit: f7b1a950d990274b9f352eb7aa0cd93ee6067df1
 title: Resource types overview
 canonical: "/puppet/latest/types/overview.md"
 ---
 
 # Resource types overview
 
-> **NOTE:** This page was generated from the Puppet source code on 2024-10-18 17:23:49 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-07-14 18:42:41 +0000
 
 ## List of resource types
 
@@ -30,19 +30,19 @@ canonical: "/puppet/latest/types/overview.md"
 
 ### Built-in types and custom types
 
-This is the documentation for Puppet's built-in resource types and providers. Additional resource types are distributed in Puppet modules.
+This is the documentation for OpenVox's built-in resource types and providers. Additional resource types are distributed in Puppet modules.
 
 You can find and install modules by browsing the
 [Puppet Forge](http://forge.puppet.com). See each module's documentation for
-information on how to use its custom resource types. For more information about creating custom types, see [Custom resources](/docs/puppet/latest/custom_resources.html).
+information on how to use its custom resource types. For more information about creating custom types, see [Custom resources](https://docs.openvoxproject.org/openvox/latest/custom_resources.html).
 
-> As of Puppet 6.0, some resource types were removed from Puppet and repackaged as individual modules. These supported type modules are still included in the `puppet-agent` package, so you don't have to download them from the Forge. See the complete list of affected types in the [supported type modules](#supported-type-modules-in-puppet-agent) section.
+> As of Puppet 6.0, some resource types were removed from Puppet and repackaged as individual modules. These supported type modules are still included in the `openvox-agent` package, so you don't have to download them from the Forge. See the complete list of affected types in the [supported type modules](#supported-type-modules-in-openvox-agent) section.
 
 ### Declaring resources
 
 To manage resources on a target system, declare them in Puppet
 manifests. For more details, see
-[the resources page of the Puppet language reference.](/docs/puppet/latest/lang_resources.html)
+[the resources page of the Puppet language reference.](https://docs.openvoxproject.org/openvox/latest/lang_resources.html)
 
 You can also browse and manage resources interactively using the
 `puppet resource` subcommand; run `puppet resource --help` for more information.
@@ -102,14 +102,14 @@ on `file` resources).
 _Providers_ implement the same resource type on different kinds of systems.
 They usually do this by calling out to external commands.
 
-Although Puppet automatically selects an appropriate default provider, you
+Although OpenVox automatically selects an appropriate default provider, you
 can override the default with the `provider` attribute. (For example, `package`
 resources on Red Hat systems default to the `yum` provider, but you can specify
 `provider => gem` to install Ruby libraries with the `gem` command.)
 
 Providers often specify binaries that they require. Fully qualified binary
 paths indicate that the binary must exist at that specific path, and
-unqualified paths indicate that Puppet searches for the binary using the
+unqualified paths indicate that OpenVox searches for the binary using the
 shell path.
 
 ### Features
@@ -117,7 +117,7 @@ shell path.
 _Features_ are abilities that some providers might not support. Generally, a
 feature corresponds to some allowed values for a resource attribute.
 
-This is often the case with the `ensure` attribute. In most types, Puppet
+This is often the case with the `ensure` attribute. In most types, OpenVox
 doesn't create new resources when omitting `ensure` but still modifies existing
 resources to match specifications in the manifest. However, in some types this
 isn't always the case, or additional values provide more granular control. For
@@ -132,9 +132,9 @@ declare which features they provide.
 
 In Puppet 6.0, we removed some of Puppet's built-in types and moved them into individual modules.
 
-### Supported type modules in `puppet-agent`
+### Supported type modules in `openvox-agent`
 
-The following types are included in supported modules on the Forge. However, they are also included in the `puppet-agent` package, so you do not have to install them separately. See each module's README for detailed information about that type.
+The following types are included in supported modules on the Forge. However, they are also included in the `openvox-agent` package, so you do not have to install them separately. See each module's README for detailed information about that type.
 
 - [`augeas`](https://forge.puppet.com/puppetlabs/augeas_core)
 - [`cron`](https://forge.puppet.com/puppetlabs/cron_core)
@@ -152,7 +152,7 @@ The following types are included in supported modules on the Forge. However, the
 
 ### Type modules available on the Forge
 
-The following types are contained in modules that are maintained, but are not repackaged into Puppet agent. If you need to use them, you must install the modules separately. 
+The following types are contained in modules that are maintained, but are not repackaged into OpenVox agent. If you need to use them, you must install the modules separately.
 
 - [`k5login`](https://forge.puppet.com/puppetlabs/k5login_core)
 - [`mailalias`](https://forge.puppet.com/puppetlabs/mailalias_core)
@@ -170,6 +170,6 @@ The following types were deprecated with Puppet 6.0.0. They are available in mod
 - [`router`](https://github.com/puppetlabs/puppetlabs-network_device_core) (Use the updated [`cisco_ios module`](https://forge.puppet.com/puppetlabs/cisco_ios/readme) instead.
 - [`vlan`](https://github.com/puppetlabs/puppetlabs-network_device_core) (Use the updated [`cisco_ios module`](https://forge.puppet.com/puppetlabs/cisco_ios/readme) instead.
 
-## Puppet core types
+## OpenVox core types
 
-For a list of core Puppet types, see the [core types cheat sheet][core-types-cheatsheet].
+For a list of core OpenVox types, see the [core types cheat sheet][core-types-cheatsheet].

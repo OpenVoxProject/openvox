@@ -1,15 +1,15 @@
 ---
 layout: default
-built_from_commit: 812d7420ea5d7e19e8003b26486a7c8847afdb25
+built_from_commit: f7b1a950d990274b9f352eb7aa0cd93ee6067df1
 title: Resource Type Reference (Single-Page)
-canonical: "/puppet/latest/type.html"
+canonical: "/openvox/latest/type.html"
 toc_levels: 2
 toc: columns
 ---
 
 # Resource Type Reference (Single-Page)
 
-> **NOTE:** This page was generated from the Puppet source code on 2024-10-18 17:23:49 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-07-14 18:42:41 +0000
 
 
 
@@ -17,19 +17,19 @@ toc: columns
 
 ### Built-in types and custom types
 
-This is the documentation for Puppet's built-in resource types and providers. Additional resource types are distributed in Puppet modules.
+This is the documentation for OpenVox's built-in resource types and providers. Additional resource types are distributed in Puppet modules.
 
 You can find and install modules by browsing the
 [Puppet Forge](http://forge.puppet.com). See each module's documentation for
-information on how to use its custom resource types. For more information about creating custom types, see [Custom resources](/docs/puppet/latest/custom_resources.html).
+information on how to use its custom resource types. For more information about creating custom types, see [Custom resources](https://docs.openvoxproject.org/openvox/latest/custom_resources.html).
 
-> As of Puppet 6.0, some resource types were removed from Puppet and repackaged as individual modules. These supported type modules are still included in the `puppet-agent` package, so you don't have to download them from the Forge. See the complete list of affected types in the [supported type modules](#supported-type-modules-in-puppet-agent) section.
+> As of Puppet 6.0, some resource types were removed from Puppet and repackaged as individual modules. These supported type modules are still included in the `openvox-agent` package, so you don't have to download them from the Forge. See the complete list of affected types in the [supported type modules](#supported-type-modules-in-openvox-agent) section.
 
 ### Declaring resources
 
 To manage resources on a target system, declare them in Puppet
 manifests. For more details, see
-[the resources page of the Puppet language reference.](/docs/puppet/latest/lang_resources.html)
+[the resources page of the Puppet language reference.](https://docs.openvoxproject.org/openvox/latest/lang_resources.html)
 
 You can also browse and manage resources interactively using the
 `puppet resource` subcommand; run `puppet resource --help` for more information.
@@ -89,14 +89,14 @@ on `file` resources).
 _Providers_ implement the same resource type on different kinds of systems.
 They usually do this by calling out to external commands.
 
-Although Puppet automatically selects an appropriate default provider, you
+Although OpenVox automatically selects an appropriate default provider, you
 can override the default with the `provider` attribute. (For example, `package`
 resources on Red Hat systems default to the `yum` provider, but you can specify
 `provider => gem` to install Ruby libraries with the `gem` command.)
 
 Providers often specify binaries that they require. Fully qualified binary
 paths indicate that the binary must exist at that specific path, and
-unqualified paths indicate that Puppet searches for the binary using the
+unqualified paths indicate that OpenVox searches for the binary using the
 shell path.
 
 ### Features
@@ -104,7 +104,7 @@ shell path.
 _Features_ are abilities that some providers might not support. Generally, a
 feature corresponds to some allowed values for a resource attribute.
 
-This is often the case with the `ensure` attribute. In most types, Puppet
+This is often the case with the `ensure` attribute. In most types, OpenVox
 doesn't create new resources when omitting `ensure` but still modifies existing
 resources to match specifications in the manifest. However, in some types this
 isn't always the case, or additional values provide more granular control. For
@@ -119,9 +119,9 @@ declare which features they provide.
 
 In Puppet 6.0, we removed some of Puppet's built-in types and moved them into individual modules.
 
-### Supported type modules in `puppet-agent`
+### Supported type modules in `openvox-agent`
 
-The following types are included in supported modules on the Forge. However, they are also included in the `puppet-agent` package, so you do not have to install them separately. See each module's README for detailed information about that type.
+The following types are included in supported modules on the Forge. However, they are also included in the `openvox-agent` package, so you do not have to install them separately. See each module's README for detailed information about that type.
 
 - [`augeas`](https://forge.puppet.com/puppetlabs/augeas_core)
 - [`cron`](https://forge.puppet.com/puppetlabs/cron_core)
@@ -139,7 +139,7 @@ The following types are included in supported modules on the Forge. However, the
 
 ### Type modules available on the Forge
 
-The following types are contained in modules that are maintained, but are not repackaged into Puppet agent. If you need to use them, you must install the modules separately. 
+The following types are contained in modules that are maintained, but are not repackaged into OpenVox agent. If you need to use them, you must install the modules separately.
 
 - [`k5login`](https://forge.puppet.com/puppetlabs/k5login_core)
 - [`mailalias`](https://forge.puppet.com/puppetlabs/mailalias_core)
@@ -157,9 +157,9 @@ The following types were deprecated with Puppet 6.0.0. They are available in mod
 - [`router`](https://github.com/puppetlabs/puppetlabs-network_device_core) (Use the updated [`cisco_ios module`](https://forge.puppet.com/puppetlabs/cisco_ios/readme) instead.
 - [`vlan`](https://github.com/puppetlabs/puppetlabs-network_device_core) (Use the updated [`cisco_ios module`](https://forge.puppet.com/puppetlabs/cisco_ios/readme) instead.
 
-## Puppet core types
+## OpenVox core types
 
-For a list of core Puppet types, see the [core types cheat sheet][core-types-cheatsheet].
+For a list of core OpenVox types, see the [core types cheat sheet][core-types-cheatsheet].
 
 ## exec
 
@@ -176,11 +176,11 @@ main ways for an exec to be idempotent:
 
 * The command itself is already idempotent. (For example, `apt-get update`.)
 * The exec has an `onlyif`, `unless`, or `creates` attribute, which prevents
-  Puppet from running the command unless some condition is met. The
+  OpenVox from running the command unless some condition is met. The
   `onlyif` and `unless` commands of an `exec` are used in the process of
   determining whether the `exec` is already in sync, therefore they must be run
-  during a noop Puppet run.
-* The exec has `refreshonly => true`, which allows Puppet to run the
+  during a noop OpenVox run.
+* The exec has `refreshonly => true`, which allows OpenVox to run the
   command only when some other resource is changed. (See the notes on refreshing
   below.)
 
@@ -203,7 +203,7 @@ that you really have to think to understand what's happening, you should
 consider developing a custom resource type instead, as it is much
 more predictable and maintainable.
 
-**Duplication:** Even though `command` is the namevar, Puppet allows
+**Duplication:** Even though `command` is the namevar, OpenVox allows
 multiple `exec` resources with the same `command` value.
 
 **Refresh:** `exec` resources can respond to refresh events (via
@@ -228,9 +228,9 @@ is non-standard, and can be affected by the `refresh` and
 In short: If there's a possibility of your exec receiving refresh events,
 it is extremely important to make sure the run conditions are restricted.
 
-**Autorequires:** If Puppet is managing an exec's cwd or the executable
+**Autorequires:** If OpenVox is managing an exec's cwd or the executable
 file used in an exec's command, the exec resource autorequires those
-files. If Puppet is managing the user that an exec should run as, the
+files. If OpenVox is managing the user that an exec should run as, the
 exec resource autorequires that user.
 
 ### Attributes {#exec-attributes}
@@ -254,7 +254,7 @@ exec resource autorequires that user.
   <a href="#exec-attribute-umask">umask</a>       =&gt; <em># Sets the umask to be used while executing this...</em>
   <a href="#exec-attribute-unless">unless</a>      =&gt; <em># A test command that checks the state of the...</em>
   <a href="#exec-attribute-user">user</a>        =&gt; <em># The user to run the command as.  > **Note:*...</em>
-  # ...plus any applicable <a href="https://puppet.com/docs/puppet/latest/metaparameter.html">metaparameters</a>.
+  # ...plus any applicable <a href="https://docs.openvoxproject.org/openvox/latest/metaparameter.html">metaparameters</a>.
 }</code></pre>
 
 
@@ -269,11 +269,11 @@ normal log level (usually `notice`), but if the command fails
 (meaning its return code does not match the specified code) then
 any output is logged at the `err` log level.
 
-Multiple `exec` resources can use the same `command` value; Puppet
+Multiple `exec` resources can use the same `command` value; OpenVox
 only uses the resource title to ensure `exec`s are unique.
 
 On *nix platforms, the command can be specified as an array of
-strings and Puppet will invoke it using the more secure method of
+strings and OpenVox will invoke it using the more secure method of
 parameterized system calls. For example, rather than executing the
 malicious injected code, this command will echo it out:
 
@@ -287,7 +287,7 @@ malicious injected code, this command will echo it out:
 A file to look for before running the command. The command will
 only run if the file **doesn't exist.**
 
-This parameter doesn't cause Puppet to create a file; it is only
+This parameter doesn't cause OpenVox to create a file; it is only
 useful if **the command itself** creates a file.
 
     exec { 'tar -xf /Volumes/nfs02/important.tar':
@@ -300,7 +300,7 @@ In this example, `myfile` is assumed to be a file inside
 `important.tar`. If it is ever deleted, the exec will bring it
 back by re-extracting the tarball. If `important.tar` does **not**
 actually contain `myfile`, the exec will keep running every time
-Puppet runs.
+OpenVox runs.
 
 This parameter can also take an array of files, and the command will
 not run if **any** of these files exist. Consider this example:
@@ -335,7 +335,7 @@ array.
 
 The group to run the command as.  This seems to work quite
 haphazardly on different platforms -- it is a platform issue
-not a Ruby or Puppet one, since the same variety exists when
+not a Ruby or OpenVox one, since the same variety exists when
 running commands as different users in the shell.
 
 ([↑ Back to exec attributes](#exec-attributes))
@@ -357,7 +357,7 @@ Valid values are `true`, `false`, `on_failure`.
 #### onlyif {#exec-attribute-onlyif}
 
 A test command that checks the state of the target system and restricts
-when the `exec` can run. If present, Puppet runs this test command
+when the `exec` can run. If present, OpenVox runs this test command
 first, and only runs the main command if the test has an exit code of 0
 (success). For example:
 
@@ -374,7 +374,7 @@ Note that this test command runs with the same `provider`, `path`,
 must fully qualify the command's name.
 
 Since this command is used in the process of determining whether the
-`exec` is already in sync, it must be run during a noop Puppet run.
+`exec` is already in sync, it must be run during a noop OpenVox run.
 
 This parameter can also take an array of commands. For example:
 
@@ -402,7 +402,7 @@ can be specified as an array or as a ':' separated list.
 #### provider {#exec-attribute-provider}
 
 The specific backend to use for this `exec`
-resource. You will seldom need to specify this --- Puppet will usually
+resource. You will seldom need to specify this --- OpenVox will usually
 discover the appropriate provider for your platform.
 
 Available providers are:
@@ -417,7 +417,7 @@ Available providers are:
 #### refresh {#exec-attribute-refresh}
 
 An alternate command to run when the `exec` receives a refresh event
-from another resource. By default, Puppet runs the main command again.
+from another resource. By default, OpenVox runs the main command again.
 For more details, see the notes about refresh behavior above, in the
 description for this resource type.
 
@@ -473,13 +473,13 @@ tools. The Win32 APIs define exit codes as 32-bit unsigned integers, but
 both the cmd.exe shell and the .NET runtime cast them to signed
 integers. This means some tools will report negative numbers for exit
 codes above 2147483647. (For example, cmd.exe reports 4294967295 as -1.)
-Since Puppet uses the plain Win32 APIs, it will report the very large
+Since OpenVox uses the plain Win32 APIs, it will report the very large
 number instead of the negative number, which might not be what you
 expect if you got the exit code from a cmd.exe session.
 
 Microsoft recommends against using negative/very large exit codes, and
 you should avoid them when possible. To convert a negative exit code to
-the positive one Puppet will use, add it to 4294967296.
+the positive one OpenVox will use, add it to 4294967296.
 
 ([↑ Back to exec attributes](#exec-attributes))
 
@@ -521,7 +521,7 @@ Sets the umask to be used while executing this command
 #### unless {#exec-attribute-unless}
 
 A test command that checks the state of the target system and restricts
-when the `exec` can run. If present, Puppet runs this test command
+when the `exec` can run. If present, OpenVox runs this test command
 first, then runs the main command unless the test has an exit code of 0
 (success). For example:
 
@@ -538,7 +538,7 @@ Note that this test command runs with the same `provider`, `path`,
 must fully qualify the command's name.
 
 Since this command is used in the process of determining whether the
-`exec` is already in sync, it must be run during a noop Puppet run.
+`exec` is already in sync, it must be run during a noop OpenVox run.
 
 This parameter can also take an array of commands. For example:
 
@@ -558,10 +558,10 @@ non-zero exit code.
 
 The user to run the command as.
 
-> **Note:** Puppet cannot execute commands as other users on Windows.
+> **Note:** OpenVox cannot execute commands as other users on Windows.
 
 Note that if you use this attribute, any error output is not captured
-due to a bug within Ruby. If you use Puppet to create this user, the
+due to a bug within Ruby. If you use OpenVox to create this user, the
 exec automatically requires the user, as long as it is specified by
 name.
 
@@ -654,11 +654,11 @@ File contents can be managed directly with the `content` attribute, or
 downloaded from a remote source using the `source` attribute; the latter
 can also be used to recursively serve directories (when the `recurse`
 attribute is set to `true` or `local`). On Windows, note that file
-contents are managed in binary mode; Puppet never automatically translates
+contents are managed in binary mode; OpenVox never automatically translates
 line endings.
 
-**Autorequires:** If Puppet is managing the user or group that owns a
-file, the file resource will autorequire them. If Puppet is managing any
+**Autorequires:** If OpenVox is managing the user or group that owns a
+file, the file resource will autorequire them. If OpenVox is managing any
 parent directories of a file, the file resource autorequires them.
 
 Warning: Enabling `recurse` on directories containing large numbers of
@@ -687,23 +687,23 @@ consider using alternative methods such as the `chmod_r`, `chown_r`,
   <a href="#file-attribute-provider">provider</a>                =&gt; <em># The specific backend to use for this `file...</em>
   <a href="#file-attribute-purge">purge</a>                   =&gt; <em># Whether unmanaged files should be purged. This...</em>
   <a href="#file-attribute-recurse">recurse</a>                 =&gt; <em># Whether to recursively manage the _contents_ of...</em>
-  <a href="#file-attribute-recurselimit">recurselimit</a>            =&gt; <em># How far Puppet should descend into...</em>
+  <a href="#file-attribute-recurselimit">recurselimit</a>            =&gt; <em># How far OpenVox should descend into...</em>
   <a href="#file-attribute-replace">replace</a>                 =&gt; <em># Whether to replace a file or symlink that...</em>
-  <a href="#file-attribute-selinux_ignore_defaults">selinux_ignore_defaults</a> =&gt; <em># If this is set, Puppet will not call the SELinux </em>
+  <a href="#file-attribute-selinux_ignore_defaults">selinux_ignore_defaults</a> =&gt; <em># If this is set, OpenVox will not call the...</em>
   <a href="#file-attribute-selrange">selrange</a>                =&gt; <em># What the SELinux range component of the context...</em>
   <a href="#file-attribute-selrole">selrole</a>                 =&gt; <em># What the SELinux role component of the context...</em>
   <a href="#file-attribute-seltype">seltype</a>                 =&gt; <em># What the SELinux type component of the context...</em>
   <a href="#file-attribute-seluser">seluser</a>                 =&gt; <em># What the SELinux user component of the context...</em>
   <a href="#file-attribute-show_diff">show_diff</a>               =&gt; <em># Whether to display differences when the file...</em>
   <a href="#file-attribute-source">source</a>                  =&gt; <em># A source file, which will be copied into place...</em>
-  <a href="#file-attribute-source_permissions">source_permissions</a>      =&gt; <em># Whether (and how) Puppet should copy owner...</em>
+  <a href="#file-attribute-source_permissions">source_permissions</a>      =&gt; <em># Whether (and how) OpenVox should copy owner...</em>
   <a href="#file-attribute-sourceselect">sourceselect</a>            =&gt; <em># Whether to copy all valid sources, or just the...</em>
   <a href="#file-attribute-staging_location">staging_location</a>        =&gt; <em># When rendering a file first render it to this...</em>
   <a href="#file-attribute-target">target</a>                  =&gt; <em># The target for creating a link.  Currently...</em>
   <a href="#file-attribute-type">type</a>                    =&gt; <em># A read-only state to check the file...</em>
   <a href="#file-attribute-validate_cmd">validate_cmd</a>            =&gt; <em># A command for validating the file's syntax...</em>
   <a href="#file-attribute-validate_replacement">validate_replacement</a>    =&gt; <em># The replacement string in a `validate_cmd` that...</em>
-  # ...plus any applicable <a href="https://puppet.com/docs/puppet/latest/metaparameter.html">metaparameters</a>.
+  # ...plus any applicable <a href="https://docs.openvoxproject.org/openvox/latest/metaparameter.html">metaparameters</a>.
 }</code></pre>
 
 
@@ -737,14 +737,14 @@ Possible values are `present`, `absent`, `file`, `directory`, and `link`.
 * `link` ensures the file is a symlink, and **requires** that you also
   set the `target` attribute. Symlinks are supported on all Posix
   systems and on Windows Vista / 2008 and higher. On Windows, managing
-  symlinks requires Puppet agent's user account to have the "Create
+  symlinks requires the OpenVox agent's user account to have the "Create
   Symbolic Links" privilege; this can be configured in the "User Rights
-  Assignment" section in the Windows policy editor. By default, Puppet
+  Assignment" section in the Windows policy editor. By default, the OpenVox
   agent runs as the Administrator account, which has this privilege.
 
-Puppet avoids destroying directories unless the `force` attribute is set
+OpenVox avoids destroying directories unless the `force` attribute is set
 to `true`. This means that if a file is currently a directory, setting
-`ensure` to anything but `directory` or `present` will cause Puppet to
+`ensure` to anything but `directory` or `present` will cause OpenVox to
 skip managing the resource and log either a notice or an error.
 
 There is one other non-standard value for `ensure`. If you specify the
@@ -779,11 +779,11 @@ This attribute works best as a resource default in the site manifest
 (`File { backup => main }`), so it can affect all file resources.
 
 * If set to `false`, file content won't be backed up.
-* If set to a string beginning with `.`, such as `.puppet-bak`, Puppet will
+* If set to a string beginning with `.`, such as `.puppet-bak`, OpenVox will
   use copy the file in the same directory with that value as the extension
   of the backup. (A value of `true` is a synonym for `.puppet-bak`.)
-* If set to any other string, Puppet will try to back up to a filebucket
-  with that title. Puppet automatically creates a **local** filebucket
+* If set to any other string, OpenVox will try to back up to a filebucket
+  with that title. OpenVox automatically creates a **local** filebucket
   named `puppet` if one doesn't already exist. See the `filebucket` resource
   type for more details.
 
@@ -791,14 +791,14 @@ Default value: `false`
 
 Backing up to a local filebucket isn't particularly useful. If you want
 to make organized use of backups, you will generally want to use the
-primary Puppet server's filebucket service. This requires declaring a
+primary OpenVox server's filebucket service. This requires declaring a
 filebucket resource and a resource default for the `backup` attribute
 in site.pp:
 
     # /etc/puppetlabs/puppet/manifests/site.pp
     filebucket { 'main':
       path   => false,                # This is required for remote filebuckets.
-      server => 'puppet.example.com', # Optional; defaults to the configured primary Puppet server.
+      server => 'puppet.example.com', # Optional; defaults to the configured primary OpenVox server.
     }
 
     File { backup => main, }
@@ -831,7 +831,7 @@ The checksum type to use when determining whether to replace a file's contents.
 
 The default checksum type is sha256.
 
-Valid values are `sha256`, `sha256lite`, `md5`, `md5lite`, `sha1`, `sha1lite`, `sha512`, `sha384`, `sha224`, `mtime`, `ctime`, `none`.
+Valid values are `sha256`, `sha256lite`, `md5`, `md5lite`, `sha1`, `sha1lite`, `sha512`, `sha384`, `sha224`, `mtime`, `ctime`, `none`, `etag`.
 
 ([↑ Back to file attributes](#file-attributes))
 
@@ -874,8 +874,8 @@ the manifest...
     }
 
 ...but for larger files, this attribute is more useful when combined with the
-[template](https://puppet.com/docs/puppet/latest/function.html#template)
-or [file](https://puppet.com/docs/puppet/latest/function.html#file)
+[template](https://docs.openvoxproject.org/openvox/latest/function.html#template)
+or [file](https://docs.openvoxproject.org/openvox/latest/function.html#file)
 function.
 
 ([↑ Back to file attributes](#file-attributes))
@@ -972,7 +972,7 @@ The desired permissions mode for the file, in symbolic or numeric
 notation. This value **must** be specified as a string; do not use
 un-quoted numbers to represent file modes.
 
-If the mode is omitted (or explicitly set to `undef`), Puppet does not
+If the mode is omitted (or explicitly set to `undef`), OpenVox does not
 enforce permissions on existing files and creates new files with
 permissions of `0644`.
 
@@ -980,7 +980,7 @@ The `file` type uses traditional Unix permission schemes and translates
 them to equivalent permissions for systems which represent permissions
 differently, including Windows. For detailed ACL controls on Windows,
 you can leave `mode` unmanaged and use
-[the puppetlabs/acl module.](https://forge.puppetlabs.com/puppetlabs/acl)
+[the puppetlabs/acl module.](https://forge.puppet.com/puppetlabs/acl)
 
 Numeric modes should use the standard octal notation of
 `<SETUID/SETGID/STICKY><OWNER><GROUP><OTHER>` (for example, "0644").
@@ -990,10 +990,10 @@ Numeric modes should use the standard octal notation of
   execute/search = 1.
 * The setuid/setgid/sticky digit is also a sum, where setuid = 4, setgid = 2,
   and sticky = 1.
-* The setuid/setgid/sticky digit is optional. If it is absent, Puppet will
+* The setuid/setgid/sticky digit is optional. If it is absent, OpenVox will
   clear any existing setuid/setgid/sticky permissions. (So to make your intent
   clear, you should use at least four digits for numeric modes.)
-* When specifying numeric permissions for directories, Puppet sets the search
+* When specifying numeric permissions for directories, OpenVox sets the search
   permission wherever the read permission is set.
 
 Symbolic modes should be represented as a string of comma-separated
@@ -1064,7 +1064,7 @@ will always appear out of sync.)
 #### provider {#file-attribute-provider}
 
 The specific backend to use for this `file`
-resource. You will seldom need to specify this --- Puppet will usually
+resource. You will seldom need to specify this --- OpenVox will usually
 discover the appropriate provider for your platform.
 
 Available providers are:
@@ -1109,7 +1109,7 @@ is only used when `ensure => directory` is set. The allowed values are:
 
 * `false` --- The default behavior. The contents of the directory will not be
   automatically managed.
-* `remote` --- If the `source` attribute is set, Puppet will automatically
+* `remote` --- If the `source` attribute is set, OpenVox will automatically
   manage the contents of the source directory (or directories), ensuring
   that equivalent files and directories exist on the target system and
   that their contents match.
@@ -1138,13 +1138,13 @@ Valid values are `true`, `false`, `remote`.
 
 #### recurselimit {#file-attribute-recurselimit}
 
-How far Puppet should descend into subdirectories, when using
+How far OpenVox should descend into subdirectories, when using
 `ensure => directory` and either `recurse => true` or `recurse => remote`.
 The recursion limit affects which files will be copied from the `source`
 directory, as well as which files can be purged when `purge => true`.
 
 Setting `recurselimit => 0` is the same as setting `recurse => false` ---
-Puppet will manage the directory, but all of its contents will be treated
+OpenVox will manage the directory, but all of its contents will be treated
 as unmanaged.
 
 Setting `recurselimit => 1` will manage files and directories that are
@@ -1167,7 +1167,7 @@ Whether to replace a file or symlink that already exists on the local system but
 whose content doesn't match what the `source` or `content` attribute
 specifies.  Setting this to false allows file resources to initialize files
 without overwriting future changes.  Note that this only affects content;
-Puppet will still manage ownership and permissions.
+OpenVox will still manage ownership and permissions.
 
 Valid values are `true`, `false`, `yes`, `no`.
 
@@ -1176,10 +1176,10 @@ Valid values are `true`, `false`, `yes`, `no`.
 
 #### selinux_ignore_defaults {#file-attribute-selinux_ignore_defaults}
 
-If this is set, Puppet will not call the SELinux function selabel_lookup to
+If this is set, OpenVox will not call the SELinux function selabel_lookup to
 supply defaults for the SELinux attributes (seluser, selrole,
 seltype, and selrange). In general, you should leave this set at its
-default and only set it to true when you need Puppet to not try to fix
+default and only set it to true when you need OpenVox to not try to fix
 SELinux labels automatically.
 
 Valid values are `true`, `false`.
@@ -1244,7 +1244,7 @@ enabled.
 
 Whether to display differences when the file changes, defaulting to
 true.  This parameter is useful for files that may contain passwords or
-other secret data, which might otherwise be included in Puppet reports or
+other secret data, which might otherwise be included in OpenVox reports or
 other insecure outputs.  If the global `show_diff` setting
 is false, then no diffs will be shown even if this parameter is true.
 
@@ -1259,7 +1259,7 @@ A source file, which will be copied into place on the local system. This
 attribute is mutually exclusive with `content` and `target`. Allowed
 values are:
 
-* `puppet:` URIs, which point to files in modules or Puppet file server
+* `puppet:` URIs, which point to files in modules or OpenVox file server
 mount points.
 * Fully qualified paths to locally available files (including files on NFS
 shares or Windows mapped drives).
@@ -1270,8 +1270,8 @@ The normal form of a `puppet:` URI is:
 
 `puppet:///modules/<MODULE NAME>/<FILE PATH>`
 
-This will fetch a file from a module on the Puppet server (or from a
-local module when using Puppet apply). Given a `modulepath` of
+This will fetch a file from a module on the OpenVox server (or from a
+local module when using puppet apply). Given a `modulepath` of
 `/etc/puppetlabs/code/modules`, the example above would resolve to
 `/etc/puppetlabs/code/modules/<MODULE NAME>/files/<FILE PATH>`.
 
@@ -1285,28 +1285,28 @@ trees. You cannot use `source_permissions` values other than `ignore`
 because HTTP servers do not transfer any metadata that translates to
 ownership or permission details.
 
-Puppet determines if file content is synchronized by computing a checksum
+OpenVox determines if file content is synchronized by computing a checksum
 for the local file and comparing it against the `checksum_value`
 parameter. If the `checksum_value` parameter is not specified for
-`puppet` and `file` sources, Puppet computes a checksum based on its
-`Puppet[:digest_algorithm]`. For `http(s)` sources, Puppet uses the
+`puppet` and `file` sources, OpenVox computes a checksum based on its
+`Puppet[:digest_algorithm]`. For `http(s)` sources, OpenVox uses the
 first HTTP header it recognizes out of the following list:
 `X-Checksum-Sha256`, `X-Checksum-Sha1`, `X-Checksum-Md5` or `Content-MD5`.
-If the server response does not include one of these headers, Puppet
-defaults to using the `Last-Modified` header. Puppet updates the local
+If the server response does not include one of these headers, OpenVox
+defaults to using the `Last-Modified` header. OpenVox updates the local
 file if the header is newer than the modified time (mtime) of the local
 file.
 
-_HTTP_ URIs can include a user information component so that Puppet can
+_HTTP_ URIs can include a user information component so that OpenVox can
 retrieve file metadata and content from HTTP servers that require HTTP Basic
 authentication. For example `https://<user>:<pass>@<server>:<port>/path/to/file.`
 
-When connecting to _HTTPS_ servers, Puppet trusts CA certificates in the
-puppet-agent certificate bundle and the Puppet CA. You can configure Puppet
+When connecting to _HTTPS_ servers, OpenVox trusts CA certificates in the
+puppet-agent certificate bundle and the OpenVox CA. You can configure OpenVox
 to trust additional CA certificates using the `Puppet[:ssl_trust_store]`
 setting.
 
-Multiple `source` values can be specified as an array, and Puppet will
+Multiple `source` values can be specified as an array, and OpenVox will
 use the first source that exists. This can be used to serve different
 files to different system types:
 
@@ -1326,7 +1326,7 @@ be combined by setting the `sourceselect` attribute to `all`.
 
 #### source_permissions {#file-attribute-source_permissions}
 
-Whether (and how) Puppet should copy owner, group, and mode permissions from
+Whether (and how) OpenVox should copy owner, group, and mode permissions from
 the `source` to `file` resources when the permissions are not explicitly
 specified. (In all cases, explicit permissions will take precedence.)
 Valid values are `use`, `use_when_creating`, and `ignore`:
@@ -1334,10 +1334,10 @@ Valid values are `use`, `use_when_creating`, and `ignore`:
 * `ignore` (the default) will never apply the owner, group, or mode from
   the `source` when managing a file. When creating new files without explicit
   permissions, the permissions they receive will depend on platform-specific
-  behavior. On POSIX, Puppet will use the umask of the user it is running as.
-  On Windows, Puppet will use the default DACL associated with the user it is
+  behavior. On POSIX, OpenVox will use the umask of the user it is running as.
+  On Windows, OpenVox will use the default DACL associated with the user it is
   running as.
-* `use` will cause Puppet to apply the owner, group,
+* `use` will cause OpenVox to apply the owner, group,
   and mode from the `source` to any files it is managing.
 * `use_when_creating` will only apply the owner, group, and mode from the
   `source` when creating a file; existing files will not have their permissions
@@ -1411,14 +1411,14 @@ A read-only state to check the file type.
 #### validate_cmd {#file-attribute-validate_cmd}
 
 A command for validating the file's syntax before replacing it. If
-Puppet would need to rewrite a file due to new `source` or `content`, it
+OpenVox would need to rewrite a file due to new `source` or `content`, it
 will check the new content's validity first. If validation fails, the file
 resource will fail.
 
 This command must have a fully qualified path, and should contain a
 percent (`%`) token where it would expect an input file. It must exit `0`
 if the syntax is correct, and non-zero otherwise. The command will be
-run on the target system while applying the catalog, not on the primary Puppet server.
+run on the target system while applying the catalog, not on the primary OpenVox server.
 
 Example:
 
@@ -1482,19 +1482,18 @@ Provider support:
 ### Description {#filebucket-description}
 
 A repository for storing and retrieving file content by cryptographic checksum. Can
-be local to each agent node, or centralized on a primary Puppet server. All
-puppet servers provide a filebucket service that agent nodes can access
+be local to each agent node, or centralized on a primary OpenVox server. All
+OpenVox servers provide a filebucket service that agent nodes can access
 via HTTP, but you must declare a filebucket resource before any agents
 will do so.
 
 Filebuckets are used for the following features:
 
 - **Content backups.** If the `file` type's `backup` attribute is set to
-  the name of a filebucket, Puppet will back up the _old_ content whenever
+  the name of a filebucket, OpenVox will back up the _old_ content whenever
   it rewrites a file; see the documentation for the `file` type for more
   details. These backups can be used for manual recovery of content, but
-  are more commonly used to display changes and differences in a tool like
-  Puppet Dashboard.
+  are more commonly used to display changes and differences.
 
 To use a central filebucket for backups, you will usually want to declare
 a filebucket resource and a resource default for the `backup` attribute
@@ -1508,9 +1507,9 @@ in site.pp:
 
     File { backup => main, }
 
-Puppet Servers automatically provide the filebucket service, so
+OpenVox Servers automatically provide the filebucket service, so
 this will work in a default configuration. If you have a heavily
-restricted Puppet Server `auth.conf` file, you may need to allow access to the
+restricted OpenVox Server `auth.conf` file, you may need to allow access to the
 `file_bucket_file` endpoint.
 
 ### Attributes {#filebucket-attributes}
@@ -1520,7 +1519,7 @@ restricted Puppet Server `auth.conf` file, you may need to allow access to the
   <a href="#filebucket-attribute-path">path</a>   =&gt; <em># The path to the _local_ filebucket; defaults to...</em>
   <a href="#filebucket-attribute-port">port</a>   =&gt; <em># The port on which the remote server is...</em>
   <a href="#filebucket-attribute-server">server</a> =&gt; <em># The server providing the remote filebucket...</em>
-  # ...plus any applicable <a href="https://puppet.com/docs/puppet/latest/metaparameter.html">metaparameters</a>.
+  # ...plus any applicable <a href="https://docs.openvoxproject.org/openvox/latest/metaparameter.html">metaparameters</a>.
 }</code></pre>
 
 
@@ -1604,7 +1603,7 @@ a group record.
   <a href="#group-attribute-members">members</a>              =&gt; <em># The members of the group. For platforms or...</em>
   <a href="#group-attribute-provider">provider</a>             =&gt; <em># The specific backend to use for this `group...</em>
   <a href="#group-attribute-system">system</a>               =&gt; <em># Whether the group is a system group with lower...</em>
-  # ...plus any applicable <a href="https://puppet.com/docs/puppet/latest/metaparameter.html">metaparameters</a>.
+  # ...plus any applicable <a href="https://docs.openvoxproject.org/openvox/latest/metaparameter.html">metaparameters</a>.
 }</code></pre>
 
 
@@ -1616,7 +1615,7 @@ The group name. While naming limitations vary by operating system,
 it is advisable to restrict names to the lowest common denominator,
 which is a maximum of 8 characters beginning with a letter.
 
-Note that Puppet considers group names to be case-sensitive, regardless
+Note that OpenVox considers group names to be case-sensitive, regardless
 of the platform's own rules; be sure to always use the same case when
 referring to a given group.
 
@@ -1647,10 +1646,10 @@ Valid values are `true`, `false`, `yes`, `no`.
 
 AIX only. Configures the behavior of the `attributes` parameter.
 
-* `minimum` (default) --- The provided list of attributes is partial, and Puppet
+* `minimum` (default) --- The provided list of attributes is partial, and OpenVox
   **ignores** any attributes that aren't listed there.
 * `inclusive` --- The provided list of attributes is comprehensive, and
-  Puppet **purges** any attributes that aren't listed there.
+  OpenVox **purges** any attributes that aren't listed there.
 
 Valid values are `inclusive`, `minimum`.
 
@@ -1676,9 +1675,9 @@ Requires features manages_aix_lam.
 Configures the behavior of the `members` parameter.
 
 * `false` (default) --- The provided list of group members is partial,
-  and Puppet **ignores** any members that aren't listed there.
+  and OpenVox **ignores** any members that aren't listed there.
 * `true` --- The provided list of of group members is comprehensive, and
-  Puppet **purges** any members that aren't listed there.
+  OpenVox **purges** any members that aren't listed there.
 
 Valid values are `true`, `false`, `yes`, `no`.
 
@@ -1745,7 +1744,7 @@ Requires features manages_members.
 #### provider {#group-attribute-provider}
 
 The specific backend to use for this `group`
-resource. You will seldom need to specify this --- Puppet will usually
+resource. You will seldom need to specify this --- OpenVox will usually
 discover the appropriate provider for your platform.
 
 Available providers are:
@@ -1795,7 +1794,7 @@ To use the `forcelocal` parameter, you need to install the `libuser` package (pr
  `/usr/sbin/lgroupadd` and `/usr/sbin/luseradd`).
 
 * Required binaries: `groupadd`, `groupdel`, `groupmod`, `lgroupadd`, `lgroupdel`, `lgroupmod`, `usermod`.
-* Supported features: `system_groups`.
+* Supported features: `manages_local_users_and_groups`, `manages_members`, `system_groups`.
 
 #### ldap {#group-provider-ldap}
 
@@ -1839,7 +1838,7 @@ Provider support:
 
 * **aix** - _manages aix lam, manages local users and groups, manages members_
 * **directoryservice** - _manages members_
-* **groupadd** - _system groups, libuser_
+* **groupadd** - _manages local users and groups, manages members, system groups, libuser_
 * **ldap** - No supported Provider features
 * **pw** - _manages members_
 * **windows_adsi** - _manages members_
@@ -1856,7 +1855,7 @@ Provider support:
 
 ### Description {#notify-description}
 
-Sends an arbitrary message, specified as a string, to the agent run-time log. It's important to note that the notify resource type is not idempotent. As a result, notifications are shown as a change on every Puppet run.
+Sends an arbitrary message, specified as a string, to the agent run-time log. It's important to note that the notify resource type is not idempotent. As a result, notifications are shown as a change on every OpenVox run.
 
 ### Attributes {#notify-attributes}
 
@@ -1864,7 +1863,7 @@ Sends an arbitrary message, specified as a string, to the agent run-time log. It
   <a href="#notify-attribute-name">name</a>     =&gt; <em># <strong>(namevar)</strong> An arbitrary tag for your own reference; the...</em>
   <a href="#notify-attribute-message">message</a>  =&gt; <em># The message to be sent to the log. Note that the </em>
   <a href="#notify-attribute-withpath">withpath</a> =&gt; <em># Whether to show the full object path.  Valid...</em>
-  # ...plus any applicable <a href="https://puppet.com/docs/puppet/latest/metaparameter.html">metaparameters</a>.
+  # ...plus any applicable <a href="https://docs.openvoxproject.org/openvox/latest/metaparameter.html">metaparameters</a>.
 }</code></pre>
 
 
@@ -1914,7 +1913,7 @@ retrieve their own package files, while others (such as rpm and sun)
 cannot.  For those package formats that cannot retrieve their own files,
 you can use the `source` parameter to point to the correct file.
 
-Puppet will automatically guess the packaging format that you are
+OpenVox will automatically guess the packaging format that you are
 using based on the platform you are on, but you can override it
 using the `provider` parameter; each provider defines what it
 requires in order to function, and you must meet those requirements
@@ -1927,7 +1926,7 @@ Note that you must use the _title_ to make a reference to a package
 resource; `Package[<NAME>]` is not a synonym for `Package[<TITLE>]` like
 it is for many other resource types.
 
-**Autorequires:** If Puppet is managing the files specified as a
+**Autorequires:** If OpenVox is managing the files specified as a
 package's `adminfile`, `responsefile`, or `source`, the package
 resource will autorequire those files.
 
@@ -1945,6 +1944,7 @@ resource will autorequire those files.
   <a href="#package-attribute-configfiles">configfiles</a>          =&gt; <em># Whether to keep or replace modified config files </em>
   <a href="#package-attribute-description">description</a>          =&gt; <em># A read-only parameter set by the...</em>
   <a href="#package-attribute-enable_only">enable_only</a>          =&gt; <em># Tells `dnf module` to only enable a specific...</em>
+  <a href="#package-attribute-environment">environment</a>          =&gt; <em># An array of additional environment variables to...</em>
   <a href="#package-attribute-flavor">flavor</a>               =&gt; <em># OpenBSD and DNF modules support 'flavors', which </em>
   <a href="#package-attribute-install_only">install_only</a>         =&gt; <em># It should be set for packages that should only...</em>
   <a href="#package-attribute-install_options">install_options</a>      =&gt; <em># An array of additional options to pass when...</em>
@@ -1959,7 +1959,7 @@ resource will autorequire those files.
   <a href="#package-attribute-status">status</a>               =&gt; <em># A read-only parameter set by the...</em>
   <a href="#package-attribute-uninstall_options">uninstall_options</a>    =&gt; <em># An array of additional options to pass when...</em>
   <a href="#package-attribute-vendor">vendor</a>               =&gt; <em># A read-only parameter set by the...</em>
-  # ...plus any applicable <a href="https://puppet.com/docs/puppet/latest/metaparameter.html">metaparameters</a>.
+  # ...plus any applicable <a href="https://docs.openvoxproject.org/openvox/latest/metaparameter.html">metaparameters</a>.
 }</code></pre>
 
 
@@ -2005,7 +2005,7 @@ conditionally:
 _(**Secondary namevar:** This resource type allows you to manage multiple resources with the same name as long as their providers are different.)_
 
 The specific backend to use for this `package`
-resource. You will seldom need to specify this --- Puppet will usually
+resource. You will seldom need to specify this --- OpenVox will usually
 discover the appropriate provider for your platform.
 
 Available providers are:
@@ -2188,6 +2188,22 @@ Valid values are `true`, `false`, `yes`, `no`.
 ([↑ Back to package attributes](#package-attributes))
 
 
+#### environment {#package-attribute-environment}
+
+An array of additional environment variables to set for package
+commands, such as `[ 'HOME=/root', 'DISABLE_TELEMETRY=1']`.
+
+    package { 'opensearch':
+      ensure      => installed,
+      environment => [ 'OPENSEARCH_INITIAL_ADMIN_PASSWORD=myStrongP@ss!' ],
+    }
+
+These variables are applied to all package management commands
+(install, update, uninstall, purge) executed by the provider.
+
+([↑ Back to package attributes](#package-attributes))
+
+
 #### flavor {#package-attribute-flavor}
 
 _(**Property:** This attribute represents concrete state on the target system.)_
@@ -2348,12 +2364,12 @@ A read-only parameter set by the package.
 
 Where to find the package file. This is mostly used by providers that don't
 automatically download packages from a central repository. (For example:
-the `yum` provider ignores this attribute, `apt` provider uses it if present
+the `macports` provider ignores this attribute, `apt` provider uses it if present
 and the `rpm` and `dpkg` providers require it.)
 
 Different providers accept different values for `source`. Most providers
 accept paths to local files stored on the target system. Some providers
-may also accept URLs or network drive paths. Puppet will not
+may also accept URLs or network drive paths. OpenVox will not
 automatically retrieve source files for you, and usually just passes the
 value of `source` to the package installation command.
 
@@ -2386,7 +2402,7 @@ key and value pair are interpreted in a provider specific way.  Each
 option will automatically be quoted when passed to the uninstall
 command.
 
-On Windows, this is the **only** place in Puppet where backslash
+On Windows, this is the **only** place in OpenVox where backslash
 separators should be used.  Note that backslashes in double-quoted
 strings _must_ be double-escaped and backslashes in single-quoted
 strings _may_ be double-escaped.
@@ -2411,7 +2427,7 @@ A read-only parameter set by the package.
 
 Installation from an AIX software directory, using the AIX `installp`
 command.  The `source` parameter is required for this provider, and should
-be set to the absolute path (on the puppet agent machine) of a directory
+be set to the absolute path (on the OpenVox agent machine) of a directory
 containing one or more BFF package files.
 
 The `installp` command will generate a table of contents file (named `.toc`)
@@ -2524,7 +2540,7 @@ so there are plans to rewrite this support to directly use those
 libraries.
 
 * Required binaries: `/usr/sbin/pkg_add`, `/usr/sbin/pkg_delete`, `/usr/sbin/pkg_info`.
-* Supported features: `installable`, `purgeable`, `uninstallable`, `upgradeable`.
+* Supported features: `installable`, `purgeable`, `uninstallable`.
 
 #### gem {#package-provider-gem}
 
@@ -2569,7 +2585,7 @@ Revisions are only used internally for ensuring the latest version/revision of a
 
 Installation from an AIX NIM LPP source.  The `source` parameter is required
 for this provider, and should specify the name of a NIM `lpp_source` resource
-that is visible to the puppet agent machine.  This provider supports the
+that is visible to the OpenVox agent machine.  This provider supports the
 management of both BFF/installp and RPM packages.
 
 Note that package downgrades are *not* supported; if your resource specifies
@@ -2583,6 +2599,10 @@ installed on the machine, the resource will fail with an error message.
 
 OpenBSD's form of `pkg_add` support.
 
+OpenBSD has the concept of package branches, providing multiple versions of the
+same package, i.e. `stable` vs. `snapshot`. To select a specific branch,
+suffix the package name with % sign follwed by the branch name, i.e. `gimp%stable`.
+
 This provider supports the `install_options` and `uninstall_options`
 attributes, which allow command-line flags to be passed to pkg_add and pkg_delete.
 These options should be specified as an array where each element is either a
@@ -2590,14 +2610,14 @@ These options should be specified as an array where each element is either a
 
 * Required binaries: `pkg_add`, `pkg_delete`, `pkg_info`.
 * Default for `os.name` == `openbsd`.
-* Supported features: `install_options`, `installable`, `purgeable`, `supports_flavors`, `uninstall_options`, `uninstallable`, `upgradeable`, `versionable`.
+* Supported features: `install_options`, `installable`, `purgeable`, `supports_flavors`, `uninstall_options`, `uninstallable`.
 
 #### opkg {#package-provider-opkg}
 
-Opkg packaging support. Common on OpenWrt and OpenEmbedded platforms
+Opkg packaging support. Common on OpenWrt, TurrisOS, and OpenEmbedded platforms
 
 * Required binaries: `opkg`.
-* Default for `os.name` == `openwrt`.
+* Default for `os.name` == `openwrt, turrisos`.
 * Supported features: `installable`, `uninstallable`, `upgradeable`.
 
 #### pacman {#package-provider-pacman}
@@ -2656,7 +2676,7 @@ Package management based on Apple's Installer.app and DiskUtility.app.
 
 This provider works by checking the contents of a DMG image for Apple pkg or
 mpkg files. Any number of pkg or mpkg files may exist in the root directory
-of the DMG file system, and Puppet will install all of them. Subdirectories
+of the DMG file system, and OpenVox will install all of them. Subdirectories
 are not checked for packages.
 
 This provider can also accept plain .pkg (but not .mpkg) files in addition
@@ -2669,7 +2689,7 @@ Notes:
 * The `name` of the resource must be the filename (without path) of the DMG file.
 * When installing the packages from a DMG, this provider writes a file to
   disk at `/var/db/.puppet_pkgdmg_installed_NAME`. If that file is present,
-  Puppet assumes all packages from that DMG are already installed.
+  OpenVox assumes all packages from that DMG are already installed.
 * This provider is not versionable and uses DMG filenames to determine
   whether a package has been installed. Thus, to install new a version of a
   package, you must create a new DMG with a different filename.
@@ -2730,15 +2750,15 @@ for the portupgrade port.
 
 #### puppet_gem {#package-provider-puppet_gem}
 
-Puppet Ruby Gem support. This provider is useful for managing
-gems needed by the ruby provided in the puppet-agent package.
+OpenVox Ruby Gem support. This provider is useful for managing
+gems needed by the ruby provided in the openvox-agent package.
 
 * Required binaries: `/opt/puppetlabs/puppet/bin/gem`.
 * Supported features: `install_options`, `installable`, `uninstall_options`, `uninstallable`, `upgradeable`, `versionable`.
 
 #### puppetserver_gem {#package-provider-puppetserver_gem}
 
-Puppet Server Ruby Gem support. If a URL is passed via `source`, then
+OpenVox Server Ruby Gem support. If a URL is passed via `source`, then
 that URL is appended to the list of remote gem repositories which by default
 contains rubygems.org; To ensure that only the specified source is used also
 pass `--clear-sources` in via `install_options`; if a source is present but
@@ -2835,7 +2855,7 @@ a string or a hash.
 
 If the executable requires special arguments to perform a silent install or
 uninstall, then the appropriate arguments should be specified using the
-`install_options` or `uninstall_options` attributes, respectively.  Puppet
+`install_options` or `uninstall_options` attributes, respectively.  OpenVox
 will automatically quote any option that contains spaces.
 
 * Default for `os.name` == `windows`.
@@ -2913,12 +2933,12 @@ Provider support:
 * **dnfmodule** - _disableable, installable, purgeable, supports flavors, uninstallable, upgradeable, versionable_
 * **dpkg** - _holdable, installable, purgeable, uninstallable, upgradeable, virtual packages_
 * **fink** - _holdable, installable, purgeable, uninstallable, upgradeable, versionable_
-* **freebsd** - _installable, purgeable, uninstallable, upgradeable_
+* **freebsd** - _installable, purgeable, uninstallable_
 * **gem** - _install options, installable, targetable, uninstall options, uninstallable, upgradeable, version ranges, versionable_
 * **hpux** - _installable, uninstallable_
 * **macports** - _installable, uninstallable, upgradeable, versionable_
 * **nim** - _installable, uninstallable, upgradeable, versionable_
-* **openbsd** - _install options, installable, purgeable, supports flavors, uninstall options, uninstallable, upgradeable, versionable_
+* **openbsd** - _install options, installable, purgeable, supports flavors, uninstall options, uninstallable_
 * **opkg** - _installable, uninstallable, upgradeable_
 * **pacman** - _install options, installable, purgeable, uninstall options, uninstallable, upgradeable, virtual packages_
 * **pip** - _install options, installable, targetable, uninstallable, upgradeable, version ranges, versionable_
@@ -2970,7 +2990,7 @@ purging is only logged and does not actually happen.
   <a href="#resources-attribute-purge">purge</a>              =&gt; <em># Whether to purge unmanaged resources.  When set...</em>
   <a href="#resources-attribute-unless_system_user">unless_system_user</a> =&gt; <em># This keeps system users from being purged.  By...</em>
   <a href="#resources-attribute-unless_uid">unless_uid</a>         =&gt; <em># This keeps specific uids or ranges of uids from...</em>
-  # ...plus any applicable <a href="https://puppet.com/docs/puppet/latest/metaparameter.html">metaparameters</a>.
+  # ...plus any applicable <a href="https://docs.openvoxproject.org/openvox/latest/metaparameter.html">metaparameters</a>.
 }</code></pre>
 
 
@@ -3027,8 +3047,8 @@ To specify a range of uids, consider using the range() function from stdlib.
 
 ### Description {#schedule-description}
 
-Define schedules for Puppet. Resources can be limited to a schedule by using the
-[`schedule`](https://puppet.com/docs/puppet/latest/metaparameter.html#schedule)
+Define schedules for OpenVox. Resources can be limited to a schedule by using the
+[`schedule`](https://docs.openvoxproject.org/openvox/latest/metaparameter.html#schedule)
 metaparameter.
 
 Currently, **schedules can only be used to stop a resource from being
@@ -3036,11 +3056,11 @@ applied;** they cannot cause a resource to be applied when it otherwise
 wouldn't be, and they cannot accurately specify a time when a resource
 should run.
 
-Every time Puppet applies its configuration, it will apply the
+Every time OpenVox applies its configuration, it will apply the
 set of resources whose schedule does not eliminate them from
 running right then, but there is currently no system in place to
 guarantee that a given resource runs at a given time.  If you
-specify a very  restrictive schedule and Puppet happens to run at a
+specify a very  restrictive schedule and OpenVox happens to run at a
 time within that schedule, then the resources will get applied;
 otherwise, that work may never get done.
 
@@ -3055,13 +3075,13 @@ the hours of two and 4 AM, then you would use this schedule:
       repeat => 1,
     }
 
-With this schedule, the first time that Puppet runs between 2 and 4 AM,
+With this schedule, the first time that OpenVox runs between 2 and 4 AM,
 all resources with this schedule will get applied, but they won't
 get applied again between 2 and 4 because they will have already
 run once that day, and they won't get applied outside that schedule
 because they will be outside the scheduled range.
 
-Puppet automatically creates a schedule for each of the valid periods
+OpenVox automatically creates a schedule for each of the valid periods
 with the same name as that period (such as hourly and daily).
 Additionally, a schedule named `puppet` is created and used as the
 default, with the following attributes:
@@ -3089,7 +3109,7 @@ expired from the cache.
   <a href="#schedule-attribute-range">range</a>       =&gt; <em># The earliest and latest that a resource can be...</em>
   <a href="#schedule-attribute-repeat">repeat</a>      =&gt; <em># How often a given resource may be applied in...</em>
   <a href="#schedule-attribute-weekday">weekday</a>     =&gt; <em># The days of the week in which the schedule...</em>
-  # ...plus any applicable <a href="https://puppet.com/docs/puppet/latest/metaparameter.html">metaparameters</a>.
+  # ...plus any applicable <a href="https://docs.openvoxproject.org/openvox/latest/metaparameter.html">metaparameters</a>.
 }</code></pre>
 
 
@@ -3115,7 +3135,7 @@ to a resource with the `schedule` metaparameter:
 #### period {#schedule-attribute-period}
 
 The period of repetition for resources on this schedule. The default is
-for resources to get applied every time Puppet runs.
+for resources to get applied every time OpenVox runs.
 
 Note that the period defines how often a given resource will get
 applied but not when; if you would like to restrict the hours
@@ -3123,7 +3143,7 @@ that a given resource can be applied (for instance, only at night
 during a maintenance window), then use the `range` attribute.
 
 If the provided periods are not sufficient, you can provide a
-value to the *repeat* attribute, which will cause Puppet to
+value to the *repeat* attribute, which will cause OpenVox to
 schedule the affected resources evenly in the period the
 specified number of times.  Take this schedule:
 
@@ -3132,12 +3152,12 @@ specified number of times.  Take this schedule:
       repeat => 6,
     }
 
-This can cause Puppet to apply that resource up to every 10 minutes.
+This can cause OpenVox to apply that resource up to every 10 minutes.
 
-At the moment, Puppet cannot guarantee that level of repetition; that
+At the moment, OpenVox cannot guarantee that level of repetition; that
 is, the resource can applied _up to_ every 10 minutes, but internal
 factors might prevent it from actually running that often (for instance,
-if a Puppet run is still in progress when the next run is scheduled to
+if an OpenVox run is still in progress when the next run is scheduled to
 start, that next run will be suppressed).
 
 See the `periodmatch` attribute for tuning whether to match
@@ -3232,24 +3252,24 @@ at 2 AM on Saturday.
 Manage running services.  Service support unfortunately varies
 widely by platform --- some platforms have very little if any concept of a
 running service, and some have a very codified and powerful concept.
-Puppet's service support is usually capable of doing the right thing, but
+OpenVox's service support is usually capable of doing the right thing, but
 the more information you can provide, the better behaviour you will get.
 
 Puppet 2.7 and newer expect init scripts to have a working status command.
 If this isn't the case for any of your services' init scripts, you will
 need to set `hasstatus` to false and possibly specify a custom status
-command in the `status` attribute. As a last resort, Puppet will attempt to
+command in the `status` attribute. As a last resort, OpenVox will attempt to
 search the process table by calling whatever command is listed in the `ps`
 fact. The default search pattern is the name of the service, but you can
 specify it with the `pattern` attribute.
 
 **Refresh:** `service` resources can respond to refresh events (via
 `notify`, `subscribe`, or the `~>` arrow). If a `service` receives an
-event from another resource, Puppet will restart the service it manages.
+event from another resource, OpenVox will restart the service it manages.
 The actual command used to restart the service depends on the platform and
 can be configured:
 
-* If you set `hasrestart` to true, Puppet will use the init script's restart command.
+* If you set `hasrestart` to true, OpenVox will use the init script's restart command.
 * You can provide an explicit command for restarting with the `restart` attribute.
 * If you do neither, the service's stop and start commands will be used.
 
@@ -3275,7 +3295,7 @@ can be configured:
   <a href="#service-attribute-status">status</a>        =&gt; <em># Specify a *status* command manually.  This...</em>
   <a href="#service-attribute-stop">stop</a>          =&gt; <em># Specify a *stop* command...</em>
   <a href="#service-attribute-timeout">timeout</a>       =&gt; <em># Specify an optional minimum timeout (in seconds) </em>
-  # ...plus any applicable <a href="https://puppet.com/docs/puppet/latest/metaparameter.html">metaparameters</a>.
+  # ...plus any applicable <a href="https://docs.openvoxproject.org/openvox/latest/metaparameter.html">metaparameters</a>.
 }</code></pre>
 
 
@@ -3332,7 +3352,7 @@ This property behaves differently depending on the platform;
 wherever possible, it relies on local tools to enable or disable
 a given service. Default values depend on the platform.
 
-If you don't specify a value for the `enable` attribute, Puppet leaves
+If you don't specify a value for the `enable` attribute, OpenVox leaves
 that aspect of the service alone and your operating system determines
 the behavior.
 
@@ -3375,12 +3395,12 @@ command. This attribute's default value changed in Puppet 2.7.0.
 The init script's status command must return 0 if the service is
 running and a nonzero value otherwise. Ideally, these exit codes
 should conform to [the LSB's specification][lsb-exit-codes] for init
-script status actions, but Puppet only considers the difference
+script status actions, but OpenVox only considers the difference
 between 0 and nonzero to be relevant.
 
 If a service's init script does not support any kind of status command,
 you should set `hasstatus` to false and either provide a specific
-command using the `status` attribute or expect that Puppet will look for
+command using the `status` attribute or expect that OpenVox will look for
 the service name in the process table. Be aware that 'virtual' init
 scripts (like 'network' under Red Hat systems) will respond poorly to
 refresh events from other resources if you override the default behavior
@@ -3448,7 +3468,7 @@ be quoted without enclosing slashes).
 #### provider {#service-attribute-provider}
 
 The specific backend to use for this `service`
-resource. You will seldom need to specify this --- Puppet will usually
+resource. You will seldom need to specify this --- OpenVox will usually
 discover the appropriate provider for your platform.
 
 Available providers are:
@@ -3500,7 +3520,7 @@ Specify a *status* command manually.  This command must
 return 0 if the service is running and a nonzero value otherwise.
 Ideally, these exit codes should conform to [the LSB's
 specification][lsb-exit-codes] for init script status actions, but
-Puppet only considers the difference between 0 and nonzero to be
+OpenVox only considers the difference between 0 and nonzero to be
 relevant.
 
 If left unspecified, the status of the service will be determined
@@ -3651,7 +3671,7 @@ This provider supports:
 * status
 * restart
 
-Here is how the Puppet states correspond to `launchd` states:
+Here is how the OpenVox states correspond to `launchd` states:
 
 * stopped --- job unloaded
 * started --- job loaded
@@ -3871,7 +3891,7 @@ Provider support:
 A resource type for creating new run stages.  Once a stage is available,
 classes can be assigned to it by declaring them with the resource-like syntax
 and using
-[the `stage` metaparameter](https://puppet.com/docs/puppet/latest/metaparameter.html#stage).
+[the `stage` metaparameter](https://docs.openvoxproject.org/openvox/latest/metaparameter.html#stage).
 
 Note that new stages are not useful unless you also declare their order
 in relation to the default `main` stage.
@@ -3893,7 +3913,7 @@ for classes.
 
 <pre><code>stage { 'resource title':
   <a href="#stage-attribute-name">name</a> =&gt; <em># <strong>(namevar)</strong> The name of the stage. Use this as the value for </em>
-  # ...plus any applicable <a href="https://puppet.com/docs/puppet/latest/metaparameter.html">metaparameters</a>.
+  # ...plus any applicable <a href="https://docs.openvoxproject.org/openvox/latest/metaparameter.html">metaparameters</a>.
 }</code></pre>
 
 
@@ -3941,7 +3961,7 @@ actual deletion.
   <a href="#tidy-attribute-rmdirs">rmdirs</a>    =&gt; <em># Tidy directories in addition to files; that is...</em>
   <a href="#tidy-attribute-size">size</a>      =&gt; <em># Tidy files whose size is equal to or greater...</em>
   <a href="#tidy-attribute-type">type</a>      =&gt; <em># Set the mechanism for determining age.  Valid...</em>
-  # ...plus any applicable <a href="https://puppet.com/docs/puppet/latest/metaparameter.html">metaparameters</a>.
+  # ...plus any applicable <a href="https://docs.openvoxproject.org/openvox/latest/metaparameter.html">metaparameters</a>.
 }</code></pre>
 
 
@@ -4092,9 +4112,9 @@ This resource type uses the prescribed native tools for creating
 groups and generally uses POSIX APIs for retrieving information
 about them.  It does not directly modify `/etc/passwd` or anything.
 
-**Autorequires:** If Puppet is managing the user's primary group (as
+**Autorequires:** If OpenVox is managing the user's primary group (as
 provided in the `gid` attribute) or any group listed in the `groups`
-attribute then the user resource will autorequire that group. If Puppet
+attribute then the user resource will autorequire that group. If OpenVox
 is managing any role accounts corresponding to the user's roles, the
 user resource will autorequire those role accounts.
 
@@ -4119,8 +4139,8 @@ user resource will autorequire those role accounts.
   <a href="#user-attribute-key_membership">key_membership</a>       =&gt; <em># Whether specified key/value pairs should be...</em>
   <a href="#user-attribute-keys">keys</a>                 =&gt; <em># Specify user attributes in an array of key ...</em>
   <a href="#user-attribute-loginclass">loginclass</a>           =&gt; <em># The name of login class to which the user...</em>
-  <a href="#user-attribute-managehome">managehome</a>           =&gt; <em># Whether to manage the home directory when Puppet </em>
-  <a href="#user-attribute-membership">membership</a>           =&gt; <em># If `minimum` is specified, Puppet will ensure...</em>
+  <a href="#user-attribute-managehome">managehome</a>           =&gt; <em># Whether to manage the home directory when...</em>
+  <a href="#user-attribute-membership">membership</a>           =&gt; <em># If `minimum` is specified, OpenVox will ensure...</em>
   <a href="#user-attribute-password">password</a>             =&gt; <em># The user's password, in whatever encrypted...</em>
   <a href="#user-attribute-password_max_age">password_max_age</a>     =&gt; <em># The maximum number of days a password may be...</em>
   <a href="#user-attribute-password_min_age">password_min_age</a>     =&gt; <em># The minimum number of days a password must be...</em>
@@ -4136,7 +4156,7 @@ user resource will autorequire those role accounts.
   <a href="#user-attribute-shell">shell</a>                =&gt; <em># The user's login shell.  The shell must exist...</em>
   <a href="#user-attribute-system">system</a>               =&gt; <em># Whether the user is a system user, according to...</em>
   <a href="#user-attribute-uid">uid</a>                  =&gt; <em># The user ID; must be specified numerically. If...</em>
-  # ...plus any applicable <a href="https://puppet.com/docs/puppet/latest/metaparameter.html">metaparameters</a>.
+  # ...plus any applicable <a href="https://docs.openvoxproject.org/openvox/latest/metaparameter.html">metaparameters</a>.
 }</code></pre>
 
 
@@ -4148,7 +4168,7 @@ The user name. While naming limitations vary by operating system,
 it is advisable to restrict names to the lowest common denominator,
 which is a maximum of 8 characters beginning with a letter.
 
-Note that Puppet considers user names to be case-sensitive, regardless
+Note that OpenVox considers user names to be case-sensitive, regardless
 of the platform's own rules; be sure to always use the same case when
 referring to a given user.
 
@@ -4282,7 +4302,7 @@ The user's primary group.  Can be specified numerically or by name.
 
 This attribute is not supported on Windows systems; use the `groups`
 attribute instead. (On Windows, designating a primary group is only
-meaningful for domain accounts, which Puppet does not currently manage.)
+meaningful for domain accounts, which OpenVox does not currently manage.)
 
 ([↑ Back to user attributes](#user-attributes))
 
@@ -4375,14 +4395,14 @@ Requires features manages_loginclass.
 
 #### managehome {#user-attribute-managehome}
 
-Whether to manage the home directory when Puppet creates or removes the user.
-This creates the home directory if Puppet also creates the user account, and deletes the
-home directory if Puppet also removes the user account.
+Whether to manage the home directory when OpenVox creates or removes the user.
+This creates the home directory if OpenVox also creates the user account, and deletes the
+home directory if OpenVox also removes the user account.
 
-This parameter has no effect unless Puppet is also creating or removing the user in the
-resource at the same time. For instance, Puppet creates a home directory for a managed
-user if `ensure => present` and the user does not exist at the time of the Puppet run.
-If the home directory is then deleted manually, Puppet will not recreate it on the next
+This parameter has no effect unless OpenVox is also creating or removing the user in the
+resource at the same time. For instance, OpenVox creates a home directory for a managed
+user if `ensure => present` and the user does not exist at the time of the OpenVox run.
+If the home directory is then deleted manually, OpenVox will not recreate it on the next
 run.
 
 Note that on Windows, this manages creation/deletion of the user profile instead of the
@@ -4395,11 +4415,11 @@ Valid values are `true`, `false`, `yes`, `no`.
 
 #### membership {#user-attribute-membership}
 
-If `minimum` is specified, Puppet will ensure that the user is a
+If `minimum` is specified, OpenVox will ensure that the user is a
 member of all specified groups, but will not remove any other groups
 that the user is a part of.
 
-If `inclusive` is specified, Puppet will ensure that the user is a
+If `inclusive` is specified, OpenVox will ensure that the user is a
 member of **only** specified groups.
 
 Valid values are `inclusive`, `minimum`.
@@ -4416,15 +4436,15 @@ requires. Consult your operating system's documentation for acceptable password
 encryption formats and requirements.
 
 * Mac OS X 10.5 and 10.6, and some older Linux distributions, use salted SHA1
-  hashes. You can use Puppet's built-in `sha1` function to generate a salted SHA1
+  hashes. You can use OpenVox's built-in `sha1` function to generate a salted SHA1
   hash from a password.
 * Mac OS X 10.7 (Lion), and many recent Linux distributions, use salted SHA512
-  hashes. The Puppet Labs [stdlib][] module contains a `str2saltedsha512` function
+  hashes. The puppetlabs [stdlib][] module contains a `str2saltedsha512` function
   which can generate password hashes for these operating systems.
 * OS X 10.8 and higher use salted SHA512 PBKDF2 hashes. When managing passwords
   on these systems, the `salt` and `iterations` attributes need to be specified as
   well as the password.
-* macOS 10.15 and later require the salt to be 32 bytes. Because Puppet's user
+* macOS 10.15 and later require the salt to be 32 bytes. Because OpenVox's user
   resource requires the value to be hex encoded, the length of the salt's
   string must be 64.
 * Windows passwords can be managed only in cleartext, because there is no Windows
@@ -4435,7 +4455,7 @@ encryption formats and requirements.
 Enclose any value that includes a dollar sign ($) in single quotes (') to avoid
 accidental variable interpolation.
 
-To redact passwords from reports to PuppetDB, use the `Sensitive` data type. For
+To redact passwords from reports to OpenVoxDB, use the `Sensitive` data type. For
 example, this resource protects the password:
 
 ```puppet
@@ -4552,7 +4572,7 @@ Requires features manages_solaris_rbac.
 #### provider {#user-attribute-provider}
 
 The specific backend to use for this `user`
-resource. You will seldom need to specify this --- Puppet will usually
+resource. You will seldom need to specify this --- OpenVox will usually
 discover the appropriate provider for your platform.
 
 Available providers are:
@@ -4668,7 +4688,7 @@ specified when creating a new user, then one will be chosen
 automatically. This will likely result in the same user having
 different UIDs on different systems, which is not recommended. This is
 especially noteworthy when managing the same user on both Darwin and
-other platforms, since Puppet does UID generation on Darwin, but
+other platforms, since OpenVox does UID generation on Darwin, but
 the underlying tools do so on other platforms.
 
 On Windows, this property is read-only and will return the user's
@@ -4758,7 +4778,7 @@ To use the `forcelocal` parameter, you need to install the `libuser` package (pr
 `/usr/sbin/lgroupadd` and `/usr/sbin/luseradd`).
 
 * Required binaries: `chage`, `chpasswd`, `lchage`, `luseradd`, `luserdel`, `lusermod`, `useradd`, `userdel`, `usermod`.
-* Supported features: `allows_duplicates`, `manages_expiry`, `manages_homedir`, `manages_shell`, `system_users`.
+* Supported features: `allows_duplicates`, `manages_expiry`, `manages_homedir`, `manages_local_users_and_groups`, `manages_shell`, `system_users`.
 
 #### windows_adsi {#user-provider-windows_adsi}
 
@@ -4794,7 +4814,7 @@ Provider support:
 * **openbsd** - _manages expiry, manages homedir, manages shell, system users, manages passwords, manages loginclass_
 * **pw** - _allows duplicates, manages expiry, manages homedir, manages passwords, manages shell_
 * **user_role_add** - _allows duplicates, manages homedir, manages password age, manages passwords, manages roles, manages shell, manages solaris rbac_
-* **useradd** - _allows duplicates, manages expiry, manages homedir, manages shell, system users, manages passwords, manages password age, libuser_
+* **useradd** - _allows duplicates, manages expiry, manages homedir, manages local users and groups, manages shell, system users, manages passwords, manages password age, libuser_
 * **windows_adsi** - _manages homedir, manages passwords, manages roles_
   
 

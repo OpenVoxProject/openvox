@@ -392,7 +392,7 @@ module Issues
   # Issues when expressions that are not implemented or activated in the current version are used.
   #
   UNSUPPORTED_EXPRESSION = issue :UNSUPPORTED_EXPRESSION do
-    _("Expressions of type %{expression} are not supported in this version of Puppet") % { expression: label.a_an(semantic) }
+    _("Expressions of type %{expression} are not supported in this version of OpenVox") % { expression: label.a_an(semantic) }
   end
 
   ILLEGAL_RELATIONSHIP_OPERAND_TYPE = issue :ILLEGAL_RELATIONSHIP_OPERAND_TYPE, :operand do
@@ -859,11 +859,11 @@ module Issues
   end
 
   HIERA_OPTION_RESERVED_BY_PUPPET = hard_issue :HIERA_OPTION_RESERVED_BY_PUPPET, :key, :name do
-    _("Option key '%{key}' used in hierarchy '%{name}' is reserved by Puppet") % { key: key, name: name }
+    _("Option key '%{key}' used in hierarchy '%{name}' is reserved by OpenVox") % { key: key, name: name }
   end
 
   HIERA_DEFAULT_OPTION_RESERVED_BY_PUPPET = hard_issue :HIERA_DEFAULT_OPTION_RESERVED_BY_PUPPET, :key do
-    _("Option key '%{key}' used in defaults is reserved by Puppet") % { key: key }
+    _("Option key '%{key}' used in defaults is reserved by OpenVox") % { key: key }
   end
 
   HIERA_DATA_PROVIDER_FUNCTION_NOT_FOUND = hard_issue :HIERA_DATA_PROVIDER_FUNCTION_NOT_FOUND, :function_type, :function_name do

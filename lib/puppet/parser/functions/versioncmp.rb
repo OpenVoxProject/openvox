@@ -23,7 +23,7 @@ Example:
         notice('2.6-1 is > than 2.4.5')
     }
 
-This function uses the same version comparison algorithm used by Puppet's
+This function uses the same version comparison algorithm used by OpenVox's
 `package` type.
 
 ") do |args|

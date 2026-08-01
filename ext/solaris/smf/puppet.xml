@@ -34,11 +34,11 @@
 
     <template>
       <common_name>
-        <loctext xml:lang="C">Puppet Agent Daemon</loctext>
+        <loctext xml:lang="C">OpenVox Agent Daemon</loctext>
       </common_name>
       <documentation>
         <manpage title="puppet" section="1"/>
-        <doc_link name="puppetlabs.com" uri="https://puppetlabs.com/puppet/introduction"/>
+        <doc_link name="voxpupuli.org" uri="https://voxpupuli.org/openvox/"/>
       </documentation>
     </template>
   </service>

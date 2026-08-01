@@ -133,7 +133,7 @@ class Puppet::Application::Lookup < Puppet::Application
 
       DESCRIPTION
       -----------
-      The lookup command is a CLI for Puppet's 'lookup()' function. It searches your
+      The lookup command is a CLI for OpenVox's 'lookup()' function. It searches your
       Hiera data and returns a value for the requested lookup key, so you can test and
       explore your data. It is a modern replacement for the 'hiera' command.
       Lookup uses the setting for global hiera.yaml from puppet's config,
@@ -143,7 +143,7 @@ class Puppet::Application::Lookup < Puppet::Application
       default, 'puppet lookup' uses facts from the node you run the command on, but
       you can get data for any other node with the '--node <NAME>' option. If
       possible, the lookup command will use the requested node's real stored facts
-      from PuppetDB; if PuppetDB isn't configured or you want to provide arbitrary
+      from OpenVoxDB; if OpenVoxDB isn't configured or you want to provide arbitrary
       fact values, you can pass alternate facts as a JSON or YAML file with '--facts
       <FILE>'.
 
@@ -158,7 +158,7 @@ class Puppet::Application::Lookup < Puppet::Application
       value for the first found key, omitting the rest.
 
       For more details about how Hiera works, see the Hiera documentation:
-      https://puppet.com/docs/puppet/latest/hiera_intro.html
+      https://docs.openvoxproject.org/openvox/latest/hiera_intro.html
 
       OPTIONS
       -------
@@ -175,7 +175,7 @@ class Puppet::Application::Lookup < Puppet::Application
         is run. Since Hiera's purpose is to provide different values for different
         nodes (usually based on their facts), you'll usually want to use some specific
         node's facts to explore your data. If the node where you're running this
-        command is configured to talk to PuppetDB, the command will use the requested
+        command is configured to talk to OpenVoxDB, the command will use the requested
         node's most recent facts. Otherwise, you can override facts with the '--facts'
         option.
 
@@ -185,7 +185,7 @@ class Puppet::Application::Lookup < Puppet::Application
         original value.
 
       * --environment <ENV>
-        Like with most Puppet commands, you can specify an environment on the command
+        Like with most OpenVox commands, you can specify an environment on the command
         line. This is important for lookup because different environments can have
         different Hiera data. This environment will be always be the one used regardless
         of any other factors.
@@ -236,14 +236,14 @@ class Puppet::Application::Lookup < Puppet::Application
 
       EXAMPLE
       -------
-        To look up 'key_name' using the Puppet Server node's facts:
+        To look up 'key_name' using the OpenVox Server node's facts:
         $ puppet lookup key_name
 
-        To look up 'key_name' using the Puppet Server node's arbitrary variables from a manifest, and
+        To look up 'key_name' using the OpenVox Server node's arbitrary variables from a manifest, and
         classify the node if applicable:
         $ puppet lookup key_name --compile
 
-        To look up 'key_name' using the Puppet Server node's facts, overridden by facts given in a file:
+        To look up 'key_name' using the OpenVox Server node's facts, overridden by facts given in a file:
         $ puppet lookup key_name --facts fact_file.yaml
 
         To look up 'key_name' with agent.local's facts:

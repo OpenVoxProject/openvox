@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Runs a [lambda](https://puppet.com/docs/puppet/latest/lang_lambdas.html)
+# Runs a [lambda](https://docs.openvoxproject.org/openvox/latest/lang_lambdas.html)
 # repeatedly using each value in a data structure until the lambda returns a non "truthy" value which
 # makes the function return `false`, or if the end of the iteration is reached, `true` is returned.
 #
@@ -28,7 +28,7 @@
 #
 # Would notice `true`.
 #
-# When the first argument is a `Hash`, Puppet passes each key and value pair to the lambda
+# When the first argument is a `Hash`, OpenVox passes each key and value pair to the lambda
 # as an array in the form `[key, value]`.
 #
 # @example Using the `all` function with a `Hash` and a one-parameter lambda
@@ -55,8 +55,8 @@
 #
 # Would notice `true`.
 #
-# For an general examples that demonstrates iteration, see the Puppet
-# [iteration](https://puppet.com/docs/puppet/latest/lang_iteration.html)
+# For an general examples that demonstrates iteration, see the OpenVox
+# [iteration](https://docs.openvoxproject.org/openvox/latest/lang_iteration.html)
 # documentation.
 #
 # @since 5.2.0

@@ -46,7 +46,7 @@ module Puppet::Util::Plist
                                                   { :failonfail => true, :combine => true })
           return parse_plist(plist)
         rescue Puppet::ExecutionFailure => detail
-          message = _("Cannot read file %{file_path}; Puppet is skipping it.") % { file_path: file_path }
+          message = _("Cannot read file %{file_path}; OpenVox is skipping it.") % { file_path: file_path }
           message += '\n' + _("Details: %{detail}") % { detail: detail }
           Puppet.warning(message)
         end

@@ -151,9 +151,9 @@ module Puppet
       desc "Configures the behavior of the `members` parameter.
 
         * `false` (default) --- The provided list of group members is partial,
-          and Puppet **ignores** any members that aren't listed there.
+          and OpenVox **ignores** any members that aren't listed there.
         * `true` --- The provided list of of group members is comprehensive, and
-          Puppet **purges** any members that aren't listed there."
+          OpenVox **purges** any members that aren't listed there."
       defaultto false
     end
 
@@ -162,7 +162,7 @@ module Puppet
         it is advisable to restrict names to the lowest common denominator,
         which is a maximum of 8 characters beginning with a letter.
 
-        Note that Puppet considers group names to be case-sensitive, regardless
+        Note that OpenVox considers group names to be case-sensitive, regardless
         of the platform's own rules; be sure to always use the same case when
         referring to a given group."
       isnamevar
@@ -197,10 +197,10 @@ module Puppet
     newparam(:attribute_membership) do
       desc "AIX only. Configures the behavior of the `attributes` parameter.
 
-        * `minimum` (default) --- The provided list of attributes is partial, and Puppet
+        * `minimum` (default) --- The provided list of attributes is partial, and OpenVox
           **ignores** any attributes that aren't listed there.
         * `inclusive` --- The provided list of attributes is comprehensive, and
-          Puppet **purges** any attributes that aren't listed there."
+          OpenVox **purges** any attributes that aren't listed there."
 
       newvalues(:inclusive, :minimum)
 

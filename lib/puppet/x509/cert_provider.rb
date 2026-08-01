@@ -3,7 +3,7 @@
 require_relative '../../puppet/x509'
 
 # Class for loading and saving cert related objects. By default the provider
-# loads and saves based on puppet's default settings, such as `Puppet[:localcacert]`.
+# loads and saves based on OpenVox's default settings, such as `Puppet[:localcacert]`.
 # The providers sets the permissions on files it saves, such as the private key.
 # All of the `load_*` methods take an optional `required` parameter. If an object
 # doesn't exist, then by default the provider returns `nil`. However, if the

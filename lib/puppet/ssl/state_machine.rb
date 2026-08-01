@@ -444,11 +444,11 @@ class Puppet::SSL::StateMachine
         # sleeping, start over from the top
         NeedCACerts.new(@machine)
       elsif @machine.waitforlock < 1
-        LockFailure.new(@machine, _("Another puppet instance is already running and the waitforlock setting is set to 0; exiting"))
+        LockFailure.new(@machine, _("Another OpenVox instance is already running and the waitforlock setting is set to 0; exiting"))
       elsif Time.now.to_i >= @machine.waitlock_deadline
-        LockFailure.new(@machine, _("Another puppet instance is already running and the maxwaitforlock timeout has been exceeded; exiting"))
+        LockFailure.new(@machine, _("Another OpenVox instance is already running and the maxwaitforlock timeout has been exceeded; exiting"))
       else
-        Puppet.info _("Another puppet instance is already running; waiting for it to finish")
+        Puppet.info _("Another OpenVox instance is already running; waiting for it to finish")
         Puppet.info _("Will try again in %{time} seconds.") % { time: @machine.waitforlock }
         Kernel.sleep @machine.waitforlock
 

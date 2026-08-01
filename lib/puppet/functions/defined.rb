@@ -32,7 +32,7 @@
 # defined(File['/tmp/file'])
 # ```
 #
-# Puppet depends on the configuration's evaluation order when checking whether a resource
+# OpenVox depends on the configuration's evaluation order when checking whether a resource
 # is declared.
 #
 # @example Importance of evaluation order when using `defined`

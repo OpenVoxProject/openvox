@@ -33,7 +33,7 @@ Puppet::Type.type(:service).provide :smf, :parent => :base do
   def self.instances
     service_instances = svcs("-H", "-o", "state,fmri").split("\n")
 
-    # Puppet does not manage services in the legacy_run state, so filter those out.
+    # OpenVox does not manage services in the legacy_run state, so filter those out.
     service_instances.reject! { |line| line =~ /^legacy_run/ }
 
     service_instances.collect! do |line|

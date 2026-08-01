@@ -4,17 +4,15 @@ The term "environment" as used in this document refers to a directory on the ser
 
 At the beginning of an agent run, the agent and server negotiate which environment to use. It is important for the agent and server to use the same environment during the run, because the manifest may reference facts that must be downloaded and evaluated on the agent. If they are mismatched, then compilation can fail.
 
-For security reasons, puppet defaults to **server-specified environments**. This means the server always decides which environment to assign to each agent. This is important because we don't want an agent to request a catalog from an arbitrary environment, as the server might include a class containing sensitive data.
+For security reasons, OpenVox defaults to **server-specified environments**. This means the server always decides which environment to assign to each agent. This is important because we don't want an agent to request a catalog from an arbitrary environment, as the server might include a class containing sensitive data.
 
-However, there are cases during [iterative development](https://puppet.com/docs/pe/latest/environment_based_testing.html) where it is necessary for a trusted user to be able to run the agent against an environment contained in a feature branch. For example, `puppet agent -t --environment <feature>`. If the code works as intended, then it provides confidence that the feature branch code can be merged. We refer to this workflow as an **agent-specified environment**.
+However, there are cases during iterative development where it is necessary for a trusted user to be able to run the agent against an environment contained in a feature branch. For example, `puppet agent -t --environment <feature>`. If the code works as intended, then it provides confidence that the feature branch code can be merged. We refer to this workflow as an **agent-specified environment**.
 
 ## Agent and Server Negotiation
 
 The server decides which environment an agent should use by asking its node terminus to classify the node. Terminus just means there's an implementation of an interface that knows how to perform CRUD operations on `Puppet::Node` objects. The terminus is responsible for returning a node object, including the environment that the node is assigned to.
 
-PE ships with a `classifier` node terminus that communicates with the PE classifier via REST. So by default, PE uses server-specified environments.
-
-However, open source defaults to a `plain` node terminus, which means it falls back to agent-specified environments.
+OpenVox defaults to a `plain` node terminus, which means it falls back to agent-specified environments.
 
 When the agent negotiates with the server, the server may respond in one of the following ways:
 

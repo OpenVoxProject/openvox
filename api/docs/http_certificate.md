@@ -4,8 +4,8 @@ Certificate
 The `certificate` endpoint returns the certificate for the specified name,
 which might be either a standard certname or `ca`.
 
-Under Puppet Server's CA service, the `environment` parameter is ignored and can
-be omitted. Under a Rack or WEBrick Puppet server, `environment` is required and
+Under OpenVox Server's CA service, the `environment` parameter is ignored and can
+be omitted. Under a Rack or WEBrick OpenVox server, `environment` is required and
 must be a valid environment, but it has no effect on the response.
 
 Find

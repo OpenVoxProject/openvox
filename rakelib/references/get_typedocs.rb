@@ -1,8 +1,8 @@
-# This script will print the Puppet type docs to stdout in JSON format.
+# This script will print the OpenVox type docs to stdout in JSON format.
 
 # There are some subtleties that make this a pain to run. Basically: Even if you
-# 'require' a specific copy of the Puppet code, the autoloader will grab bits
-# and pieces of Puppet code from other copies of Puppet scattered about the Ruby
+# 'require' a specific copy of the OpenVox code, the autoloader will grab bits
+# and pieces of OpenVox code from other copies of OpenVox scattered about the Ruby
 # load path. This causes a mixture of docs from different versions: although I
 # think the version you require will usually win for things that exist in both
 # versions, providers or attributes that only exist in one version will leak
@@ -10,8 +10,8 @@
 
 # So the only safe thing to do is run this in a completely separate process, and
 # ruthlessly control the Ruby load path. We expect that when you're executing
-# this code, your $RUBYLIB contains the version of Puppet you want to load, and
-# there are no other versions of Puppet available as gems, installed via system
+# this code, your $RUBYLIB contains the version of OpenVox you want to load, and
+# there are no other versions of OpenVox available as gems, installed via system
 # packages, etc. etc. etc.
 
 require 'json'
@@ -35,7 +35,7 @@ extend Puppet::Util::Docs
   #       },
   #       ...etc...
   #     }
-  #     :attributes  => { # Puppet dictates that there will ALWAYS be at least one attribute.
+  #     :attributes  => { # OpenVox dictates that there will ALWAYS be at least one attribute.
   #       :name_of_attribute => {
   #         :description => 'Markdown fragment: docs for this attribute',
   #         :kind        => (:property || :parameter),

@@ -1,13 +1,13 @@
 ---
 layout: default
-built_from_commit: 812d7420ea5d7e19e8003b26486a7c8847afdb25
+built_from_commit: f7b1a950d990274b9f352eb7aa0cd93ee6067df1
 title: 'Resource Type: file'
 canonical: "/puppet/latest/types/file.html"
 ---
 
 # Resource Type: file
 
-> **NOTE:** This page was generated from the Puppet source code on 2024-10-18 17:23:49 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-07-14 18:42:41 +0000
 
 
 
@@ -28,11 +28,11 @@ File contents can be managed directly with the `content` attribute, or
 downloaded from a remote source using the `source` attribute; the latter
 can also be used to recursively serve directories (when the `recurse`
 attribute is set to `true` or `local`). On Windows, note that file
-contents are managed in binary mode; Puppet never automatically translates
+contents are managed in binary mode; OpenVox never automatically translates
 line endings.
 
-**Autorequires:** If Puppet is managing the user or group that owns a
-file, the file resource will autorequire them. If Puppet is managing any
+**Autorequires:** If OpenVox is managing the user or group that owns a
+file, the file resource will autorequire them. If OpenVox is managing any
 parent directories of a file, the file resource autorequires them.
 
 Warning: Enabling `recurse` on directories containing large numbers of
@@ -61,23 +61,23 @@ consider using alternative methods such as the `chmod_r`, `chown_r`,
   <a href="#file-attribute-provider">provider</a>                =&gt; <em># The specific backend to use for this `file...</em>
   <a href="#file-attribute-purge">purge</a>                   =&gt; <em># Whether unmanaged files should be purged. This...</em>
   <a href="#file-attribute-recurse">recurse</a>                 =&gt; <em># Whether to recursively manage the _contents_ of...</em>
-  <a href="#file-attribute-recurselimit">recurselimit</a>            =&gt; <em># How far Puppet should descend into...</em>
+  <a href="#file-attribute-recurselimit">recurselimit</a>            =&gt; <em># How far OpenVox should descend into...</em>
   <a href="#file-attribute-replace">replace</a>                 =&gt; <em># Whether to replace a file or symlink that...</em>
-  <a href="#file-attribute-selinux_ignore_defaults">selinux_ignore_defaults</a> =&gt; <em># If this is set, Puppet will not call the SELinux </em>
+  <a href="#file-attribute-selinux_ignore_defaults">selinux_ignore_defaults</a> =&gt; <em># If this is set, OpenVox will not call the...</em>
   <a href="#file-attribute-selrange">selrange</a>                =&gt; <em># What the SELinux range component of the context...</em>
   <a href="#file-attribute-selrole">selrole</a>                 =&gt; <em># What the SELinux role component of the context...</em>
   <a href="#file-attribute-seltype">seltype</a>                 =&gt; <em># What the SELinux type component of the context...</em>
   <a href="#file-attribute-seluser">seluser</a>                 =&gt; <em># What the SELinux user component of the context...</em>
   <a href="#file-attribute-show_diff">show_diff</a>               =&gt; <em># Whether to display differences when the file...</em>
   <a href="#file-attribute-source">source</a>                  =&gt; <em># A source file, which will be copied into place...</em>
-  <a href="#file-attribute-source_permissions">source_permissions</a>      =&gt; <em># Whether (and how) Puppet should copy owner...</em>
+  <a href="#file-attribute-source_permissions">source_permissions</a>      =&gt; <em># Whether (and how) OpenVox should copy owner...</em>
   <a href="#file-attribute-sourceselect">sourceselect</a>            =&gt; <em># Whether to copy all valid sources, or just the...</em>
   <a href="#file-attribute-staging_location">staging_location</a>        =&gt; <em># When rendering a file first render it to this...</em>
   <a href="#file-attribute-target">target</a>                  =&gt; <em># The target for creating a link.  Currently...</em>
   <a href="#file-attribute-type">type</a>                    =&gt; <em># A read-only state to check the file...</em>
   <a href="#file-attribute-validate_cmd">validate_cmd</a>            =&gt; <em># A command for validating the file's syntax...</em>
   <a href="#file-attribute-validate_replacement">validate_replacement</a>    =&gt; <em># The replacement string in a `validate_cmd` that...</em>
-  # ...plus any applicable <a href="https://puppet.com/docs/puppet/latest/metaparameter.html">metaparameters</a>.
+  # ...plus any applicable <a href="https://docs.openvoxproject.org/openvox/latest/metaparameter.html">metaparameters</a>.
 }</code></pre>
 
 
@@ -111,14 +111,14 @@ Possible values are `present`, `absent`, `file`, `directory`, and `link`.
 * `link` ensures the file is a symlink, and **requires** that you also
   set the `target` attribute. Symlinks are supported on all Posix
   systems and on Windows Vista / 2008 and higher. On Windows, managing
-  symlinks requires Puppet agent's user account to have the "Create
+  symlinks requires the OpenVox agent's user account to have the "Create
   Symbolic Links" privilege; this can be configured in the "User Rights
-  Assignment" section in the Windows policy editor. By default, Puppet
+  Assignment" section in the Windows policy editor. By default, the OpenVox
   agent runs as the Administrator account, which has this privilege.
 
-Puppet avoids destroying directories unless the `force` attribute is set
+OpenVox avoids destroying directories unless the `force` attribute is set
 to `true`. This means that if a file is currently a directory, setting
-`ensure` to anything but `directory` or `present` will cause Puppet to
+`ensure` to anything but `directory` or `present` will cause OpenVox to
 skip managing the resource and log either a notice or an error.
 
 There is one other non-standard value for `ensure`. If you specify the
@@ -161,11 +161,11 @@ This attribute works best as a resource default in the site manifest
 (`File { backup => main }`), so it can affect all file resources.
 
 * If set to `false`, file content won't be backed up.
-* If set to a string beginning with `.`, such as `.puppet-bak`, Puppet will
+* If set to a string beginning with `.`, such as `.puppet-bak`, OpenVox will
   use copy the file in the same directory with that value as the extension
   of the backup. (A value of `true` is a synonym for `.puppet-bak`.)
-* If set to any other string, Puppet will try to back up to a filebucket
-  with that title. Puppet automatically creates a **local** filebucket
+* If set to any other string, OpenVox will try to back up to a filebucket
+  with that title. OpenVox automatically creates a **local** filebucket
   named `puppet` if one doesn't already exist. See the `filebucket` resource
   type for more details.
 
@@ -173,14 +173,14 @@ Default value: `false`
 
 Backing up to a local filebucket isn't particularly useful. If you want
 to make organized use of backups, you will generally want to use the
-primary Puppet server's filebucket service. This requires declaring a
+primary OpenVox server's filebucket service. This requires declaring a
 filebucket resource and a resource default for the `backup` attribute
 in site.pp:
 
     # /etc/puppetlabs/puppet/manifests/site.pp
     filebucket { 'main':
       path   => false,                # This is required for remote filebuckets.
-      server => 'puppet.example.com', # Optional; defaults to the configured primary Puppet server.
+      server => 'puppet.example.com', # Optional; defaults to the configured primary OpenVox server.
     }
 
     File { backup => main, }
@@ -229,6 +229,7 @@ Allowed values:
 * `mtime`
 * `ctime`
 * `none`
+* `etag`
 
 ([↑ Back to file attributes](#file-attributes))
 
@@ -271,8 +272,8 @@ the manifest...
     }
 
 ...but for larger files, this attribute is more useful when combined with the
-[template](https://puppet.com/docs/puppet/latest/function.html#template)
-or [file](https://puppet.com/docs/puppet/latest/function.html#file)
+[template](https://docs.openvoxproject.org/openvox/latest/function.html#template)
+or [file](https://docs.openvoxproject.org/openvox/latest/function.html#file)
 function.
 
 ([↑ Back to file attributes](#file-attributes))
@@ -386,7 +387,7 @@ The desired permissions mode for the file, in symbolic or numeric
 notation. This value **must** be specified as a string; do not use
 un-quoted numbers to represent file modes.
 
-If the mode is omitted (or explicitly set to `undef`), Puppet does not
+If the mode is omitted (or explicitly set to `undef`), OpenVox does not
 enforce permissions on existing files and creates new files with
 permissions of `0644`.
 
@@ -394,7 +395,7 @@ The `file` type uses traditional Unix permission schemes and translates
 them to equivalent permissions for systems which represent permissions
 differently, including Windows. For detailed ACL controls on Windows,
 you can leave `mode` unmanaged and use
-[the puppetlabs/acl module.](https://forge.puppetlabs.com/puppetlabs/acl)
+[the puppetlabs/acl module.](https://forge.puppet.com/puppetlabs/acl)
 
 Numeric modes should use the standard octal notation of
 `<SETUID/SETGID/STICKY><OWNER><GROUP><OTHER>` (for example, "0644").
@@ -404,10 +405,10 @@ Numeric modes should use the standard octal notation of
   execute/search = 1.
 * The setuid/setgid/sticky digit is also a sum, where setuid = 4, setgid = 2,
   and sticky = 1.
-* The setuid/setgid/sticky digit is optional. If it is absent, Puppet will
+* The setuid/setgid/sticky digit is optional. If it is absent, OpenVox will
   clear any existing setuid/setgid/sticky permissions. (So to make your intent
   clear, you should use at least four digits for numeric modes.)
-* When specifying numeric permissions for directories, Puppet sets the search
+* When specifying numeric permissions for directories, OpenVox sets the search
   permission wherever the read permission is set.
 
 Symbolic modes should be represented as a string of comma-separated
@@ -528,7 +529,7 @@ is only used when `ensure => directory` is set. The allowed values are:
 
 * `false` --- The default behavior. The contents of the directory will not be
   automatically managed.
-* `remote` --- If the `source` attribute is set, Puppet will automatically
+* `remote` --- If the `source` attribute is set, OpenVox will automatically
   manage the contents of the source directory (or directories), ensuring
   that equivalent files and directories exist on the target system and
   that their contents match.
@@ -561,13 +562,13 @@ Allowed values:
 
 #### recurselimit {#file-attribute-recurselimit}
 
-How far Puppet should descend into subdirectories, when using
+How far OpenVox should descend into subdirectories, when using
 `ensure => directory` and either `recurse => true` or `recurse => remote`.
 The recursion limit affects which files will be copied from the `source`
 directory, as well as which files can be purged when `purge => true`.
 
 Setting `recurselimit => 0` is the same as setting `recurse => false` ---
-Puppet will manage the directory, but all of its contents will be treated
+OpenVox will manage the directory, but all of its contents will be treated
 as unmanaged.
 
 Setting `recurselimit => 1` will manage files and directories that are
@@ -592,7 +593,7 @@ Whether to replace a file or symlink that already exists on the local system but
 whose content doesn't match what the `source` or `content` attribute
 specifies.  Setting this to false allows file resources to initialize files
 without overwriting future changes.  Note that this only affects content;
-Puppet will still manage ownership and permissions.
+OpenVox will still manage ownership and permissions.
 
 Default: `true`
 
@@ -608,10 +609,10 @@ Allowed values:
 
 #### selinux_ignore_defaults {#file-attribute-selinux_ignore_defaults}
 
-If this is set, Puppet will not call the SELinux function selabel_lookup to
+If this is set, OpenVox will not call the SELinux function selabel_lookup to
 supply defaults for the SELinux attributes (seluser, selrole,
 seltype, and selrange). In general, you should leave this set at its
-default and only set it to true when you need Puppet to not try to fix
+default and only set it to true when you need OpenVox to not try to fix
 SELinux labels automatically.
 
 Default: `false`
@@ -681,7 +682,7 @@ enabled.
 
 Whether to display differences when the file changes, defaulting to
 true.  This parameter is useful for files that may contain passwords or
-other secret data, which might otherwise be included in Puppet reports or
+other secret data, which might otherwise be included in OpenVox reports or
 other insecure outputs.  If the global `show_diff` setting
 is false, then no diffs will be shown even if this parameter is true.
 
@@ -703,7 +704,7 @@ A source file, which will be copied into place on the local system. This
 attribute is mutually exclusive with `content` and `target`. Allowed
 values are:
 
-* `puppet:` URIs, which point to files in modules or Puppet file server
+* `puppet:` URIs, which point to files in modules or OpenVox file server
 mount points.
 * Fully qualified paths to locally available files (including files on NFS
 shares or Windows mapped drives).
@@ -714,8 +715,8 @@ The normal form of a `puppet:` URI is:
 
 `puppet:///modules/<MODULE NAME>/<FILE PATH>`
 
-This will fetch a file from a module on the Puppet server (or from a
-local module when using Puppet apply). Given a `modulepath` of
+This will fetch a file from a module on the OpenVox server (or from a
+local module when using puppet apply). Given a `modulepath` of
 `/etc/puppetlabs/code/modules`, the example above would resolve to
 `/etc/puppetlabs/code/modules/<MODULE NAME>/files/<FILE PATH>`.
 
@@ -729,28 +730,28 @@ trees. You cannot use `source_permissions` values other than `ignore`
 because HTTP servers do not transfer any metadata that translates to
 ownership or permission details.
 
-Puppet determines if file content is synchronized by computing a checksum
+OpenVox determines if file content is synchronized by computing a checksum
 for the local file and comparing it against the `checksum_value`
 parameter. If the `checksum_value` parameter is not specified for
-`puppet` and `file` sources, Puppet computes a checksum based on its
-`Puppet[:digest_algorithm]`. For `http(s)` sources, Puppet uses the
+`puppet` and `file` sources, OpenVox computes a checksum based on its
+`Puppet[:digest_algorithm]`. For `http(s)` sources, OpenVox uses the
 first HTTP header it recognizes out of the following list:
 `X-Checksum-Sha256`, `X-Checksum-Sha1`, `X-Checksum-Md5` or `Content-MD5`.
-If the server response does not include one of these headers, Puppet
-defaults to using the `Last-Modified` header. Puppet updates the local
+If the server response does not include one of these headers, OpenVox
+defaults to using the `Last-Modified` header. OpenVox updates the local
 file if the header is newer than the modified time (mtime) of the local
 file.
 
-_HTTP_ URIs can include a user information component so that Puppet can
+_HTTP_ URIs can include a user information component so that OpenVox can
 retrieve file metadata and content from HTTP servers that require HTTP Basic
 authentication. For example `https://<user>:<pass>@<server>:<port>/path/to/file.`
 
-When connecting to _HTTPS_ servers, Puppet trusts CA certificates in the
-puppet-agent certificate bundle and the Puppet CA. You can configure Puppet
+When connecting to _HTTPS_ servers, OpenVox trusts CA certificates in the
+puppet-agent certificate bundle and the OpenVox CA. You can configure OpenVox
 to trust additional CA certificates using the `Puppet[:ssl_trust_store]`
 setting.
 
-Multiple `source` values can be specified as an array, and Puppet will
+Multiple `source` values can be specified as an array, and OpenVox will
 use the first source that exists. This can be used to serve different
 files to different system types:
 
@@ -770,7 +771,7 @@ be combined by setting the `sourceselect` attribute to `all`.
 
 #### source_permissions {#file-attribute-source_permissions}
 
-Whether (and how) Puppet should copy owner, group, and mode permissions from
+Whether (and how) OpenVox should copy owner, group, and mode permissions from
 the `source` to `file` resources when the permissions are not explicitly
 specified. (In all cases, explicit permissions will take precedence.)
 Valid values are `use`, `use_when_creating`, and `ignore`:
@@ -778,10 +779,10 @@ Valid values are `use`, `use_when_creating`, and `ignore`:
 * `ignore` (the default) will never apply the owner, group, or mode from
   the `source` when managing a file. When creating new files without explicit
   permissions, the permissions they receive will depend on platform-specific
-  behavior. On POSIX, Puppet will use the umask of the user it is running as.
-  On Windows, Puppet will use the default DACL associated with the user it is
+  behavior. On POSIX, OpenVox will use the umask of the user it is running as.
+  On Windows, OpenVox will use the default DACL associated with the user it is
   running as.
-* `use` will cause Puppet to apply the owner, group,
+* `use` will cause OpenVox to apply the owner, group,
   and mode from the `source` to any files it is managing.
 * `use_when_creating` will only apply the owner, group, and mode from the
   `source` when creating a file; existing files will not have their permissions
@@ -869,14 +870,14 @@ A read-only state to check the file type.
 #### validate_cmd {#file-attribute-validate_cmd}
 
 A command for validating the file's syntax before replacing it. If
-Puppet would need to rewrite a file due to new `source` or `content`, it
+OpenVox would need to rewrite a file due to new `source` or `content`, it
 will check the new content's validity first. If validation fails, the file
 resource will fail.
 
 This command must have a fully qualified path, and should contain a
 percent (`%`) token where it would expect an input file. It must exit `0`
 if the syntax is correct, and non-zero otherwise. The command will be
-run on the target system while applying the catalog, not on the primary Puppet server.
+run on the target system while applying the catalog, not on the primary OpenVox server.
 
 Example:
 

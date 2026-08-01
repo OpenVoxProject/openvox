@@ -1,13 +1,13 @@
 ---
 layout: default
-built_from_commit: 812d7420ea5d7e19e8003b26486a7c8847afdb25
+built_from_commit: f7b1a950d990274b9f352eb7aa0cd93ee6067df1
 title: 'Resource Type: group'
 canonical: "/puppet/latest/types/group.html"
 ---
 
 # Resource Type: group
 
-> **NOTE:** This page was generated from the Puppet source code on 2024-10-18 17:23:49 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-07-14 18:42:41 +0000
 
 
 
@@ -42,7 +42,7 @@ a group record.
   <a href="#group-attribute-members">members</a>              =&gt; <em># The members of the group. For platforms or...</em>
   <a href="#group-attribute-provider">provider</a>             =&gt; <em># The specific backend to use for this `group...</em>
   <a href="#group-attribute-system">system</a>               =&gt; <em># Whether the group is a system group with lower...</em>
-  # ...plus any applicable <a href="https://puppet.com/docs/puppet/latest/metaparameter.html">metaparameters</a>.
+  # ...plus any applicable <a href="https://docs.openvoxproject.org/openvox/latest/metaparameter.html">metaparameters</a>.
 }</code></pre>
 
 
@@ -54,7 +54,7 @@ The group name. While naming limitations vary by operating system,
 it is advisable to restrict names to the lowest common denominator,
 which is a maximum of 8 characters beginning with a letter.
 
-Note that Puppet considers group names to be case-sensitive, regardless
+Note that OpenVox considers group names to be case-sensitive, regardless
 of the platform's own rules; be sure to always use the same case when
 referring to a given group.
 
@@ -97,10 +97,10 @@ Allowed values:
 
 AIX only. Configures the behavior of the `attributes` parameter.
 
-* `minimum` (default) --- The provided list of attributes is partial, and Puppet
+* `minimum` (default) --- The provided list of attributes is partial, and OpenVox
   **ignores** any attributes that aren't listed there.
 * `inclusive` --- The provided list of attributes is comprehensive, and
-  Puppet **purges** any attributes that aren't listed there.
+  OpenVox **purges** any attributes that aren't listed there.
 
 Default: `minimum`
 
@@ -129,9 +129,9 @@ Requires features manages_aix_lam.
 Configures the behavior of the `members` parameter.
 
 * `false` (default) --- The provided list of group members is partial,
-  and Puppet **ignores** any members that aren't listed there.
+  and OpenVox **ignores** any members that aren't listed there.
 * `true` --- The provided list of of group members is comprehensive, and
-  Puppet **purges** any members that aren't listed there.
+  OpenVox **purges** any members that aren't listed there.
 
 Default: `false`
 

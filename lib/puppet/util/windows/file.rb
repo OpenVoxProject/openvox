@@ -213,7 +213,7 @@ module Puppet::Util::Windows::File
   module_function :reparse_point?
 
   def symlink?(file_name)
-    # Puppet currently only handles mount point and symlink reparse points, ignores others
+    # OpenVox currently only handles mount point and symlink reparse points, ignores others
     reparse_point?(file_name) && symlink_reparse_point?(file_name)
   end
   module_function :symlink?
@@ -340,7 +340,7 @@ module Puppet::Util::Windows::File
   end
   private_class_method :resolve_symlink
 
-  # these reparse point types are the only ones Puppet currently understands
+  # these reparse point types are the only ones OpenVox currently understands
   # so rather than raising an exception in readlink, prefer to not consider
   # the path a symlink when stat'ing later
   def self.symlink_reparse_point?(path)

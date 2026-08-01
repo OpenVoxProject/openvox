@@ -117,15 +117,15 @@ module Puppet::Parser::Functions
   #
   # **The {newfunction} method provides a public API.**
   #
-  # This method is used both internally inside of Puppet to define parser
+  # This method is used both internally inside of OpenVox to define parser
   # functions.  For example, template() is defined in
   # {file:lib/puppet/parser/functions/template.rb template.rb} using the
   # {newfunction} method.  Third party Puppet modules such as
   # [stdlib](https://forge.puppetlabs.com/puppetlabs/stdlib) use this method to
-  # extend the behavior and functionality of Puppet.
+  # extend the behavior and functionality of OpenVox.
   #
   # See also [Docs: Custom
-  # Functions](https://puppet.com/docs/puppet/5.5/lang_write_functions_in_puppet.html)
+  # Functions](https://docs.openvoxproject.org/openvox/latest/lang_write_functions_in_puppet.html)
   #
   # @example Define a new Puppet DSL Function
   #     >> Puppet::Parser::Functions.newfunction(:double, :arity => 1,

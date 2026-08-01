@@ -208,7 +208,7 @@ class Puppet::Node
   #
   def sanitize
     # Resurrect "trusted information" that comes from node/fact terminus.
-    # The current way this is done in puppet db (currently the only one)
+    # The current way this is done in OpenVoxDB (currently the only one)
     # is to store the node parameter 'trusted' as a hash of the trusted information.
     #
     # Thus here there are two main cases:
@@ -217,7 +217,7 @@ class Puppet::Node
     # 2  It is a command line call with a given node that use a terminus that:
     # 2.1 does not include a 'trusted' fact - use local from node trusted information
     # 2.2 has a 'trusted' fact - this in turn could be
-    # 2.2.1 puppet db having stored trusted node data as a fact (not a great design)
+    # 2.2.1 OpenVoxDB having stored trusted node data as a fact (not a great design)
     # 2.2.2 some other terminus having stored a fact called "trusted" (most likely that would have failed earlier, but could
     #       be spoofed).
     #

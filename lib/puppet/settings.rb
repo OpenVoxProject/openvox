@@ -54,7 +54,7 @@ class Puppet::Settings
 
   NONE = 'none'
 
-  # This method is intended for puppet internal use only; it is a convenience method that
+  # This method is intended for OpenVox internal use only; it is a convenience method that
   # returns reasonable application default settings values for a given run_mode.
   def self.app_defaults_for_run_mode(run_mode)
     {
@@ -321,10 +321,10 @@ class Puppet::Settings
   def initialize_global_settings(args = [], require_config = true)
     raise Puppet::DevError, _("Attempting to initialize global default settings more than once!") if global_defaults_initialized?
 
-    # The first two phases of the lifecycle of a puppet application are:
+    # The first two phases of the lifecycle of an OpenVox application are:
     # 1) Parse the command line options and handle any of them that are
-    #    registered, defined "global" puppet settings (mostly from defaults.rb).
-    # 2) Parse the puppet config file(s).
+    #    registered, defined "global" OpenVox settings (mostly from defaults.rb).
+    # 2) Parse the OpenVox config file(s).
 
     parse_global_options(args)
     parse_config_files(require_config)
@@ -335,7 +335,7 @@ class Puppet::Settings
   # This method is called during application bootstrapping.  It is responsible for parsing all of the
   # command line options and initializing the settings accordingly.
   #
-  # It will ignore options that are not defined in the global puppet settings list, because they may
+  # It will ignore options that are not defined in the global OpenVox settings list, because they may
   # be valid options for the specific application that we are about to launch... however, at this point
   # in the bootstrapping lifecycle, we don't yet know what that application is.
   def parse_global_options(args)
@@ -806,7 +806,7 @@ class Puppet::Settings
   # The order in which to search for values, without defaults.
   #
   # @param environment [String,Symbol] symbolic reference to an environment name
-  # @param run_mode [Symbol] symbolic reference to a Puppet run mode
+  # @param run_mode [Symbol] symbolic reference to an OpenVox run mode
   # @return [Array<SearchPathElement>]
   # @api private
   def configsearchpath(environment = nil, run_mode = preferred_run_mode)
@@ -831,7 +831,7 @@ class Puppet::Settings
   # The order in which to search for values.
   #
   # @param environment [String,Symbol] symbolic reference to an environment name
-  # @param run_mode [Symbol] symbolic reference to a Puppet run mode
+  # @param run_mode [Symbol] symbolic reference to an OpenVox run mode
   # @return [Array<SearchPathElement>]
   # @api private
   def searchpath(environment = nil, run_mode = preferred_run_mode)
@@ -968,9 +968,9 @@ class Puppet::Settings
   #       you do not specify it, it will default to "string".  Legal values include:
   #       :string - A generic string setting
   #       :boolean - A boolean setting; values are expected to be "true" or "false"
-  #       :file - A (single) file path; puppet may attempt to create this file depending on how the settings are used.  This type
+  #       :file - A (single) file path; OpenVox may attempt to create this file depending on how the settings are used.  This type
   #           also supports additional options such as "mode", "owner", "group"
-  #       :directory - A (single) directory path; puppet may attempt to create this file depending on how the settings are used.  This type
+  #       :directory - A (single) directory path; OpenVox may attempt to create this file depending on how the settings are used.  This type
   #           also supports additional options such as "mode", "owner", "group"
   #       :path - This is intended to be used for settings whose value can contain multiple directory paths, represented
   #           as strings separated by the system path separator (e.g. system path, module path, etc.).
@@ -1490,7 +1490,7 @@ Generated on #{Time.now}.
           interpolated_expression
         end
         if failed_environment_interpolation
-          # TRANSLATORS '$environment' is a Puppet specific variable and should not be translated
+          # TRANSLATORS '$environment' is an OpenVox specific variable and should not be translated
           Puppet.warning(_("You cannot interpolate $environment within '%{setting_name}' when using directory environments.") % { setting_name: setting_name } +
                              ' ' + _("Its value will remain %{value}.") % { value: interpolated_value })
         end

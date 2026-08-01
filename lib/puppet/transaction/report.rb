@@ -58,7 +58,7 @@ class Puppet::Transaction::Report
   # The id of the job responsible for this run.
   attr_accessor :job_id
 
-  # A master generated catalog uuid, useful for connecting a single catalog to multiple reports.
+  # A server generated catalog uuid, useful for connecting a single catalog to multiple reports.
   attr_accessor :catalog_uuid
 
   # Whether a cached catalog was used in the run, and if so, the reason that it was used.
@@ -111,13 +111,13 @@ class Puppet::Transaction::Report
   #
   attr_reader :status
 
-  # @return [String] The Puppet version in String form.
+  # @return [String] The OpenVox version in String form.
   # @see Puppet::version()
   #
   attr_reader :puppet_version
 
   # @return [Integer] report format version number.  This value is constant for
-  #    a given version of Puppet; it is incremented when a new release of Puppet
+  #    a given version of OpenVox; it is incremented when a new release of OpenVox
   #    changes the API for the various objects that make up a report.
   #
   attr_reader :report_format

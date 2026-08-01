@@ -221,7 +221,7 @@ describe Puppet::Agent do
 
         Puppet[:waitforlock] = 1
         Puppet[:maxwaitforlock] = 2
-        expect(Puppet).to receive(:info).with(/Another puppet instance is already running; --waitforlock flag used, waiting for running instance to finish./)
+        expect(Puppet).to receive(:info).with(/Another OpenVox instance is already running; --waitforlock flag used, waiting for running instance to finish./)
         expect(Puppet).to receive(:info).with(/Will try again in #{Puppet[:waitforlock]} seconds./)
         @agent.run
       end

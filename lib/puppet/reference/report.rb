@@ -7,16 +7,16 @@ report = Puppet::Util::Reference.newreference :report, :doc => "All available tr
 end
 
 report.header = "
-Puppet can generate a report after applying a catalog. This report includes
+OpenVox can generate a report after applying a catalog. This report includes
 events, log messages, resource statuses, and metrics and metadata about the run.
-Puppet agent sends its report to a Puppet server, and Puppet apply
+OpenVox agent sends its report to an OpenVox server, and puppet apply
 processes its own reports.
 
-Puppet Server and Puppet apply will handle every report with a set of report
+OpenVox Server and puppet apply will handle every report with a set of report
 processors, configurable with the `reports` setting in puppet.conf. This page
 documents the built-in report processors.
 
-See [About Reporting](https://puppet.com/docs/puppet/latest/reporting_about.html)
+See [About Reporting](https://docs.openvoxproject.org/openvox/latest/reporting_about.html)
 for more details.
 
 "

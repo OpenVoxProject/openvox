@@ -334,7 +334,7 @@ describe 'Puppet::Type::Service::Provider::Launchd',
         expect(provider).to receive(:return_globbed_list_of_file_paths).with('/Library/LaunchAgents').and_return([busted_plist_path])
         expect(plistlib).to receive(:read_plist_file).with(busted_plist_path).and_return(plist_without_label)
         expect(Puppet).to receive(:debug).with("Reading launchd plist #{busted_plist_path}")
-        expect(Puppet).to receive(:debug).with("The #{busted_plist_path} plist does not contain a 'label' key; Puppet is skipping it")
+        expect(Puppet).to receive(:debug).with("The #{busted_plist_path} plist does not contain a 'label' key; OpenVox is skipping it")
         provider.make_label_to_path_map
       end
 
@@ -343,7 +343,7 @@ describe 'Puppet::Type::Service::Provider::Launchd',
         expect(provider).to receive(:return_globbed_list_of_file_paths).with('/Library/LaunchAgents').and_return([busted_plist_path])
         expect(plistlib).to receive(:read_plist_file).with(busted_plist_path).and_return(plist_without_label_not_hash)
         expect(Puppet).to receive(:debug).with("Reading launchd plist #{busted_plist_path}")
-        expect(Puppet).to receive(:debug).with("The #{busted_plist_path} plist does not contain a 'label' key; Puppet is skipping it")
+        expect(Puppet).to receive(:debug).with("The #{busted_plist_path} plist does not contain a 'label' key; OpenVox is skipping it")
         provider.make_label_to_path_map
       end
 

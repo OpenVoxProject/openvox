@@ -1,5 +1,5 @@
 # When installed, this gemspec ends up the specifications dir and we should look for
-# the library at the installed path because Puppet ends up loading it when invoked.
+# the library at the installed path because OpenVox ends up loading it when invoked.
 # When we are building the gem from source, we instead look relative to where this gemspec
 # file lives. This is a little jank, but prevents us from having to update the version in
 # two different places.

@@ -14,7 +14,7 @@ module Puppet
       notation. This value **must** be specified as a string; do not use
       un-quoted numbers to represent file modes.
 
-      If the mode is omitted (or explicitly set to `undef`), Puppet does not
+      If the mode is omitted (or explicitly set to `undef`), OpenVox does not
       enforce permissions on existing files and creates new files with
       permissions of `0644`.
 
@@ -22,7 +22,7 @@ module Puppet
       them to equivalent permissions for systems which represent permissions
       differently, including Windows. For detailed ACL controls on Windows,
       you can leave `mode` unmanaged and use
-      [the puppetlabs/acl module.](https://forge.puppetlabs.com/puppetlabs/acl)
+      [the puppetlabs/acl module.](https://forge.puppet.com/puppetlabs/acl)
 
       Numeric modes should use the standard octal notation of
       `<SETUID/SETGID/STICKY><OWNER><GROUP><OTHER>` (for example, "0644").
@@ -32,10 +32,10 @@ module Puppet
         execute/search = 1.
       * The setuid/setgid/sticky digit is also a sum, where setuid = 4, setgid = 2,
         and sticky = 1.
-      * The setuid/setgid/sticky digit is optional. If it is absent, Puppet will
+      * The setuid/setgid/sticky digit is optional. If it is absent, OpenVox will
         clear any existing setuid/setgid/sticky permissions. (So to make your intent
         clear, you should use at least four digits for numeric modes.)
-      * When specifying numeric permissions for directories, Puppet sets the search
+      * When specifying numeric permissions for directories, OpenVox sets the search
         permission wherever the read permission is set.
 
       Symbolic modes should be represented as a string of comma-separated

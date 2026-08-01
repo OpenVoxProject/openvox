@@ -106,7 +106,7 @@ module Puppet::Util::Execution
   #   elements should be the individual arguments to that executable.
   # @param options [Hash] a Hash of options
   # @option options [String] :cwd the directory from which to run the command. Raises an error if the directory does not exist.
-  #   This option is only available on the agent. It cannot be used on the master, meaning it cannot be used in, for example,
+  #   This option is only available on the agent. It cannot be used on the server, meaning it cannot be used in, for example,
   #   regular functions, hiera backends, or report processors.
   # @option options [Boolean]  :failonfail if this value is set to true, then this method will raise an error if the
   #   command is not executed successfully.

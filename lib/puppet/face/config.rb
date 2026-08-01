@@ -12,7 +12,7 @@ Puppet::Face.define(:config, '0.0.1') do
 
   description "This subcommand can inspect and modify settings from OpenVox's
     'puppet.conf' configuration file. For documentation about individual settings,
-    see https://puppet.com/docs/puppet/latest/configuration.html."
+    see https://docs.openvoxproject.org/openvox/latest/configuration.html."
 
   DEFAULT_SECTION_MARKER = Object.new
   DEFAULT_SECTION = "main"
@@ -25,7 +25,7 @@ Puppet::Face.define(:config, '0.0.1') do
       The three most commonly used sections are 'main', 'server', and 'agent'.
       'Main' is the default, and is used by all OpenVox applications. Other
       sections can override 'main' values for specific applications --- the
-      'server' section affects Puppet Server, and the 'agent'
+      'server' section affects OpenVox Server, and the 'agent'
       section affects puppet agent.
 
       Less commonly used is the 'user' section, which affects puppet apply. Any
@@ -50,7 +50,7 @@ Puppet::Face.define(:config, '0.0.1') do
       configuration domains.
     EOT
     examples <<-'EOT'
-      Get puppet's runfile directory:
+      Get OpenVox's runfile directory:
 
       $ puppet config print rundir
 
@@ -104,7 +104,7 @@ Puppet::Face.define(:config, '0.0.1') do
     messages << _("Set the config section by using the `--section` flag.")
     # TRANSLATORS `puppet config --section user print foo` is a command line example and should not be translated
     messages << _("For example, `puppet config --section user print foo`.")
-    messages << _("For more information, see https://puppet.com/docs/puppet/latest/configuration.html")
+    messages << _("For more information, see https://docs.openvoxproject.org/openvox/latest/configuration.html")
 
     Puppet.warning(messages.join("\n"))
   end
@@ -127,7 +127,7 @@ Puppet::Face.define(:config, '0.0.1') do
       configuration domains.
     EOT
     examples <<-'EOT'
-      Set puppet's runfile directory:
+      Set OpenVox's runfile directory:
 
       $ puppet config set rundir /var/run/puppetlabs
 
@@ -152,7 +152,7 @@ Puppet::Face.define(:config, '0.0.1') do
           require the defined environment directory to exist locally. Set the config
           section by using the `--section` flag. For example,
           `puppet config --section user set environment foo`. For more information, see
-          https://puppet.com/docs/puppet/latest/configuration.html#environment
+          https://docs.openvoxproject.org/openvox/latest/configuration.html#environment
         EOM
       end
 

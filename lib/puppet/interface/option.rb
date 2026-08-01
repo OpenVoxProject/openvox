@@ -29,14 +29,14 @@ class Puppet::Interface::Option
         # for our duplicate checking purpose, we don't make a check with the
         # translated '-' -> '_'. Right now, we do that on purpose because of
         # a duplicated option made publicly available on certificate and ca
-        # faces for dns alt names. Puppet defines 'dns_alt_names', those
+        # faces for dns alt names. OpenVox defines 'dns_alt_names', those
         # faces include 'dns-alt-names'.  We can't get rid of 'dns-alt-names'
         # yet, so we need to do our duplicate checking on the untranslated
         # version of the option.
         # jeffweiss 17 april 2012
         name = optparse_to_optionname(item)
         if Puppet.settings.include? name then
-          raise ArgumentError, _("%{option}: already defined in puppet") % { option: item.inspect }
+          raise ArgumentError, _("%{option}: already defined in OpenVox") % { option: item.inspect }
         end
 
         dup = dups[name]

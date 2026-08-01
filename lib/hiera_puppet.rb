@@ -34,7 +34,7 @@ module HieraPuppet
     #
     #   scope.function_hiera("foo", "bar")
     #
-    # Deal with Puppet's special calling mechanism here.
+    # Deal with OpenVox's special calling mechanism here.
     if args[0].is_a?(Array)
       args = args[0]
     end

@@ -47,7 +47,7 @@ module Puppet
       end
 
       def hashify_should
-        # Puppet casts all should values to arrays. Thus, if the user
+        # OpenVox casts all should values to arrays. Thus, if the user
         # passed in a hash for our property's should value, the should_value
         # parameter will be a single element array so we just extract our value
         # directly.
@@ -79,8 +79,8 @@ module Puppet
         # shared keys will get overwritten by members
         should_value = current.merge(members)
 
-        # Figure out the keys that will actually change in our Puppet run.
-        # This lets us reduce the verbosity of Puppet's logging for instances
+        # Figure out the keys that will actually change in our OpenVox run.
+        # This lets us reduce the verbosity of OpenVox's logging for instances
         # of this class when we want to.
         #
         # NOTE: We use ||= here because we only need to compute the
