@@ -226,7 +226,7 @@ module Puppet
           hashes. You can use OpenVox's built-in `sha1` function to generate a salted SHA1
           hash from a password.
         * Mac OS X 10.7 (Lion), and many recent Linux distributions, use salted SHA512
-          hashes. The puppetlabs [stdlib][] module contains a `str2saltedsha512` function
+          hashes. The puppetlabs [stdlib](https://forge.puppet.com/modules/puppetlabs/stdlib) module contains a `str2saltedsha512` function
           which can generate password hashes for these operating systems.
         * OS X 10.8 and higher use salted SHA512 PBKDF2 hashes. When managing passwords
           on these systems, the `salt` and `iterations` attributes need to be specified as
@@ -236,8 +236,6 @@ module Puppet
           string must be 64.
         * Windows passwords can be managed only in cleartext, because there is no Windows
           API for setting the password hash.
-
-        [stdlib]: https://github.com/puppetlabs/puppetlabs-stdlib/
 
         Enclose any value that includes a dollar sign ($) in single quotes (') to avoid
         accidental variable interpolation.

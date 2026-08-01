@@ -1,6 +1,6 @@
 .\" generated with Ronn-NG/v0.10.1
 .\" http://github.com/apjanke/ronn-ng/tree/0.10.1
-.TH "PUPPET\-AGENT" "8" "July 2026" "Vox Pupuli" "OpenVox manual"
+.TH "PUPPET\-AGENT" "8" "August 2026" "Vox Pupuli" "OpenVox manual"
 .SH "NAME"
 \fBpuppet\-agent\fR \- The puppet agent daemon provided by OpenVox
 .SH "SYNOPSIS"
@@ -119,10 +119,10 @@ $ puppet agent \-\-server puppet\.domain\.com
 OpenVox agent accepts the following signals:
 .TP
 SIGHUP
-Restart the puppet agent daemon\.
+Restart the OpenVox agent daemon\.
 .TP
 SIGINT and SIGTERM
-Shut down the puppet agent daemon\.
+Shut down the OpenVox agent daemon\.
 .TP
 SIGUSR1
 Immediately retrieve and apply configurations from the OpenVox server\.
@@ -132,4 +132,4 @@ Close file descriptors for log files and reopen them\. Used with logrotate\.
 .SH "AUTHOR"
 Luke Kanies
 .SH "COPYRIGHT"
-Copyright (c) 2011 Puppet Inc\. Copyright (c) 2024 Vox Pupuli Licensed under the Apache 2\.0 License
+Copyright (c) 2011 Puppet Inc\.; Copyright (c) 2024 Vox Pupuli\. Licensed under the Apache 2\.0 License

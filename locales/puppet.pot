@@ -1,16 +1,16 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2026 Puppet, Inc.
-# This file is distributed under the same license as the Puppet automation framework package.
+# Copyright (C) 2026 Vox Pupuli; portions Copyright (C) 2024 Puppet, Inc.
+# This file is distributed under the same license as the OpenVox automation framework package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Puppet automation framework 9.0.0-alpha2-71-gf7b1a950d9\n"
+"Project-Id-Version: OpenVox automation framework 9.0.0-beta1-51-g3d665fe7a4\n"
 "\n"
-"Report-Msgid-Bugs-To: https://tickets.puppetlabs.com\n"
-"POT-Creation-Date: 2026-07-14 18:35+0000\n"
-"PO-Revision-Date: 2026-07-14 18:35+0000\n"
+"Report-Msgid-Bugs-To: https://github.com/OpenVoxProject/openvox/issues\n"
+"POT-Creation-Date: 2026-08-01 22:12+0000\n"
+"PO-Revision-Date: 2026-08-01 22:12+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -44,7 +44,7 @@ msgstr ""
 msgid "Please supply a parameter to perform a Hiera lookup"
 msgstr ""
 
-#: ../lib/hiera_puppet.rb:74 ../lib/puppet/indirector/hiera.rb:87
+#: ../lib/hiera_puppet.rb:74 ../lib/puppet/indirector/data_binding/hiera.rb:85
 msgid "Config file %{hiera_config} not found, using Hiera defaults"
 msgstr ""
 
@@ -2193,16 +2193,16 @@ msgstr ""
 msgid "appears to have a negative number of dependencies"
 msgstr ""
 
-#: ../lib/puppet/graph/simple_graph.rb:69
+#: ../lib/puppet/graph/simple_graph.rb:68
 msgid "Got an event from invalid vertex %{source}"
 msgstr ""
 
 #. TRANSLATORS "negative or zero" refers to the count of paths
-#: ../lib/puppet/graph/simple_graph.rb:201
+#: ../lib/puppet/graph/simple_graph.rb:200
 msgid "negative or zero max_paths"
 msgstr ""
 
-#: ../lib/puppet/graph/simple_graph.rb:233
+#: ../lib/puppet/graph/simple_graph.rb:232
 msgid ""
 "Found %{num} dependency cycle:\n"
 msgid_plural ""
@@ -2210,12 +2210,12 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../lib/puppet/graph/simple_graph.rb:242
+#: ../lib/puppet/graph/simple_graph.rb:241
 msgid "Cycle graph written to %{filename}."
 msgstr ""
 
 #. TRANSLATORS '--graph' refers to a command line option and OmniGraffle and GraphViz are program names and should not be translated
-#: ../lib/puppet/graph/simple_graph.rb:245
+#: ../lib/puppet/graph/simple_graph.rb:244
 msgid "Try the '--graph' option and opening the resulting '.dot' file in OmniGraffle or GraphViz"
 msgstr ""
 
@@ -2281,15 +2281,15 @@ msgstr ""
 msgid "Failed to parse Retry-After header '%{retry_after}' as an integer or RFC 2822 date"
 msgstr ""
 
-#: ../lib/puppet/http/service.rb:109
+#: ../lib/puppet/http/service.rb:127
 msgid "Ignoring extra header \"%{name}\" as it was previously set."
 msgstr ""
 
-#: ../lib/puppet/http/service.rb:111
+#: ../lib/puppet/http/service.rb:129
 msgid "Ignoring extra header \"%{name}\" as it has no value."
 msgstr ""
 
-#: ../lib/puppet/http/service.rb:132 ../lib/puppet/indirector/rest.rb:55
+#: ../lib/puppet/http/service.rb:150 ../lib/puppet/indirector/rest.rb:55
 msgid "No content type in http response; cannot parse"
 msgstr ""
 
@@ -2446,6 +2446,16 @@ msgstr ""
 msgid "Find %{uri} resulted in 404 with the message: %{body}"
 msgstr ""
 
+#. TRANSLATORS "Hiera" is the name of a code library and should not be translated
+#: ../lib/puppet/indirector/data_binding/hiera.rb:12
+msgid "Hiera terminus not supported without hiera library"
+msgstr ""
+
+#. TRANSLATORS "merge" is a parameter name and should not be translated
+#: ../lib/puppet/indirector/data_binding/hiera.rb:72
+msgid "Unrecognized value for request 'merge' parameter: '%{merge}'"
+msgstr ""
+
 #: ../lib/puppet/indirector/exec.rb:13
 msgid "Exec commands must be an array"
 msgstr ""
@@ -2599,16 +2609,6 @@ msgstr ""
 
 #: ../lib/puppet/indirector/file_server.rb:45
 msgid "Could not find filesystem info for file '%{request}' in environment %{env}"
-msgstr ""
-
-#. TRANSLATORS "Hiera" is the name of a code library and should not be translated
-#: ../lib/puppet/indirector/hiera.rb:14
-msgid "Hiera terminus not supported without hiera library"
-msgstr ""
-
-#. TRANSLATORS "merge" is a parameter name and should not be translated
-#: ../lib/puppet/indirector/hiera.rb:74
-msgid "Unrecognized value for request 'merge' parameter: '%{merge}'"
 msgstr ""
 
 #: ../lib/puppet/indirector/indirection.rb:43
@@ -3600,51 +3600,51 @@ msgstr ""
 msgid "%{module_name} (%{path}) has an invalid version number (%{version}). The version has been set to 0.0.0. If you are the maintainer for this module, please update the metadata.json with a valid Semantic Version (http://semver.org)."
 msgstr ""
 
-#: ../lib/puppet/module_tool/metadata.rb:72
+#: ../lib/puppet/module_tool/metadata.rb:71
 msgid "Dependency conflict for %{module_name}: Dependency %{name} was given conflicting version requirements %{version_requirement} and %{dup_version}. Verify that there are no duplicates in the metadata.json."
 msgstr ""
 
-#: ../lib/puppet/module_tool/metadata.rb:181
+#: ../lib/puppet/module_tool/metadata.rb:180
 msgid "the field must be a namespaced module name"
 msgstr ""
 
-#: ../lib/puppet/module_tool/metadata.rb:183
+#: ../lib/puppet/module_tool/metadata.rb:182
 msgid "the module name contains non-alphanumeric (or underscore) characters"
 msgstr ""
 
-#: ../lib/puppet/module_tool/metadata.rb:185
+#: ../lib/puppet/module_tool/metadata.rb:184
 msgid "the module name must begin with a letter"
 msgstr ""
 
-#: ../lib/puppet/module_tool/metadata.rb:187
+#: ../lib/puppet/module_tool/metadata.rb:186
 msgid "the namespace contains non-alphanumeric characters"
 msgstr ""
 
-#: ../lib/puppet/module_tool/metadata.rb:190
+#: ../lib/puppet/module_tool/metadata.rb:189
 msgid "Invalid 'name' field in metadata.json: %{err}"
 msgstr ""
 
-#: ../lib/puppet/module_tool/metadata.rb:197
+#: ../lib/puppet/module_tool/metadata.rb:196
 msgid "version string cannot be parsed as a valid Semantic Version"
 msgstr ""
 
-#: ../lib/puppet/module_tool/metadata.rb:198
+#: ../lib/puppet/module_tool/metadata.rb:197
 msgid "Invalid 'version' field in metadata.json: %{err}"
 msgstr ""
 
-#: ../lib/puppet/module_tool/metadata.rb:210
+#: ../lib/puppet/module_tool/metadata.rb:209
 msgid "field 'data_provider' contains non-alphanumeric characters"
 msgstr ""
 
-#: ../lib/puppet/module_tool/metadata.rb:212
+#: ../lib/puppet/module_tool/metadata.rb:211
 msgid "field 'data_provider' must begin with a letter"
 msgstr ""
 
-#: ../lib/puppet/module_tool/metadata.rb:216
+#: ../lib/puppet/module_tool/metadata.rb:215
 msgid "field 'data_provider' must be a string"
 msgstr ""
 
-#: ../lib/puppet/module_tool/metadata.rb:224
+#: ../lib/puppet/module_tool/metadata.rb:223
 msgid "Invalid 'version_range' field in metadata.json: %{err}"
 msgstr ""
 
@@ -6405,7 +6405,7 @@ msgstr ""
 msgid "/etc/apt/sources.list contains a cdrom source; not installing.  Use 'allowcdrom' to override this failure."
 msgstr ""
 
-#: ../lib/puppet/provider/package/apt.rb:176 ../lib/puppet/provider/package/aptitude.rb:22 ../lib/puppet/provider/package/ports.rb:22 ../lib/puppet/provider/package/portupgrade.rb:96 ../lib/puppet/provider/package/portupgrade.rb:153 ../lib/puppet/provider/package/rug.rb:29 ../lib/puppet/provider/package/up2date.rb:18 ../lib/puppet/provider/package/yum.rb:315 ../lib/puppet/provider/package/zypper.rb:148
+#: ../lib/puppet/provider/package/apt.rb:176 ../lib/puppet/provider/package/aptitude.rb:21 ../lib/puppet/provider/package/ports.rb:22 ../lib/puppet/provider/package/portupgrade.rb:96 ../lib/puppet/provider/package/portupgrade.rb:153 ../lib/puppet/provider/package/rug.rb:29 ../lib/puppet/provider/package/up2date.rb:18 ../lib/puppet/provider/package/yum.rb:315 ../lib/puppet/provider/package/zypper.rb:148
 msgid "Could not find package %{name}"
 msgstr ""
 
@@ -6551,39 +6551,39 @@ msgstr ""
 msgid "Failed to match line %{line}"
 msgstr ""
 
-#: ../lib/puppet/provider/package/pacman.rb:49
+#: ../lib/puppet/provider/package/pacman.rb:48
 msgid "Could not find package '%{name}'"
 msgstr ""
 
-#: ../lib/puppet/provider/package/pacman.rb:85 ../lib/puppet/provider/package/xbps.rb:35
+#: ../lib/puppet/provider/package/pacman.rb:84 ../lib/puppet/provider/package/xbps.rb:35
 msgid "Failed to match line '%{line}'"
 msgstr ""
 
-#: ../lib/puppet/provider/package/pacman.rb:91 ../lib/puppet/provider/package/xbps.rb:42
+#: ../lib/puppet/provider/package/pacman.rb:90 ../lib/puppet/provider/package/xbps.rb:42
 msgid "Error getting installed packages"
 msgstr ""
 
-#: ../lib/puppet/provider/package/pacman.rb:172
+#: ../lib/puppet/provider/package/pacman.rb:171
 msgid "%{resource_name} is a group, but allow_virtual is false."
 msgstr ""
 
-#: ../lib/puppet/provider/package/pacman.rb:209
+#: ../lib/puppet/provider/package/pacman.rb:208
 msgid "Refusing to uninstall package group %{resource_name}, because allow_virtual is false."
 msgstr ""
 
-#: ../lib/puppet/provider/package/pacman.rb:238
+#: ../lib/puppet/provider/package/pacman.rb:237
 msgid "Invalid source '%{source}': %{detail}"
 msgstr ""
 
-#: ../lib/puppet/provider/package/pacman.rb:247
+#: ../lib/puppet/provider/package/pacman.rb:246
 msgid "puppet:// URL is not supported by pacman"
 msgstr ""
 
-#: ../lib/puppet/provider/package/pacman.rb:249
+#: ../lib/puppet/provider/package/pacman.rb:248
 msgid "Source %{source} is not supported by pacman"
 msgstr ""
 
-#: ../lib/puppet/provider/package/pacman.rb:258
+#: ../lib/puppet/provider/package/pacman.rb:257
 msgid "Refusing to install package group %{resource_name}, because allow_virtual is false."
 msgstr ""
 
@@ -7034,7 +7034,7 @@ msgstr ""
 msgid "Could not find resource %{resource} when converting %{message} resources"
 msgstr ""
 
-#: ../lib/puppet/resource/status.rb:141 ../lib/puppet/transaction.rb:273
+#: ../lib/puppet/resource/status.rb:141 ../lib/puppet/transaction.rb:272
 msgid "Could not evaluate: %{detail}"
 msgstr ""
 
@@ -7201,38 +7201,38 @@ msgid "Invalid autosign value %{value}: must be 'true'/'false' or an absolute pa
 msgstr ""
 
 #. TRANSLATORS ':%{name}', ':call_hook', and ':on_write_only' should not be translated
-#: ../lib/puppet/settings/base_setting.rb:40
+#: ../lib/puppet/settings/base_setting.rb:39
 msgid "Setting :%{name} :call_hook is nil, defaulting to :on_write_only"
 msgstr ""
 
 #. TRANSLATORS 'call_hook' is an OpenVox option name and should not be translated
-#: ../lib/puppet/settings/base_setting.rb:45
+#: ../lib/puppet/settings/base_setting.rb:44
 msgid "Invalid option %{value} for call_hook"
 msgstr ""
 
 #. TRANSLATORS ':call_hook' and ':hook' are specific setting names and should not be translated
-#: ../lib/puppet/settings/base_setting.rb:105
+#: ../lib/puppet/settings/base_setting.rb:104
 msgid "Cannot reference :call_hook for :%{name} if no :hook is defined"
 msgstr ""
 
-#: ../lib/puppet/settings/base_setting.rb:111
+#: ../lib/puppet/settings/base_setting.rb:110
 msgid "%{class_name} (setting '%{setting}') does not accept %{parameter}"
 msgstr ""
 
-#: ../lib/puppet/settings/base_setting.rb:118
+#: ../lib/puppet/settings/base_setting.rb:117
 msgid "You must provide a description for the %{class_name} config option"
 msgstr ""
 
-#: ../lib/puppet/settings/base_setting.rb:132
+#: ../lib/puppet/settings/base_setting.rb:131
 msgid "Short names can only be one character."
 msgstr ""
 
 #. TRANSLATORS 'deprecated' is an OpenVox setting and ':completely' and ':allowed_on_commandline' are possible values and should not be translated
-#: ../lib/puppet/settings/base_setting.rb:203
+#: ../lib/puppet/settings/base_setting.rb:202
 msgid "Unsupported deprecated value '%{deprecation}'."
 msgstr ""
 
-#: ../lib/puppet/settings/base_setting.rb:204
+#: ../lib/puppet/settings/base_setting.rb:203
 msgid "Supported values for deprecated are ':completely' or ':allowed_on_commandline'"
 msgstr ""
 
@@ -7354,7 +7354,7 @@ msgstr ""
 msgid "Name must be supplied if it cannot be determined from the instance"
 msgstr ""
 
-#: ../lib/puppet/ssl/base.rb:137
+#: ../lib/puppet/ssl/base.rb:143
 msgid "Unknown signature algorithm '%{ln}'"
 msgstr ""
 
@@ -7426,15 +7426,15 @@ msgstr ""
 msgid "unexpected attributes %{keys} in %{path}"
 msgstr ""
 
-#: ../lib/puppet/ssl/error.rb:22
+#: ../lib/puppet/ssl/error.rb:21
 msgid "expected one of %{certnames}"
 msgstr ""
 
-#: ../lib/puppet/ssl/error.rb:24
+#: ../lib/puppet/ssl/error.rb:23
 msgid "expected %{certname}"
 msgstr ""
 
-#: ../lib/puppet/ssl/error.rb:27
+#: ../lib/puppet/ssl/error.rb:26
 msgid "Server hostname '%{host}' did not match server certificate; %{expected_certnames}"
 msgstr ""
 
@@ -7751,72 +7751,72 @@ msgstr ""
 msgid "PP syntax checker: \"%{message}\""
 msgstr ""
 
-#: ../lib/puppet/transaction.rb:90
+#: ../lib/puppet/transaction.rb:89
 msgid "Some pre-run checks failed"
 msgstr ""
 
-#: ../lib/puppet/transaction.rb:106
+#: ../lib/puppet/transaction.rb:105
 msgid "Applying configuration version '%{version}'"
 msgstr ""
 
-#: ../lib/puppet/transaction.rb:130
+#: ../lib/puppet/transaction.rb:129
 msgid "Provider %{name} is not functional on this host"
 msgstr ""
 
-#: ../lib/puppet/transaction.rb:146
+#: ../lib/puppet/transaction.rb:145
 msgid "Could not find a suitable provider for %{type}"
 msgstr ""
 
-#: ../lib/puppet/transaction.rb:152
+#: ../lib/puppet/transaction.rb:151
 msgid "post_resource_eval failed for provider %{provider}"
 msgstr ""
 
-#: ../lib/puppet/transaction.rb:168
+#: ../lib/puppet/transaction.rb:167
 msgid "resource is part of a dependency cycle"
 msgstr ""
 
-#: ../lib/puppet/transaction.rb:170
+#: ../lib/puppet/transaction.rb:169
 msgid "One or more resource dependency cycles detected in graph"
 msgstr ""
 
-#: ../lib/puppet/transaction.rb:185
+#: ../lib/puppet/transaction.rb:184
 msgid "Somehow left a component in the relationship graph"
 msgstr ""
 
-#: ../lib/puppet/transaction.rb:188
+#: ../lib/puppet/transaction.rb:187
 msgid "Starting to evaluate the resource (%{progress} of %{total})"
 msgstr ""
 
-#: ../lib/puppet/transaction.rb:191
+#: ../lib/puppet/transaction.rb:190
 msgid "Evaluated in %{seconds} seconds"
 msgstr ""
 
-#: ../lib/puppet/transaction.rb:310
+#: ../lib/puppet/transaction.rb:309
 msgid "Class dependency %{dep} has failures: %{status}"
 msgstr ""
 
-#: ../lib/puppet/transaction.rb:316
+#: ../lib/puppet/transaction.rb:315
 msgid "Dependency %{dep} has failures: %{status}"
 msgstr ""
 
-#: ../lib/puppet/transaction.rb:337
+#: ../lib/puppet/transaction.rb:336
 msgid "Prefetch failed for %{type_name} provider '%{name}'"
 msgstr ""
 
 #. TRANSLATORS `prefetch` is a function name and should not be translated
-#: ../lib/puppet/transaction.rb:384
+#: ../lib/puppet/transaction.rb:383
 msgid "Could not prefetch %{type_name} provider '%{name}': %{detail}"
 msgstr ""
 
-#: ../lib/puppet/transaction.rb:418
+#: ../lib/puppet/transaction.rb:417
 msgid "Skipping resources in class because of failed class dependencies"
 msgstr ""
 
-#: ../lib/puppet/transaction.rb:422
+#: ../lib/puppet/transaction.rb:421
 msgid "Skipping because of failed dependencies"
 msgstr ""
 
-#: ../lib/puppet/transaction.rb:427
+#: ../lib/puppet/transaction.rb:426
 msgid "Skipping because provider prefetch failed"
 msgstr ""
 
@@ -8302,7 +8302,7 @@ msgstr ""
 msgid "%{value} is not a valid day of the week"
 msgstr ""
 
-#: ../lib/puppet/type/service.rb:153 ../lib/puppet/type/user.rb:277
+#: ../lib/puppet/type/service.rb:153 ../lib/puppet/type/user.rb:275
 msgid "Passwords cannot include ':'"
 msgstr ""
 
@@ -8349,77 +8349,77 @@ msgstr ""
 msgid "Could not find group(s) %{groups}"
 msgstr ""
 
-#: ../lib/puppet/type/user.rb:297
+#: ../lib/puppet/type/user.rb:295
 msgid "Password minimum age must be provided as a number."
 msgstr ""
 
-#: ../lib/puppet/type/user.rb:316
+#: ../lib/puppet/type/user.rb:314
 msgid "Password maximum age must be provided as a number."
 msgstr ""
 
-#: ../lib/puppet/type/user.rb:347
+#: ../lib/puppet/type/user.rb:345
 msgid "Group names must be provided, not GID numbers."
 msgstr ""
 
-#: ../lib/puppet/type/user.rb:349
+#: ../lib/puppet/type/user.rb:347
 msgid "Group names must be provided as an array, not a comma-separated list."
 msgstr ""
 
-#: ../lib/puppet/type/user.rb:350
+#: ../lib/puppet/type/user.rb:348
 msgid "Group names must not be empty. If you want to specify \"no groups\" pass an empty array"
 msgstr ""
 
-#: ../lib/puppet/type/user.rb:443
+#: ../lib/puppet/type/user.rb:441
 msgid "User provider %{name} can not manage home directories"
 msgstr ""
 
 #. TRANSLATORS YYYY-MM-DD represents a date with a four-digit year, a two-digit month, and a two-digit day,
 #. TRANSLATORS separated by dashes.
-#: ../lib/puppet/type/user.rb:460
+#: ../lib/puppet/type/user.rb:458
 msgid "Expiry dates must be YYYY-MM-DD or the string \"absent\""
 msgstr ""
 
-#: ../lib/puppet/type/user.rb:527
+#: ../lib/puppet/type/user.rb:525
 msgid "Role names must be provided, not numbers"
 msgstr ""
 
-#: ../lib/puppet/type/user.rb:529
+#: ../lib/puppet/type/user.rb:527
 msgid "Role names must be provided as an array, not a comma-separated list"
 msgstr ""
 
-#: ../lib/puppet/type/user.rb:566
+#: ../lib/puppet/type/user.rb:564
 msgid "Auth names must be provided, not numbers"
 msgstr ""
 
-#: ../lib/puppet/type/user.rb:568
+#: ../lib/puppet/type/user.rb:566
 msgid "Auth names must be provided as an array, not a comma-separated list"
 msgstr ""
 
-#: ../lib/puppet/type/user.rb:592
+#: ../lib/puppet/type/user.rb:590
 msgid "Profile names must be provided, not numbers"
 msgstr ""
 
-#: ../lib/puppet/type/user.rb:594
+#: ../lib/puppet/type/user.rb:592
 msgid "Profile names must be provided as an array, not a comma-separated list"
 msgstr ""
 
-#: ../lib/puppet/type/user.rb:705
+#: ../lib/puppet/type/user.rb:703
 msgid "Ssh_authorized_key type is not available. Cannot purge SSH keys."
 msgstr ""
 
-#: ../lib/puppet/type/user.rb:743
+#: ../lib/puppet/type/user.rb:741
 msgid "Each entry for purge_ssh_keys must be a string, not a %{klass}"
 msgstr ""
 
-#: ../lib/puppet/type/user.rb:746
+#: ../lib/puppet/type/user.rb:744
 msgid "Paths to keyfiles must be absolute, not %{entry}"
 msgstr ""
 
-#: ../lib/puppet/type/user.rb:750
+#: ../lib/puppet/type/user.rb:748
 msgid "purge_ssh_keys must be true, false, or an array of file names, not %{value}"
 msgstr ""
 
-#: ../lib/puppet/type/user.rb:798
+#: ../lib/puppet/type/user.rb:796
 msgid "Class name must be provided."
 msgstr ""
 

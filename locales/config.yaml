@@ -8,13 +8,13 @@ gettext:
   # This is used in comments in the .pot and .po files to indicate what
   # project the files belong to and should be a little more descriptive than
   # <project_name>
-  package_name: Puppet automation framework
+  package_name: OpenVox automation framework
   # The locale that the default messages in the .pot file are in
   default_locale: en
   # The address for sending bug reports.
-  bugs_address: https://tickets.puppetlabs.com
+  bugs_address: https://github.com/OpenVoxProject/openvox/issues
   # The holder of the copyright.
-  copyright_holder: Puppet, Inc.
+  copyright_holder: Vox Pupuli; portions Copyright (C) 2024 Puppet, Inc.
   # Patterns for +Dir.glob+ used to find all files that might contain
   # translatable content, relative to the project root directory
   source_files:

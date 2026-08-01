@@ -1,6 +1,6 @@
 .\" generated with Ronn-NG/v0.10.1
 .\" http://github.com/apjanke/ronn-ng/tree/0.10.1
-.TH "PUPPET\-APPLY" "8" "July 2026" "Vox Pupuli" "OpenVox manual"
+.TH "PUPPET\-APPLY" "8" "August 2026" "Vox Pupuli" "OpenVox manual"
 .SH "NAME"
 \fBpuppet\-apply\fR \- Apply Puppet manifests locally via OpenVox
 .SH "SYNOPSIS"
@@ -12,7 +12,7 @@ This is the standalone puppet execution tool; use it to apply individual manifes
 .P
 When provided with a modulepath, via command line or config file, puppet apply can effectively mimic the catalog that would be served by OpenVox server with access to the same modules, although there are some subtle differences\. When combined with scheduling and an automated system for pushing manifests, this can be used to implement a serverless site\.
 .P
-Most users should use 'puppet agent' and 'puppet server' for site\-wide manifests\.
+Most users should use 'puppet agent' with an OpenVox server for site\-wide manifests\.
 .SH "OPTIONS"
 Any setting that's valid in the configuration file is a valid long argument for puppet apply\. For example, 'tags' is a valid setting, so you can specify '\-\-tags \fIclass\fR,\fItag\fR' as an argument\.
 .P
@@ -64,4 +64,4 @@ $ puppet apply \-\-catalog catalog\.json
 .SH "AUTHOR"
 Luke Kanies
 .SH "COPYRIGHT"
-Copyright (c) 2011 Puppet Inc\. Copyright (c) 2024 Vox Pupuli Licensed under the Apache 2\.0 License
+Copyright (c) 2011 Puppet Inc\.; Copyright (c) 2024 Vox Pupuli\. Licensed under the Apache 2\.0 License

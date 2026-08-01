@@ -1,13 +1,13 @@
 ---
 layout: default
-built_from_commit: f7b1a950d990274b9f352eb7aa0cd93ee6067df1
+built_from_commit: 3d665fe7a4a7dfa794748a310db79025a4d932cc
 title: 'Man Page: puppet facts'
 canonical: "/openvox/latest/man/facts.html"
 ---
 
 # Man Page: puppet facts
 
-> **NOTE:** This page was generated from the OpenVox source code on 2026-07-14 18:42:24 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-08-01 22:12:56 +0000
 
 ## NAME
 **puppet-facts** - Retrieve and store facts.
@@ -217,4 +217,4 @@ subsystem of OpenVox. Valid termini for this face include:
 - **yaml**
 
 ## COPYRIGHT AND LICENSE
-Copyright 2011 by Puppet Inc., Vox Pupuli Apache 2 license; see COPYING
+Copyright 2011 by Puppet Inc., Vox Pupuli. Apache 2 license; see COPYING

@@ -349,9 +349,9 @@ class Puppet::Application::Agent < Puppet::Application
       OpenVox agent accepts the following signals:
 
       * SIGHUP:
-        Restart the puppet agent daemon.
+        Restart the OpenVox agent daemon.
       * SIGINT and SIGTERM:
-        Shut down the puppet agent daemon.
+        Shut down the OpenVox agent daemon.
       * SIGUSR1:
         Immediately retrieve and apply configurations from the OpenVox server.
       * SIGUSR2:
@@ -364,8 +364,8 @@ class Puppet::Application::Agent < Puppet::Application
 
       COPYRIGHT
       ---------
-      Copyright (c) 2011 Puppet Inc.
-      Copyright (c) 2024 Vox Pupuli
+      Copyright (c) 2011 Puppet Inc.;
+      Copyright (c) 2024 Vox Pupuli.
       Licensed under the Apache 2.0 License
 
     HELP

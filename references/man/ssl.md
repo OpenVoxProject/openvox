@@ -1,13 +1,13 @@
 ---
 layout: default
-built_from_commit: f7b1a950d990274b9f352eb7aa0cd93ee6067df1
+built_from_commit: 3d665fe7a4a7dfa794748a310db79025a4d932cc
 title: 'Man Page: puppet ssl'
 canonical: "/openvox/latest/man/ssl.html"
 ---
 
 # Man Page: puppet ssl
 
-> **NOTE:** This page was generated from the OpenVox source code on 2026-07-14 18:42:24 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-08-01 22:12:56 +0000
 
 ## NAME
 **puppet-ssl** - Manage SSL keys and certificates for OpenVox SSL
@@ -76,5 +76,5 @@ puppet ssl *action* \[-h\|\--help\] \[-v\|\--verbose\] \[-d\|\--debug\]
 
 - show: Print the full-text version of this host\'s certificate.
 
-COPYRIGHT \-\-\-\-\-- Copyright (c) 2011 Puppet Inc. Copyright (c) 2024
-Vox Pupuli Licensed under the Apache 2.0 License
+COPYRIGHT \-\-\-\-\-- Copyright (c) 2011 Puppet Inc.; Copyright (c) 2024
+Vox Pupuli. Licensed under the Apache 2.0 License

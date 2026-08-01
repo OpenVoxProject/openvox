@@ -39,9 +39,9 @@ module ModuleLoaders
 
   def self.system_loader_from(parent_loader, loaders)
     # OpenVox may be installed in a fixed location via RPM, installed as a Gem, via source etc.
-    # The only way to find this across the different ways OpenVox can be installed is
-    # to search up the path from this source file's __FILE__ location until it finds the base of
-    # puppet.
+    # The only way to find the OpenVox code across these different installation methods is
+    # to search up the path from this source file's __FILE__ location until it finds the root
+    # of the OpenVox codebase.
     #
     puppet_lib = File.realpath(File.join(File.dirname(__FILE__), '../../..'))
     LibRootedFileBased.new(parent_loader,
