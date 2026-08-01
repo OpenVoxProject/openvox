@@ -16,7 +16,7 @@ end
 # the runtime_dependencies in openvox.gemspec match the runtime dependencies here
 # (like openfact, semantic_puppet, and puppet-resource_api)
 
-gem "openfact", *location_for(ENV['OPENFACT_LOCATION'] || ["~> 5.0"])
+gem "openfact", *location_for(ENV['OPENFACT_LOCATION'] || ["~> 6.0"])
 gem "semantic_puppet", *location_for(ENV['SEMANTIC_PUPPET_LOCATION'] || ["~> 1.0"])
 gem "puppet-resource_api", *location_for(ENV['RESOURCE_API_LOCATION'] || ["~> 2.0"])
 # Need to update the openssl gem on MacOS to avoid SSL errors.
