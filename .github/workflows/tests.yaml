@@ -14,6 +14,30 @@ env:
   BUNDLE_SET: "without packaging documentation release"
 
 jobs:
+  validate_manpages:
+    name: Validate man pages
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # `man` exits 0 even when groff reports problems, so treat any stderr
+      # output as a failure. Unlike the equivalent check in openfact, this only
+      # inspects stderr (some pages legitimately contain the word "warning")
+      # and uses a wide MANWIDTH (some pages contain unbreakable tokens longer
+      # than 80 columns, such as long URLs and the `ciphers` default value,
+      # which trigger unfixable "cannot break line" warnings at narrower widths).
+      - name: Validate man pages with groff
+        run: |
+          status=0
+          for f in man/man5/*.5 man/man8/*.8; do
+            errors=$(LC_ALL=C.UTF-8 MANROFFSEQ='' MANWIDTH=1000 man --warnings -E UTF-8 -l -Tutf8 -Z "$f" 2>&1 >/dev/null)
+            if [ -n "$errors" ]; then
+              echo "$f:"
+              echo "$errors"
+              status=1
+            fi
+          done
+          exit $status
+
   checks:
     name: ${{ matrix.cfg.check }}
     strategy:
@@ -154,6 +178,7 @@ jobs:
   tests:
     if: always()
     needs:
+      - validate_manpages
       - checks
       - rspec_tests
       - rake_checks
