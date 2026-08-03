@@ -256,15 +256,15 @@ component "puppet" do |pkg, settings, platform|
 # can drop them back in place if the package manager
 # tries to remove it.
 if [ -e #{old_hiera} ]; then
-  #{cp_cmd} #{old_hiera}{,.pkg-old}
+  #{cp_cmd} #{old_hiera} #{old_hiera}.pkg-old
   touch #{rmv_hiera}
 fi
 if [ -e #{cnf_hiera} ]; then
-  #{cp_cmd} #{cnf_hiera}{,.pkg-old}
+  #{cp_cmd} #{cnf_hiera} #{cnf_hiera}.pkg-old
   touch #{rmv_hiera}
 fi
 if [ -e #{env_hiera} ]; then
-  #{cp_cmd} #{env_hiera}{,.pkg-old}
+  #{cp_cmd} #{env_hiera} #{env_hiera}.pkg-old
   touch #{rmv_hiera}
 fi
 PREINST
@@ -281,13 +281,13 @@ fi
 
 # Restore the old hiera, if it existed
 if [ -e #{old_hiera}.pkg-old ]; then
-  mv #{old_hiera}{.pkg-old,}
+  mv #{old_hiera}.pkg-old #{old_hiera}
 fi
 if [ -e #{cnf_hiera}.pkg-old ]; then
-  mv #{cnf_hiera}{.pkg-old,}
+  mv #{cnf_hiera}.pkg-old #{cnf_hiera}
 fi
 if [ -e #{env_hiera}.pkg-old ]; then
-  mv #{env_hiera}{.pkg-old,}
+  mv #{env_hiera}.pkg-old #{env_hiera}
 fi
 
 POSTINST
