@@ -34,20 +34,15 @@ describe Puppet::FileServing::HttpMetadata do
       http_response['X-Checksum-Md5'] = 'c58989e9740a748de4f5054286faf99b'
       metadata = described_class.new(http_response)
       metadata.collect
-      expect( metadata.checksum_type ).to eq :mtime
+      expect( metadata.checksum_type ).to eq :none
     end
 
     context "with no Last-Modified or Content-MD5 header from the server" do
-      it "should use :mtime as the checksum type, based on current time" do
-        # Stringifying Time.now does some rounding; do so here so we don't end up with a time
-        # that's greater than the stringified version returned by collect.
-        time = Time.parse(Time.now.to_s)
+      it "should use :none as the checksum type, rather than fabricating a changing mtime" do
         metadata = described_class.new(http_response)
         metadata.collect
-        expect( metadata.checksum_type ).to eq :mtime
-        checksum = metadata.checksum
-        expect( checksum[0...7] ).to eq '{mtime}'
-        expect( Time.parse(checksum[7..-1]) ).to be >= time
+        expect( metadata.checksum_type ).to eq :none
+        expect( metadata.checksum ).to eq '{none}'
       end
     end
 
@@ -118,11 +113,11 @@ describe Puppet::FileServing::HttpMetadata do
       context "without checksum => etag" do
         let(:md5) { "f5ffec8d8d16b43d5e9ac6ad4330c445" }
 
-        it "does not auto-activate ETag and falls back to mtime" do
+        it "does not auto-activate ETag and falls back to :none" do
           http_response.add_field('ETag', %("#{md5}"))
           metadata = described_class.new(http_response)
           metadata.collect
-          expect( metadata.checksum_type ).to eq :mtime
+          expect( metadata.checksum_type ).to eq :none
         end
       end
 
@@ -175,22 +170,22 @@ describe Puppet::FileServing::HttpMetadata do
         end
 
         context "that is a weak ETag" do
-          it "ignores the ETag and falls back to mtime" do
+          it "ignores the ETag and falls back to :none" do
             http_response.add_field('ETag', 'W/"f5ffec8d8d16b43d5e9ac6ad4330c445"')
             metadata = described_class.new(http_response)
             metadata.checksum_type = :etag
             metadata.collect
-            expect( metadata.checksum_type ).to eq :mtime
+            expect( metadata.checksum_type ).to eq :none
           end
         end
 
         context "that is not a recognizable hash" do
-          it "ignores the ETag and falls back to mtime" do
+          it "ignores the ETag and falls back to :none" do
             http_response.add_field('ETag', '"5e8c5-27a-3e8b8840"')
             metadata = described_class.new(http_response)
             metadata.checksum_type = :etag
             metadata.collect
-            expect( metadata.checksum_type ).to eq :mtime
+            expect( metadata.checksum_type ).to eq :none
           end
         end
 
@@ -230,16 +225,31 @@ describe Puppet::FileServing::HttpMetadata do
           metadata = described_class.new(http_response)
           metadata.checksum_type = :etag
           metadata.collect
-          expect( metadata.checksum_type ).to eq :mtime
+          expect( metadata.checksum_type ).to eq :none
         end
 
         it "falls back to other checksums when no ETag is present" do
           metadata = described_class.new(http_response)
           metadata.checksum_type = :etag
           metadata.collect
-          expect( metadata.checksum_type ).to eq :mtime
+          expect( metadata.checksum_type ).to eq :none
         end
       end
+    end
+  end
+
+  describe "#verify!" do
+    let(:http_response) { Net::HTTPOK.new(1.0, '200', 'OK') }
+
+    it "overrides the :none fallback with an earned checksum" do
+      metadata = described_class.new(http_response)
+      metadata.collect
+      expect( metadata.checksum_type ).to eq :none
+
+      metadata.verify!(:sha256, 'abc123')
+
+      expect( metadata.checksum_type ).to eq :sha256
+      expect( metadata.checksum ).to eq '{sha256}abc123'
     end
   end
 end

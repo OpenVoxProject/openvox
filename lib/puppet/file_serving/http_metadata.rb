@@ -13,8 +13,11 @@ class Puppet::FileServing::HttpMetadata < Puppet::FileServing::Metadata
 
     # hash available checksums for eventual collection
     @checksums = {}
-    # use a default mtime in case there is no usable HTTP header
-    @checksums[:mtime] = "{mtime}#{Time.now}"
+    # No usable HTTP header means we have no way to tell whether the
+    # remote content changed. Fall back to :none (always considered in
+    # sync) rather than fabricating "now" as an mtime, which would make
+    # every compile look like a change forever.
+    @checksums[:none] = '{none}'
 
     # RFC-1864, deprecated in HTTP/1.1 due to partial responses
     checksum = http_response['content-md5']
@@ -63,7 +66,7 @@ class Puppet::FileServing::HttpMetadata < Puppet::FileServing::Metadata
   def collect
     # Prefer the checksum_type from the indirector request options
     # but fall back to the alternative otherwise
-    [@checksum_type, :sha256, :sha1, :md5, :mtime].each do |type|
+    [@checksum_type, :sha256, :sha1, :md5, :mtime, :none].each do |type|
       if type == :etag
         if @checksums[:etag]
           @checksum = @checksums[:etag]
@@ -82,5 +85,13 @@ class Puppet::FileServing::HttpMetadata < Puppet::FileServing::Metadata
       @checksum = @checksums[type]
       break if @checksum
     end
+  end
+
+  # Called by the http terminus when it had to download the whole body to
+  # compute a checksum, because no header gave us one. Overrides whatever
+  # :none fallback #collect landed on with the real, earned digest.
+  def verify!(checksum_type, checksum)
+    @checksum_type = checksum_type
+    @checksum = "{#{checksum_type}}#{checksum}"
   end
 end
