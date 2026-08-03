@@ -1,6 +1,6 @@
 ---
 layout: default
-built_from_commit: 3d665fe7a4a7dfa794748a310db79025a4d932cc
+built_from_commit: ac49e313d52da074fb7ff445c3e5021597940e53
 title: Configuration Reference
 toc: columns
 canonical: "/openvox/latest/configuration.html"
@@ -8,7 +8,7 @@ canonical: "/openvox/latest/configuration.html"
 
 # Configuration Reference
 
-> **NOTE:** This page was generated from the OpenVox source code on 2026-08-01 22:12:47 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-08-03 08:25:19 -0500
 
 
 

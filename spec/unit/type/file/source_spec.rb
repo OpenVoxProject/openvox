@@ -259,6 +259,7 @@ describe Puppet::Type.type(:file).attrclass(:source), :uses_checksums => true do
         end
 
         it "should copy the metadata's owner, group, checksum, checksum_type, and mode to the resource if they are not set on the resource" do
+          @resource[:source] = @foobar_uri
           @source.copy_source_values
 
           expect(@resource[:owner]).to eq(100)

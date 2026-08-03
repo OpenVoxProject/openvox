@@ -630,10 +630,11 @@ describe Puppet::Type.type(:file), :uses_checksums => true do
       end
     end
 
-    it "should not give a checksum deprecation warning when given actual content" do
-      expect(Puppet).not_to receive(:puppet_deprecation_warning)
-      catalog.add_resource described_class.new(:path => path, :content => 'this is content')
+    it "should write content that looks like a checksum literally" do
+      file = described_class.new(:path => path, :content => '{ABCD}X')
+      catalog.add_resource file
       catalog.apply
+      expect(File.read(path)).to eq('{ABCD}X')
     end
 
     with_digest_algorithms do
@@ -641,18 +642,12 @@ describe Puppet::Type.type(:file), :uses_checksums => true do
         let(:filebucket_digest) { method(:digest) }
       end
 
-      it "should give a checksum deprecation warning" do
-        expect(Puppet).to receive(:puppet_deprecation_warning).with('Using a checksum in a file\'s "content" property is deprecated. The ability to use a checksum to retrieve content from the filebucket using the "content" property will be removed in a future release. The literal value of the "content" property will be written to the file. The checksum retrieval functionality is being replaced by the use of static catalogs. See https://docs.openvoxproject.org/openvox/latest/static_catalogs.html for more information.', {:file => 'my/file.pp', :line => 5})
+      it "should write content that is a valid checksum literally" do
         d = digest("this is some content")
-        catalog.add_resource described_class.new(:path => path, :content => "{#{digest_algorithm}}#{d}")
+        file = described_class.new(:path => path, :content => "{#{digest_algorithm}}#{d}")
+        catalog.add_resource file
         catalog.apply
-      end
-
-      it "should not give a checksum deprecation warning when no content is specified while checksum and checksum value are used" do
-        expect(Puppet).not_to receive(:puppet_deprecation_warning)
-        d = digest("this is some content")
-        catalog.add_resource described_class.new(:path => path, :checksum => digest_algorithm, :checksum_value => d)
-        catalog.apply
+        expect(File.read(path)).to eq("{#{digest_algorithm}}#{d}")
       end
     end
 

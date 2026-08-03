@@ -47,24 +47,14 @@ module Puppet
     munge do |value|
       if value == :absent
         value
-      elsif value.is_a?(String) && checksum?(value)
-        # XXX This is potentially dangerous because it means users can't write a file whose
-        # entire contents are a plain checksum unless it is a Binary content.
-        Puppet.puppet_deprecation_warning([
-          # TRANSLATORS "content" is an attribute and should not be translated
-          _('Using a checksum in a file\'s "content" property is deprecated.'),
-          # TRANSLATORS "filebucket" is a resource type and should not be translated. The quoted occurrence of "content" is an attribute and should not be translated.
-          _('The ability to use a checksum to retrieve content from the filebucket using the "content" property will be removed in a future release.'),
-          # TRANSLATORS "content" is an attribute and should not be translated.
-          _('The literal value of the "content" property will be written to the file.'),
-          # TRANSLATORS "static catalogs" should not be translated.
-          _('The checksum retrieval functionality is being replaced by the use of static catalogs.'),
-          _('See https://docs.openvoxproject.org/openvox/latest/static_catalogs.html for more information.')
-        ].join(" "),
-                                          :file => @resource.file,
-                                          :line => @resource.line) if !@actual_content && !resource.parameter(:source)
+      elsif value.is_a?(String) && checksum?(value) && (@actual_content || resource.parameter(:source))
+        # The actual content is already known, either because it was
+        # previously set or because it comes from a source, and the value is
+        # its checksum.
         value
       else
+        # The value is the desired file content, even if it happens to look
+        # like a checksum.
         @actual_content = value.is_a?(Puppet::Pops::Types::PBinaryType::Binary) ? value.binary_buffer : value
         resource.parameter(:checksum).sum(@actual_content)
       end
@@ -150,31 +140,14 @@ module Puppet
 
     private
 
-    # the content is munged so if it's a checksum source_or_content is nil
-    # unless the checksum indirectly comes from source
+    # actual_content is only nil when the munged value is a checksum of
+    # content that comes from a source
     def each_chunk_from
       if actual_content.is_a?(String)
         yield actual_content
-      elsif content_is_really_a_checksum? && actual_content.nil?
-        yield read_file_from_filebucket
       elsif actual_content.nil?
         yield ''
       end
-    end
-
-    def content_is_really_a_checksum?
-      checksum?(should)
-    end
-
-    def read_file_from_filebucket
-      dipper = resource.bucket
-      raise "Could not get filebucket from file" unless dipper
-
-      sum = should.sub(/\{\w+\}/, '')
-
-      dipper.getfile(sum)
-    rescue => detail
-      self.fail Puppet::Error, "Could not retrieve content for #{should} from filebucket: #{detail}", detail
     end
   end
 end
