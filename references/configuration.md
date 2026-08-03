@@ -485,15 +485,6 @@ currently cannot daemonize).
 
 - *Default*: `true`
 
-### data_binding_terminus
-
-This setting has been deprecated. Use of any value other than 'hiera' should instead be configured
-in a version 5 hiera.yaml. Until this setting is removed, it controls which data binding terminus
-to use for global automatic data binding (across all environments). By default this value is 'hiera'.
-A value of 'none' turns off the global binding.
-
-- *Default*: `hiera`
-
 ### default_file_terminus
 
 The default source for files if no server is given in a
@@ -661,17 +652,6 @@ Given that the context and effects vary depending on the
 in which the `environment` setting is defined, do not set it globally.
 
 - *Default*: `production`
-
-### environment_data_provider
-
-The name of a registered environment data provider used when obtaining environment
-specific data. The three built in and registered providers are 'none' (no data), 'function' (data
-obtained by calling the function 'environment::data()') and 'hiera' (data obtained using a data
-provider configured using a hiera.yaml file in root of the environment).
-Other environment data providers may be registered in modules on the module path. For such
-custom data providers see the respective module documentation. This setting is deprecated.
-
-- *Default*: ``
 
 ### environment_timeout
 

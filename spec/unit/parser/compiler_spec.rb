@@ -609,7 +609,7 @@ describe Puppet::Parser::Compiler do
 
   describe "when evaluating found classes" do
     before do
-      Puppet.settings[:data_binding_terminus] = "none"
+      Puppet::DataBinding.indirection.terminus_class = :none
       @class = @known_resource_types.add Puppet::Resource::Type.new(:hostclass, "myclass")
       @resource = double('resource', :ref => "Class[myclass]", :type => "file")
     end
