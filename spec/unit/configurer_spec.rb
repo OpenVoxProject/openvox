@@ -240,7 +240,7 @@ describe Puppet::Configurer do
       Puppet[:number_of_facts_soft_limit] = 1
       Puppet[:payload_soft_limit] = 0
 
-      facts.values = { 
+      facts.values = {
         'processors' => {
           'cores' => 1,
           'count' => 2,
@@ -251,13 +251,13 @@ describe Puppet::Configurer do
             "CPU1 @ 2.80GHz",
             "CPU1 @ 2.80GHz",
             "CPU1 @ 2.80GHz",
-            { 
+            {
               'processors' => {
                 'cores' => [1,2]
               }
             }
           ],
-          'physicalcount' => 4 
+          'physicalcount' => 4
         }
       }
       Puppet::Node::Facts.indirection.save(facts)
@@ -329,6 +329,16 @@ describe Puppet::Configurer do
 
       expect(Puppet).to receive(:err).with("Could not retrieve catalog; skipping run")
 
+      configurer.run
+    end
+
+    it "should log a failure and do nothing if the catalog node name doesn't match the current node name" do
+      cached_catalog = Puppet::Resource::Catalog.new('bananas', Puppet::Node::Environment.remote(Puppet[:environment].to_sym))
+
+      expects_fallback_to_cached_catalog(cached_catalog)
+
+      allow(Puppet).to receive(:err)
+      expect(Puppet).to receive(:err).with("Catalog name 'bananas' does not match this node's certname '#{node_name}'")
       configurer.run
     end
 
