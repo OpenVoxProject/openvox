@@ -1,13 +1,13 @@
 ---
 layout: default
-built_from_commit: f7b1a950d990274b9f352eb7aa0cd93ee6067df1
+built_from_commit: 3d665fe7a4a7dfa794748a310db79025a4d932cc
 title: 'Man Page: puppet apply'
 canonical: "/openvox/latest/man/apply.html"
 ---
 
 # Man Page: puppet apply
 
-> **NOTE:** This page was generated from the OpenVox source code on 2026-07-14 18:42:24 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-08-01 22:12:56 +0000
 
 ## NAME
 **puppet-apply** - Apply Puppet manifests locally via OpenVox
@@ -32,7 +32,7 @@ server with access to the same modules, although there are some subtle
 differences. When combined with scheduling and an automated system for
 pushing manifests, this can be used to implement a serverless site.
 
-Most users should use \'puppet agent\' and \'puppet server\' for
+Most users should use \'puppet agent\' with an OpenVox server for
 site-wide manifests.
 
 ## OPTIONS
@@ -113,5 +113,5 @@ list of all configuration options by running puppet with
 Luke Kanies
 
 ## COPYRIGHT
-Copyright (c) 2011 Puppet Inc. Copyright (c) 2024 Vox Pupuli Licensed
+Copyright (c) 2011 Puppet Inc.; Copyright (c) 2024 Vox Pupuli. Licensed
 under the Apache 2.0 License

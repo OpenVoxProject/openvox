@@ -1,13 +1,13 @@
 ---
 layout: default
-built_from_commit: f7b1a950d990274b9f352eb7aa0cd93ee6067df1
+built_from_commit: 3d665fe7a4a7dfa794748a310db79025a4d932cc
 title: 'Man Page: puppet parser'
 canonical: "/openvox/latest/man/parser.html"
 ---
 
 # Man Page: puppet parser
 
-> **NOTE:** This page was generated from the OpenVox source code on 2026-07-14 18:42:24 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-08-01 22:12:56 +0000
 
 ## NAME
 **puppet-parser** - Interact directly with the parser.
@@ -129,4 +129,4 @@ Validate from STDIN:
 \$ cat init.pp \| puppet parser validate
 
 ## COPYRIGHT AND LICENSE
-Copyright 2014 by Puppet Inc., Vox Pupuli Apache 2 license; see COPYING
+Copyright 2014 by Puppet Inc., Vox Pupuli. Apache 2 license; see COPYING

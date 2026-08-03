@@ -69,7 +69,7 @@ class Puppet::Application::Apply < Puppet::Application
       differences. When combined with scheduling and an automated system for
       pushing manifests, this can be used to implement a serverless site.
 
-      Most users should use 'puppet agent' and 'puppet server' for site-wide
+      Most users should use 'puppet agent' with an OpenVox server for site-wide
       manifests.
 
 
@@ -165,8 +165,8 @@ class Puppet::Application::Apply < Puppet::Application
 
       COPYRIGHT
       ---------
-      Copyright (c) 2011 Puppet Inc.
-      Copyright (c) 2024 Vox Pupuli
+      Copyright (c) 2011 Puppet Inc.;
+      Copyright (c) 2024 Vox Pupuli.
       Licensed under the Apache 2.0 License
 
     HELP

@@ -96,8 +96,8 @@ class Puppet::Application::Ssl < Puppet::Application
 
       COPYRIGHT
         ---------
-        Copyright (c) 2011 Puppet Inc.
-        Copyright (c) 2024 Vox Pupuli
+        Copyright (c) 2011 Puppet Inc.;
+        Copyright (c) 2024 Vox Pupuli.
         Licensed under the Apache 2.0 License
     HELP
   end

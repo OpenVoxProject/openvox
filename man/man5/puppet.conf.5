@@ -1,6 +1,6 @@
 .\" generated with Ronn-NG/v0.10.1
 .\" http://github.com/apjanke/ronn-ng/tree/0.10.1
-.TH "PUPPETCONF" "5" "July 2026" "Vox Pupuli" "OpenVox manual"
+.TH "PUPPETCONF" "5" "August 2026" "Vox Pupuli" "OpenVox manual"
 .SH "Configuration settings"
 .IP "\(bu" 4
 Each of these settings can be specified in \fBpuppet\.conf\fR or on the command line\.
@@ -376,7 +376,7 @@ Whether to document all resources when using \fBpuppet doc\fR to generate manife
 \fIDefault\fR: \fBfalse\fR
 .IP "" 0
 .SS "environment"
-The environment in which OpenVox is running\. For clients, such as \fBpuppet agent\fR, this determines the environment itself, which OpenVox uses to find modules and much more\. For servers, such as \fBpuppet server\fR, this provides the default environment for nodes that OpenVox knows nothing about\.
+The environment in which OpenVox is running\. For clients, such as \fBpuppet agent\fR, this determines the environment itself, which OpenVox uses to find modules and much more\. For servers, such as OpenVox Server, this provides the default environment for nodes that OpenVox knows nothing about\.
 .P
 When defining an environment in the \fB[agent]\fR section, this refers to the environment that the agent requests from the primary server\. The environment doesn't have to exist on the local filesystem because the agent fetches it from the primary server\. This definition is used when running \fBpuppet agent\fR\.
 .P
@@ -762,7 +762,7 @@ The directory in which to store log files
 \fIDefault\fR: \fBUnix/Linux: /var/log/puppetlabs/puppet \-\- Windows: C:\eProgramData\ePuppetLabs\epuppet\evar\elog \-\- Non\-root user: ~/\.puppetlabs/var/log\fR
 .IP "" 0
 .SS "manage_internal_file_permissions"
-Whether OpenVox should manage the owner, group, and mode of files it uses internally\. \fBNote\fR: For Windows agents, the default is \fBfalse\fR for versions 4\.10\.13 and greater, versions 5\.5\.6 and greater, and versions 6\.0 and greater\.
+Whether OpenVox should manage the owner, group, and mode of files it uses internally\. \fBNote\fR: For Windows agents, the default is \fBfalse\fR\.
 .IP "\(bu" 4
 \fIDefault\fR: \fBtrue\fR
 .IP "" 0
@@ -1112,16 +1112,13 @@ Where the serial number for certificates is stored\.
 .IP "" 0
 .SS "server"
 The primary OpenVox server to which the OpenVox agent should connect\. This setting is ignored when \fBserver_list\fR is specified\.
-.IP "\(bu" 4
-\fIDefault\fR: \fBpuppet\fR
-.IP "" 0
 .SS "server_datadir"
 The directory in which serialized data is stored, usually in a subdirectory\.
 .IP "\(bu" 4
 \fIDefault\fR: \fB$vardir/server_data\fR
 .IP "" 0
 .SS "server_list"
-The list of primary OpenVox servers to which the OpenVox agent should connect, in the order that they will be tried\. Each value should be a fully qualified domain name, followed by an optional ':' and port number\. If a port is omitted, OpenVox uses masterport for that host\. This setting takes precedence over \fBserver\fR\.
+The list of primary OpenVox servers to which the OpenVox agent should connect, in the order that they will be tried\. Each value should be a fully qualified domain name, followed by an optional ':' and port number\. If a port is omitted, OpenVox uses the \fBserverport\fR setting for that host\. This setting takes precedence over \fBserver\fR\.
 .IP "\(bu" 4
 \fIDefault\fR: \fB[]\fR
 .IP "" 0

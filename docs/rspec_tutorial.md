@@ -48,7 +48,7 @@ found in the project Gemfile.
 
 ## OpenVox Continuous integration
 
-  * GitHub Actions (spec tests only): https://github.com/OpenVoxProject/openvox/actions
+  * GitHub Actions: https://github.com/OpenVoxProject/openvox/actions
 
 ## RSpec
 

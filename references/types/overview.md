@@ -1,13 +1,13 @@
 ---
 layout: default
-built_from_commit: f7b1a950d990274b9f352eb7aa0cd93ee6067df1
+built_from_commit: 3d665fe7a4a7dfa794748a310db79025a4d932cc
 title: Resource types overview
-canonical: "/puppet/latest/types/overview.md"
+canonical: "/openvox/latest/types/overview.html"
 ---
 
 # Resource types overview
 
-> **NOTE:** This page was generated from the OpenVox source code on 2026-07-14 18:42:41 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-08-01 22:13:15 +0000
 
 ## List of resource types
 
@@ -33,10 +33,10 @@ canonical: "/puppet/latest/types/overview.md"
 This is the documentation for OpenVox's built-in resource types and providers. Additional resource types are distributed in Puppet modules.
 
 You can find and install modules by browsing the
-[Puppet Forge](http://forge.puppet.com). See each module's documentation for
+[Puppet Forge](https://forge.puppet.com). See each module's documentation for
 information on how to use its custom resource types. For more information about creating custom types, see [Custom resources](https://docs.openvoxproject.org/openvox/latest/custom_resources.html).
 
-> As of Puppet 6.0, some resource types were removed from Puppet and repackaged as individual modules. These supported type modules are still included in the `openvox-agent` package, so you don't have to download them from the Forge. See the complete list of affected types in the [supported type modules](#supported-type-modules-in-openvox-agent) section.
+> As of Puppet 6.0, some resource types were removed from Puppet and repackaged as individual modules. These supported type modules are still included in the `openvox-agent` package, so you don't have to download them from the Forge. See the complete list of affected types in the [supported type modules](#supported-type-modules-in-the-openvox-agent-package) section.
 
 ### Declaring resources
 
@@ -132,7 +132,7 @@ declare which features they provide.
 
 In Puppet 6.0, we removed some of Puppet's built-in types and moved them into individual modules.
 
-### Supported type modules in `openvox-agent`
+### Supported type modules in the `openvox-agent` package
 
 The following types are included in supported modules on the Forge. However, they are also included in the `openvox-agent` package, so you do not have to install them separately. See each module's README for detailed information about that type.
 
@@ -172,4 +172,4 @@ The following types were deprecated with Puppet 6.0.0. They are available in mod
 
 ## OpenVox core types
 
-For a list of core OpenVox types, see the [core types cheat sheet][core-types-cheatsheet].
+For the complete details of all core OpenVox types, see the [resource type reference](https://docs.openvoxproject.org/openvox/latest/type.html).

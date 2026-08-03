@@ -1,6 +1,6 @@
 ---
 layout: default
-built_from_commit: f7b1a950d990274b9f352eb7aa0cd93ee6067df1
+built_from_commit: 3d665fe7a4a7dfa794748a310db79025a4d932cc
 title: Built-in function reference
 canonical: "/openvox/latest/function.html"
 toc_levels: 2
@@ -9,7 +9,7 @@ toc: columns
 
 # Built-in function reference
 
-> **NOTE:** This page was generated from the OpenVox source code on 2026-07-14 18:42:23 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-08-01 22:12:55 +0000
 
 
 
@@ -5060,7 +5060,7 @@ or
 `tree_each($data) |$value| { <PUPPET CODE BLOCK> }`
 
 The parameter `$path` is always given as an `Array` containing the path that when applied to
-the tree as `$data.dig(*$path)` yields the `$value`.
+the tree as `$data.dig(*$path) yields the `$value`.
 The `$value` is the value at that path.
 
 For `Array` values, the path will contain `Integer` entries with the array index,

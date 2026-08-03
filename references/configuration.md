@@ -1,6 +1,6 @@
 ---
 layout: default
-built_from_commit: f7b1a950d990274b9f352eb7aa0cd93ee6067df1
+built_from_commit: 3d665fe7a4a7dfa794748a310db79025a4d932cc
 title: Configuration Reference
 toc: columns
 canonical: "/openvox/latest/configuration.html"
@@ -8,7 +8,7 @@ canonical: "/openvox/latest/configuration.html"
 
 # Configuration Reference
 
-> **NOTE:** This page was generated from the OpenVox source code on 2026-07-14 18:42:16 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-08-01 22:12:47 +0000
 
 
 
@@ -642,7 +642,7 @@ generate manifest documentation.
 
 The environment in which OpenVox is running. For clients,
 such as `puppet agent`, this determines the environment itself, which
-OpenVox uses to find modules and much more. For servers, such as `puppet server`,
+OpenVox uses to find modules and much more. For servers, such as OpenVox Server,
 this provides the default environment for nodes that OpenVox knows nothing about.
 
 When defining an environment in the `[agent]` section, this refers to the
@@ -1210,7 +1210,7 @@ The directory in which to store log files
 ### manage_internal_file_permissions
 
 Whether OpenVox should manage the owner, group, and mode of files it uses internally.
-**Note**: For Windows agents, the default is `false` for versions 4.10.13 and greater, versions 5.5.6 and greater, and versions 6.0 and greater.
+**Note**: For Windows agents, the default is `false`.
 
 - *Default*: `true`
 
@@ -1775,7 +1775,6 @@ Where the serial number for certificates is stored.
 
 The primary OpenVox server to which the OpenVox agent should connect. This setting is ignored when `server_list` is specified.
 
-- *Default*: `puppet`
 
 ### server_datadir
 
@@ -1787,7 +1786,7 @@ The directory in which serialized data is stored, usually in a subdirectory.
 
 The list of primary OpenVox servers to which the OpenVox agent should connect,
 in the order that they will be tried. Each value should be a fully qualified domain name, followed by an optional ':' and port number.
-If a port is omitted, OpenVox uses masterport for that host. This setting takes precedence over `server`.
+If a port is omitted, OpenVox uses the `serverport` setting for that host. This setting takes precedence over `server`.
 
 - *Default*: `[]`
 

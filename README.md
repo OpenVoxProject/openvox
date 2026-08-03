@@ -7,9 +7,9 @@ configurations) based on a centralized specification.
 ## Documentation
 
 As of now, OpenVox is effectively the same as the original Puppet™️ packages, aside from some minor build pipeline changes and package renaming.
-This means that aside from the installation, all Puppet™️ docs and tutorials will still be completely applicable.
+This means that aside from the installation, most existing Puppet™️ docs and tutorials will still be applicable.
 As the OpenVox project matures, we will create more documentation, guides, and tutorials.
-For the time being though, now you’ll want to hop over to [the OpenVox documentation](https://docs.openvoxproject.org/) and go from there.
+Documentation is available at [the OpenVox documentation site](https://docs.openvoxproject.org/).
 
 ### HTTP API
 

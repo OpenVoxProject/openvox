@@ -85,7 +85,7 @@ result, it's hard for clients to build higher level abstractions.
 
 ### SSL Trust Stores
 
-OpenVox only trusts the puppet PKI when connecting to puppet infrastructure, but
+OpenVox only trusts the OpenVox PKI when connecting to OpenVox infrastructure, but
 needs to additionally trust the system cert store for requests like PMT and
 downloading files from https sources. However, the current API doesn't allow the
 caller to do that, which is why `Puppet::Util::HttpProxy#request_with_redirects`
@@ -270,9 +270,9 @@ end
 
 OpenVox ruby code running in puppetserver sometimes make outbound connections
 such as the [puppetdb
-terminus](https://github.com/puppetlabs/puppetdb/blob/6.5.0/puppet/lib/puppet/util/puppetdb/http.rb#L138)
+terminus](https://github.com/OpenVoxProject/openvoxdb/blob/main/puppet/lib/puppet/util/puppetdb/http.rb)
 and ['http' report
-processor](https://github.com/puppetlabs/puppet/blob/6.7.0/lib/puppet/reports/http.rb#L32).
+processor](https://github.com/OpenVoxProject/openvox/blob/main/lib/puppet/reports/http.rb).
 Currently, puppetserver registers its own http client class, so that it can
 perform the HTTP request using Apache HttpClient.
 

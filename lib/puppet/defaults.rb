@@ -333,7 +333,7 @@ module Puppet
         :default  => ! Puppet::Util::Platform.windows?,
         :type     => :boolean,
         :desc     => "Whether OpenVox should manage the owner, group, and mode of files it uses internally.
-          **Note**: For Windows agents, the default is `false` for versions 4.10.13 and greater, versions 5.5.6 and greater, and versions 6.0 and greater.",
+          **Note**: For Windows agents, the default is `false`.",
     },
     :onetime => {
         :default  => false,
@@ -376,7 +376,7 @@ module Puppet
         :default  => "production",
         :desc     => "The environment in which OpenVox is running. For clients,
           such as `puppet agent`, this determines the environment itself, which
-          OpenVox uses to find modules and much more. For servers, such as `puppet server`,
+          OpenVox uses to find modules and much more. For servers, such as OpenVox Server,
           this provides the default environment for nodes that OpenVox knows nothing about.
 
           When defining an environment in the `[agent]` section, this refers to the
@@ -1635,7 +1635,7 @@ EOT
       :type => :server_list,
       :desc => "The list of primary OpenVox servers to which the OpenVox agent should connect,
         in the order that they will be tried. Each value should be a fully qualified domain name, followed by an optional ':' and port number.
-        If a port is omitted, OpenVox uses masterport for that host. This setting takes precedence over `server`.",
+        If a port is omitted, OpenVox uses the `serverport` setting for that host. This setting takes precedence over `server`.",
     },
     :use_srv_records => {
       :default    => false,
