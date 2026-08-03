@@ -51,12 +51,23 @@ module Puppet
       parameter. If the `checksum_value` parameter is not specified for
       `puppet` and `file` sources, OpenVox computes a checksum based on its
       `Puppet[:digest_algorithm]`. For `http(s)` sources, OpenVox uses the
-      first HTTP header it recognizes out of the following list:
-      `X-Checksum-Sha256`, `X-Checksum-Sha1`, `X-Checksum-Md5` or `Content-MD5`.
-      If the server response does not include one of these headers, OpenVox
-      defaults to using the `Last-Modified` header. OpenVox updates the local
-      file if the header is newer than the modified time (mtime) of the local
-      file.
+      first usable signal out of the following, in order:
+
+      * An `X-Checksum-Sha256`, `X-Checksum-Sha1`, `X-Checksum-Md5`, or
+      `Content-MD5` header.
+      * If `checksum => etag` is set, a strong `ETag` header whose value is a
+      bare 32, 40, or 64 character hex string (an md5, sha1, or sha256
+      digest, respectively). Weak ETags (`W/"..."`) and ETags that aren't
+      recognizable digests are ignored.
+      * A `Last-Modified` header. OpenVox updates the local file if the
+      header is newer than the modified time (mtime) of the local file.
+      * If none of the above are present, OpenVox does not guess from a
+      fabricated timestamp. If `checksum` requests a real digest (the
+      default, or any explicit type other than `mtime`, `ctime`, or `none`),
+      OpenVox downloads the file once to compute one directly, and fails
+      the resource rather than assuming it is unchanged if that download
+      itself fails. If `checksum` is `mtime`, `ctime`, or `none`, OpenVox
+      treats the file as unchanged.
 
       _HTTP_ URIs can include a user information component so that OpenVox can
       retrieve file metadata and content from HTTP servers that require HTTP Basic
