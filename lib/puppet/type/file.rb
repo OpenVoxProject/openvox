@@ -104,6 +104,13 @@ Puppet::Type.newtype(:file) do
 
           File { backup => main, }
 
+      > **Note**: A central filebucket is shared by every node that backs up to it,
+        and stored content is addressed only by checksum, with no record of which
+        node submitted it. Treat anything backed up there as readable by every
+        certificate the server's `auth.conf` allows to reach the `file_bucket_file`
+        endpoint, and avoid pointing `backup` at a central filebucket for files whose
+        contents are sensitive. See the `filebucket` resource type for details.
+
       If you are using multiple primary servers, you will want to
       centralize the contents of the filebucket. Either configure your load
       balancer to direct all filebucket traffic to a single primary server, or use

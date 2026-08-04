@@ -1,13 +1,13 @@
 ---
 layout: default
-built_from_commit: 3d665fe7a4a7dfa794748a310db79025a4d932cc
+built_from_commit: 748a2d11c7785733d0e72b7c4cc606137e07bb8f
 title: 'Resource Type: file'
 canonical: "/openvox/latest/types/file.html"
 ---
 
 # Resource Type: file
 
-> **NOTE:** This page was generated from the OpenVox source code on 2026-08-01 22:13:15 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-08-04 10:46:37 -0500
 
 
 
@@ -184,6 +184,13 @@ in site.pp:
     }
 
     File { backup => main, }
+
+> **Note**: A central filebucket is shared by every node that backs up to it,
+  and stored content is addressed only by checksum, with no record of which
+  node submitted it. Treat anything backed up there as readable by every
+  certificate the server's `auth.conf` allows to reach the `file_bucket_file`
+  endpoint, and avoid pointing `backup` at a central filebucket for files whose
+  contents are sensitive. See the `filebucket` resource type for details.
 
 If you are using multiple primary servers, you will want to
 centralize the contents of the filebucket. Either configure your load
