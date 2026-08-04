@@ -1,13 +1,13 @@
 ---
 layout: default
-built_from_commit: 3d665fe7a4a7dfa794748a310db79025a4d932cc
+built_from_commit: 748a2d11c7785733d0e72b7c4cc606137e07bb8f
 title: 'Resource Type: filebucket'
 canonical: "/openvox/latest/types/filebucket.html"
 ---
 
 # Resource Type: filebucket
 
-> **NOTE:** This page was generated from the OpenVox source code on 2026-08-01 22:13:15 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-08-04 10:46:37 -0500
 
 
 
@@ -47,6 +47,21 @@ OpenVox Servers automatically provide the filebucket service, so
 this will work in a default configuration. If you have a heavily
 restricted OpenVox Server `auth.conf` file, you may need to allow access to the
 `file_bucket_file` endpoint.
+
+> **Security note**: a central filebucket is shared by every node that backs
+  up to it. Content is addressed purely by checksum, and the service records no
+  association between stored content and the node that submitted it, so a
+  request for `/puppet/v3/file_bucket_file/<digest>/<checksum>` returns the
+  matching content to any client the server's `auth.conf` permits, regardless
+  of which node originally backed that file up. Retrieving content requires
+  knowing the checksum of the exact bytes, so this is not a general-purpose
+  read primitive, but you should treat a central filebucket as readable by
+  every certificate allowed to reach the endpoint and avoid backing up files
+  whose contents are sensitive. Since OpenVox 9 the default `auth.conf` grants
+  agents only the `HEAD` and `PUT` access they need in order to store backups,
+  and restricts `GET` to certificates carrying the `pp_cli_auth` extension. If
+  you restore remotely using some other administrative certificate, add a rule
+  of your own rather than widening the shipped one.
 
 ### Attributes {#filebucket-attributes}
 
