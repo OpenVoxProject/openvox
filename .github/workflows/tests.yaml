@@ -27,7 +27,7 @@ jobs:
       - name: Checkout current PR
         uses: actions/checkout@v6
 
-      - name: Install ruby version ${{ matrix.cfg.ruby }}
+      - name: Install Ruby version ${{ matrix.cfg.ruby }}
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.cfg.ruby }}
@@ -37,7 +37,7 @@ jobs:
         run: bundle exec rake ${{ matrix.cfg.check }}
 
   rspec_tests:
-    name: ${{ matrix.cfg.os }}(ruby ${{ matrix.cfg.ruby }} / OpenFact ${{ matrix.cfg.openfact }})
+    name: ${{ matrix.cfg.os }}(Ruby ${{ matrix.cfg.ruby }} / OpenFact ${{ matrix.cfg.openfact }})
     strategy:
       fail-fast: false
       matrix:
@@ -66,7 +66,7 @@ jobs:
       - name: Checkout current PR
         uses: actions/checkout@v6
 
-      - name: Install ruby version ${{ matrix.cfg.ruby }}
+      - name: Install Ruby version ${{ matrix.cfg.ruby }}
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.cfg.ruby }}
