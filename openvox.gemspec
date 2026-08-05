@@ -37,7 +37,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency('fiddle', '~> 1.1')
   spec.add_runtime_dependency('getoptlong', '~> 0.2.0')
   spec.add_runtime_dependency('locale', '~> 2.1')
-  spec.add_runtime_dependency('openfact', '~> 5.0')
+  spec.add_runtime_dependency('openfact', '>= 5.0', '< 7')
   spec.add_runtime_dependency('ostruct', '>= 0.5.5', '< 0.7')
   spec.add_runtime_dependency('puppet-resource_api', '~> 2.0')
   spec.add_runtime_dependency('racc', '~> 1.5')

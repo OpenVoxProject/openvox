@@ -27,7 +27,7 @@ jobs:
       - name: Checkout current PR
         uses: actions/checkout@v6
 
-      - name: Install ruby version ${{ matrix.cfg.ruby }}
+      - name: Install Ruby version ${{ matrix.cfg.ruby }}
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.cfg.ruby }}
@@ -37,29 +37,36 @@ jobs:
         run: bundle exec rake ${{ matrix.cfg.check }}
 
   rspec_tests:
-    name: ${{ matrix.cfg.os }}(ruby ${{ matrix.cfg.ruby }})
+    name: ${{ matrix.cfg.os }}(Ruby ${{ matrix.cfg.ruby }} / OpenFact ${{ matrix.cfg.openfact }})
     strategy:
       fail-fast: false
       matrix:
         cfg:
-          - {os: ubuntu-24.04, ruby: '3.2'}
-          - {os: ubuntu-24.04, ruby: '3.3'}
-          - {os: ubuntu-24.04, ruby: '3.4'}
-          - {os: ubuntu-24.04, ruby: '4.0'}
-          - {os: ubuntu-24.04, ruby: 'jruby-9.4.8.0'}
-          - {os: ubuntu-24.04, ruby: 'jruby-9.4.14.0'}
-          - {os: ubuntu-24.04, ruby: 'jruby-9.4.15'}
-          - {os: windows-2025, ruby: '3.2'}
-          - {os: windows-2025, ruby: '3.3'}
-          - {os: windows-2025, ruby: '3.4'}
-          - {os: windows-2025, ruby: '4.0'}
+          # we default to openfact 5, because that's what we package.
+          # But we want to stay compatible to openfact 6, to make upgrades easier
+          - {os: ubuntu-24.04, ruby: '3.2', openfact: '~> 6.0' }
+          - {os: ubuntu-24.04, ruby: '3.2', openfact: '~> 5.0' }
+          - {os: ubuntu-24.04, ruby: '3.3', openfact: '~> 5.0' }
+          - {os: ubuntu-24.04, ruby: '3.4', openfact: '~> 5.0' }
+          - {os: ubuntu-24.04, ruby: '4.0', openfact: '~> 5.0' }
+          - {os: ubuntu-24.04, ruby: 'jruby-9.4.8.0', openfact: '~> 5.0' }
+          - {os: ubuntu-24.04, ruby: 'jruby-9.4.14.0', openfact: '~> 5.0' }
+          - {os: ubuntu-24.04, ruby: 'jruby-9.4.15', openfact: '~> 5.0' }
+          - {os: ubuntu-24.04, ruby: 'jruby-9.4.15', openfact: '~> 5.0'}
+          - {os: windows-2025, ruby: '3.2', openfact: '~> 6.0' }
+          - {os: windows-2025, ruby: '3.2', openfact: '~> 5.0' }
+          - {os: windows-2025, ruby: '3.3', openfact: '~> 5.0' }
+          - {os: windows-2025, ruby: '3.4', openfact: '~> 5.0' }
+          - {os: windows-2025, ruby: '4.0', openfact: '~> 5.0' }
+    env:
+      OPENFACT_LOCATION: ${{ matrix.cfg.openfact }}
 
     runs-on: ${{ matrix.cfg.os }}
     steps:
       - name: Checkout current PR
         uses: actions/checkout@v6
 
-      - name: Install ruby version ${{ matrix.cfg.ruby }}
+      - name: Install Ruby version ${{ matrix.cfg.ruby }}
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.cfg.ruby }}
