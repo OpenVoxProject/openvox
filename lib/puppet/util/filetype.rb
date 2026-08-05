@@ -109,8 +109,6 @@ class Puppet::Util::FileType
         # this code path is used by many callers so the original default is
         # being explicitly preserved
         Puppet::FileSystem.read(@path, :encoding => Encoding.default_external)
-      else
-        nil
       end
     end
 

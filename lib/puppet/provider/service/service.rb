@@ -19,8 +19,7 @@ Puppet::Type.type(:service).provide :service do
   end
 
   # There is no default command, which causes other methods to be used
-  def restartcmd
-  end
+  def restartcmd; end
 
   # @deprecated because the exit status is not returned, use service_execute instead
   def texecute(type, command, fof = true, squelch = false, combine = true)

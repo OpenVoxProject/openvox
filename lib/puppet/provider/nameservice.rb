@@ -115,8 +115,6 @@ class Puppet::Provider::NameService < Puppet::Provider
         value
       elsif respond_to?("autogen_#{field}")
         send("autogen_#{field}")
-      else
-        nil
       end
     end
   end

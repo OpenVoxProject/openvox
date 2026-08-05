@@ -401,8 +401,6 @@ class Loaders
       # Create pcore resource type loader, if applicable
       pcore_resource_type_loader = if load_from_pcore && env_path
                                      Loader::ModuleLoaders.pcore_resource_type_loader_from(parent_loader, self, env_path)
-                                   else
-                                     nil
                                    end
       @runtime3_type_loader = add_loader_by_name(Loader::Runtime3TypeLoader.new(parent_loader, self, environment, pcore_resource_type_loader))
 

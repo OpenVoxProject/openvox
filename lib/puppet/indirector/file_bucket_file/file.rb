@@ -37,8 +37,6 @@ module Puppet::FileBucketFile
           Puppet.info _("FileBucket read %{checksum}") % { checksum: checksum }
           model.new(Puppet::FileSystem.binread(contents_file))
         end
-      else
-        nil
       end
     end
 

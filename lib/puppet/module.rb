@@ -91,8 +91,7 @@ class Puppet::Module
   end
 
   # @deprecated The puppetversion module metadata field is no longer used.
-  def puppetversion=(something)
-  end
+  def puppetversion=(something); end
 
   # @deprecated The puppetversion module metadata field is no longer used.
   def validate_puppet_version
@@ -172,8 +171,6 @@ class Puppet::Module
 
     if Puppet::FileSystem.exist?(full_path)
       full_path
-    else
-      nil
     end
   end
 
@@ -205,8 +202,6 @@ class Puppet::Module
 
     if Puppet::FileSystem.exist?(full_path)
       full_path
-    else
-      nil
     end
   end
 

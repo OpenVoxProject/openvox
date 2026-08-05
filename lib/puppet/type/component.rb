@@ -87,8 +87,7 @@ Puppet::Type.newtype(:component) do
   # is no risk of this information leaking into reports, since no
   # Component instances survive the graph transmutation.
   #
-  def set_sensitive_parameters(sensitive_parameters)
-  end
+  def set_sensitive_parameters(sensitive_parameters); end
 
   private
 

@@ -36,6 +36,5 @@ class Puppet::FileServing::Mount
   end
 
   # A noop.
-  def validate
-  end
+  def validate; end
 end

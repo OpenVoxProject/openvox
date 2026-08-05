@@ -13,8 +13,7 @@ module Types
 module TypeAcceptor
   # @param type [PAnyType] the type that we accept a visit from
   # @param guard [RecursionGuard] the guard against self recursion
-  def visit(type, guard)
-  end
+  def visit(type, guard); end
 end
 
 # An acceptor that does nothing

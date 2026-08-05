@@ -184,7 +184,7 @@ Puppet::Type.type(:service).provide :launchd, :parent => :base do
   # This status method lists out all currently running services.
   # This hash is returned at the end of the method.
   def self.job_list
-    @job_list = Hash.new
+    @job_list = {}
     begin
       output = launchctl :list
       raise Puppet::Error, "launchctl list failed to return any data." if output.nil?

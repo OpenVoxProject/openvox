@@ -29,7 +29,7 @@ module Puppet
     # as well as a nil line number are supported. Such stack frames
     # will be represented with the text `unknown` and `0´ respectively.
     module PuppetStack
-      @stack = Puppet::ThreadLocal.new { Array.new }
+      @stack = Puppet::ThreadLocal.new { [] }
 
       def self.stack(file, line, obj, message, args, &block)
         file = 'unknown' if file.nil? || file == ''

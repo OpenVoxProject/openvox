@@ -85,8 +85,6 @@ module Puppet
       defaultto do
         if @resource.managed?
           :present
-        else
-          nil
         end
       end
 

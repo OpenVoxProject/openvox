@@ -881,7 +881,7 @@ Puppet::Type.newtype(:file) do
     if self[:ensure] == :present
       return true unless stat
 
-      return(stat.ftype == "file")
+      return stat.ftype == "file"
     end
 
     # If we've gotten here, then :ensure isn't set
@@ -1019,8 +1019,6 @@ Puppet::Type.newtype(:file) do
     stat_info = stat
     if stat_info
       stat_info.ftype.to_s
-    else
-      nil
     end
   end
 

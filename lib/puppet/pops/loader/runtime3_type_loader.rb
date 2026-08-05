@@ -62,8 +62,6 @@ class Runtime3TypeLoader < BaseLoader
       te
     when :resource_type_pp
       @resource_3x_loader.nil? ? nil : find_impl(typed_name)
-    else
-      nil
     end
   end
 

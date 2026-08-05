@@ -142,8 +142,6 @@ module Adaptable
       attr_name = self_attr_name
       if o.instance_variable_defined?(attr_name)
         o.send(:remove_instance_variable, attr_name)
-      else
-        nil
       end
     end
 

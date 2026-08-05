@@ -77,8 +77,7 @@ module Puppet::Test
     # Call this method once, at the end of a test run, when no more tests
     #  will be run.
     # @return nil
-    def self.after_all_tests
-    end
+    def self.after_all_tests; end
 
     # The name of the rollback mark used in the Puppet.context. This is what
     # the test infrastructure returns to for each test.

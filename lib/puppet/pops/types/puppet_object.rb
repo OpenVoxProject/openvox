@@ -23,11 +23,9 @@ module PuppetObject
     t
   end
 
-  def _pcore_all_contents(path, &block)
-  end
+  def _pcore_all_contents(path, &block); end
 
-  def _pcore_contents
-  end
+  def _pcore_contents; end
 
   def _pcore_init_hash
     {}

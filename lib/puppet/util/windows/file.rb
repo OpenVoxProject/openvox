@@ -127,7 +127,6 @@ module Puppet::Util::Windows::File
   INVALID_HANDLE_VALUE = FFI::Pointer.new(-1).address
   def self.create_file(file_name, desired_access, share_mode, security_attributes,
                        creation_disposition, flags_and_attributes, template_file_handle)
-
     result = CreateFileW(wide_string(file_name.to_s),
                          desired_access, share_mode, security_attributes, creation_disposition,
                          flags_and_attributes, template_file_handle)

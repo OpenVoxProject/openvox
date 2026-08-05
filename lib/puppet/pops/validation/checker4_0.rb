@@ -185,8 +185,7 @@ class Checker4_0 < Evaluator::LiteralEvaluator
 
   #---CHECKS
 
-  def check_Object(o)
-  end
+  def check_Object(o); end
 
   def check_Factory(o)
     check(o.model)
@@ -753,8 +752,7 @@ class Checker4_0 < Evaluator::LiteralEvaluator
   # other names). This means that (if the lexer/parser so chooses) a QualifiedName
   # can be anything when it represents a Bare Word and evaluates to a String.
   #
-  def check_QualifiedName(o)
-  end
+  def check_QualifiedName(o); end
 
   # Checks that the value is a valid UpperCaseWord (a CLASSREF), and optionally if it contains a hypen.
   # DOH: QualifiedReferences are created with LOWER CASE NAMES at parse time
@@ -1146,8 +1144,6 @@ class Checker4_0 < Evaluator::LiteralEvaluator
       o.value
     when Model::QualifiedReference
       o.value
-    else
-      nil
     end
   end
 end

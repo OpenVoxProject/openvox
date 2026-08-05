@@ -31,8 +31,6 @@ class Puppet::Util::Ldap::Generator
   def source
     if @source
       @source.to_s
-    else
-      nil
     end
   end
 

@@ -381,8 +381,7 @@ class Application
   # usually not necessary to override this method.
   # @return [void]
   # @api public
-  def preinit
-  end
+  def preinit; end
 
   # Call in setup of subclass to deprecate an application.
   # @return [void]

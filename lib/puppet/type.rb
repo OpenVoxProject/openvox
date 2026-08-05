@@ -659,8 +659,6 @@ class Type
       # Note that if this is a property, then the value is the "should" value,
       # not the current value.
       obj.value
-    else
-      nil
     end
   end
 
@@ -754,8 +752,6 @@ class Type
     prop = @parameters[name.intern]
     if prop && prop.is_a?(Puppet::Property)
       prop.should
-    else
-      nil
     end
   end
 
@@ -833,8 +829,6 @@ class Type
     obj = @parameters[name.intern]
     if obj && obj.is_a?(Puppet::Property)
       obj
-    else
-      nil
     end
   end
 
@@ -902,8 +896,6 @@ class Type
     obj = @parameters[name]
     if obj && obj.respond_to?(:value)
       obj.value
-    else
-      nil
     end
   end
 
@@ -1023,8 +1015,7 @@ class Type
   # @return [void]
   # @abstract a resource type may implement this method to perform
   #   validation checks that can query the complete catalog
-  def pre_run_check
-  end
+  def pre_run_check; end
 
   # Flushes the provider if supported by the provider, else no action.
   # This is called by the transaction.
@@ -2197,8 +2188,8 @@ class Type
   # @return [void]
   def self.initvars
     # all of the instances of this class
-    @objects = Hash.new
-    @aliases = Hash.new
+    @objects = {}
+    @aliases = {}
 
     @defaults = {}
 
@@ -2511,8 +2502,6 @@ class Type
     parents = catalog.adjacent(self, :direction => :in)
     @parent = if parents
                 parents.shift
-              else
-                nil
               end
   end
 

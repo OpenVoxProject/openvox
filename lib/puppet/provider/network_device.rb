@@ -61,8 +61,7 @@ class Puppet::Provider::NetworkDevice < Puppet::Provider
     @property_hash.clear
   end
 
-  def self.instances
-  end
+  def self.instances; end
 
   def former_properties
     @properties.dup

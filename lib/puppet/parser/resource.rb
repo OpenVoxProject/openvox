@@ -38,8 +38,6 @@ class Puppet::Parser::Resource < Puppet::Resource
 
     if @parameters.has_key?(param)
       @parameters[param].value
-    else
-      nil
     end
   end
 
@@ -90,7 +88,6 @@ class Puppet::Parser::Resource < Puppet::Resource
   def exported=(value)
     if value
       @virtual = true
-    else
     end
     @exported = value
   end
@@ -226,7 +223,6 @@ class Puppet::Parser::Resource < Puppet::Resource
         if value.is_a?(Array)
           value = value.flatten.reject { |v| v.nil? || :undef == v }
         end
-      else
       end
       result[param.name] = value
     end)

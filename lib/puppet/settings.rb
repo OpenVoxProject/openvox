@@ -443,8 +443,6 @@ class Puppet::Settings
     obj = @config[name.to_sym]
     if obj
       obj.desc
-    else
-      nil
     end
   end
 

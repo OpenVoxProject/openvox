@@ -4,8 +4,7 @@
 # @api private
 #
 class Puppet::Pops::Lookup::KeyRecorder
-  def initialize
-  end
+  def initialize; end
 
   # rubocop:disable Naming/MemoizedInstanceVariableName
   def self.singleton
@@ -16,6 +15,5 @@ class Puppet::Pops::Lookup::KeyRecorder
   # Records a key
   # (This implementation does nothing)
   #
-  def record(key)
-  end
+  def record(key); end
 end

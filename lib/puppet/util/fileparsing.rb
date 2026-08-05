@@ -154,8 +154,6 @@ module Puppet::Util::FileParsing
     record = record_type(type)
     if record
       record.fields.dup
-    else
-      nil
     end
   end
 
@@ -196,8 +194,6 @@ module Puppet::Util::FileParsing
               ret[field] = value
             end
           end
-        else
-          nil
         end
       else
         ret = {}
@@ -229,8 +225,6 @@ module Puppet::Util::FileParsing
     if ret
       ret[:record_type] = record.name
       ret
-    else
-      nil
     end
   end
 
