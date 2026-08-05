@@ -2,9 +2,67 @@
 
 All notable changes to this project will be documented in this file.
 
-## [9.0.0-alpha2](https://github.com/openvoxproject/openvox/tree/9.0.0-alpha2) (2026-07-14)
+## [9.0.0-beta2](https://github.com/openvoxproject/openvox/tree/9.0.0-beta2) (2026-08-05)
 
-[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.28.1...9.0.0-alpha2)
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/9.0.0-beta1...9.0.0-beta2)
+
+**Breaking changes:**
+
+- puppet-runtime: update 2026.07.16.1-\>2026.08.04.1 / removed java keystores [\#593](https://github.com/OpenVoxProject/openvox/pull/593) ([bastelfreak](https://github.com/bastelfreak))
+- Remove zone\_core module [\#592](https://github.com/OpenVoxProject/openvox/pull/592) ([bastelfreak](https://github.com/bastelfreak))
+- Update vendored modules to latest versions [\#589](https://github.com/OpenVoxProject/openvox/pull/589) ([bastelfreak](https://github.com/bastelfreak))
+- Change reports default from "store" to "none" [\#583](https://github.com/OpenVoxProject/openvox/pull/583) ([Sharpie](https://github.com/Sharpie))
+- openfact: Require 6.x [\#577](https://github.com/OpenVoxProject/openvox/pull/577) ([bastelfreak](https://github.com/bastelfreak))
+- Promote openfact 6.0.0 into main [\#575](https://github.com/OpenVoxProject/openvox/pull/575) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Remove data-binding settings [\#385](https://github.com/OpenVoxProject/openvox/pull/385) ([silug](https://github.com/silug))
+- Remove hiera indirector [\#384](https://github.com/OpenVoxProject/openvox/pull/384) ([silug](https://github.com/silug))
+- Allow file content that looks like a checksum. [\#170](https://github.com/OpenVoxProject/openvox/pull/170) ([jeremie-pierson](https://github.com/jeremie-pierson))
+
+**Implemented enhancements:**
+
+- Replace deprecated `--force-yes` `apt-get` option [\#560](https://github.com/OpenVoxProject/openvox/pull/560) ([jay7x](https://github.com/jay7x))
+- Update CFPropertyList requirement from \>= 3.0.6, \< 4 to ~\> 4.0 [\#509](https://github.com/OpenVoxProject/openvox/pull/509) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+**Fixed bugs:**
+
+- \[Bug\]: Centralized filebucket not working properly [\#367](https://github.com/OpenVoxProject/openvox/issues/367)
+- \[Bug\]: lines in file resource content looking like a checksum throws an error [\#169](https://github.com/OpenVoxProject/openvox/issues/169)
+- fix: Pacman provider uses unrecognized option '--update' [\#451](https://github.com/OpenVoxProject/openvox/pull/451) ([fmichea](https://github.com/fmichea))
+- Fix filebucket REST terminus to support request.server [\#368](https://github.com/OpenVoxProject/openvox/pull/368) ([mdechiaro](https://github.com/mdechiaro))
+- fix: `Deferred` resolution of Puppet-language functions \(e.g. mocks in tests\) failing due to lack of `:global_scope` [\#350](https://github.com/OpenVoxProject/openvox/pull/350) ([griggi-ws](https://github.com/griggi-ws))
+
+**Closed issues:**
+
+- Packaged java module in spec is referencing old artifacts [\#563](https://github.com/OpenVoxProject/openvox/issues/563)
+- \[Deprecation\] Replace `puppet master` Terminology in User-Facing Docs/Help [\#347](https://github.com/OpenVoxProject/openvox/issues/347)
+- \[Deprecation\] Data-Binding Settings [\#338](https://github.com/OpenVoxProject/openvox/issues/338)
+- \[Deprecation\] `file { content => <checksum> }` Filebucket Retrieval Behavior [\#335](https://github.com/OpenVoxProject/openvox/issues/335)
+- \[Deprecation\] `Puppet::Indirector::Hiera` Terminus [\#332](https://github.com/OpenVoxProject/openvox/issues/332)
+
+**Merged pull requests:**
+
+- Remove setup.ps1 Cygwin setup script [\#591](https://github.com/OpenVoxProject/openvox/pull/591) ([Sharpie](https://github.com/Sharpie))
+- Remove unloadable CC-BY-1.0 RDoc template and generator [\#587](https://github.com/OpenVoxProject/openvox/pull/587) ([silug](https://github.com/silug))
+- Document cross-node read exposure of a central filebucket [\#585](https://github.com/OpenVoxProject/openvox/pull/585) ([silug](https://github.com/silug))
+- Update JRuby 10.1 test cell to 10.1.1.0 [\#584](https://github.com/OpenVoxProject/openvox/pull/584) ([Sharpie](https://github.com/Sharpie))
+- Add man page validation to CI [\#580](https://github.com/OpenVoxProject/openvox/pull/580) ([silug](https://github.com/silug))
+- Address review feedback from \#530 [\#579](https://github.com/OpenVoxProject/openvox/pull/579) ([silug](https://github.com/silug))
+- Remove bashism from pre/post-install scripts [\#573](https://github.com/OpenVoxProject/openvox/pull/573) ([sideeffect42](https://github.com/sideeffect42))
+- Update URLs in default config files [\#572](https://github.com/OpenVoxProject/openvox/pull/572) ([jcharaoui](https://github.com/jcharaoui))
+- Improve manpage reproducibility [\#570](https://github.com/OpenVoxProject/openvox/pull/570) ([jcharaoui](https://github.com/jcharaoui))
+- Fix a small typo in the markdown docs [\#569](https://github.com/OpenVoxProject/openvox/pull/569) ([jcharaoui](https://github.com/jcharaoui))
+- Validate that the catalog is compiled for this node [\#568](https://github.com/OpenVoxProject/openvox/pull/568) ([binford2k](https://github.com/binford2k))
+- User resource pw provider: Switches a couple commands to the safer array syntax [\#567](https://github.com/OpenVoxProject/openvox/pull/567) ([binford2k](https://github.com/binford2k))
+- Generate module tarball fixtures at test time [\#566](https://github.com/OpenVoxProject/openvox/pull/566) ([silug](https://github.com/silug))
+- Set `PUPPET_EXTRA_OPTS` variable to empty [\#559](https://github.com/OpenVoxProject/openvox/pull/559) ([corporate-gadfly](https://github.com/corporate-gadfly))
+- Promote puppet-runtime 2026.07.16.1 into main [\#553](https://github.com/OpenVoxProject/openvox/pull/553) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Rebrand Puppet -\> OpenVox and fix links [\#530](https://github.com/OpenVoxProject/openvox/pull/530) ([silug](https://github.com/silug))
+- Fix "translates custom oids to their long name" test [\#488](https://github.com/OpenVoxProject/openvox/pull/488) ([anthonyryan1](https://github.com/anthonyryan1))
+- Replace 'master' terminology with 'server' [\#348](https://github.com/OpenVoxProject/openvox/pull/348) ([silug](https://github.com/silug))
+
+## [9.0.0-beta1](https://github.com/openvoxproject/openvox/tree/9.0.0-beta1) (2026-07-15)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.28.1...9.0.0-beta1)
 
 **Breaking changes:**
 
