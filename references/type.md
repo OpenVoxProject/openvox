@@ -1,6 +1,6 @@
 ---
 layout: default
-built_from_commit: 748a2d11c7785733d0e72b7c4cc606137e07bb8f
+built_from_commit: a04cc7944b0a1d5ac7a7d25f1183e67e3ab826e0
 title: Resource Type Reference (Single-Page)
 canonical: "/openvox/latest/type.html"
 toc_levels: 2
@@ -9,7 +9,7 @@ toc: columns
 
 # Resource Type Reference (Single-Page)
 
-> **NOTE:** This page was generated from the OpenVox source code on 2026-08-04 10:46:37 -0500
+> **NOTE:** This page was generated from the OpenVox source code on 2026-08-05 21:49:18 +0200
 
 
 
@@ -134,7 +134,6 @@ The following types are included in supported modules on the Forge. However, the
 - [`sshkey`](https://forge.puppet.com/puppetlabs/sshkeys_core)
 - [`yumrepo`](https://forge.puppet.com/puppetlabs/yumrepo_core)
 - [`zfs`](https://forge.puppet.com/puppetlabs/zfs_core)
-- [`zone`](https://forge.puppet.com/puppetlabs/zone_core)
 - [`zpool`](https://forge.puppet.com/puppetlabs/zfs_core)
 
 ### Type modules available on the Forge
@@ -144,6 +143,11 @@ The following types are contained in modules that are maintained, but are not re
 - [`k5login`](https://forge.puppet.com/puppetlabs/k5login_core)
 - [`mailalias`](https://forge.puppet.com/puppetlabs/mailalias_core)
 - [`maillist`](https://forge.puppet.com/puppetlabs/maillist_core)
+- [`zone`](https://forge.puppet.com/puppetlabs/zone_core)
+
+The [`zone`](https://forge.puppet.com/puppetlabs/zone_core) module got removed in openvox-agent 9.
+It's available in openvox-agent 7 & 8.
+It can still be installed manually from the forge.
 
 ### Deprecated types
 
@@ -1815,7 +1819,7 @@ To use the `forcelocal` parameter, you need to install the `libuser` package (pr
  `/usr/sbin/lgroupadd` and `/usr/sbin/luseradd`).
 
 * Required binaries: `groupadd`, `groupdel`, `groupmod`, `lgroupadd`, `lgroupdel`, `lgroupmod`, `usermod`.
-* Supported features: `manages_local_users_and_groups`, `manages_members`, `system_groups`.
+* Supported features: `system_groups`.
 
 #### ldap {#group-provider-ldap}
 
@@ -1859,7 +1863,7 @@ Provider support:
 
 * **aix** - _manages aix lam, manages local users and groups, manages members_
 * **directoryservice** - _manages members_
-* **groupadd** - _manages local users and groups, manages members, system groups, libuser_
+* **groupadd** - _system groups, libuser_
 * **ldap** - No supported Provider features
 * **pw** - _manages members_
 * **windows_adsi** - _manages members_
@@ -4769,7 +4773,7 @@ will need to install Ruby's shadow password library (package known as
 
 * Required binaries: `passwd`, `useradd`, `userdel`, `usermod`.
 * Default for `os.name` == `openbsd`.
-* Supported features: `manages_expiry`, `manages_homedir`, `manages_shell`, `system_users`.
+* Supported features: `manages_expiry`, `manages_homedir`, `manages_loginclass`, `manages_passwords`, `manages_shell`, `system_users`.
 
 #### pw {#user-provider-pw}
 
@@ -4797,7 +4801,7 @@ To use the `forcelocal` parameter, you need to install the `libuser` package (pr
 `/usr/sbin/lgroupadd` and `/usr/sbin/luseradd`).
 
 * Required binaries: `chage`, `chpasswd`, `lchage`, `luseradd`, `luserdel`, `lusermod`, `useradd`, `userdel`, `usermod`.
-* Supported features: `allows_duplicates`, `manages_expiry`, `manages_homedir`, `manages_local_users_and_groups`, `manages_shell`, `system_users`.
+* Supported features: `allows_duplicates`, `manages_expiry`, `manages_homedir`, `manages_password_age`, `manages_passwords`, `manages_shell`, `system_users`.
 
 #### windows_adsi {#user-provider-windows_adsi}
 
@@ -4830,10 +4834,10 @@ Provider support:
 * **directoryservice** - _manages password salt, manages passwords, manages shell_
 * **hpuxuseradd** - _allows duplicates, manages homedir, manages passwords_
 * **ldap** - _manages passwords, manages shell_
-* **openbsd** - _manages expiry, manages homedir, manages shell, system users, manages passwords, manages loginclass_
+* **openbsd** - _manages expiry, manages homedir, manages loginclass, manages passwords, manages shell, system users, manages passwords, manages loginclass_
 * **pw** - _allows duplicates, manages expiry, manages homedir, manages passwords, manages shell_
 * **user_role_add** - _allows duplicates, manages homedir, manages password age, manages passwords, manages roles, manages shell, manages solaris rbac_
-* **useradd** - _allows duplicates, manages expiry, manages homedir, manages local users and groups, manages shell, system users, manages passwords, manages password age, libuser_
+* **useradd** - _allows duplicates, manages expiry, manages homedir, manages password age, manages passwords, manages shell, system users, manages passwords, manages password age, libuser_
 * **windows_adsi** - _manages homedir, manages passwords, manages roles_
   
 

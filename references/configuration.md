@@ -1,6 +1,6 @@
 ---
 layout: default
-built_from_commit: ac49e313d52da074fb7ff445c3e5021597940e53
+built_from_commit: a04cc7944b0a1d5ac7a7d25f1183e67e3ab826e0
 title: Configuration Reference
 toc: columns
 canonical: "/openvox/latest/configuration.html"
@@ -8,7 +8,7 @@ canonical: "/openvox/latest/configuration.html"
 
 # Configuration Reference
 
-> **NOTE:** This page was generated from the OpenVox source code on 2026-08-03 08:25:19 -0500
+> **NOTE:** This page was generated from the OpenVox source code on 2026-08-05 21:48:42 +0200
 
 
 
@@ -1672,7 +1672,7 @@ handlers; custom report handlers can also be loaded from modules.
 
 To turn off reports entirely, set this to `none`
 
-- *Default*: `store`
+- *Default*: `none`
 
 ### reporturl
 

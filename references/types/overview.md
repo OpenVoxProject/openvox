@@ -1,13 +1,13 @@
 ---
 layout: default
-built_from_commit: 3d665fe7a4a7dfa794748a310db79025a4d932cc
+built_from_commit: a04cc7944b0a1d5ac7a7d25f1183e67e3ab826e0
 title: Resource types overview
 canonical: "/openvox/latest/types/overview.html"
 ---
 
 # Resource types overview
 
-> **NOTE:** This page was generated from the OpenVox source code on 2026-08-01 22:13:15 +0000
+> **NOTE:** This page was generated from the OpenVox source code on 2026-08-05 21:49:18 +0200
 
 ## List of resource types
 
@@ -147,8 +147,8 @@ The following types are included in supported modules on the Forge. However, the
 - [`sshkey`](https://forge.puppet.com/puppetlabs/sshkeys_core)
 - [`yumrepo`](https://forge.puppet.com/puppetlabs/yumrepo_core)
 - [`zfs`](https://forge.puppet.com/puppetlabs/zfs_core)
-- [`zone`](https://forge.puppet.com/puppetlabs/zone_core)
 - [`zpool`](https://forge.puppet.com/puppetlabs/zfs_core)
+
 
 ### Type modules available on the Forge
 
@@ -157,6 +157,11 @@ The following types are contained in modules that are maintained, but are not re
 - [`k5login`](https://forge.puppet.com/puppetlabs/k5login_core)
 - [`mailalias`](https://forge.puppet.com/puppetlabs/mailalias_core)
 - [`maillist`](https://forge.puppet.com/puppetlabs/maillist_core)
+- [`zone`](https://forge.puppet.com/puppetlabs/zone_core)
+
+The [`zone`](https://forge.puppet.com/puppetlabs/zone_core) module got removed in openvox-agent 9.
+It's available in openvox-agent 7 & 8.
+It can still be installed manually from the forge.
 
 ### Deprecated types
 
