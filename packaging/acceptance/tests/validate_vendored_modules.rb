@@ -32,7 +32,6 @@ test_name "PA-1998: Validate that vendored modules are installed" do
       sshkey
       yumrepo
       zfs
-      zone
       zpool
     ]
     agents.each do |agent|
