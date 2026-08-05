@@ -10,8 +10,8 @@ describe Puppet::Util::RDoc do
       allow(RDoc::RDoc).to receive(:new).and_return(@rdoc)
     end
 
-    it "should tell RDoc to generate documentation using the Puppet generator" do
-      expect(@rdoc).to receive(:document).with(include("--fmt").and(include("puppet")))
+    it "should not request the removed custom puppet output format" do
+      expect(@rdoc).to receive(:document).with(satisfy { |opts| !opts.include?("--fmt") })
 
       Puppet::Util::RDoc.rdoc("output", [])
     end

@@ -16,9 +16,12 @@ module Puppet::Util::RDoc
 
     r = RDoc::RDoc.new
 
-    # specify our own format & where to output
-    options = ["--fmt", "puppet",
-               "--quiet",
+    # Documentation is rendered by RDoc's default generator using our custom
+    # parser. The historical custom "puppet" generator and its HTML template
+    # targeted RDoc 1.x and could not be loaded under any supported RDoc; the
+    # template also carried a CC-BY-1.0 license, which is incompatible with
+    # the Debian Free Software Guidelines. Both were removed.
+    options = ["--quiet",
                "--exclude", "/modules/[^/]*/spec/.*$",
                "--exclude", "/modules/[^/]*/files/.*$",
                "--exclude", "/modules/[^/]*/tests/.*$",
