@@ -354,7 +354,6 @@ file { '#{@coderoot}/environments/env1/environment.conf':
   ensure => file,
   mode => "0644",
   content => 'environment_timeout = 0
-environment_data_provider = "hiera"
 ',
 }
 
@@ -362,7 +361,6 @@ file { '#{@coderoot}/environments/env2/environment.conf':
   ensure => file,
   mode => "0644",
   content => 'environment_timeout = 0
-environment_data_provider = "function"
 ',
 }
 
@@ -370,7 +368,6 @@ file { '#{@coderoot}/environments/env3/environment.conf':
   ensure => file,
   mode => "0644",
   content => 'environment_timeout = 0
-environment_data_provider = "function"
 ',
 }
 
@@ -378,7 +375,6 @@ file { '#{@coderoot}/environments/env4/environment.conf':
   ensure => file,
   mode => "0644",
   content => 'environment_timeout = 0
-environment_data_provider = "none"
 ',
 }
 
@@ -422,7 +418,10 @@ file { '#{@coderoot}/environments/env2/hiera.yaml':
   ensure => file,
   mode => "0644",
   content => '---
-  version: 4
+  version: 5
+  hierarchy:
+    - name: "Environment data function"
+      v4_data_hash: environment::data
 ',
 }
 
@@ -440,7 +439,10 @@ file { '#{@coderoot}/environments/env3/hiera.yaml':
   ensure => file,
   mode => "0644",
   content => '---
-  version: 4
+  version: 5
+  hierarchy:
+    - name: "Environment data function"
+      v4_data_hash: environment::data
 ',
 }
 
@@ -458,7 +460,8 @@ file { '#{@coderoot}/environments/env4/hiera.yaml':
   ensure => file,
   mode => "0644",
   content => '---
-  version: 4
+  version: 5
+  hierarchy: []
 ',
 }
 
@@ -629,7 +632,10 @@ file { '#{@coderoot}/environments/production/modules/mod2/hiera.yaml':
   ensure => file,
   mode => "0644",
   content => '---
-  version: 4
+  version: 5
+  hierarchy:
+    - name: "Module data function"
+      v4_data_hash: mod2::data
 ',
 }
 
@@ -648,7 +654,10 @@ file { '#{@coderoot}/environments/production/modules/mod3/hiera.yaml':
   ensure => file,
   mode => "0644",
   content => '---
-  version: 4
+  version: 5
+  hierarchy:
+    - name: "Module data function"
+      v4_data_hash: mod3::data
 ',
 }
 
@@ -660,14 +669,6 @@ file { '#{@coderoot}/environments/production/modules/mod3/data/common.yaml':
   "mod3::global_key": "module-production-mod3-hiera provided value"
   "environment_key": "module-production-mod3-hiera provided value"
   "global_key" => "module-production-mod3-hiera provided value"
-',
-}
-
-file { '#{@coderoot}/environments/production/modules/mod4/hiera.yaml':
-  ensure => file,
-  mode => "0644",
-  content => '---
-  version: 4
 ',
 }
 
@@ -704,7 +705,10 @@ file { '#{@coderoot}/environments/env1/modules/mod2/hiera.yaml':
   ensure => file,
   mode => "0644",
   content => '---
-  version: 4
+  version: 5
+  hierarchy:
+    - name: "Module data function"
+      v4_data_hash: mod2::data
 ',
 }
 
@@ -722,7 +726,10 @@ file { '#{@coderoot}/environments/env1/modules/mod3/hiera.yaml':
   ensure => file,
   mode => "0644",
   content => '---
-  version: 4
+  version: 5
+  hierarchy:
+    - name: "Module data function"
+      v4_data_hash: mod3::data
 ',
 }
 
@@ -733,14 +740,6 @@ file { '#{@coderoot}/environments/env1/modules/mod3/data/common.yaml':
   "mod3::module_key": "module-env1-mod3-hiera provided value"
   "global_key": "module-env1-mod3-hiera provided value"
   "environment_key": "module-env1-mod3-hiera provided value"
-',
-}
-
-file { '#{@coderoot}/environments/env1/modules/mod4/hiera.yaml':
-  ensure => file,
-  mode => "0644",
-  content => '---
-  version: 4
 ',
 }
 
@@ -776,7 +775,10 @@ file { '#{@coderoot}/environments/env2/modules/mod2/hiera.yaml':
   ensure => file,
   mode => "0644",
   content => '---
-  version: 4
+  version: 5
+  hierarchy:
+    - name: "Module data function"
+      v4_data_hash: mod2::data
 ',
 }
 
@@ -794,7 +796,10 @@ file { '#{@coderoot}/environments/env2/modules/mod3/hiera.yaml':
   ensure => file,
   mode => "0644",
   content => '---
-  version: 4
+  version: 5
+  hierarchy:
+    - name: "Module data function"
+      v4_data_hash: mod3::data
 ',
 }
 
@@ -805,14 +810,6 @@ file { '#{@coderoot}/environments/env2/modules/mod3/data/common.yaml':
   "mod3::module_key": "module-env2-mod3-hiera provided value"
   "global_key": "module-env2-mod3-hiera provided value"
   "environment_key": "module-env2-mod3-hiera provided value"
-',
-}
-
-file { '#{@coderoot}/environments/env2/modules/mod4/hiera.yaml':
-  ensure => file,
-  mode => "0644",
-  content => '---
-  version: 4
 ',
 }
 
@@ -848,7 +845,10 @@ file { '#{@coderoot}/environments/env3/modules/mod2/hiera.yaml':
   ensure => file,
   mode => "0644",
   content => '---
-  version: 4
+  version: 5
+  hierarchy:
+    - name: "Module data function"
+      v4_data_hash: mod2::data
 ',
 }
 
@@ -866,7 +866,10 @@ file { '#{@coderoot}/environments/env3/modules/mod3/hiera.yaml':
   ensure => file,
   mode => "0644",
   content => '---
-  version: 4
+  version: 5
+  hierarchy:
+    - name: "Module data function"
+      v4_data_hash: mod3::data
 ',
 }
 
@@ -877,14 +880,6 @@ file { '#{@coderoot}/environments/env3/modules/mod3/data/common.yaml':
   "mod3::module_key": "module-env3-mod3-hiera provided value"
   "global_key": "module-env3-mod3-hiera provided value"
   "environment_key": "module-env3-mod3-hiera provided value"
-',
-}
-
-file { '#{@coderoot}/environments/env3/modules/mod4/hiera.yaml':
-  ensure => file,
-  mode => "0644",
-  content => '---
-  version: 4
 ',
 }
 
@@ -920,7 +915,10 @@ file { '#{@coderoot}/environments/env4/modules/mod2/hiera.yaml':
   ensure => file,
   mode => "0644",
   content => '---
-  version: 4
+  version: 5
+  hierarchy:
+    - name: "Module data function"
+      v4_data_hash: mod2::data
 ',
 }
 
@@ -938,7 +936,10 @@ file { '#{@coderoot}/environments/env4/modules/mod3/hiera.yaml':
   ensure => file,
   mode => "0644",
   content => '---
-  version: 4
+  version: 5
+  hierarchy:
+    - name: "Module data function"
+      v4_data_hash: mod3::data
 ',
 }
 
@@ -949,14 +950,6 @@ file { '#{@coderoot}/environments/env4/modules/mod3/data/common.yaml':
   "mod3::module_key": "module-env4-mod3-hiera provided value"
   "global_key": "module-env4-mod3-hiera provided value"
   "environment_key": "module-env4-mod3-hiera provided value"
-',
-}
-
-file { '#{@coderoot}/environments/env4/modules/mod4/hiera.yaml':
-  ensure => file,
-  mode => "0644",
-  content => '---
-  version: 4
 ',
 }
 
@@ -1712,8 +1705,7 @@ file { '#{@coderoot}/environments/production/modules/mod1/metadata.json':
   "source": "",
   "project_page": null,
   "issues_url": null,
-  "dependencies": [],
-  "data_provider": "hiera"
+  "dependencies": []
 }
 ',
 }
@@ -1730,8 +1722,7 @@ file { '#{@coderoot}/environments/production/modules/mod2/metadata.json':
   "source": "",
   "project_page": null,
   "issues_url": null,
-  "dependencies": [],
-  "data_provider": "function"
+  "dependencies": []
 }
 ',
 }
@@ -1748,8 +1739,7 @@ file { '#{@coderoot}/environments/production/modules/mod3/metadata.json':
   "source": "",
   "project_page": null,
   "issues_url": null,
-  "dependencies": [],
-  "data_provider": "function"
+  "dependencies": []
 }
 ',
 }
@@ -1766,8 +1756,7 @@ file { '#{@coderoot}/environments/production/modules/mod4/metadata.json':
   "source": "",
   "project_page": null,
   "issues_url": null,
-  "dependencies": [],
-  "data_provider": "none"
+  "dependencies": []
 }
 ',
 }
@@ -1784,8 +1773,7 @@ file { '#{@coderoot}/environments/env1/modules/mod1/metadata.json':
   "source": "",
   "project_page": null,
   "issues_url": null,
-  "dependencies": [],
-  "data_provider": "hiera"
+  "dependencies": []
 }
 ',
 }
@@ -1802,8 +1790,7 @@ file { '#{@coderoot}/environments/env1/modules/mod2/metadata.json':
   "source": "",
   "project_page": null,
   "issues_url": null,
-  "dependencies": [],
-  "data_provider": "function"
+  "dependencies": []
 }
 ',
 }
@@ -1820,8 +1807,7 @@ file { '#{@coderoot}/environments/env1/modules/mod3/metadata.json':
   "source": "",
   "project_page": null,
   "issues_url": null,
-  "dependencies": [],
-  "data_provider": "function"
+  "dependencies": []
 }
 ',
 }
@@ -1838,8 +1824,7 @@ file { '#{@coderoot}/environments/env1/modules/mod4/metadata.json':
   "source": "",
   "project_page": null,
   "issues_url": null,
-  "dependencies": [],
-  "data_provider": "none"
+  "dependencies": []
 }
 ',
 }
@@ -1856,8 +1841,7 @@ file { '#{@coderoot}/environments/env2/modules/mod1/metadata.json':
   "source": "",
   "project_page": null,
   "issues_url": null,
-  "dependencies": [],
-  "data_provider": "hiera"
+  "dependencies": []
 }
 ',
 }
@@ -1874,8 +1858,7 @@ file { '#{@coderoot}/environments/env2/modules/mod2/metadata.json':
   "source": "",
   "project_page": null,
   "issues_url": null,
-  "dependencies": [],
-  "data_provider": "function"
+  "dependencies": []
 }
 ',
 }
@@ -1892,8 +1875,7 @@ file { '#{@coderoot}/environments/env2/modules/mod3/metadata.json':
   "source": "",
   "project_page": null,
   "issues_url": null,
-  "dependencies": [],
-  "data_provider": "function"
+  "dependencies": []
 }
 ',
 }
@@ -1910,8 +1892,7 @@ file { '#{@coderoot}/environments/env2/modules/mod4/metadata.json':
   "source": "",
   "project_page": null,
   "issues_url": null,
-  "dependencies": [],
-  "data_provider": "none"
+  "dependencies": []
 }
 ',
 }
@@ -1928,8 +1909,7 @@ file { '#{@coderoot}/environments/env3/modules/mod1/metadata.json':
   "source": "",
   "project_page": null,
   "issues_url": null,
-  "dependencies": [],
-  "data_provider": "hiera"
+  "dependencies": []
 }
 ',
 }
@@ -1946,8 +1926,7 @@ file { '#{@coderoot}/environments/env3/modules/mod2/metadata.json':
   "source": "",
   "project_page": null,
   "issues_url": null,
-  "dependencies": [],
-  "data_provider": "function"
+  "dependencies": []
 }
 ',
 }
@@ -1964,8 +1943,7 @@ file { '#{@coderoot}/environments/env3/modules/mod3/metadata.json':
   "source": "",
   "project_page": null,
   "issues_url": null,
-  "dependencies": [],
-  "data_provider": "function"
+  "dependencies": []
 }
 ',
 }
@@ -1982,8 +1960,7 @@ file { '#{@coderoot}/environments/env3/modules/mod4/metadata.json':
   "source": "",
   "project_page": null,
   "issues_url": null,
-  "dependencies": [],
-  "data_provider": "none"
+  "dependencies": []
 }
 ',
 }
@@ -2000,8 +1977,7 @@ file { '#{@coderoot}/environments/env4/modules/mod1/metadata.json':
   "source": "",
   "project_page": null,
   "issues_url": null,
-  "dependencies": [],
-  "data_provider": "hiera"
+  "dependencies": []
 }
 ',
 }
@@ -2018,8 +1994,7 @@ file { '#{@coderoot}/environments/env4/modules/mod2/metadata.json':
   "source": "",
   "project_page": null,
   "issues_url": null,
-  "dependencies": [],
-  "data_provider": "function"
+  "dependencies": []
 }
 ',
 }
@@ -2036,8 +2011,7 @@ file { '#{@coderoot}/environments/env4/modules/mod3/metadata.json':
   "source": "",
   "project_page": null,
   "issues_url": null,
-  "dependencies": [],
-  "data_provider": "function"
+  "dependencies": []
 }
 ',
 }
@@ -2054,8 +2028,7 @@ file { '#{@coderoot}/environments/env4/modules/mod4/metadata.json':
   "source": "",
   "project_page": null,
   "issues_url": null,
-  "dependencies": [],
-  "data_provider": "none"
+  "dependencies": []
 }
 ',
 }
@@ -2498,7 +2471,7 @@ with_puppet_running_on master, @master_opts, @coderoot do
   rxe4m1 = on(master, puppet('lookup', '--explain', '--environment env4', 'mod1::module_key'))
   result = rxe4m1.stdout
   assert_match(
-    /Global Data Provider.*\s*Using.*\s*Hier.*\s*Path.*\s*Orig.*\s*No such key.*\s*Module.*Data Provider.*\s*Using.*\s*Hier.*common\"\s*Path.*\s*Orig.*\s*Found key.*module-env4-mod1-hiera/,
+    /Global Data Provider.*\s*Using.*\s*Hier.*\s*Path.*\s*Orig.*\s*No such key.*\s*Environment Data Provider.*\s*Using.*\s*No such key.*\s*Module.*Data Provider.*\s*Using.*\s*Hier.*common\"\s*Path.*\s*Orig.*\s*Found key.*module-env4-mod1-hiera/,
     result,
     "environment env4 mod1::module_key lookup failed."
   )
