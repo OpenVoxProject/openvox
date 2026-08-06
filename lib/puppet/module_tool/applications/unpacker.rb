@@ -35,7 +35,7 @@ module Puppet::ModuleTool
       def run
         unpack
         sanity_check
-        module_dir = @module_path + module_name
+        module_dir = Puppet::ModuleTool.module_dir_for(@module_path, full_module_name)
         move_into(module_dir)
 
         # Return the Pathname object representing the directory where the
@@ -76,9 +76,9 @@ module Puppet::ModuleTool
       end
 
       # @api private
-      def module_name
+      def full_module_name
         metadata = Puppet::Util::Json.load((root_dir + 'metadata.json').read)
-        metadata['name'][/-(.*)/, 1]
+        metadata['name']
       end
 
       # @api private
