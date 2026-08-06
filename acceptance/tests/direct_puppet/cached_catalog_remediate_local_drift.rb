@@ -14,10 +14,17 @@ test_name "PUP-5122: Puppet remediates local drift using code_id and content_uri
 
   basedir = master.tmpdir(File.basename(__FILE__, '.*'))
   module_dir = "#{basedir}/environments/production/modules"
+  master_reportdir = create_tmpdir_for_user(master, 'reportdir')
 
   master_opts = {
    'main' => {
       'environmentpath' => "#{basedir}/environments"
+    },
+   # The server no longer stores reports by default (reports = none);
+   # request storage explicitly like the other report-checking tests do.
+   'master' => {
+      'reportdir' => master_reportdir,
+      'reports' => 'store'
     }
   }
 
@@ -28,6 +35,7 @@ test_name "PUP-5122: Puppet remediates local drift using code_id and content_uri
   teardown do
     cleanup_puppetserver_code_id_scripts(master, basedir)
     on master, "rm -rf #{basedir}"
+    on master, "rm -rf #{master_reportdir}"
 
     agents.each do |agent|
       on(agent, puppet('config print lastrunfile')) do |command_result|
@@ -96,9 +104,9 @@ MANIFEST
       # sends a report.
 
       step "Remove existing reports from server reports directory"
-      on(master, "rm -rf /opt/puppetlabs/server/data/puppetserver/reports/#{agent.node_name}/*")
-      r = on(master, "ls /opt/puppetlabs/server/data/puppetserver/reports/#{agent.node_name} | wc -l").stdout.chomp
-      assert_equal(r, '0', "reports directory should be empty!")
+      on(master, "rm -rf #{master_reportdir}/#{agent.node_name}/*")
+      r = on(master, "ls #{master_reportdir}/#{agent.node_name} 2>/dev/null | wc -l").stdout.chomp
+      assert_equal('0', r, "reports directory should be empty!")
 
       step "Verify puppet run without drift does not make file request from server"
       r = on(agent, puppet("agent",
@@ -113,8 +121,8 @@ MANIFEST
       assert_equal(r, "", "Fail: Did agent try to contact server?")
 
       step "Verify report was delivered to server"
-      r = on(master, "ls /opt/puppetlabs/server/data/puppetserver/reports/#{agent.node_name} | wc -l").stdout.chomp
-      assert_equal(r, '1', "Reports directory should have one file")
+      r = on(master, "ls #{master_reportdir}/#{agent.node_name} | wc -l").stdout.chomp
+      assert_equal('1', r, "Reports directory should have one file")
 
       step "agent: #{agent}: Remove the test file to simulate drift"
       on(agent, "rm -rf #{agent_test_file_path}")
