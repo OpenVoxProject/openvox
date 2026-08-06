@@ -12,11 +12,6 @@ class Puppet::Indirector::FileMetadata::Http < Puppet::Indirector::GenericHttp
   include Puppet::FileServing::TerminusHelper
   include Puppet::Util::Checksums
 
-  # Requesting one of these is an explicit opt-out of real content
-  # verification; leave header-only (or :none, if headers gave nothing)
-  # behavior alone rather than paying for an extra download.
-  UNVERIFIED_CHECKSUM_TYPES = [:mtime, :ctime, :none].freeze
-
   def find(request)
     checksum_type = request.options[:checksum_type]
     # See URL encoding comment in Puppet::Type::File::ParamSource#chunk_file_from_source
@@ -74,7 +69,17 @@ class Puppet::Indirector::FileMetadata::Http < Puppet::Indirector::GenericHttp
   # fetch anyway.
   def verify(client, uri, checksum_type, metadata)
     return metadata if metadata.checksum_type != :none
-    return metadata unless checksum_type && !UNVERIFIED_CHECKSUM_TYPES.include?(checksum_type)
+
+    # mtime/ctime normally track changes, but with no time header from the
+    # server there is nothing to compare against, so the file can never be
+    # detected as changed -- say so instead of degrading silently. An
+    # explicit :none (or no requested type at all) already means
+    # "don't verify", so those stay quiet.
+    if checksum_type == :mtime || checksum_type == :ctime
+      Puppet.warning(_("Source %{uri} supplied no usable HTTP validation headers; with checksum => %{type} the file will never be detected as changed. Use a content digest checksum type to detect changes from this source.") % { uri: uri, type: checksum_type })
+      return metadata
+    end
+    return metadata if checksum_type.nil? || checksum_type == :none
 
     # :etag means "verify with whatever digest the server hands us"; with
     # no header to hand us one, fall back to the agent's configured
