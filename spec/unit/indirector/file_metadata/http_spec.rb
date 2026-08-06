@@ -242,24 +242,35 @@ describe Puppet::Indirector::FileMetadata::Http do
       expect(result.checksum).to eq("{sha256}#{Digest::SHA256.hexdigest(body)}")
     end
 
-    it "does not fetch the body when checksum_type is mtime" do
+    it "does not fetch the body when checksum_type is mtime, but warns that changes can never be detected" do
       stub_request(:head, key).to_return(status: 200, headers: DEFAULT_HEADERS)
       # No :get stub: a network call here would fail the example.
 
+      expect(Puppet).to receive(:warning).with(/checksum => mtime the file will never be detected as changed/)
       result = model.indirection.find(key, checksum_type: :mtime)
       expect(result.checksum_type).to eq(:none)
     end
 
-    it "does not fetch the body when checksum_type is none" do
+    it "does not fetch the body when checksum_type is ctime, but warns that changes can never be detected" do
       stub_request(:head, key).to_return(status: 200, headers: DEFAULT_HEADERS)
 
+      expect(Puppet).to receive(:warning).with(/checksum => ctime the file will never be detected as changed/)
+      result = model.indirection.find(key, checksum_type: :ctime)
+      expect(result.checksum_type).to eq(:none)
+    end
+
+    it "does not fetch the body or warn when checksum_type is none" do
+      stub_request(:head, key).to_return(status: 200, headers: DEFAULT_HEADERS)
+
+      expect(Puppet).not_to receive(:warning)
       result = model.indirection.find(key, checksum_type: :none)
       expect(result.checksum_type).to eq(:none)
     end
 
-    it "does not fetch the body when no checksum_type was requested at all" do
+    it "does not fetch the body or warn when no checksum_type was requested at all" do
       stub_request(:head, key).to_return(status: 200, headers: DEFAULT_HEADERS)
 
+      expect(Puppet).not_to receive(:warning)
       result = model.indirection.find(key)
       expect(result.checksum_type).to eq(:none)
     end
