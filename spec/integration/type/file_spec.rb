@@ -1373,17 +1373,19 @@ describe Puppet::Type.type(:file), :uses_checksums => true do
           expect(File.read(httppath)).to eq "Content via HTTP\n"
         end
 
-        # The fixture has neither last-modified nor content-checksum headers.
-        # Such upstream ressources are treated as "really fresh" and get
-        # downloaded during every run.
-        it "should fetch if no header specified" do
+        # The fixture has neither last-modified nor content-checksum headers
+        # (its ETag is not a recognizable digest). With checksum => mtime
+        # there is nothing to compare against, so the file is treated as
+        # unchanged and a warning is logged.
+        it "should not fetch if no header specified" do
           File.open(httppath, "wb") { |f| f.puts "Content originally on disk\n" }
           # make sure the mtime is not "right now", lest we get a race
           FileUtils.touch httppath, mtime: Time.parse("Sun, 22 Mar 2015 22:57:43 GMT")
           catalog.add_resource resource
           catalog.apply
           expect(Puppet::FileSystem.exist?(httppath)).to be_truthy
-          expect(File.read(httppath)).to eq "Content via HTTP\n"
+          expect(File.read(httppath)).to eq "Content originally on disk\n"
+          expect(@logs.map(&:message)).to include(a_string_matching(/checksum => mtime the file will never be detected as changed/))
         end
 
         it "should fetch if mtime is older on disk" do
