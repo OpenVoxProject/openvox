@@ -252,6 +252,17 @@ describe Puppet::Type.type(:file).attrclass(:source), :uses_checksums => true do
         allow(Puppet::Util::Platform).to receive(:windows?).and_return(false)
       end
 
+      it "copies the checksum type before the content, so metadata that resolved to :none munges to '{none}' rather than being summed with the stale requested type" do
+        @resource[:checksum] = :mtime
+        allow(@metadata).to receive(:checksum).and_return("{none}")
+        allow(@metadata).to receive(:checksum_type).and_return(:none)
+
+        @source.copy_source_values
+
+        expect(@resource[:checksum]).to eq(:none)
+        expect(@resource[:content]).to eq("{none}")
+      end
+
       context "when source_permissions is `use`" do
         before :each do
           @resource[:source_permissions] = "use"

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'digest'
 
 require 'puppet/indirector/file_metadata'
 require 'puppet/indirector/file_metadata/http'
@@ -38,7 +39,7 @@ describe Puppet::Indirector::FileMetadata::Http do
       expect(result.path).to eq('/dev/null')
       expect(result.relative_path).to be_nil
       expect(result.destination).to be_nil
-      expect(result.checksum).to match(%r{mtime})
+      expect(result.checksum).to eq('{none}')
       expect(result.owner).to be_nil
       expect(result.group).to be_nil
       expect(result.mode).to be_nil
@@ -86,7 +87,7 @@ describe Puppet::Indirector::FileMetadata::Http do
         .to_return(status: 200, headers: DEFAULT_HEADERS.merge("ETag" => %("#{etag_md5}")))
 
       result = model.indirection.find(key)
-      expect(result.checksum_type).to eq(:mtime)
+      expect(result.checksum_type).to eq(:none)
     end
 
     it "uses ETag as md5 when checksum_type is etag" do
@@ -113,14 +114,17 @@ describe Puppet::Indirector::FileMetadata::Http do
       expect(result.checksum).to eq("{sha256}#{sha256}")
     end
 
-    it "ignores weak ETags even with checksum_type => etag" do
+    it "ignores weak ETags even with checksum_type => etag, and earns a checksum via GET instead" do
+      body = "some file content"
       stub_request(:head, key)
         .to_return(status: 200, headers: DEFAULT_HEADERS.merge(
           "ETag" => 'W/"f5ffec8d8d16b43d5e9ac6ad4330c445"'
         ))
+      stub_request(:get, key).to_return(status: 200, body: body)
 
       result = model.indirection.find(key, checksum_type: :etag)
-      expect(result.checksum_type).to eq(:mtime)
+      expect(result.checksum_type).to eq(Puppet[:digest_algorithm].to_sym)
+      expect(result.checksum).to eq("{#{Puppet[:digest_algorithm]}}#{Digest::SHA256.hexdigest(body)}")
     end
 
     it "leniently parses base64" do
@@ -224,6 +228,99 @@ describe Puppet::Indirector::FileMetadata::Http do
         .to_return(status: 403)
 
       expect(model.indirection.find(key)).to be_nil
+    end
+  end
+
+  context "when no header can provide a checksum" do
+    it "earns one via GET when a real digest was requested" do
+      body = "some file content"
+      stub_request(:head, key).to_return(status: 200, headers: DEFAULT_HEADERS)
+      stub_request(:get, key).to_return(status: 200, body: body)
+
+      result = model.indirection.find(key, checksum_type: :sha256)
+      expect(result.checksum_type).to eq(:sha256)
+      expect(result.checksum).to eq("{sha256}#{Digest::SHA256.hexdigest(body)}")
+    end
+
+    it "does not fetch the body when checksum_type is mtime, but warns that changes can never be detected" do
+      stub_request(:head, key).to_return(status: 200, headers: DEFAULT_HEADERS)
+      # No :get stub: a network call here would fail the example.
+
+      expect(Puppet).to receive(:warning).with(/checksum => mtime the file will never be detected as changed/)
+      result = model.indirection.find(key, checksum_type: :mtime)
+      expect(result.checksum_type).to eq(:none)
+    end
+
+    it "does not fetch the body when checksum_type is ctime, but warns that changes can never be detected" do
+      stub_request(:head, key).to_return(status: 200, headers: DEFAULT_HEADERS)
+
+      expect(Puppet).to receive(:warning).with(/checksum => ctime the file will never be detected as changed/)
+      result = model.indirection.find(key, checksum_type: :ctime)
+      expect(result.checksum_type).to eq(:none)
+    end
+
+    it "does not fetch the body or warn when checksum_type is none" do
+      stub_request(:head, key).to_return(status: 200, headers: DEFAULT_HEADERS)
+
+      expect(Puppet).not_to receive(:warning)
+      result = model.indirection.find(key, checksum_type: :none)
+      expect(result.checksum_type).to eq(:none)
+    end
+
+    it "does not fetch the body or warn when no checksum_type was requested at all" do
+      stub_request(:head, key).to_return(status: 200, headers: DEFAULT_HEADERS)
+
+      expect(Puppet).not_to receive(:warning)
+      result = model.indirection.find(key)
+      expect(result.checksum_type).to eq(:none)
+    end
+
+    it "treats a failed verification GET as not found, rather than as unchanged" do
+      stub_request(:head, key).to_return(status: 200, headers: DEFAULT_HEADERS)
+      stub_request(:get, key).to_return(status: 500)
+
+      expect(model.indirection.find(key, checksum_type: :sha256)).to be_nil
+    end
+
+    it "propagates a network error during the verification GET, rather than treating it as unchanged" do
+      stub_request(:head, key).to_return(status: 200, headers: DEFAULT_HEADERS)
+      stub_request(:get, key).to_raise(Errno::ECONNREFUSED)
+
+      # Match Puppet's own wrapper text, not the strerror for ECONNREFUSED,
+      # which differs between platforms (Windows says "No connection could
+      # be made because the target machine actively refused it.").
+      expect {
+        model.indirection.find(key, checksum_type: :sha256)
+      }.to raise_error(Puppet::HTTP::HTTPError, %r{Request to https://example\.com/path/to/file failed})
+    end
+
+    it "falls back to Puppet[:digest_algorithm] (not a hardcoded md5) when checksum_type is etag and nothing resolves" do
+      stub_request(:head, key).to_return(status: 200, headers: DEFAULT_HEADERS)
+      body = "some file content"
+      stub_request(:get, key).to_return(status: 200, body: body)
+
+      result = model.indirection.find(key, checksum_type: :etag)
+      expect(result.checksum_type).to eq(Puppet[:digest_algorithm].to_sym)
+      expect(result.checksum).to eq("{#{Puppet[:digest_algorithm]}}#{Digest::SHA256.hexdigest(body)}")
+    end
+
+    it "does not fall back to md5 for checksum_type etag under FIPS" do
+      allow(Puppet::Util::Platform).to receive(:fips_enabled?).and_return(true)
+      stub_request(:head, key).to_return(status: 200, headers: DEFAULT_HEADERS)
+      stub_request(:get, key).to_return(status: 200, body: "some file content")
+
+      result = model.indirection.find(key, checksum_type: :etag)
+      expect(result.checksum_type).not_to eq(:md5)
+    end
+
+    it "does not double-earn a checksum when a header already provided one" do
+      # A real header-derived checksum should short-circuit before any GET,
+      # regardless of what was requested.
+      stub_request(:head, key).to_return(status: 200, headers: DEFAULT_HEADERS.merge(last_modified))
+      # No :get stub: a network call here would fail the example.
+
+      result = model.indirection.find(key, checksum_type: :sha256)
+      expect(result.checksum_type).to eq(:mtime)
     end
   end
 
