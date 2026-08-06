@@ -100,8 +100,6 @@ module Puppet::Pops::Types
           Iterator.new(PUnitType::DEFAULT, o.times)
         elsif o > 0
           IntegerRangeIterator.new(PIntegerType.new(0, o - 1))
-        else
-          nil
         end
       when PIntegerType
         # a finite range will always produce at least one element since it's inclusive

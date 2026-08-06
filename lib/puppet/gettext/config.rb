@@ -196,8 +196,6 @@ module Puppet::GettextConfig
       WINDOWS_PATH
     elsif !Puppet::Util::Platform.windows? && Puppet::FileSystem.exist?(POSIX_PATH)
       POSIX_PATH
-    else
-      nil
     end
   end
 

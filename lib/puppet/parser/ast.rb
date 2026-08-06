@@ -18,8 +18,7 @@ class Puppet::Parser::AST
 
   # Evaluate the current object.  Just a stub method, since the subclass
   # should override this method.
-  def evaluate(scope)
-  end
+  def evaluate(scope); end
 
   # The version of the evaluate method that should be called, because it
   # correctly handles errors.  It is critical to use this method because

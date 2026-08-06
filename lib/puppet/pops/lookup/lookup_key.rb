@@ -47,8 +47,6 @@ class LookupKey
           EMPTY_HASH
         when Array
           EMPTY_ARRAY
-        else
-          nil
         end
       else
         undig(pruned)

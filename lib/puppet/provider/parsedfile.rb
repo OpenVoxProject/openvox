@@ -189,8 +189,6 @@ class Puppet::Provider::ParsedFile < Puppet::Provider
           @property_hash[attr] || :absent
         elsif defined?(@resource)
           @resource.should(attr)
-        else
-          nil
         end
       end
 

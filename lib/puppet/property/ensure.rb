@@ -34,8 +34,6 @@ class Puppet::Property::Ensure < Puppet::Property
     defaultto do
       if @resource.managed?
         :present
-      else
-        nil
       end
     end
 
@@ -100,8 +98,6 @@ class Puppet::Property::Ensure < Puppet::Property
   defaultto do
     if @resource.managed?
       :present
-    else
-      nil
     end
   end
 end

@@ -42,8 +42,6 @@ module Time
         to_int <=> o
       when Float
         to_f <=> o
-      else
-        nil
       end
     end
 

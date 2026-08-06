@@ -558,8 +558,6 @@ Puppet::Face.define(:epp, '0.0.1') do
       template_file
     elsif Puppet::FileSystem.exist?(file)
       file
-    else
-      nil
     end
   end
 end

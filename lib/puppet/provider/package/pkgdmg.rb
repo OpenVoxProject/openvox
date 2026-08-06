@@ -138,8 +138,6 @@ Puppet::Type.type(:package).provide :pkgdmg, :parent => Puppet::Provider::Packag
     if Puppet::FileSystem.exist?("/var/db/.puppet_pkgdmg_installed_#{@resource[:name]}")
       Puppet.debug "/var/db/.puppet_pkgdmg_installed_#{@resource[:name]} found"
       { :name => @resource[:name], :ensure => :present }
-    else
-      nil
     end
   end
 

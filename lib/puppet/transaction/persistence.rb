@@ -48,8 +48,6 @@ class Puppet::Transaction::Persistence
        !@old_data["resources"][resource_name]["parameters"].nil? &&
        !@old_data["resources"][resource_name]["parameters"][param_name].nil?
       @old_data["resources"][resource_name]["parameters"][param_name]["system_value"]
-    else
-      nil
     end
   end
 

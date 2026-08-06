@@ -30,8 +30,6 @@ module Utils
         fp_value = Float(match[2])
         if fp_value != Float::INFINITY
           match[1] == '-' ? -fp_value : fp_value
-        else
-          nil
         end
       end
     end
@@ -69,8 +67,6 @@ module Utils
     when Numeric
       # Impossible to calculate radix, assume decimal
       [o, 10]
-    else
-      nil
     end
   rescue ArgumentError
     nil
@@ -94,8 +90,6 @@ module Utils
       end
     when Numeric
       o
-    else
-      nil
     end
   rescue ArgumentError
     nil

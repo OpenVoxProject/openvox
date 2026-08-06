@@ -103,8 +103,6 @@ module Interpolation
               if default_key_exists
                 lookup_invocation.report_found_in_defaults(root_key,
                                                            lookup_invocation.default_values[root_key])
-              else
-                nil
               end
             else
               lookup_invocation.report_found(root_key, val)

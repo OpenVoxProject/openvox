@@ -39,7 +39,7 @@ Puppet::Type.type(:package).provide :portupgrade, :parent => Puppet::Provider::P
     # Corresponding field names
     fields = [:portname, :ensure, :portorigin]
     # define Temporary hash used, packages array of hashes
-    hash = Hash.new
+    hash = {}
     packages = []
 
     # exec command
@@ -173,7 +173,7 @@ Puppet::Type.type(:package).provide :portupgrade, :parent => Puppet::Provider::P
     # Check: if output isn't in the right format, return nil
     if output =~ /^(\S+)-([^-\s]+)/
       # Fill in the details
-      hash = Hash.new
+      hash = {}
       hash[:portorigin] = name
       hash[:portname]   = Regexp.last_match(1)
       hash[:ensure]     = Regexp.last_match(2)

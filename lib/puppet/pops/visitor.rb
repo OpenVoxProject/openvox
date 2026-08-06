@@ -23,7 +23,7 @@ class Visitor
     @message = message
     @min_args = min_args
     @max_args = max_args
-    @cache = Hash.new
+    @cache = {}
   end
 
   # Visit the configured receiver

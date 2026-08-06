@@ -336,8 +336,6 @@ class Puppet::Parser::Scope
       value.to_i(8)
     when /^-?\d+$/
       value.to_i
-    else
-      nil
     end
   end
 
@@ -566,8 +564,6 @@ class Puppet::Parser::Scope
   def inherited_scope
     if resource && resource.type == TYPENAME_CLASS && !resource.resource_type.parent.nil?
       qualified_scope(resource.resource_type.parent)
-    else
-      nil
     end
   end
 
@@ -680,7 +676,7 @@ class Puppet::Parser::Scope
         target.merge!(inherited.to_hash(recursive))
       end
     else
-      target = Hash.new
+      target = {}
     end
 
     # add all local scopes

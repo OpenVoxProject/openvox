@@ -182,8 +182,7 @@ class PAnyType < TypedModelObject
   # @param originator [PTypeAliasType] the starting point for the check
   # @raise Puppet::Error if an illegal self recursion is detected
   # @api private
-  def check_self_recursion(originator)
-  end
+  def check_self_recursion(originator); end
 
   # Generalizes value specific types. Types that are not value specific will return `self` otherwise
   # the generalized type is returned.
@@ -521,8 +520,6 @@ class PTypeType < PTypeWithContainedType
       # @type describes the element type perfectly since the iteration is made over the
       # specified range.
       @type.finite_range? ? PIterableType.new(@type) : nil
-    else
-      nil
     end
   end
 
@@ -1050,8 +1047,6 @@ class PIntegerType < PNumericType
       min = @from <= o.numeric_from ? @from : o.numeric_from
       max = @to >= o.numeric_to ? @to : o.numeric_to
       PIntegerType.new(min, max)
-    else
-      nil
     end
   end
 
@@ -1224,8 +1219,6 @@ class PFloatType < PNumericType
       min = @from <= o.from ? @from : o.from
       max = @to >= o.to ? @to : o.to
       PFloatType.new(min, max)
-    else
-      nil
     end
   end
 

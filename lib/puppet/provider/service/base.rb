@@ -90,8 +90,7 @@ Puppet::Type.type(:service).provide :base, :parent => :service do
   end
 
   # There is no default command, which causes other methods to be used
-  def statuscmd
-  end
+  def statuscmd; end
 
   # Run the 'start' parameter command, or the specified 'startcmd'.
   def start
@@ -130,6 +129,5 @@ Puppet::Type.type(:service).provide :base, :parent => :service do
   end
 
   # There is no default command, which causes other methods to be used
-  def stopcmd
-  end
+  def stopcmd; end
 end

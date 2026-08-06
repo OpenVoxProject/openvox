@@ -3,12 +3,10 @@
 # Interface for something that is "locatable" (holds offset and length).
 class Puppet::Pops::Parser::Locatable
   # The offset in the locator's content
-  def offset
-  end
+  def offset; end
 
   # The length in the locator from the given offset
-  def length
-  end
+  def length; end
 
   # This class is useful for testing
   class Fixed < Puppet::Pops::Parser::Locatable

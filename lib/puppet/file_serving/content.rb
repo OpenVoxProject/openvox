@@ -25,8 +25,7 @@ class Puppet::FileServing::Content < Puppet::FileServing::Base
 
   # This is no longer used, but is still called by the file server implementations when interacting
   # with their model abstraction.
-  def collect(source_permissions = nil)
-  end
+  def collect(source_permissions = nil); end
 
   # Read the content of our file in.
   def content
