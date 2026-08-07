@@ -46,34 +46,9 @@ agents.each do |agent|
   step "Ensure the test environment is clean"
   on(agent, "rm -f #{target}")
 
-  step "Content Attribute: using a checksum from filebucket"
-  on(agent, "echo 'This is the checksum file contents' > #{target}")
-
-  step "Backup file into the filebucket"
-  on(agent, puppet_filebucket("backup --local #{target}"))
-
-  step "Modify file to force apply to retrieve file from local clientbucket"
-  on(agent, "echo 'This is the modified file contents' > #{target}")
-
-  dir = agent.puppet('user')['clientbucketdir']
-
-  sha256_manifest = %Q|
-    filebucket { 'local':
-      path => '#{dir}',
-    }
-
-    file { '#{target}':
-      ensure  => present,
-      content => '{sha256}3b9238769b033b48073267b8baea00fa51c598dc14081da51f2e510c37c46a28',
-      backup  => local,
-    }
-  |
-
-  step "Applying Manifest on Agent"
-  apply_manifest_on agent, sha256_manifest
-
-  step "Validate filebucket checksum file contents"
-  on(agent, "cat #{target}") do |result|
-    assert_match(/This is the checksum file content/, result.stdout, "File content not matched on #{agent}") unless agent['locale'] == 'ja'
-  end
+  # The "checksum from filebucket" scenario was removed along with the
+  # implicit filebucket retrieval for checksum-like content values
+  # (openvox#170); content is now always managed literally. See
+  # ticket_6541_invalid_filebucket_files.rb for coverage of the literal
+  # behavior.
 end
