@@ -98,10 +98,21 @@ PP
   "project_page": null,
   "issues_url": null,
   "dependencies": [
-  ],
-  "data_provider": "function"
+  ]
 }
         ',
+        mode => "0644",
+      }
+      # Hiera 5 module layer: bind the module data function
+      # (replaces the removed metadata.json "data_provider" key)
+      file { '#{testdir}/environments/production/modules/#{module_name}/hiera.yaml':
+        ensure => file,
+        content => '---
+version: 5
+hierarchy:
+  - name: "Module data function"
+    v4_data_hash: #{module_name}::data
+',
         mode => "0644",
       }
       file { '#{testdir}/environments/production/modules/#{module_name}/lib/puppet/bindings':
@@ -202,11 +213,21 @@ file { '#{testdir}/environments/production/environment.conf':
   ensure => file,
   content => '
     environment_timeout = 0
-    # for this environment, provide our own function to supply data to lookup
-    # implies a ruby function in <environment>/lib/puppet/functions/environment/data.rb
-    #   named environment::data()
-    environment_data_provider = "function"
   ',
+  mode => "0640",
+}
+
+# Hiera 5 environment layer: bind the environment data function
+# (replaces the removed environment_data_provider setting; the function
+#  lives in <environment>/lib/puppet/functions/environment/data.rb)
+file { '#{testdir}/environments/production/hiera.yaml':
+  ensure => file,
+  content => '---
+version: 5
+hierarchy:
+  - name: "Environment data function"
+    v4_data_hash: environment::data
+',
   mode => "0640",
 }
 
