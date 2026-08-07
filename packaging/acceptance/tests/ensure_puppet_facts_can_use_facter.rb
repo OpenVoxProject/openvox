@@ -4,9 +4,14 @@ test_name 'Ensure puppet facts can use facter' do
 
   agents.each do |agent|
     step 'test puppet facts with correct facter version' do
+      # Compare against the installed facter rather than a hardcoded major
+      # version, which broke on every openfact major bump (4 -> 5 -> 6).
+      installed_version = on(agent, facter('--version'), :acceptable_exit_codes => [0]).stdout.strip
       on(agent, puppet('facts'), :acceptable_exit_codes => [0]) do |result|
-        facter_major_version =  Integer(JSON.parse(result.stdout)["facterversion"].split('.').first)
-        assert(5 >= facter_major_version, "wrong facter version")
+        facterversion = JSON.parse(result.stdout)["facterversion"]
+        assert_equal(installed_version, facterversion,
+                     "puppet facts reported facterversion #{facterversion.inspect}, " \
+                     "but the installed facter is #{installed_version.inspect}")
       end
     end
 
