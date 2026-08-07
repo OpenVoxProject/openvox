@@ -40,7 +40,7 @@ module RDoc
     def add_plugin(plugin)
       name = plugin.name
       type = plugin.type
-      meth = AnyMethod.new("*args", name)
+      meth = AnyMethod.new(name, singleton: false)
       meth.params = "(*args)"
       meth.visibility = :public
       meth.document_self = true
