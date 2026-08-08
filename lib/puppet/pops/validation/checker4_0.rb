@@ -144,6 +144,20 @@ class Checker4_0 < Evaluator::LiteralEvaluator
     end
   end
 
+  # Returns an idempotent expression whose value is discarded when +o+ is used as a statement.
+  # A case expression can have side effects before its branch result, so inspect each branch tail
+  # even when the case expression as a whole is not idempotent.
+  def discarded_value_expression(o)
+    return o if idem(o)
+    return nil unless o.is_a?(Model::CaseExpression)
+
+    o.options.each do |option|
+      violator = ends_with_idem(option.then_expr)
+      return violator if violator
+    end
+    nil
+  end
+
   #---ASSIGNMENT CHECKS
 
   def assign_VariableExpression(o, via_index)
@@ -269,8 +283,9 @@ class Checker4_0 < Evaluator::LiteralEvaluator
       acceptor.accept(Issues::RESOURCE_WITHOUT_TITLE, o, :name => o.statements[0].value)
     else
       o.statements[0..-2].each do |statement|
-        if idem(statement)
-          acceptor.accept(Issues::IDEM_EXPRESSION_NOT_LAST, statement)
+        violator = discarded_value_expression(statement)
+        if violator
+          acceptor.accept(Issues::IDEM_EXPRESSION_NOT_LAST, violator)
           break # only flag the first
         end
       end
