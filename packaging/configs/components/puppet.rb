@@ -85,10 +85,7 @@ component "puppet" do |pkg, settings, platform|
     if platform.is_windows?
       msgfmt = "/usr/bin/msgfmt.exe"
     elsif platform.is_macos?
-      msgfmt = "/usr/local/opt/gettext/bin/msgfmt"
-      if platform.architecture == 'arm64'
-        msgfmt = "/opt/homebrew/bin/msgfmt"
-      end
+      msgfmt = "/opt/homebrew/bin/msgfmt"
     else
       msgfmt = "msgfmt"
     end
