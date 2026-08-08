@@ -6,12 +6,7 @@
 # * `Array`, `Hash` - having zero entries
 # * `String`, `Binary` - having zero length
 #
-# For backwards compatibility with the stdlib function with the same name the
-# following data types are also accepted by the function instead of raising an error.
-# Using these is deprecated and will raise a warning:
-#
-# * `Numeric` - `false` is returned for all `Numeric` values.
-# * `Undef` - `true` is returned for all `Undef` values.
+# For backwards compatibility, `Undef` is also accepted and returns `true`.
 #
 # @example Using `empty`
 #
@@ -36,10 +31,6 @@ Puppet::Functions.create_function(:empty) do
     param 'String', :str
   end
 
-  dispatch :numeric_empty do
-    param 'Numeric', :num
-  end
-
   dispatch :binary_empty do
     param 'Binary', :bin
   end
@@ -60,14 +51,6 @@ Puppet::Functions.create_function(:empty) do
     str.empty?
   end
 
-  # For compatibility reasons - return false rather than error on floats and integers
-  # (Yes, it is strange)
-  #
-  def numeric_empty(num)
-    deprecation_warning_for('Numeric')
-    false
-  end
-
   def binary_empty(bin)
     bin.length == 0
   end
@@ -77,11 +60,5 @@ Puppet::Functions.create_function(:empty) do
   #
   def undef_empty(x)
     true
-  end
-
-  def deprecation_warning_for(arg_type)
-    file, line = Puppet::Pops::PuppetStack.top_of_stack
-    msg = _("Calling function empty() with %{arg_type} value is deprecated.") % { arg_type: arg_type }
-    Puppet.warn_once('deprecations', "empty-from-#{file}-#{line}", msg, file, line)
   end
 end
