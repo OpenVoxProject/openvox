@@ -13,8 +13,9 @@ module RDoc::PuppetParserCore
     end
   end
 
-  # called with the top level file
-  def initialize(top_level, file_name, body, options, stats)
+  # RDoc 8 passes (top_level, content, options, stats).
+  def initialize(top_level, _body, options, stats)
+    file_name = top_level.absolute_name
     @options = options
     @stats   = stats
     @input_file_name = file_name
