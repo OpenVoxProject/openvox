@@ -22,7 +22,7 @@ describe Puppet::Type.type(:user).provider(:openbsd) do
 
   let(:shadow_entry) {
     return unless Puppet.features.libshadow?
-    entry = Etc::PasswdEntry.new
+    entry = Shadow::Passwd::Entry.new
     entry[:sp_namp]   = 'myuser' # login name
     entry[:sp_loginclass] = 'staff' # login class
     entry
@@ -47,7 +47,11 @@ describe Puppet::Type.type(:user).provider(:openbsd) do
       allow(Facter).to receive(:value).with('os.family').and_return('OpenBSD')
       allow(Facter).to receive(:value).with('os.release.major')
       resource[:expiry] = "1997-06-01"
-      expect(provider.addcmd).to eq(['/usr/sbin/useradd', '-e', 'June 01 1997', 'myuser'])
+      if Puppet.features.libshadow?
+        expect(provider.addcmd).to eq(['/usr/sbin/useradd', '-e', 'June 01 1997', '-L', 'staff', 'myuser'])
+      else
+        expect(provider.addcmd).to eq(['/usr/sbin/useradd', '-e', 'June 01 1997', 'myuser'])
+      end
     end
   end
 
