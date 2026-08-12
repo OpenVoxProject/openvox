@@ -62,19 +62,19 @@ describe Puppet::Type.type(:user).provider(:openbsd) do
 
     it "should return the loginclass if set", :if => Puppet.features.libshadow? do
       expect(Shadow::Passwd).to receive(:getspnam).with('myuser').and_return(shadow_entry)
-      provider.send(:loginclass).should == 'staff'
+      expect(provider.send(:loginclass)).to eq('staff')
     end
 
     it "should return the empty string when loginclass isn't set", :if => Puppet.features.libshadow? do
       shadow_entry[:sp_loginclass] = ''
       expect(Shadow::Passwd).to receive(:getspnam).with('myuser').and_return(shadow_entry)
-      provider.send(:loginclass).should == ''
+      expect(provider.send(:loginclass)).to eq('')
     end
 
     it "should return nil when loginclass isn't available", :if => Puppet.features.libshadow? do
       shadow_entry[:sp_loginclass] = nil
       expect(Shadow::Passwd).to receive(:getspnam).with('myuser').and_return(shadow_entry)
-      provider.send(:loginclass).should be_nil
+      expect(provider.send(:loginclass)).to be_nil
     end
   end
 end
