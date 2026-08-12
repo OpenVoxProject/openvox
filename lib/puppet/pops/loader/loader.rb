@@ -116,8 +116,6 @@ class Loader
     found = get_entry(typed_name)
     if found
       found.value
-    else
-      nil
     end
   end
 

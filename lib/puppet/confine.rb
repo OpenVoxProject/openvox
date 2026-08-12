@@ -81,6 +81,5 @@ class Puppet::Confine
   end
 
   # Provide a hook for subclasses.
-  def reset
-  end
+  def reset; end
 end

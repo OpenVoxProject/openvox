@@ -81,8 +81,6 @@ class PRuntimeType < PAnyType
     if @name_or_pattern.is_a?(Array)
       substituted = puppet_name.sub(*@name_or_pattern)
       substituted == puppet_name ? nil : PRuntimeType.new(@runtime, substituted)
-    else
-      nil
     end
   end
 

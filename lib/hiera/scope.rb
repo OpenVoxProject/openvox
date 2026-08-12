@@ -80,8 +80,6 @@ class Hiera
         scope.source.name.downcase
       elsif scope.parent
         find_hostclass(scope.parent)
-      else
-        nil
       end
     end
     private :find_hostclass

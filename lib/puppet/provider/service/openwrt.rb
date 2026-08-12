@@ -32,6 +32,5 @@ Puppet::Type.type(:service).provide :openwrt, :parent => :init, :source => :init
 
   # Purposely leave blank so we fail back to ps based status detection
   # As OpenWrt init script do not have status commands
-  def statuscmd
-  end
+  def statuscmd; end
 end

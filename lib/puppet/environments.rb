@@ -122,8 +122,6 @@ module Puppet::Environments
       env = get(name)
       if env
         Puppet::Settings::EnvironmentConf.static_for(env, Puppet[:environment_timeout], Puppet[:static_catalogs], Puppet[:rich_data])
-      else
-        nil
       end
     end
   end
@@ -221,8 +219,6 @@ module Puppet::Environments
       envdir = validated_directory(File.join(@environment_dir, name.to_s))
       if envdir
         Puppet::Settings::EnvironmentConf.load_from(envdir, @global_module_path)
-      else
-        nil
       end
     end
 
@@ -257,8 +253,6 @@ module Puppet::Environments
       envdir = Puppet::Environments::Directories.real_path(envdir).to_s
       if Puppet::FileSystem.directory?(envdir) && Puppet::Node::Environment.valid_name?(env_name)
         envdir
-      else
-        nil
       end
     end
 
@@ -325,8 +319,7 @@ module Puppet::Environments
       # Called when the environment is created.
       #
       # @param [Puppet::Node::Environment] env
-      def created(env)
-      end
+      def created(env); end
 
       # Is the environment with this name expired?
       #
@@ -339,8 +332,7 @@ module Puppet::Environments
       # The environment with this name was evicted.
       #
       # @param [Symbol] env_name The symbolic environment name
-      def evicted(env_name)
-      end
+      def evicted(env_name); end
     end
 
     def self.cache_expiration_service=(service)
@@ -536,8 +528,7 @@ module Puppet::Environments
         @guards = 0
       end
 
-      def touch
-      end
+      def touch; end
 
       def expired?(now)
         false

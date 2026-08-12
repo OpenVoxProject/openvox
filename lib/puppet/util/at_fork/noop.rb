@@ -8,13 +8,10 @@ class Puppet::Util::AtFork::Noop
       self
     end
 
-    def prepare
-    end
+    def prepare; end
 
-    def parent
-    end
+    def parent; end
 
-    def child
-    end
+    def child; end
   end
 end

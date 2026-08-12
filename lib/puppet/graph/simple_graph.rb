@@ -433,8 +433,6 @@ class Puppet::Graph::SimpleGraph
     elsif dependents(f).include?(t)
       m = (dependents(f) & direct_dependencies_of(t)).first
       path_between(f, m) + path_between(m, t)
-    else
-      nil
     end
   end
 

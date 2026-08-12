@@ -153,8 +153,6 @@ class Puppet::FileBucket::Dipper
         return nil
       end
       newsum
-    else
-      nil
     end
   end
 

@@ -26,8 +26,7 @@ class WindowsDaemon < Puppet::Util::Windows::Daemon
     end
   end
 
-  def service_init
-  end
+  def service_init; end
 
   def service_main(*argsv)
     argsv = (argsv << ARGV).flatten.compact

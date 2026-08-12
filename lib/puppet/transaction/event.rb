@@ -40,7 +40,6 @@ class Puppet::Transaction::Event
                  source_description: nil,
                  status: nil,
                  tags: nil)
-
     @audited = audited
     @corrective_change = corrective_change
     @desired_value = desired_value

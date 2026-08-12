@@ -11,11 +11,9 @@ class Puppet::Util::NetworkDevice::Transport::Base
     @timeout = 10
   end
 
-  def send(cmd)
-  end
+  def send(cmd); end
 
-  def expect(prompt)
-  end
+  def expect(prompt); end
 
   def command(cmd, options = {})
     send(cmd)

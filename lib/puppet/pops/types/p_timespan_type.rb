@@ -88,8 +88,6 @@ module Types
         new_min = numeric_from <= o.numeric_from ? numeric_from : o.numeric_from
         new_max = numeric_to >= o.numeric_to ? numeric_to : o.numeric_to
         self.class.new(new_min, new_max)
-      else
-        nil
       end
     end
 

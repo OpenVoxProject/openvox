@@ -132,8 +132,6 @@ module LexerSupport
         @locator
       when :offset
         @offset
-      else
-        nil
       end
     end
 

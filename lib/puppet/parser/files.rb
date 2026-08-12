@@ -76,8 +76,6 @@ module Puppet::Parser::Files
 
       if file && mod
         yield(mod, file)
-      else
-        nil
       end
     end
   end

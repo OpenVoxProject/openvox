@@ -681,8 +681,6 @@ class HieraConfigV5 < HieraConfig
                       expand_uris([he[location_key]], lookup_invocation)
                     when KEY_MAPPED_PATHS
                       expand_mapped_paths(entry_datadir, he[location_key], lookup_invocation)
-                    else
-                      nil
                     end
       end
       next if @config_path.nil? && !locations.nil? && locations.empty? # Default config and no existing paths found

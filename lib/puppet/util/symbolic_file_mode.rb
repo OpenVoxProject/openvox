@@ -5,9 +5,9 @@ require_relative '../../puppet/util'
 module Puppet
 module Util
 module SymbolicFileMode
-  SetUIDBit = ReadBit  = 4
+  SetUIDBit = ReadBit = 4
   SetGIDBit = WriteBit = 2
-  StickyBit = ExecBit  = 1
+  StickyBit = ExecBit = 1
   SymbolicMode = { 'x' => ExecBit, 'w' => WriteBit, 'r' => ReadBit }
   SymbolicSpecialToBit = {
     't' => { 'u' => StickyBit, 'g' => StickyBit, 'o' => StickyBit },

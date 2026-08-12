@@ -4,8 +4,7 @@
 # @api private
 #
 class Puppet::Pops::Migration::MigrationChecker
-  def initialize
-  end
+  def initialize; end
 
   # rubocop:disable Naming/MemoizedInstanceVariableName
   def self.singleton

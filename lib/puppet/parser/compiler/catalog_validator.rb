@@ -25,8 +25,7 @@ class Puppet::Parser::Compiler
     end
 
     # Validate some aspect of the catalog and raise a `CatalogValidationError` on failure
-    def validate
-    end
+    def validate; end
   end
 
   class CatalogValidationError < Puppet::Error

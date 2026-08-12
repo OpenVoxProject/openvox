@@ -69,9 +69,7 @@ class ClassLoader
     when PFloatType    ; Float
     when PUndefType    ; NilClass
     when PCallableType ; Proc
-    # rubocop:enable Layout/SpaceBeforeSemicolon
-    else
-      nil
+      # rubocop:enable Layout/SpaceBeforeSemicolon
     end
   end
   private_class_method :provide_from_type

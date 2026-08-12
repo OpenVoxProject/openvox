@@ -17,42 +17,34 @@ class Locator
   end
 
   # Returns the file name associated with the string content
-  def file
-  end
+  def file; end
 
   # Returns the string content
-  def string
-  end
+  def string; end
 
   def to_s
     "Locator for file #{file}"
   end
 
   # Returns the position on line (first position on a line is 1)
-  def pos_on_line(offset)
-  end
+  def pos_on_line(offset); end
 
   # Returns the line number (first line is 1) for the given offset
-  def line_for_offset(offset)
-  end
+  def line_for_offset(offset); end
 
   # Returns the offset on line (first offset on a line is 0).
   #
-  def offset_on_line(offset)
-  end
+  def offset_on_line(offset); end
 
   # Returns the character offset for a given reported offset
-  def char_offset(byte_offset)
-  end
+  def char_offset(byte_offset); end
 
   # Returns the length measured in number of characters from the given start and end byte offset
-  def char_length(offset, end_offset)
-  end
+  def char_length(offset, end_offset); end
 
   # Extracts the text from offset with given length (measured in what the locator uses for offset)
   # @returns String - the extracted text
-  def extract_text(offset, length)
-  end
+  def extract_text(offset, length); end
 
   def extract_tree_text(ast)
     first = ast.offset
@@ -71,8 +63,7 @@ class Locator
   # Returns the line index - an array of line offsets for the start position of each line, starting at 0 for
   # the first line.
   #
-  def line_index
-  end
+  def line_index; end
 
   # Common byte based impl that works for all rubies (stringscanner is byte based
   def self.compute_line_index(string)

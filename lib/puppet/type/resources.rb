@@ -64,8 +64,6 @@ Puppet::Type.newtype(:resources) do
     defaultto {
       if @resource[:name] == "user"
         @resource.class.system_users_max_uid
-      else
-        nil
       end
     }
   end
