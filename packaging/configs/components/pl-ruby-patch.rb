@@ -10,14 +10,14 @@ component "pl-ruby-patch" do |pkg, settings, platform|
   if platform.is_cross_compiled?
     if platform.is_macos?
       pkg.build_requires 'gnu-sed'
-      pkg.environment "PATH", "/usr/local/opt/gnu-sed/libexec/gnubin:$(PATH)"
+      pkg.environment "PATH", "/opt/homebrew/opt/gnu-sed/libexec/gnubin:$(PATH)"
     end
 
     ruby_api_version = settings[:ruby_version].gsub(/\.\d*$/, '.0')
     ruby_version_y = settings[:ruby_version].gsub(/(\d+)\.(\d+)\.(\d+)/, '\1.\2')
 
     base_ruby = if platform.name =~ /macos/
-                  "/usr/local/opt/ruby@#{ruby_version_y}/lib/ruby/#{ruby_api_version}"
+                  "/opt/homebrew/opt/ruby@#{ruby_version_y}/lib/ruby/#{ruby_version_y}.0"
                 else
                   "/opt/pl-build-tools/lib/ruby/2.1.0"
                 end
@@ -27,7 +27,7 @@ component "pl-ruby-patch" do |pkg, settings, platform|
                     elsif platform.name == 'solaris-11-sparc'
                       "sparc-solaris-2.11"
                     elsif platform.is_macos?
-                      "aarch64-darwin"
+                      "x86_64-darwin"
                     else
                       "#{platform.architecture}-linux"
                     end
