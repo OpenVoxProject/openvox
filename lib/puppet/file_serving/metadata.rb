@@ -73,14 +73,27 @@ class Puppet::FileServing::Metadata < Puppet::FileServing::Base
     def initialize(stat, path, source_permissions)
       super(stat, source_permissions)
       @path = path
-      raise(ArgumentError, _("Unsupported Windows source permissions option %{source_permissions}") % { source_permissions: source_permissions }) unless @source_permissions_ignore
     end
 
     { :owner => 'S-1-5-32-544',
       :group => 'S-1-0-0',
       :mode => 0o644 }.each do |method, default_value|
       define_method method do
-        default_value
+        return default_value if @source_permissions_ignore
+
+        begin
+          Puppet::Util::Windows::Security.send("get_#{method}", @path) || default_value
+        rescue Puppet::Util::Windows::Error => detail
+          # Return defaults for files without a DACL (e.g. on non-NTFS volumes).
+          # ERROR_INVALID_DACL = 1336
+          return default_value if detail.code == 1336
+
+          # Handle a VirtualBox bug where ERROR_INVALID_FUNCTION is returned when
+          # following a symlink to a volume that is not NTFS. ERROR_INVALID_FUNCTION = 1
+          return default_value if detail.code == 1 && Puppet.runtime[:facter].value('virtual') == 'virtualbox'
+
+          raise
+        end
       end
     end
   end
