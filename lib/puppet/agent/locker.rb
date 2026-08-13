@@ -13,7 +13,7 @@ require_relative '../../puppet/error'
 # OpenVox API because it used by external tools such as mcollective.
 #
 # For more information, please see docs on the website.
-#  http://links.puppet.com/agent_lockfiles
+#  https://docs.openvoxproject.org/openvox/latest/configuration.html#agent_catalog_run_lockfile
 module Puppet::Agent::Locker
   # Yield if we get a lock, else raise Puppet::LockError. Return
   # value of block yielded.

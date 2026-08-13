@@ -12,7 +12,7 @@ require_relative '../../puppet/util/json_lockfile'
 #  because it used by external tools such as mcollective.
 #
 # For more information, please see docs on the website.
-#  http://links.puppet.com/agent_lockfiles
+#  https://docs.openvoxproject.org/openvox/latest/configuration.html#agent_catalog_run_lockfile
 module Puppet::Agent::Disabler
   DISABLED_MESSAGE_JSON_KEY = "disabled_message"
 
