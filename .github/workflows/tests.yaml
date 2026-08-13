@@ -2,7 +2,9 @@
 name: RSpec tests
 
 on:
-  pull_request: { branches: ['main'] }
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - main
@@ -12,6 +14,10 @@ permissions:
 
 env:
   BUNDLE_SET: "without packaging documentation release"
+
+concurrency:
+  group: rspec-tests-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   validate_manpages:
@@ -175,13 +181,94 @@ jobs:
           bundle exec rake -T | grep vox:upload
         working-directory: packaging
 
+  test_gem_build:
+    name: Test gem build
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install Ruby
+        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
+        with:
+          ruby-version: ruby
+          bundler-cache: true
+
+      - name: Build gem for all platforms
+        run: bundle exec rake ci:gem_build
+
+      - name: Upload gem to GitHub cache
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: gem-artifact
+          path: '*.gem'
+          retention-days: 1
+          compression-level: 0
+
+  test_install:
+    name: Test gem install
+    needs: test_gem_build
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            gem-platform: ruby
+          - os: macos-15
+            gem-platform: universal-darwin
+          - os: windows-2025
+            gem-platform: x64-mingw32
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Download gem from GitHub cache
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: gem-artifact
+
+      - name: Determine gem file
+        id: gem
+        shell: bash
+        env:
+          GEM_PLATFORM: ${{ matrix.gem-platform }}
+        run: |
+          gem_file="$(
+            ruby -rrubygems -e '
+              spec = Gem::Specification.load("openvox.gemspec")
+              abort "Could not load openvox.gemspec" unless spec
+              spec.platform = ENV.fetch("GEM_PLATFORM") unless ENV["GEM_PLATFORM"] == "ruby"
+              puts spec.file_name
+            '
+          )"
+
+          test -f "$gem_file"
+          echo "file=$gem_file" >> "$GITHUB_OUTPUT"
+
+      - name: Install Ruby
+        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
+        with:
+          ruby-version: ruby
+          bundler-cache: true
+
+      - name: Install gem
+        run: gem install "${{ steps.gem.outputs.file }}" --verbose
+
+      - name: Smoke test
+        shell: bash
+        run: |
+          puppet --version
+          ruby -rpuppet -e 'puts Puppet.version'
+
   tests:
     if: always()
     needs:
-      - validate_manpages
       - checks
-      - rspec_tests
       - rake_checks
+      - rspec_tests
+      - test_gem_build
+      - test_install
+      - validate_manpages
     runs-on: ubuntu-24.04
     name: Test suite
     steps:
