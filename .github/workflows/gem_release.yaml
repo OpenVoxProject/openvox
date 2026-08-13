@@ -22,7 +22,7 @@ jobs:
           ruby-version: 'ruby'
       - name: Build gem
         shell: bash
-        run: gem build --verbose *.gemspec
+        run: bundle exec rake ci:gem_build
       - name: Upload gem to GitHub cache
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -46,6 +46,7 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
+        # gh supports wildcards for release assets, so we can just upload all gem files in one command
         run: gh release create --repo ${{ github.repository }} ${{ github.ref_name }} --generate-notes *.gem
 
   release-to-github:
@@ -60,9 +61,14 @@ jobs:
         with:
           name: gem-artifact
       - name: Publish gem to GitHub packages
-        run: gem push --host https://rubygems.pkg.github.com/${{ github.repository_owner }} *.gem
         env:
           GEM_HOST_API_KEY: ${{ secrets.GITHUB_TOKEN }}
+        # gem push does not support wildcards, so we have to loop through all gem files
+        # each combination of gem name, platform and version is a unique artifact, so we can have multiple gem files with the same name, version but different platforms
+        run: |
+          for gem_file in *.gem; do
+            gem push --host "https://rubygems.pkg.github.com/${{ github.repository_owner }}" "$gem_file"
+          done
 
   release-to-rubygems:
     needs: build-release
@@ -79,7 +85,12 @@ jobs:
       - uses: rubygems/configure-rubygems-credentials@dc5a8d8553e6ee01fc26761a49e99e733d17954a # v2.1.0
       - name: Publish gem to rubygems.org
         shell: bash
-        run: gem push *.gem
+        # gem push does not support wildcards, so we have to loop through all gem files
+        # each combination of gem name, platform and version is a unique artifact, so we can have multiple gem files with the same name, version but different platforms
+        run: |
+          for gem_file in *.gem; do
+            gem push "$gem_file"
+          done
 
   release-verification:
     name: Check that all releases are done
@@ -101,6 +112,9 @@ jobs:
           ruby-version: 'ruby'
       - name: Wait for release to propagate
         shell: bash
+        # we upload different gem files for different platforms, so we have to wait for all of them to be available.
         run: |
           gem install rubygems-await
-          gem await *.gem
+          for gem_file in *.gem; do
+            gem await "$gem_file"
+          done
