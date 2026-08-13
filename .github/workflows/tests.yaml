@@ -90,7 +90,7 @@ jobs:
       - name: Output Ruby Environment
         run: bundle env
       - name: Build gem for all platforms
-        run: bundle exec rake pl_ci:gem_build
+        run: bundle exec rake ci:gem_build
       # Windows tests fail if the gem is in the filesystem
       - name: Cleanup builds
         if: runner.os == 'Windows'

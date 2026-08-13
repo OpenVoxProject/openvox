@@ -56,7 +56,7 @@ task :default do
   sh %{rake -T}
 end
 
-namespace :pl_ci do
+namespace :ci do
   desc 'Build openvox gems'
   task :gem_build, [:gemspec] do |t, args|
     args.with_defaults(gemspec: 'openvox.gemspec')
@@ -92,7 +92,7 @@ namespace :pl_ci do
         end
       end
       dst.flush
-      Rake::Task['pl_ci:gem_build'].invoke(dst.path)
+      Rake::Task['ci:gem_build'].invoke(dst.path)
     end
   end
 end
