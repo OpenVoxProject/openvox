@@ -9,7 +9,7 @@ tag 'audit:integration', # lockfile uses the standard `vardir` location to store
 #
 # This test is intended to ensure that puppet agent --enable/--disable
 #  work properly, both in terms of complying with our public "API" around
-#  lockfile semantics ( http://links.puppet.com/agent_lockfiles ), and
+#  lockfile semantics ( https://docs.openvoxproject.org/openvox/latest/configuration.html#agent_catalog_run_lockfile ), and
 #  in terms of actually restricting or allowing new agent runs to begin.
 #
 
