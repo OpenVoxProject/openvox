@@ -93,14 +93,10 @@ jobs:
         with:
           ruby-version: ${{ matrix.cfg.ruby }}
           bundler-cache: true
+
       - name: Output Ruby Environment
         run: bundle env
-      - name: Build gem for all platforms
-        run: bundle exec rake ci:gem_build
-      # Windows tests fail if the gem is in the filesystem
-      - name: Cleanup builds
-        if: runner.os == 'Windows'
-        run: Remove-Item -Path *.gem
+
       - name: Run tests on Windows
         if: runner.os == 'Windows'
         run: |
