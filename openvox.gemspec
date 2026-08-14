@@ -58,7 +58,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency('semantic_puppet', '~> 1.0')
 
   platform = spec.platform.to_s
-  windows_platforms = %w[x86-mingw32 x64-mingw-ucrt]
+  windows_platforms = %w[x64-mingw-ucrt]
   windows = windows_platforms.include?(platform)
 
   if platform == 'universal-darwin'
