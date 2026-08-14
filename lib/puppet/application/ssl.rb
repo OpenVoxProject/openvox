@@ -304,13 +304,14 @@ class Puppet::Application::Ssl < Puppet::Application
     @cert_provider.delete_request(certname)
     cert
   rescue Puppet::HTTP::ResponseError => e
-    if e.response.code == 404
-      nil
-    else
-      raise Puppet::Error.new(_("Failed to download certificate: %{message}") % { message: e.message }, e)
-    end
+    body = e.response.body.to_s.strip
+    raise Puppet::Error.new(_("Failed to renew certificate: %{code} %{reason}%{body}") % {
+      code: e.response.code,
+      reason: e.response.reason,
+      body: body.empty? ? '' : ": #{body}"
+    }, e)
   rescue => e
-    raise Puppet::Error.new(_("Failed to download certificate: %{message}") % { message: e.message }, e)
+    raise Puppet::Error.new(_("Failed to renew certificate: %{message}") % { message: e.message }, e)
   end
 
   def verify(certname)
