@@ -319,8 +319,14 @@ describe Puppet::Application::Ssl, unless: Puppet::Util::Platform.jruby? do
       stub_request(:post, %r{puppet-ca/v1/certificate_renewal}).to_return(status: 200, body: renewed[:cert].to_pem)
 
       expects_command_to_fail(
-        %r{^Failed to download certificate: The certificate for 'CN=ssl-client' does not match its private key}
+        %r{^Failed to renew certificate: The certificate for 'CN=ssl-client' does not match its private key}
       )
+    end
+
+    it 'raises an error if the CA returns an error response' do
+      stub_request(:post, %r{puppet-ca/v1/certificate_renewal}).to_return(status: [404, 'Not Found'], body: 'Certificate was not found')
+
+      expects_command_to_fail(%r{^Failed to renew certificate: 404 Not Found: Certificate was not found})
     end
   end
   
