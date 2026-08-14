@@ -62,7 +62,7 @@ namespace :ci do
     args.with_defaults(gemspec: 'openvox.gemspec')
     stdout, stderr, status = Open3.capture3(<<~END)
       gem build #{args.gemspec} --verbose --strict --platform x86-mingw32 && \
-      gem build #{args.gemspec} --verbose --strict --platform x64-mingw32 && \
+      gem build #{args.gemspec} --verbose --strict --platform x64-mingw-ucrt && \
       gem build #{args.gemspec} --verbose --strict --platform universal-darwin && \
       gem build #{args.gemspec} --verbose --strict
     END

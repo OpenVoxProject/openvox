@@ -216,7 +216,7 @@ jobs:
           - os: macos-15
             gem-platform: universal-darwin
           - os: windows-2025
-            gem-platform: x64-mingw32
+            gem-platform: x64-mingw-ucrt
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout

@@ -55,6 +55,8 @@ group(:test) do
   gem 'webmock', '~> 3.0', require: false
   gem 'webrick', '~> 1.7', require: false
   gem 'yard', require: false
+  # The source gemspec has the generic ruby platform, so declare this explicitly for Windows development and CI.
+  gem 'win32ole', '>= 1.8', '< 2.0', require: false, platforms: [:windows]
 
   gem 'rubocop', '~> 1.89.0', require: false, platforms: [:ruby]
   gem 'rubocop-i18n', '~> 3.0', require: false, platforms: [:ruby]
