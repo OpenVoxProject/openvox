@@ -1,0 +1,4 @@
+Updating and loading repositories:
+Repositories loaded.
+Upgrades (available for reinstall, available for upgrade)
+curl.x86_64 8.18.0-10.fc44 updates
