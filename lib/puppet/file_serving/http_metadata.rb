@@ -5,6 +5,9 @@ require_relative '../../puppet/file_serving/metadata'
 # Simplified metadata representation, suitable for the information
 # that is available from HTTP headers.
 class Puppet::FileServing::HttpMetadata < Puppet::FileServing::Metadata
+  # Content digests that can checksum a response body.
+  BODY_CHECKSUM_TYPES = [:md5, :sha1, :sha224, :sha256, :sha384, :sha512].freeze
+
   def initialize(http_response, path = '/dev/null')
     super(path)
 
@@ -13,8 +16,6 @@ class Puppet::FileServing::HttpMetadata < Puppet::FileServing::Metadata
 
     # hash available checksums for eventual collection
     @checksums = {}
-    # use a default mtime in case there is no usable HTTP header
-    @checksums[:mtime] = "{mtime}#{Time.now}"
 
     # RFC-1864, deprecated in HTTP/1.1 due to partial responses
     checksum = http_response['content-md5']
@@ -82,5 +83,17 @@ class Puppet::FileServing::HttpMetadata < Puppet::FileServing::Metadata
       @checksum = @checksums[type]
       break if @checksum
     end
+  end
+
+  # Checksum the response body for servers that send no usable checksum
+  # headers. Uses the requested checksum type when it is a content digest,
+  # otherwise Puppet[:digest_algorithm].
+  def collect_from_body(http_response, checksum_type = nil)
+    type = BODY_CHECKSUM_TYPES.include?(checksum_type) ? checksum_type : Puppet[:digest_algorithm].to_sym
+    sum = Puppet::Util::Checksums.send("#{type}_stream") do |digest|
+      http_response.read_body { |chunk| digest << chunk }
+    end
+    @checksum_type = type
+    @checksum = "{#{type}}#{sum}"
   end
 end
