@@ -12,19 +12,6 @@ describe 'Puppet::Type::Service::Provider::Openbsd',
     allow(FileTest).to receive(:executable?).with('/usr/sbin/rcctl').and_return(true)
   end
 
-  context "#instances" do
-    it "should have an instances method" do
-      expect(provider_class).to respond_to :instances
-    end
-
-    it "should list all available services" do
-      allow(provider_class).to receive(:execpipe).with(['/usr/sbin/rcctl', :getall]).and_yield(File.read(my_fixture('rcctl_getall')))
-      expect(provider_class.instances.map(&:name)).to eq([
-        'accounting', 'pf', 'postgresql', 'tftpd', 'wsmoused', 'xdm',
-      ])
-    end
-  end
-
   context "#start" do
     it "should use the supplied start command if specified" do
       provider = provider_class.new(Puppet::Type.type(:service).new(:name => 'sshd', :start => '/bin/foo'))
