@@ -124,7 +124,7 @@ module Puppet
         environment.modules.each do |mod|
           directory = File.join(Puppet::Util::Autoload.cleanpath(mod.plugin_directory), 'puppet', 'type')
           unless Puppet::FileSystem.exist?(directory)
-            Puppet.debug "Skipping '#{mod.name}' module because it contains no custom types."
+            Puppet.debug "Skipping '#{mod.name}' module because there is no readable puppet/type/ directory under: #{directory}"
             next
           end
 
