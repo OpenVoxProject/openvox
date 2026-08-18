@@ -54,6 +54,17 @@ test_name 'Backup puppet logs and app data on all hosts' do
   fi
   GREP_FOR_ALERTS
 
+        role_names = Array(host[:roles]).map(&:to_s)
+        is_master = role_names.include?('master') || role_names.include?('primary') || host == master
+        if is_master
+          on(host, <<~PUPPETSERVER_LOGS)
+            echo '--- puppetserver journal ---'
+            journalctl --unit puppetserver --boot --no-pager
+            echo '--- puppetserver log ---'
+            tail -n 200 /var/log/puppetlabs/puppetserver/puppetserver.log
+          PUPPETSERVER_LOGS
+        end
+
         step("Archiving logs for #{host} into #{archive_name} (muzzling everything but :warn or higher beaker logs...)") do
           ## turn the logger off to avoid getting hundreds of lines of scp progress output
           previous_level = @logger.log_level
