@@ -70,7 +70,6 @@ test_name 'Backup puppet logs and app data on all hosts' do
           previous_level = @logger.log_level
           @logger.log_level = :warn
 
-          pxp_cache = '/opt/puppetlabs/pxp-agent/spool'
           puppetlabs_data = '/etc/puppetlabs'
 
           version_lookup_result = on(host, "cat /opt/puppetlabs/puppet/VERSION", :accept_all_exit_codes => true)
@@ -81,7 +80,6 @@ test_name 'Backup puppet logs and app data on all hosts' do
           # want to proceed...
           if version_lookup_result.exit_code == 0
             agent_version = version_lookup_result.output.strip
-            archive_file_from(host, pxp_cache, {}, archive_root, archive_name) unless version_is_less(agent_version, "1.3.2")
             archive_file_from(host, puppetlabs_data, {}, archive_root, archive_name)
             archive_file_from(host, puppetlabs_logdir, {}, archive_root, archive_name)
           end
