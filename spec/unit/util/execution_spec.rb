@@ -909,29 +909,29 @@ describe Puppet::Util::Execution, if: !Puppet::Util::Platform.jruby? do
 
   describe "#execpipe" do
     it "should execute a string as a string" do
-      expect(IO).to receive(:popen).with('echo hello 2>&1', 'r').and_return('hello')
+      expect(IO).to receive(:popen).with({ 'LANG' => 'C', 'LC_ALL' => 'C' }, 'echo hello', err: :out).and_return('hello')
       expect(Puppet::Util::Execution).to receive(:exitstatus).and_return(0)
       expect(Puppet::Util::Execution.execpipe('echo hello')).to eq('hello')
     end
 
     it "should print meaningful debug message for string argument" do
       Puppet[:log_level] = 'debug'
-      expect(Puppet).to receive(:send_log).with(:debug, "Executing 'echo hello'")
-      expect(IO).to receive(:popen).with('echo hello 2>&1', 'r').and_return('hello')
+      expect(Puppet).to receive(:send_log).with(:debug, 'Executing "echo hello"')
+      expect(IO).to receive(:popen).with({ 'LANG' => 'C', 'LC_ALL' => 'C' }, 'echo hello', err: :out).and_return('hello')
       expect(Puppet::Util::Execution).to receive(:exitstatus).and_return(0)
       Puppet::Util::Execution.execpipe('echo hello')
     end
 
     it "should print meaningful debug message for array argument" do
       Puppet[:log_level] = 'debug'
-      expect(Puppet).to receive(:send_log).with(:debug, "Executing 'echo hello'")
-      expect(IO).to receive(:popen).with('echo hello 2>&1', 'r').and_return('hello')
+      expect(Puppet).to receive(:send_log).with(:debug, 'Executing ["echo", "hello"]')
+      expect(IO).to receive(:popen).with({ 'LANG' => 'C', 'LC_ALL' => 'C' }, ['echo', 'hello'], err: :out).and_return('hello')
       expect(Puppet::Util::Execution).to receive(:exitstatus).and_return(0)
       Puppet::Util::Execution.execpipe(['echo','hello'])
     end
 
-    it "should execute an array by pasting together with spaces" do
-      expect(IO).to receive(:popen).with('echo hello 2>&1', 'r').and_return('hello')
+    it "should execute an array" do
+      expect(IO).to receive(:popen).with({ 'LANG' => 'C', 'LC_ALL' => 'C' }, ['echo', 'hello'], err: :out).and_return('hello')
       expect(Puppet::Util::Execution).to receive(:exitstatus).and_return(0)
       expect(Puppet::Util::Execution.execpipe(['echo', 'hello'])).to eq('hello')
     end
