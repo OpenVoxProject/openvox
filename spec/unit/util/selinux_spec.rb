@@ -40,15 +40,20 @@ describe Puppet::Util::SELinux do
       allow(File).to receive(:new).and_call_original()
       allow(File).to receive(:new).with("/proc/mounts").and_return(fh)
       times_fh_called = 0
-      expect(fh).to receive(:read_nonblock) do
+      allow(fh).to receive(:read_nonblock) do
         times_fh_called += 1
         raise EOFError if times_fh_called > 1
 
         "rootfs / rootfs rw 0 0\n/dev/root / ext3 rw,relatime,errors=continue,user_xattr,acl,data=ordered 0 0\n/dev /dev tmpfs rw,relatime,mode=755 0 0\n/proc /proc proc rw,relatime 0 0\n/sys /sys sysfs rw,relatime 0 0\n192.168.1.1:/var/export /mnt/nfs nfs rw,relatime,vers=3,rsize=32768,wsize=32768,namlen=255,hard,nointr,proto=tcp,timeo=600,retrans=2,sec=sys,mountaddr=192.168.1.1,mountvers=3,mountproto=udp,addr=192.168.1.1 0 0\n"
-      end.twice()
+      end
+
+      Puppet::Util::SELinux.class_variable_set(:@@mounts_cache, nil)
+      Puppet::Util::SELinux.class_variable_set(:@@mounts_mtime, nil)
     end
 
     it "should parse the contents of /proc/mounts" do
+      expect(File).to receive(:mtime).with('/proc/mounts').once.and_return(Time.at(1000))
+
       result = read_mounts
       expect(result).to  eq({
         '/' => 'ext3',
@@ -56,6 +61,47 @@ describe Puppet::Util::SELinux do
         '/mnt/nfs' => 'nfs',
         '/proc' => 'proc',
         '/dev' => 'tmpfs' })
+    end
+
+    it "should memoize the result of read_mounts on subsequent calls" do
+      expect(File).to receive(:mtime).with('/proc/mounts').twice.and_return(Time.at(1000))
+
+      first_result = read_mounts
+
+      expect(File).not_to receive(:new).with("/proc/mounts")
+
+      second_result = read_mounts
+      expect(second_result).to eq(first_result)
+    end
+
+    it "should re-read /proc/mounts if the mtime changes mid-run" do
+      # Simulate an update to the file modification time across sequential reads
+      expect(File).to receive(:mtime).with('/proc/mounts').twice.and_return(Time.at(1000), Time.at(2000))
+
+      fh = double('fh', :close => nil)
+      allow(File).to receive(:new).with("/proc/mounts").and_return(fh)
+
+      # Mock alternating file content and EOF responses across reads
+      times_fh_called = 0
+      allow(fh).to receive(:read_nonblock) do
+        times_fh_called += 1
+
+        raise EOFError if times_fh_called.even?
+
+        if times_fh_called == 1
+          "/dev /dev tmpfs rw,relatime,mode=755 0 0\n"
+        else
+          "/dev /dev tmpfs rw,relatime,mode=755 0 0\n/dev/foo /mnt/newfs ext3 rw 0 0\n"
+        end
+      end
+
+      # Initial read should populate the baseline cache map
+      result1 = read_mounts
+      expect(result1).to eq({ '/dev' => 'tmpfs' })
+
+      # An mtime mismatch must invalidate the cache and return updated mount data
+      result2 = read_mounts
+      expect(result2).to eq({ '/dev' => 'tmpfs', '/mnt/newfs' => 'ext3' })
     end
   end
 
