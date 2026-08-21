@@ -40,12 +40,17 @@ describe Puppet::Util::SELinux do
       allow(File).to receive(:new).and_call_original()
       allow(File).to receive(:new).with("/proc/mounts").and_return(fh)
       times_fh_called = 0
-      expect(fh).to receive(:read_nonblock) do
+      allow(fh).to receive(:read_nonblock) do
         times_fh_called += 1
         raise EOFError if times_fh_called > 1
 
         "rootfs / rootfs rw 0 0\n/dev/root / ext3 rw,relatime,errors=continue,user_xattr,acl,data=ordered 0 0\n/dev /dev tmpfs rw,relatime,mode=755 0 0\n/proc /proc proc rw,relatime 0 0\n/sys /sys sysfs rw,relatime 0 0\n192.168.1.1:/var/export /mnt/nfs nfs rw,relatime,vers=3,rsize=32768,wsize=32768,namlen=255,hard,nointr,proto=tcp,timeo=600,retrans=2,sec=sys,mountaddr=192.168.1.1,mountvers=3,mountproto=udp,addr=192.168.1.1 0 0\n"
-      end.twice()
+      end
+
+      allow(File).to receive(:mtime).with('/proc/mounts').and_return(Time.at(1000))
+
+      Puppet::Util::SELinux.class_variable_set(:@@mounts_cache, nil)
+      Puppet::Util::SELinux.class_variable_set(:@@mounts_mtime, nil)
     end
 
     it "should parse the contents of /proc/mounts" do
@@ -56,6 +61,15 @@ describe Puppet::Util::SELinux do
         '/mnt/nfs' => 'nfs',
         '/proc' => 'proc',
         '/dev' => 'tmpfs' })
+    end
+
+    it "should memoize the result of read_mounts on subsequent calls" do
+      first_result = read_mounts
+
+      expect(File).not_to receive(:new).with("/proc/mounts")
+
+      second_result = read_mounts
+      expect(second_result).to eq(first_result)
     end
   end
 

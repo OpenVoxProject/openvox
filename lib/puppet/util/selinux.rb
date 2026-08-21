@@ -18,6 +18,9 @@ module Puppet::Util::SELinux
   S_IFDIR = 0o040000
   S_IFLNK = 0o120000
 
+  @@mounts_cache = nil
+  @@mounts_mtime = nil
+
   def self.selinux_support?
     return false unless defined?(Selinux)
     if Selinux.is_selinux_enabled == 1
@@ -259,6 +262,12 @@ module Puppet::Util::SELinux
 
   # Internal helper function to read and parse /proc/mounts
   def read_mounts
+    current_mtime = File.mtime('/proc/mounts')
+
+    if @@mounts_cache && @@mounts_mtime == current_mtime
+      return @@mounts_cache
+    end
+
     mounts = ''.dup
     begin
       if File.method_defined? "read_nonblock"
@@ -292,7 +301,9 @@ module Puppet::Util::SELinux
 
       mntpoint[params[1]] = params[2]
     end
-    mntpoint
+
+    @@mounts_mtime = current_mtime
+    @@mounts_cache = mntpoint
   end
 
   # Internal helper function to return which type of filesystem a given file
