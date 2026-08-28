@@ -55,6 +55,7 @@ class Lexer2
   TOKEN_LESSEQUAL    = [:LESSEQUAL,    '<=',  2].freeze
   TOKEN_LESSTHAN     = [:LESSTHAN,     '<',   1].freeze
 
+  # rubocop:disable Layout/ExtraSpacing
   TOKEN_FARROW       = [:FARROW,       '=>',  2].freeze
   TOKEN_PARROW       = [:PARROW,       '+>',  2].freeze
 
@@ -106,11 +107,9 @@ class Lexer2
   TOKEN_HEREDOC        = [:HEREDOC,     nil,  0].freeze
 
   # EPP_START is currently a marker token, may later get syntax
-  # rubocop:disable Layout/ExtraSpacing
   TOKEN_EPPSTART    = [:EPP_START,      nil,  0].freeze
   TOKEN_EPPEND      = [:EPP_END,       '%>',  2].freeze
   TOKEN_EPPEND_TRIM = [:EPP_END_TRIM, '-%>',  3].freeze
-  # rubocop:enable Layout/ExtraSpacing
 
   # This is used for unrecognized tokens, will always be a single character. This particular instance
   # is not used, but is kept here for documentation purposes.
@@ -141,6 +140,7 @@ class Lexer2
     'attr' => [:ATTR,     'attr',     4],
     'private' => [:PRIVATE, 'private', 7],
   }
+  # rubocop:enable Layout/ExtraSpacing
 
   KEYWORDS.each { |_k, v| v[1].freeze; v.freeze }
   KEYWORDS.freeze

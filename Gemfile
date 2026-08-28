@@ -58,7 +58,7 @@ group(:test) do
   # The source gemspec has the generic ruby platform, so declare this explicitly for Windows development and CI.
   gem 'win32ole', '>= 1.8', '< 2.0', require: false, platforms: [:windows]
 
-  gem 'rubocop', '~> 1.89.0', require: false, platforms: [:ruby]
+  gem 'rubocop', '~> 1.90.0', require: false, platforms: [:ruby]
   gem 'rubocop-i18n', '~> 3.0', require: false, platforms: [:ruby]
   gem 'rubocop-performance', '~> 1.0', require: false, platforms: [:ruby]
   gem 'rubocop-rake', '~> 0.6', require: false, platforms: [:ruby]

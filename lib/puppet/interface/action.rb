@@ -49,7 +49,7 @@ class Puppet::Interface::Action
 
   # The name of this action
   # @return [Symbol]
-  attr_reader   :name
+  attr_reader :name
 
   # The face this action is attached to
   # @return [Puppet::Interface]

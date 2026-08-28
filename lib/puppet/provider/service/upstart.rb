@@ -166,7 +166,7 @@ Puppet::Type.type(:service).provide :upstart, :parent => :debian do
   end
 
   def stopcmd
-    is_upstart? ? [command(:stop),  @resource[:name]] : super
+    is_upstart? ? [command(:stop), @resource[:name]] : super
   end
 
   def restartcmd

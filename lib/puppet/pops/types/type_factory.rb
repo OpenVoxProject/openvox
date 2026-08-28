@@ -268,7 +268,7 @@ module TypeFactory
   # @api public
   #
   def self.regexp(pattern = nil)
-    pattern ?  PRegexpType.new(pattern) : PRegexpType::DEFAULT
+    pattern ? PRegexpType.new(pattern) : PRegexpType::DEFAULT
   end
 
   def self.pattern(*regular_expressions)
