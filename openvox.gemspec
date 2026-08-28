@@ -22,7 +22,20 @@ Gem::Specification.new do |spec|
   EOF
   spec.email = "openvox@voxpupuli.org"
   spec.executables = ["puppet"]
-  spec.files = Dir['[A-Z]*'] + Dir['install.rb'] + Dir['bin/*'] + Dir['lib/**/*'] + Dir['conf/*'] + Dir['man/**/*'] + Dir['tasks/*'] + Dir['locales/**/*'] + Dir['ext/**/*'] + Dir['examples/**/*']
+  spec.files = Dir.chdir(__dir__) do
+    Dir.glob(%w[
+      [A-Z]*
+      install.rb
+      bin/*
+      lib/**/*
+      conf/*
+      man/**/*
+      tasks/*
+      locales/**/*
+      ext/**/*
+      examples/**/*
+    ]).reject { |path| File.directory?(path) || File.extname(path) == '.gem' }
+  end
   spec.license = "Apache-2.0"
   spec.homepage = "https://github.com/OpenVoxProject/openvox"
   spec.rdoc_options = ["--title", "OpenVox - Configuration Management", "--main", "README", "--line-numbers"]
@@ -43,16 +56,19 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency('racc', '~> 1.5')
   spec.add_runtime_dependency('scanf', '~> 1.0')
   spec.add_runtime_dependency('semantic_puppet', '~> 1.0')
-  spec.add_runtime_dependency('win32ole', '>= 1.8', '< 2.0') if Gem.win_platform?
 
   platform = spec.platform.to_s
+  windows_platforms = %w[x64-mingw-ucrt]
+  windows = windows_platforms.include?(platform)
+
   if platform == 'universal-darwin'
     spec.add_runtime_dependency('CFPropertyList', ['>= 3.0.6', '< 5'])
   end
 
-  if platform == 'x64-mingw32' || platform == 'x86-mingw32'
+  if windows
     # ffi 1.16.0 - 1.16.2 are broken on Windows
     spec.add_runtime_dependency('ffi', '>= 1.15.5', '< 2', '!= 1.16.0', '!= 1.16.1', '!= 1.16.2')
     spec.add_runtime_dependency('minitar', '~> 1.0')
+    spec.add_runtime_dependency('win32ole', '>= 1.8', '< 2.0')
   end
 end
