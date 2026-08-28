@@ -30,7 +30,7 @@ module Puppet::Pops
           raise ArgumentError, _("The hash given as 'merge' must contain the name of a strategy in string form for the key 'strategy'")
         end
 
-        merge_options  = merge.size == 1 ? EMPTY_HASH : merge
+        merge_options = merge.size == 1 ? EMPTY_HASH : merge
       else
         merge_strategy = merge
         merge_options = EMPTY_HASH

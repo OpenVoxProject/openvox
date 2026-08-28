@@ -110,7 +110,7 @@ module Types
         end
 
         dispatch :from_seconds do
-          param           'Variant[Integer,Float]', :seconds
+          param 'Variant[Integer,Float]', :seconds
         end
 
         dispatch :from_string do

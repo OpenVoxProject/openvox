@@ -39,12 +39,12 @@ Puppet::Type.type(:service).provide :smf, :parent => :base do
     service_instances.collect! do |line|
       state, fmri = line.split(/\s+/)
 
-      status =  case state
-                when /online/; :running
-                when /maintenance/; :maintenance
-                when /degraded/; :degraded
-                else :stopped
-                end
+      status = case state
+               when /online/; :running
+               when /maintenance/; :maintenance
+               when /degraded/; :degraded
+               else :stopped
+               end
       new({ :name => fmri, :ensure => status })
     end
 

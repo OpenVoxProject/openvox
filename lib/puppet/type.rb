@@ -2594,7 +2594,7 @@ class Type
   end
 
   # @return [Boolean] Returns whether the resource is virtual or not
-  def virtual?;  !!@virtual;  end
+  def virtual?; !!@virtual; end
   # @return [Boolean] Returns whether the resource is exported or not
   def exported?; !!@exported; end
 
