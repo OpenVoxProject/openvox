@@ -97,9 +97,35 @@ describe Puppet::HTTP::Service do
   end
 
   it 'raises for unknown service names' do
+    allow(Puppet.settings).to receive(:set_by_config?).and_call_original
+    allow(Puppet.settings).to receive(:set_by_config?).with(:server).and_return(true)
+
     expect {
       described_class.create_service(client, session, :westbound)
     }.to raise_error(ArgumentError, "Unknown service westbound")
+  end
+
+  it 'raises when server is unconfigured while running as root' do
+    allow(Puppet.settings).to receive(:set_by_config?).and_call_original
+    allow(Puppet.settings).to receive(:set_by_config?).with(:server).and_return(false)
+    allow(Puppet.features).to receive(:root?).and_return(true)
+
+    expect {
+      described_class.create_service(client, session, :westbound)
+    }.to raise_error(ArgumentError, /OpenVox does not default to `server=puppet` as of version 9\.0/)
+  end
+
+  it 'shows a non-privileged deprecation warning when server is unconfigured while running as non-root' do
+    allow(Puppet.settings).to receive(:set_by_config?).and_call_original
+    allow(Puppet.settings).to receive(:set_by_config?).with(:server).and_return(false)
+    allow(Puppet.features).to receive(:root?).and_return(false)
+
+    expect(Puppet).to receive(:deprecation_warning).with('OpenVox no longer defaults to `server=puppet` when running as a non-privileged user. (Did you mean to run as root?)')
+
+    expect {
+      # following call is needed to trigger above warning
+      described_class.create_service(client, session, :puppet)
+    }.to raise_error(ArgumentError, 'Required setting `server` is not specified.')
   end
 
   [:ca].each do |name|
