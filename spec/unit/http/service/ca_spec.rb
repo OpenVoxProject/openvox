@@ -8,6 +8,7 @@ describe Puppet::HTTP::Service::Ca do
   let(:subject) { client.create_session.route_to(:ca) }
 
   before :each do
+    allow(Puppet.features).to receive(:root?).and_return(false)
     Puppet[:ca_server] = 'www.example.com'
     Puppet[:ca_port] = 443
   end

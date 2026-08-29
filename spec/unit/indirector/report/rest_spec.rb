@@ -13,6 +13,7 @@ describe Puppet::Transaction::Report::Rest do
   end
 
   before(:each) do
+    allow(Puppet.features).to receive(:root?).and_return(false)
     Puppet[:report_server] = 'puppet'
     described_class.indirection.terminus_class = :rest
   end

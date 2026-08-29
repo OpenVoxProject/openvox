@@ -12,6 +12,7 @@ describe Puppet::HTTP::Service::Report do
   let(:report) { Puppet::Transaction::Report.new }
 
   before :each do
+    allow(Puppet.features).to receive(:root?).and_return(false)
     Puppet[:report_server] = 'www.example.com'
     Puppet[:report_port] = 443
   end
