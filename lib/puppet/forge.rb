@@ -150,7 +150,7 @@ class Puppet::Forge < SemanticPuppet::Dependency::Source
     def install(dir)
       staging_dir = prepare
 
-      module_dir = dir + name[/-(.*)/, 1]
+      module_dir = Puppet::ModuleTool.module_dir_for(dir, name)
       module_dir.rmtree if module_dir.exist?
 
       # Make sure unpacked module has the same ownership as the folder we are moving it into.
