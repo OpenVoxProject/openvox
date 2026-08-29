@@ -49,34 +49,41 @@ require 'spec_helper'
       expect(@sel.retrieve).to eq(expectedresult)
     end
 
-    it "should handle no default gracefully" do
-      skip if Puppet::Util::Platform.windows?
-      expect(@sel).to receive(:get_selinux_default_context_with_handle).with(@path, nil, :file).and_return(nil)
+    it "has a default value of :lookup if SELinux is supported" do
+      allow(Puppet::Util::SELinux).to receive(:selinux_support?).and_return(true)
+      expect(@sel.default).to eq(:lookup)
+    end
+
+    it "has a default value of nil if SELinux is not supported" do
+      allow(Puppet::Util::SELinux).to receive(:selinux_support?).and_return(false)
       expect(@sel.default).to be_nil
     end
 
-    it "should be able to detect default context on platforms other than Windows", unless: Puppet::Util::Platform.windows? do
-      allow(@sel).to receive(:debug)
+    it "has a default value of nil if selinux_ignore_defaults is true" do
+      @resource[:selinux_ignore_defaults] = :true
+      expect(@sel.default).to be_nil
+    end
+
+    it "looks up the default context when checking sync status", unless: Puppet::Util::Platform.windows? do
+      allow(@sel).to receive(:selinux_support?).and_return(true)
+      allow(@sel).to receive(:selinux_label_support?).with(@path).and_return(true)
+
+      if param == :selrange
+        expect(@sel).to receive(:selinux_category_to_label).with(:lookup).and_return(:lookup)
+      end
+      @sel.should = [:lookup]
+
       hnd = double("SWIG::TYPE_p_selabel_handle")
       allow(@sel.provider.class).to receive(:selinux_handle).and_return(hnd)
       expect(@sel).to receive(:get_selinux_default_context_with_handle).with(@path, hnd, :file).and_return("user_u:role_r:type_t:s0")
-      expectedresult = case param
+
+      currentval = case param
         when :seluser; "user_u"
         when :selrole; "role_r"
         when :seltype; "type_t"
         when :selrange; "s0"
       end
-      expect(@sel.default).to eq(expectedresult)
-    end
-
-    it "returns nil default context on Windows", if: Puppet::Util::Platform.windows? do
-      expect(@sel).to receive(:retrieve_default_context)
-      expect(@sel.default).to be_nil
-    end
-
-    it "should return nil for defaults if selinux_ignore_defaults is true" do
-      @resource[:selinux_ignore_defaults] = :true
-      expect(@sel.default).to be_nil
+      expect(@sel.insync?(currentval)).to be(true)
     end
 
     it "should be able to set a new context" do
