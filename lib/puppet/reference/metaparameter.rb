@@ -14,7 +14,7 @@ etc.), prevent OpenVox from making changes (`noop`), and change logging verbosit
 
 ## Available Metaparameters
 
-  }.dup
+  }.dup.strip + "\n"
   begin
     params = []
     Puppet::Type.eachmetaparam { |param|
