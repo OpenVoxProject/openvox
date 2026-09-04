@@ -2,7 +2,43 @@
 
 All notable changes to this project will be documented in this file.
 
-## [8.28.1](https://github.com/openvoxproject/openvox/tree/8.28.1) (2026-07-06)
+## [8.29.0](https://github.com/openvoxproject/openvox/tree/8.29.0) (2026-09-04)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.28.1...8.29.0)
+
+**Implemented enhancements:**
+
+- openfact: Allow 6.x [\#578](https://github.com/OpenVoxProject/openvox/pull/578) ([bastelfreak](https://github.com/bastelfreak))
+
+**Fixed bugs:**
+
+- \[Bug\]: Sometimes Error "This 'if' statement has no effect", sometimes not [\#542](https://github.com/OpenVoxProject/openvox/issues/542)
+- \[Bug\]: Centralized filebucket not working properly [\#367](https://github.com/OpenVoxProject/openvox/issues/367)
+- \[Bug\]: lines in file resource content looking like a checksum throws an error [\#169](https://github.com/OpenVoxProject/openvox/issues/169)
+- \[Backport 8.x\] Fix excessive reads of /proc/mounts [\#621](https://github.com/OpenVoxProject/openvox/pull/621) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- \[Backport 8.x\] Report errors when renewing a certificate fails [\#611](https://github.com/OpenVoxProject/openvox/pull/611) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- \[Backport 8.x\] fix: Pacman provider uses unrecognized option '--update' [\#565](https://github.com/OpenVoxProject/openvox/pull/565) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+
+**Security fixes:**
+
+- Promote puppet-runtime 2026.09.02.1 into 8.x [\#629](https://github.com/OpenVoxProject/openvox/pull/629) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+
+**Closed issues:**
+
+- \[Deprecation\] Replace `puppet master` Terminology in User-Facing Docs/Help [\#347](https://github.com/OpenVoxProject/openvox/issues/347)
+- \[Deprecation\] Fine-Grained `filetimeout` Control [\#345](https://github.com/OpenVoxProject/openvox/issues/345)
+- \[Deprecation\] Data-Binding Settings [\#338](https://github.com/OpenVoxProject/openvox/issues/338)
+- \[Deprecation\] `file { content => <checksum> }` Filebucket Retrieval Behavior [\#335](https://github.com/OpenVoxProject/openvox/issues/335)
+- \[Deprecation\] `Puppet::Indirector::Hiera` Terminus [\#332](https://github.com/OpenVoxProject/openvox/issues/332)
+
+**Merged pull requests:**
+
+- \[Backport 8.x\] puppet generate: print module directory when types are missing [\#618](https://github.com/OpenVoxProject/openvox/pull/618) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- \[Backport 8.x\] Fix a small typo in the markdown docs \(redux\) [\#606](https://github.com/OpenVoxProject/openvox/pull/606) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Remove unloadable CC-BY-1.0 RDoc template and generator [\#588](https://github.com/OpenVoxProject/openvox/pull/588) ([silug](https://github.com/silug))
+- \[Backport 8.x\] Set `PUPPET_EXTRA_OPTS` variable to empty [\#561](https://github.com/OpenVoxProject/openvox/pull/561) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+
+## [8.28.1](https://github.com/openvoxproject/openvox/tree/8.28.1) (2026-07-07)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/8.28.0...8.28.1)
 
