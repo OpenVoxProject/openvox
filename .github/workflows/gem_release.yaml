@@ -20,6 +20,7 @@ jobs:
         uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
         with:
           ruby-version: 'ruby'
+          bundler-cache: true
       - name: Build gem
         shell: bash
         run: bundle exec rake ci:gem_build
