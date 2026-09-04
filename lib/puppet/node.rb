@@ -155,7 +155,11 @@ class Puppet::Node
   def merge(params)
     params.each do |name, value|
       if @parameters.include?(name)
-        Puppet::Util::Warnings.warnonce(_("The node parameter '%{param_name}' for node '%{node_name}' was already set to '%{value}'. It could not be set to '%{desired_value}'") % { param_name: name, node_name: @name, value: @parameters[name], desired_value: value })
+        if @parameters[name] == value
+          Puppet::Util::Warnings.notice_once(_("The node parameter '%{param_name}' for node '%{node_name}' was already set to '%{value}'. It could not be set to '%{desired_value}'") % { param_name: name, node_name: @name, value: @parameters[name], desired_value: value })
+        else
+          Puppet::Util::Warnings.warnonce(_("The node parameter '%{param_name}' for node '%{node_name}' was already set to '%{value}'. It could not be set to '%{desired_value}'") % { param_name: name, node_name: @name, value: @parameters[name], desired_value: value })
+        end
       else
         @parameters[name] = value
       end
