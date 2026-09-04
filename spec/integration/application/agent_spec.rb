@@ -582,7 +582,7 @@ describe "puppet agent", unless: Puppet::Util::Platform.jruby? do
     it "waits for other agent run to finish before starting" do
       server.start_server do |port|
         Puppet[:serverport] = port
-        Puppet[:waitforlock] = 1
+        Puppet[:waitforlock] = 5
 
         with_another_agent_running do
           expect {
