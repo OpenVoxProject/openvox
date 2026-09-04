@@ -5,8 +5,17 @@ on:
   push:
     tags:
       - '*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing tag to release.'
+        required: true
+        type: string
 
 permissions: {}
+
+env:
+  RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
 
 jobs:
   build-release:
@@ -16,10 +25,13 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.RELEASE_TAG }}
       - name: Install Ruby
         uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
         with:
           ruby-version: 'ruby'
+          bundler-cache: true
       - name: Build gem
         shell: bash
         run: bundle exec rake ci:gem_build
@@ -47,7 +59,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         # gh supports wildcards for release assets, so we can just upload all gem files in one command
-        run: gh release create --repo ${{ github.repository }} ${{ github.ref_name }} --generate-notes *.gem
+        run: gh release create --repo ${{ github.repository }} ${{ env.RELEASE_TAG }} --generate-notes ./*.gem
 
   release-to-github:
     needs: build-release
