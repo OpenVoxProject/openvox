@@ -315,6 +315,60 @@ describe Puppet::Agent do
       end
     end
 
+    describe "when waiting for the forked child", :if => Puppet.features.posix? && RUBY_PLATFORM != 'java' do
+      let(:child_pid) { 1234 }
+      let(:status) { instance_double(Process::Status, exitstatus: 3) }
+
+      before do
+        @agent = Puppet::Agent.new(AgentTestClient, true)
+        allow(Kernel).to receive(:fork).and_return(child_pid)
+        allow(@agent).to receive(:sleep)
+      end
+
+      it "returns the child's exit status when it exits before the deadline" do
+        expect(Process).to receive(:waitpid2).with(child_pid, Process::WNOHANG).and_return(nil, [child_pid, status])
+        expect(Process).not_to receive(:kill)
+
+        expect(@agent.run_in_fork { 0 }).to eq(3)
+      end
+
+      it "blocks without a deadline when runtimeout is disabled" do
+        Puppet[:runtimeout] = 0
+
+        expect(Process).to receive(:waitpid2).with(child_pid).and_return([child_pid, status])
+        expect(Process).not_to receive(:kill)
+
+        expect(@agent.run_in_fork { 0 }).to eq(3)
+      end
+
+      it "kills the child once runtimeout plus the grace period has elapsed" do
+        Puppet[:runtimeout] = 10
+        Puppet[:http_connect_timeout] = 5
+        Puppet[:http_read_timeout] = 5
+        # now, first deadline check, second deadline check
+        allow(Process).to receive(:clock_gettime).with(Process::CLOCK_MONOTONIC).and_return(100, 105, 120)
+
+        expect(Process).to receive(:waitpid2).with(child_pid, Process::WNOHANG).twice.and_return(nil)
+        expect(Process).to receive(:kill).with(:KILL, child_pid)
+        expect(Process).to receive(:waitpid2).with(child_pid).and_return([child_pid, instance_double(Process::Status, exitstatus: nil)])
+        expect(Puppet).to receive(:err).with(/did not exit within 10 seconds of the run timeout/)
+
+        expect(@agent.run_in_fork { 0 }).to be_nil
+      end
+
+      it "reaps the child if it exits between the deadline check and the kill" do
+        Puppet[:runtimeout] = 10
+        allow(Process).to receive(:clock_gettime).with(Process::CLOCK_MONOTONIC).and_return(100, 100_000)
+
+        expect(Process).to receive(:waitpid2).with(child_pid, Process::WNOHANG).and_return(nil)
+        expect(Process).to receive(:kill).with(:KILL, child_pid).and_raise(Errno::ESRCH)
+        expect(Process).to receive(:waitpid2).with(child_pid).and_return([child_pid, status])
+        allow(Puppet).to receive(:err)
+
+        expect(@agent.run_in_fork { 0 }).to eq(3)
+      end
+    end
+
     describe "on Windows", :if => Puppet::Util::Platform.windows? do
       it "should never fork" do
         agent = Puppet::Agent.new(AgentTestClient, true)
