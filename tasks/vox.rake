@@ -9,8 +9,8 @@ namespace :vox do
     puts "Setting version to #{version}"
 
     data = File.read('lib/puppet/version.rb')
-    new_data = data.sub(/PUPPETVERSION = '\d+\.\d+\.\d+(\.rc\d+)?'/, "PUPPETVERSION = '#{version}'")
-    warn 'Failed to update version in lib/puppet/version.rb' if data == new_data
+    new_data = data.sub(/PUPPETVERSION = '\d+\.\d+\.\d+(-(alpha|beta|rc)\d+)?'/, "PUPPETVERSION = '#{version}'")
+    fail 'Failed to update version in lib/puppet/version.rb' if data == new_data
 
     File.write('lib/puppet/version.rb', new_data)
   end
