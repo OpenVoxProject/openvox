@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file.
 
+## [9.0.0-rc1](https://github.com/openvoxproject/openvox/tree/9.0.0-rc1) (2026-09-04)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/9.0.0-beta2...9.0.0-rc1)
+
+**Breaking changes:**
+
+- raise ArgumentError for root when server is unset [\#623](https://github.com/OpenVoxProject/openvox/pull/623) ([corporate-gadfly](https://github.com/corporate-gadfly))
+- refactor\(service/systemd\): remove Debian SysVInit compatibility fallback [\#562](https://github.com/OpenVoxProject/openvox/pull/562) ([TheMeier](https://github.com/TheMeier))
+
+**Implemented enhancements:**
+
+- feat: add multi platform builds [\#607](https://github.com/OpenVoxProject/openvox/pull/607) ([rwaffen](https://github.com/rwaffen))
+- rubocop: cleanup formatting and whitespace [\#594](https://github.com/OpenVoxProject/openvox/pull/594) ([bastelfreak](https://github.com/bastelfreak))
+
+**Fixed bugs:**
+
+- \[Bug\]: Sometimes Error "This 'if' statement has no effect", sometimes not [\#542](https://github.com/OpenVoxProject/openvox/issues/542)
+- Fix excessive reads of /proc/mounts [\#620](https://github.com/OpenVoxProject/openvox/pull/620) ([jenxie](https://github.com/jenxie))
+- puppet generate: print module directory when types are missing [\#617](https://github.com/OpenVoxProject/openvox/pull/617) ([Sharpie](https://github.com/Sharpie))
+- Report errors when renewing a certificate fails [\#610](https://github.com/OpenVoxProject/openvox/pull/610) ([jay7x](https://github.com/jay7x))
+
+**Security fixes:**
+
+- Promote puppet-runtime 2026.09.02.1 into main [\#628](https://github.com/OpenVoxProject/openvox/pull/628) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+
+**Merged pull requests:**
+
+- puppet node: redeclare to identical values is a `notice` not a warning. [\#626](https://github.com/OpenVoxProject/openvox/pull/626) ([jcpunk](https://github.com/jcpunk))
+- fix links to point to docs.openvoxproject.org [\#609](https://github.com/OpenVoxProject/openvox/pull/609) ([corporate-gadfly](https://github.com/corporate-gadfly))
+- Fix a small typo in the markdown docs \(redux\) [\#603](https://github.com/OpenVoxProject/openvox/pull/603) ([jcharaoui](https://github.com/jcharaoui))
+- Update filebucket content acceptance tests for literal checksum semantics [\#602](https://github.com/OpenVoxProject/openvox/pull/602) ([silug](https://github.com/silug))
+- Request report storage explicitly in cached-catalog drift test [\#598](https://github.com/OpenVoxProject/openvox/pull/598) ([silug](https://github.com/silug))
+- Compare facterversion against installed facter in acceptance test [\#597](https://github.com/OpenVoxProject/openvox/pull/597) ([silug](https://github.com/silug))
+- Migrate lookup acceptance tests to Hiera 5 data providers [\#596](https://github.com/OpenVoxProject/openvox/pull/596) ([silug](https://github.com/silug))
+
 ## [9.0.0-beta2](https://github.com/openvoxproject/openvox/tree/9.0.0-beta2) (2026-08-05)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/9.0.0-beta1...9.0.0-beta2)
@@ -33,7 +68,6 @@ All notable changes to this project will be documented in this file.
 
 **Closed issues:**
 
-- Packaged java module in spec is referencing old artifacts [\#563](https://github.com/OpenVoxProject/openvox/issues/563)
 - \[Deprecation\] Replace `puppet master` Terminology in User-Facing Docs/Help [\#347](https://github.com/OpenVoxProject/openvox/issues/347)
 - \[Deprecation\] Data-Binding Settings [\#338](https://github.com/OpenVoxProject/openvox/issues/338)
 - \[Deprecation\] `file { content => <checksum> }` Filebucket Retrieval Behavior [\#335](https://github.com/OpenVoxProject/openvox/issues/335)
@@ -53,7 +87,6 @@ All notable changes to this project will be documented in this file.
 - Fix a small typo in the markdown docs [\#569](https://github.com/OpenVoxProject/openvox/pull/569) ([jcharaoui](https://github.com/jcharaoui))
 - Validate that the catalog is compiled for this node [\#568](https://github.com/OpenVoxProject/openvox/pull/568) ([binford2k](https://github.com/binford2k))
 - User resource pw provider: Switches a couple commands to the safer array syntax [\#567](https://github.com/OpenVoxProject/openvox/pull/567) ([binford2k](https://github.com/binford2k))
-- Generate module tarball fixtures at test time [\#566](https://github.com/OpenVoxProject/openvox/pull/566) ([silug](https://github.com/silug))
 - Set `PUPPET_EXTRA_OPTS` variable to empty [\#559](https://github.com/OpenVoxProject/openvox/pull/559) ([corporate-gadfly](https://github.com/corporate-gadfly))
 - Promote puppet-runtime 2026.07.16.1 into main [\#553](https://github.com/OpenVoxProject/openvox/pull/553) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
 - Rebrand Puppet -\> OpenVox and fix links [\#530](https://github.com/OpenVoxProject/openvox/pull/530) ([silug](https://github.com/silug))
