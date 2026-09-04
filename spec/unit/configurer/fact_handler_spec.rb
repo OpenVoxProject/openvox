@@ -58,6 +58,13 @@ describe Puppet::Configurer::FactHandler do
       expect { facthandler.find_facts }.to raise_error(Puppet::Error, /Could not retrieve local facts/)
     end
 
+    it "should re-raise RunTimeoutError so the agent run is aborted" do
+      expect(Puppet::Node::Facts.indirection).to receive(:find).and_raise(Puppet::Agent::RunTimeoutError, 'execution expired')
+      expect(Puppet).not_to receive(:log_exception)
+
+      expect { facthandler.find_facts }.to raise_error(Puppet::Agent::RunTimeoutError, 'execution expired')
+    end
+
     it "should only load fact plugins once" do
       expect(Puppet::Node::Facts.indirection).to receive(:find).once
       facthandler.find_facts
