@@ -15,3 +15,20 @@ updates:
       interval: daily
       time: "13:00"
     open-pull-requests-limit: 10
+  # raise PRs for gem updates
+  - package-ecosystem: bundler
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "13:00"
+    open-pull-requests-limit: 10
+    target-branch: "8.x"
+
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "13:00"
+    open-pull-requests-limit: 10
+  target-branch: "8.x"
