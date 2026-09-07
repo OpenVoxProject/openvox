@@ -1,4 +1,4 @@
-# Defaults for puppet - sourced by /etc/init.d/puppet
+# Defaults for puppet - sourced by /etc/init.d/puppet and puppet.service
 
 # Startup options
-DAEMON_OPTS=""
+PUPPET_EXTRA_OPTS=""
