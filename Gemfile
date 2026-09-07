@@ -79,7 +79,7 @@ group(:packaging) do
     gem 'vanagon', *location_for(ENV['VANAGON_LOCATION'] || 'https://github.com/openvoxproject/vanagon#main')
   end
   gem 'artifactory'
-  gem 'json'
+  gem 'json', '< 3'
   gem 'octokit'
 end
 
