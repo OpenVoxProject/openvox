@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative '../../puppet/agent'
 require_relative '../../puppet/indirector/facts/facter'
 
 require_relative '../../puppet/configurer'
@@ -20,7 +21,10 @@ module Puppet::Configurer::FactHandler
       facts.name = Puppet[:node_name_value]
     end
     facts
-  rescue SystemExit, NoMemoryError
+  rescue SystemExit, NoMemoryError, Puppet::Agent::RunTimeoutError
+    # RunTimeoutError means the agent run as a whole has exceeded `runtimeout`.
+    # Let it propagate so the run is aborted instead of wrapping it in a
+    # Puppet::Error and carrying on with the rest of the run.
     raise
   rescue Exception => detail
     message = _("Could not retrieve local facts: %{detail}") % { detail: detail }
