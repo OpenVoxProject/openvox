@@ -258,8 +258,10 @@ class Puppet::Application::Agent < Puppet::Application
         recorded by the previous run and the node request to the server, which is
         how it picks an environment otherwise. This is the usual way to move an
         agent out of an environment it switched to on an earlier run. The server
-        can still return a catalog for a different environment, for example when
-        an ENC assigns one, unless 'strict_environment_mode' is set.
+        can still assign a different environment, for example through an ENC. In
+        that case the agent switches to the server's environment and requests
+        the catalog again. If 'strict_environment_mode' is set, the agent refuses
+        the mismatched catalog and fails the run instead of switching.
         (This is an OpenVox setting, and can go in puppet.conf.)
 
       *  --evaltrace:

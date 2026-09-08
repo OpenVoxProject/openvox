@@ -77,7 +77,7 @@ Disable can also take an optional message that will be reported by the 'puppet a
 .IP
 \&'puppet agent' exits after executing this\.
 .IP "\(bu" 4
-\-\-environment: Request a catalog for the given environment\. When set on the command line, the agent uses this environment directly and skips both the environment recorded by the previous run and the node request to the server, which is how it picks an environment otherwise\. This is the usual way to move an agent out of an environment it switched to on an earlier run\. The server can still return a catalog for a different environment, for example when an ENC assigns one, unless 'strict_environment_mode' is set\. (This is an OpenVox setting, and can go in puppet\.conf\.)
+\-\-environment: Request a catalog for the given environment\. When set on the command line, the agent uses this environment directly and skips both the environment recorded by the previous run and the node request to the server, which is how it picks an environment otherwise\. This is the usual way to move an agent out of an environment it switched to on an earlier run\. The server can still assign a different environment, for example through an ENC\. In that case the agent switches to the server's environment and requests the catalog again\. If 'strict_environment_mode' is set, the agent refuses the mismatched catalog and fails the run instead of switching\. (This is an OpenVox setting, and can go in puppet\.conf\.)
 .IP "\(bu" 4
 \-\-evaltrace: Logs each resource as it is being evaluated\. This allows you to interactively see exactly what is being done\. (This is an OpenVox setting, and can go in puppet\.conf\. Note the special 'no\-' prefix for boolean settings on the command line\.)
 .IP "\(bu" 4
