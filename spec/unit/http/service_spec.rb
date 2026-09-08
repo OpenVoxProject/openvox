@@ -128,6 +128,51 @@ describe Puppet::HTTP::Service do
     }.to raise_error(ArgumentError, 'Required setting `server` is not specified.')
   end
 
+  context 'when server is unconfigured' do
+    before :each do
+      allow(Puppet.settings).to receive(:set_by_config?).and_call_original
+      allow(Puppet.settings).to receive(:set_by_config?).with(:server).and_return(false)
+    end
+
+    [true, false].each do |root|
+      context "while running as #{root ? 'root' : 'non-root'}" do
+        before :each do
+          allow(Puppet.features).to receive(:root?).and_return(root)
+        end
+
+        it 'creates the ca service when ca_server is configured' do
+          Puppet[:ca_server] = 'ca.example.com'
+          expect(Puppet).not_to receive(:deprecation_warning)
+
+          service = described_class.create_service(client, session, :ca)
+          expect(service).to be_an_instance_of(Puppet::HTTP::Service::Ca)
+          expect(service.url.to_s).to eq('https://ca.example.com:8140/puppet-ca/v1')
+        end
+
+        it 'creates the report service when report_server is configured' do
+          Puppet[:report_server] = 'report.example.com'
+          expect(Puppet).not_to receive(:deprecation_warning)
+
+          service = described_class.create_service(client, session, :report)
+          expect(service).to be_an_instance_of(Puppet::HTTP::Service::Report)
+          expect(service.url.to_s).to eq('https://report.example.com:8140/puppet/v3')
+        end
+
+        it 'raises for the ca service when ca_server is not configured' do
+          expect {
+            described_class.create_service(client, session, :ca)
+          }.to raise_error(ArgumentError, root ? /OpenVox does not default to `server=puppet`/ : 'Neither `server` nor `ca_server` is specified.')
+        end
+
+        it 'raises for the report service when report_server is not configured' do
+          expect {
+            described_class.create_service(client, session, :report)
+          }.to raise_error(ArgumentError, root ? /OpenVox does not default to `server=puppet`/ : 'Neither `server` nor `report_server` is specified.')
+        end
+      end
+    end
+  end
+
   context 'when an explicit server is given' do
     before :each do
       allow(Puppet.settings).to receive(:set_by_config?).and_call_original

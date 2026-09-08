@@ -64,6 +64,14 @@ class Puppet::HTTP::Service
   def self.check_server_setting(name)
     return if Puppet.settings.set_by_config? :server
 
+    # These services fall back on their own setting before `server`
+    case name
+    when :ca
+      return if Puppet.settings.set_by_config? :ca_server
+    when :report
+      return if Puppet.settings.set_by_config? :report_server
+    end
+
     if Puppet.features.root?
       error_message = <<~MSG
         OpenVox does not default to `server=puppet` as of version 9.0. Please update your configuration appropriately by providing a specific server of your choice.
@@ -78,9 +86,9 @@ class Puppet::HTTP::Service
 
     case name
     when :ca
-      raise ArgumentError, 'Neither `server` nor `ca_server` is specified.' unless Puppet.settings.set_by_config? :ca_server
+      raise ArgumentError, 'Neither `server` nor `ca_server` is specified.'
     when :report
-      raise ArgumentError, 'Neither `server` nor `report_server` is specified.' unless Puppet.settings.set_by_config? :report_server
+      raise ArgumentError, 'Neither `server` nor `report_server` is specified.'
     when :fileserver, :puppet, :puppetserver
       raise ArgumentError, 'Required setting `server` is not specified.'
     end
