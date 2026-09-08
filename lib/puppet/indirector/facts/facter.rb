@@ -64,7 +64,7 @@ class Puppet::Node::Facts::Facter < Puppet::Indirector::Code
 
     dirs.select! { |dir| FileTest.directory?(dir) }
 
-    # Even through we no longer directly load facts in the terminus,
+    # Even though we no longer directly load facts in the terminus,
     # print out each .rb in the facts directory as module
     # developers may find that information useful for debugging purposes
     if Puppet::Util::Log.sendlevel?(:info) && !dirs.empty?
