@@ -67,11 +67,13 @@ class Puppet::Node::Facts::Facter < Puppet::Indirector::Code
     # Even though we no longer directly load facts in the terminus,
     # print out each .rb in the facts directory as module
     # developers may find that information useful for debugging purposes
-    if Puppet::Util::Log.sendlevel?(:info) && !dirs.empty?
+    unless dirs.empty?
       Puppet.info _("Loading facts")
-      dirs.each do |dir|
-        Dir.glob("#{dir}/*.rb").each do |file|
-          Puppet.debug { "Loading facts from #{file}" }
+      if Puppet::Util::Log.sendlevel?(:debug)
+        dirs.each do |dir|
+          Dir.glob("#{dir}/*.rb").each do |file|
+            Puppet.debug { "Loading facts from #{file}" }
+          end
         end
       end
     end
