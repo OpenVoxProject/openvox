@@ -103,9 +103,13 @@ class Puppet::Application::Agent < Puppet::Application
       -----
       puppet agent [--certname <NAME>] [-D|--daemonize|--no-daemonize]
         [-d|--debug] [--detailed-exitcodes] [--digest <DIGEST>] [--disable [MESSAGE]] [--enable]
-        [--fingerprint] [-h|--help] [-l|--logdest syslog|eventlog|<ABS FILEPATH>|console]
+        [--environment <NAME>] [--fingerprint] [-h|--help]
+        [-l|--logdest syslog|eventlog|<ABS FILEPATH>|console]
         [--serverport <PORT>] [--noop] [-o|--onetime] [--sourceaddress <IP_ADDRESS>] [-t|--test]
-        [-v|--verbose] [-V|--version] [-w|--waitforcert <SECONDS>]
+        [-v|--verbose] [-V|--version] [-w|--waitforcert <SECONDS>] [--<setting> <VALUE>]
+
+      Any setting that is valid in puppet.conf is also accepted as a long argument,
+      not only the ones listed above. See OPTIONS below.
 
 
       DESCRIPTION
@@ -199,8 +203,7 @@ class Puppet::Application::Agent < Puppet::Application
 
       * --no-daemonize:
         Do not send the process into the background.
-        (This is an OpenVox setting, and can go in puppet.conf. Note the special 'no-'
-        prefix for boolean settings on the command line.)
+        (This is an OpenVox setting, and can go in puppet.conf.)
 
       * --debug:
         Enable full debugging.
@@ -248,6 +251,18 @@ class Puppet::Application::Agent < Puppet::Application
         not start for another half hour.
 
         'puppet agent' exits after executing this.
+
+      * --environment:
+        Request a catalog for the given environment. When set on the command line,
+        the agent uses this environment directly and skips both the environment
+        recorded by the previous run and the node request to the server, which is
+        how it picks an environment otherwise. This is the usual way to move an
+        agent out of an environment it switched to on an earlier run. The server
+        can still assign a different environment, for example through an ENC. In
+        that case the agent switches to the server's environment and requests
+        the catalog again. If 'strict_environment_mode' is set, the agent refuses
+        the mismatched catalog and fails the run instead of switching.
+        (This is an OpenVox setting, and can go in puppet.conf.)
 
       *  --evaltrace:
         Logs each resource as it is being evaluated. This allows you to interactively
