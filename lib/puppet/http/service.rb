@@ -14,6 +14,13 @@ class Puppet::HTTP::Service
   # @return [Array<Symbol>] format types that are unsupported
   EXCLUDED_FORMATS = [:yaml, :b64_zlib_yaml, :dot].freeze
 
+  def self.server_list_configured?
+    server_list = Puppet.settings.setting(:server_list).value
+    server_list && !server_list.empty?
+  end
+
+  private_class_method :server_list_configured?
+
   # Create a new web service, which contains the URL used to connect to the
   # service. The four services implemented are `:ca`, `:fileserver`, `:puppet`,
   # and `:report`.
@@ -33,12 +40,12 @@ class Puppet::HTTP::Service
   # @api private
   def self.create_service(client, session, name, server = nil, port = nil)
     # this is the entry point for creating all services, check and issue error(s)/warning(s) here.
-    unless Puppet.settings.set_by_config? :server
+    unless server || Puppet.settings.set_by_config?(:server) || server_list_configured?
       if Puppet.features.root?
         error_message = <<~MSG
-          OpenVox does not default to `server=puppet` as of version 9.0. Please update your configuration appropriately by providing a specific server of your choice.
+          OpenVox does not default to `server=puppet` as of version 9.0. Please update your configuration appropriately by providing a specific server or `server_list` of your choice.
 
-          You can update the server setting in puppet.conf by running a command similar to:
+          E.g., you can update the `server` setting in puppet.conf by running a command similar to:
             puppet config --section main set server YOUR_SERVER_NAME
         MSG
         raise ArgumentError, error_message
@@ -47,11 +54,11 @@ class Puppet::HTTP::Service
 
         case name
         when :ca
-          raise ArgumentError, 'Neither `server` nor `ca_server` is specified.' unless Puppet.settings.set_by_config? :ca_server
+          raise ArgumentError, 'Neither `server`, `server_list`, nor `ca_server` is specified.' unless Puppet.settings.set_by_config? :ca_server
         when :report
-          raise ArgumentError, 'Neither `server` nor `report_server` is specified.' unless Puppet.settings.set_by_config? :report_server
+          raise ArgumentError, 'Neither `server`, `server_list`, nor `report_server` is specified.' unless Puppet.settings.set_by_config? :report_server
         when :fileserver, :puppet, :puppetserver
-          raise ArgumentError, 'Required setting `server` is not specified.'
+          raise ArgumentError, 'Required setting `server` or `server_list` is not specified.'
         end
       end
     end

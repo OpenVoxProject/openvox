@@ -125,7 +125,21 @@ describe Puppet::HTTP::Service do
     expect {
       # following call is needed to trigger above warning
       described_class.create_service(client, session, :puppet)
-    }.to raise_error(ArgumentError, 'Required setting `server` is not specified.')
+    }.to raise_error(ArgumentError, 'Required setting `server` or `server_list` is not specified.')
+  end
+
+  it 'allows server_list to satisfy the guard when an explicit server is provided' do
+    allow(Puppet.settings).to receive(:set_by_config?).and_call_original
+    allow(Puppet.settings).to receive(:set_by_config?).with(:server).and_return(false)
+    allow(Puppet.settings).to receive(:setting).with(:server_list).and_return(double(value: [%w[puppet.example.com 8140]]))
+    allow(Puppet.features).to receive(:root?).and_return(false)
+
+    expect(Puppet).not_to receive(:deprecation_warning)
+
+    service = described_class.create_service(client, session, :puppet, 'puppet.example.com', 8140)
+
+    expect(service).to be_an_instance_of(Puppet::HTTP::Service::Compiler)
+    expect(service.url.to_s).to eq('https://puppet.example.com:8140/puppet/v3')
   end
 
   [:ca].each do |name|
