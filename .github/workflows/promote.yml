@@ -28,6 +28,7 @@ jobs:
         with:
           ref: ${{ inputs.branch }}
           token: ${{ secrets.OPENVOXBOT_COMMIT_AND_PRS }}
+          fetch-depth: 0 # required for vanagon below to determine the openvox version
 
       - name: Setup git and SSH signing
         id: git_identity
@@ -66,6 +67,16 @@ jobs:
           echo '${{ steps.generate.outputs.json }}' > "packaging/configs/components/${component}.json"
           echo "Wrote packaging/configs/components/${component}.json:"
           cat "packaging/configs/components/${component}.json"
+      - name: Install Ruby
+        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
+        with:
+          ruby-version: ruby
+          bundler-cache: true
+      # downloads all required components and fails if one isn't available
+      # basically ensures our inputs.ref doesn't contain typos
+      - name: Validate Vanagon render
+        working-directory: packaging/
+        run: bundle exec vanagon render openvox-agent el-10-x86_64
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
