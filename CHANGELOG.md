@@ -2,9 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [9.0.0-rc2](https://github.com/openvoxproject/openvox/tree/9.0.0-rc2) (2026-09-11)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/9.0.0-rc1...9.0.0-rc2)
+
+**Implemented enhancements:**
+
+- Promote openfact 6.1.0 into main [\#668](https://github.com/OpenVoxProject/openvox/pull/668) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+
+**Fixed bugs:**
+
+- print "Loading facts" just once [\#656](https://github.com/OpenVoxProject/openvox/pull/656) ([bastelfreak](https://github.com/bastelfreak))
+
+**Merged pull requests:**
+
+- Pin json below 3 to unblock CI [\#655](https://github.com/OpenVoxProject/openvox/pull/655) ([miharp](https://github.com/miharp))
+
 ## [9.0.0-rc1](https://github.com/openvoxproject/openvox/tree/9.0.0-rc1) (2026-09-04)
 
-[Full Changelog](https://github.com/openvoxproject/openvox/compare/9.0.0-beta2...9.0.0-rc1)
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.29.0...9.0.0-rc1)
 
 **Breaking changes:**
 
@@ -18,7 +34,6 @@ All notable changes to this project will be documented in this file.
 
 **Fixed bugs:**
 
-- \[Bug\]: Sometimes Error "This 'if' statement has no effect", sometimes not [\#542](https://github.com/OpenVoxProject/openvox/issues/542)
 - Fix excessive reads of /proc/mounts [\#620](https://github.com/OpenVoxProject/openvox/pull/620) ([jenxie](https://github.com/jenxie))
 - puppet generate: print module directory when types are missing [\#617](https://github.com/OpenVoxProject/openvox/pull/617) ([Sharpie](https://github.com/Sharpie))
 - Report errors when renewing a certificate fails [\#610](https://github.com/OpenVoxProject/openvox/pull/610) ([jay7x](https://github.com/jay7x))
@@ -36,6 +51,14 @@ All notable changes to this project will be documented in this file.
 - Request report storage explicitly in cached-catalog drift test [\#598](https://github.com/OpenVoxProject/openvox/pull/598) ([silug](https://github.com/silug))
 - Compare facterversion against installed facter in acceptance test [\#597](https://github.com/OpenVoxProject/openvox/pull/597) ([silug](https://github.com/silug))
 - Migrate lookup acceptance tests to Hiera 5 data providers [\#596](https://github.com/OpenVoxProject/openvox/pull/596) ([silug](https://github.com/silug))
+
+## [8.29.0](https://github.com/openvoxproject/openvox/tree/8.29.0) (2026-09-04)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/9.0.0-beta2...8.29.0)
+
+**Fixed bugs:**
+
+- \[Bug\]: Sometimes Error "This 'if' statement has no effect", sometimes not [\#542](https://github.com/OpenVoxProject/openvox/issues/542)
 
 ## [9.0.0-beta2](https://github.com/openvoxproject/openvox/tree/9.0.0-beta2) (2026-08-05)
 
