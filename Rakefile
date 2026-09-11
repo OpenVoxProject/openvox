@@ -159,9 +159,9 @@ begin
     config.user = "openvoxproject"
     config.project = "openvox"
     config.exclude_labels = %w[dependencies duplicate question invalid wontfix wont-fix modulesync skip-changelog]
-    config.since_tag = "8.18.1"
+    config.since_tag = "9.0.0-alpha1"
     config.future_release = Puppet::PUPPETVERSION
-    config.exclude_tags_regex = /\A7\./
+    config.exclude_tags_regex = /\A[7,8]\./
   end
 rescue LoadError
   task :changelog do
