@@ -28,7 +28,7 @@ jobs:
         with:
           ref: ${{ env.RELEASE_TAG }}
       - name: Install Ruby
-        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
+        uses: ruby/setup-ruby@bec3f19a76460dbe12f60def7d1a77585f07516c # v1.322.0
         with:
           ruby-version: 'ruby'
           bundler-cache: true
@@ -119,7 +119,7 @@ jobs:
         with:
           name: gem-artifact
       - name: Install Ruby
-        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
+        uses: ruby/setup-ruby@bec3f19a76460dbe12f60def7d1a77585f07516c # v1.322.0
         with:
           ruby-version: 'ruby'
       - name: Wait for release to propagate
