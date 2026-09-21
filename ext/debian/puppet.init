@@ -9,7 +9,7 @@
 ### END INIT INFO
 
 DAEMON=/opt/puppetlabs/puppet/bin/puppet
-DAEMON_OPTS=""
+PUPPET_EXTRA_OPTS=""
 NAME="agent"
 PROCNAME="puppet"
 DESC="puppet agent"
@@ -26,7 +26,7 @@ reload_puppet_agent() {
 }
 
 start_puppet_agent() {
-    start-stop-daemon --start --quiet --pidfile $PIDFILE --startas $DAEMON -- $NAME $DAEMON_OPTS
+    start-stop-daemon --start --quiet --pidfile $PIDFILE --startas $DAEMON -- $NAME $PUPPET_EXTRA_OPTS
 }
 
 stop_puppet_agent() {
