@@ -169,6 +169,22 @@ describe Puppet::HTTP::Service do
             described_class.create_service(client, session, :report)
           }.to raise_error(ArgumentError, root ? /OpenVox does not default to `server=puppet`/ : 'Neither `server` nor `report_server` is specified.')
         end
+
+        it 'raises for the ca service when ca_server is configured but empty' do
+          Puppet[:ca_server] = ''
+
+          expect {
+            described_class.create_service(client, session, :ca)
+          }.to raise_error(ArgumentError, root ? /OpenVox does not default to `server=puppet`/ : 'Neither `server` nor `ca_server` is specified.')
+        end
+
+        it 'raises for the report service when report_server is configured but empty' do
+          Puppet[:report_server] = ''
+
+          expect {
+            described_class.create_service(client, session, :report)
+          }.to raise_error(ArgumentError, root ? /OpenVox does not default to `server=puppet`/ : 'Neither `server` nor `report_server` is specified.')
+        end
       end
     end
   end

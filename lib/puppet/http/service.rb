@@ -64,12 +64,13 @@ class Puppet::HTTP::Service
   def self.check_server_setting(name)
     return if Puppet.settings.set_by_config? :server
 
-    # These services fall back on their own setting before `server`
+    # These services fall back on their own setting before `server`. It has to
+    # resolve to a host: `ca_server = $server` without `server` is set but empty.
     case name
     when :ca
-      return if Puppet.settings.set_by_config? :ca_server
+      return if Puppet.settings.set_by_config?(:ca_server) && !Puppet[:ca_server].empty?
     when :report
-      return if Puppet.settings.set_by_config? :report_server
+      return if Puppet.settings.set_by_config?(:report_server) && !Puppet[:report_server].empty?
     end
 
     if Puppet.features.root?
