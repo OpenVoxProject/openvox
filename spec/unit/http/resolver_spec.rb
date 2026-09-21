@@ -2,10 +2,6 @@ require 'spec_helper'
 require 'puppet/http'
 
 describe Puppet::HTTP::Resolver do
-  before :each do
-    Puppet[:server] = 'puppet'
-  end
-
   let(:ssl_context) { Puppet::SSL::SSLContext.new }
   let(:client) { Puppet::HTTP::Client.new(ssl_context: ssl_context) }
   let(:session) { client.create_session }
@@ -13,6 +9,10 @@ describe Puppet::HTTP::Resolver do
 
   context 'when resolving using settings' do
     let(:subject) { Puppet::HTTP::Resolver::Settings.new(client) }
+
+    before :each do
+      Puppet[:server] = 'puppet'
+    end
 
     it 'returns a service based on the current ca_server and ca_port settings' do
       Puppet[:ca_server] = 'ca.example.com'
@@ -37,6 +37,15 @@ describe Puppet::HTTP::Resolver do
       service = subject.resolve(session, :ca)
       expect(service).to be_an_instance_of(Puppet::HTTP::Service::Ca)
       expect(service.url.to_s).to eq("https://ca.example.com:8141/puppet-ca/v1")
+    end
+
+    it 'does not require the server setting' do
+      allow(Puppet.features).to receive(:root?).and_return(true)
+      stub_request(:get, "https://ca.example.com:8141/status/v1/simple/server").to_return(status: 200)
+
+      service = subject.resolve(session, :puppet)
+      expect(service).to be_an_instance_of(Puppet::HTTP::Service::Compiler)
+      expect(service.url.to_s).to eq("https://ca.example.com:8141/puppet/v3")
     end
 
     it 'returns a service based on the current server_list setting if the server returns any success codes' do
@@ -127,6 +136,15 @@ describe Puppet::HTTP::Resolver do
     end
 
     it 'returns a service based on an SRV record' do
+      stub_srv('ca1.example.com', 8142)
+
+      service = subject.resolve(session, :ca)
+      expect(service).to be_an_instance_of(Puppet::HTTP::Service::Ca)
+      expect(service.url.to_s).to eq("https://ca1.example.com:8142/puppet-ca/v1")
+    end
+
+    it 'does not require the server setting' do
+      allow(Puppet.features).to receive(:root?).and_return(true)
       stub_srv('ca1.example.com', 8142)
 
       service = subject.resolve(session, :ca)

@@ -32,29 +32,10 @@ class Puppet::HTTP::Service
   #
   # @api private
   def self.create_service(client, session, name, server = nil, port = nil)
-    # this is the entry point for creating all services, check and issue error(s)/warning(s) here.
-    unless Puppet.settings.set_by_config? :server
-      if Puppet.features.root?
-        error_message = <<~MSG
-          OpenVox does not default to `server=puppet` as of version 9.0. Please update your configuration appropriately by providing a specific server of your choice.
-
-          You can update the server setting in puppet.conf by running a command similar to:
-            puppet config --section main set server YOUR_SERVER_NAME
-        MSG
-        raise ArgumentError, error_message
-      else
-        Puppet.deprecation_warning('OpenVox no longer defaults to `server=puppet` when running as a non-privileged user. (Did you mean to run as root?)')
-
-        case name
-        when :ca
-          raise ArgumentError, 'Neither `server` nor `ca_server` is specified.' unless Puppet.settings.set_by_config? :ca_server
-        when :report
-          raise ArgumentError, 'Neither `server` nor `report_server` is specified.' unless Puppet.settings.set_by_config? :report_server
-        when :fileserver, :puppet, :puppetserver
-          raise ArgumentError, 'Required setting `server` is not specified.'
-        end
-      end
-    end
+    # Resolvers that already know which server to use (SRV records,
+    # server_list, or an explicit URL) pass it in. Only fall back on the
+    # `server` setting, and complain if it is missing, when they don't.
+    check_server_setting(name) if server.nil?
 
     case name
     when :ca
@@ -69,6 +50,39 @@ class Puppet::HTTP::Service
       Puppet::HTTP::Service::Report.new(client, session, server, port)
     else
       raise ArgumentError, "Unknown service #{name}"
+    end
+  end
+
+  # Verify that the setting a service falls back on when no explicit server is
+  # given has been configured. OpenVox no longer defaults `server` to `puppet`.
+  #
+  # @param [Symbol] name the type of service being created
+  #
+  # @raise [ArgumentError] if the service cannot determine which server to use
+  #
+  # @api private
+  def self.check_server_setting(name)
+    return if Puppet.settings.set_by_config? :server
+
+    if Puppet.features.root?
+      error_message = <<~MSG
+        OpenVox does not default to `server=puppet` as of version 9.0. Please update your configuration appropriately by providing a specific server of your choice.
+
+        You can update the server setting in puppet.conf by running a command similar to:
+          puppet config --section main set server YOUR_SERVER_NAME
+      MSG
+      raise ArgumentError, error_message
+    end
+
+    Puppet.deprecation_warning('OpenVox no longer defaults to `server=puppet` when running as a non-privileged user. (Did you mean to run as root?)')
+
+    case name
+    when :ca
+      raise ArgumentError, 'Neither `server` nor `ca_server` is specified.' unless Puppet.settings.set_by_config? :ca_server
+    when :report
+      raise ArgumentError, 'Neither `server` nor `report_server` is specified.' unless Puppet.settings.set_by_config? :report_server
+    when :fileserver, :puppet, :puppetserver
+      raise ArgumentError, 'Required setting `server` is not specified.'
     end
   end
 

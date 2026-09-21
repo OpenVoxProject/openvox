@@ -2,10 +2,6 @@ require 'spec_helper'
 require 'puppet/http'
 
 describe Puppet::HTTP::Session do
-  before :each do
-    Puppet[:server] = 'puppet'
-  end
-
   let(:ssl_context) { Puppet::SSL::SSLContext.new }
   let(:client) { Puppet::HTTP::Client.new(ssl_context: ssl_context) }
   let(:uri) { URI.parse('https://www.example.com') }
@@ -126,6 +122,10 @@ describe Puppet::HTTP::Session do
   context 'when resolving using multiple resolvers' do
     let(:session) { client.create_session }
 
+    before :each do
+      Puppet[:server] = 'puppet'
+    end
+
     it "prefers SRV records" do
       Puppet[:use_srv_records] = true
       Puppet[:server_list] = 'foo.example.com,bar.example.com,baz.example.com'
@@ -223,6 +223,51 @@ describe Puppet::HTTP::Session do
       client.create_session.route_to(:puppet)
 
       expect(req).to have_been_requested.twice
+    end
+  end
+
+  context 'when the server setting is not configured' do
+    let(:session) { client.create_session }
+
+    before :each do
+      allow(Puppet.features).to receive(:root?).and_return(true)
+    end
+
+    it 'resolves using server_list' do
+      Puppet[:server_list] = 'apple.example.com'
+      stub_request(:get, "https://apple.example.com:8140/status/v1/simple/server").to_return(status: 200)
+
+      expect(session.route_to(:puppet).url.to_s).to eq("https://apple.example.com:8140/puppet/v3")
+    end
+
+    it 'resolves using SRV records' do
+      Puppet[:use_srv_records] = true
+      Puppet[:srv_domain] = 'example.com'
+      allow_any_instance_of(Puppet::HTTP::DNS).to receive(:each_srv_record).and_yield('mars.example.srv', 8140)
+
+      expect(session.route_to(:puppet).url.to_s).to eq("https://mars.example.srv:8140/puppet/v3")
+    end
+
+    it 'routes to a puppet URL with an explicit host' do
+      url = URI("puppet://example.com:8140/:modules/:module/path/to/file")
+
+      expect(session.route_to(:fileserver, url: url).url.to_s).to eq("https://example.com:8140/puppet/v3")
+    end
+
+    it 'does not warn while running as non-root when server_list is used' do
+      allow(Puppet.features).to receive(:root?).and_return(false)
+      expect(Puppet).not_to receive(:deprecation_warning)
+
+      Puppet[:server_list] = 'apple.example.com'
+      stub_request(:get, "https://apple.example.com:8140/status/v1/simple/server").to_return(status: 200)
+
+      expect(session.route_to(:puppet).url.to_s).to eq("https://apple.example.com:8140/puppet/v3")
+    end
+
+    it 'raises when falling back on the server setting' do
+      expect {
+        session.route_to(:puppet)
+      }.to raise_error(ArgumentError, /OpenVox does not default to `server=puppet` as of version 9\.0/)
     end
   end
 
