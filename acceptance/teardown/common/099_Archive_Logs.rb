@@ -54,12 +54,22 @@ test_name 'Backup puppet logs and app data on all hosts' do
   fi
   GREP_FOR_ALERTS
 
+        role_names = Array(host[:roles]).map(&:to_s)
+        is_master = role_names.include?('master') || role_names.include?('primary') || host == master
+        if is_master
+          on(host, <<~PUPPETSERVER_LOGS)
+            echo '--- puppetserver journal ---'
+            journalctl --unit puppetserver --boot --no-pager
+            echo '--- puppetserver log ---'
+            tail -n 200 /var/log/puppetlabs/puppetserver/puppetserver.log
+          PUPPETSERVER_LOGS
+        end
+
         step("Archiving logs for #{host} into #{archive_name} (muzzling everything but :warn or higher beaker logs...)") do
           ## turn the logger off to avoid getting hundreds of lines of scp progress output
           previous_level = @logger.log_level
           @logger.log_level = :warn
 
-          pxp_cache = '/opt/puppetlabs/pxp-agent/spool'
           puppetlabs_data = '/etc/puppetlabs'
 
           version_lookup_result = on(host, "cat /opt/puppetlabs/puppet/VERSION", :accept_all_exit_codes => true)
@@ -70,7 +80,6 @@ test_name 'Backup puppet logs and app data on all hosts' do
           # want to proceed...
           if version_lookup_result.exit_code == 0
             agent_version = version_lookup_result.output.strip
-            archive_file_from(host, pxp_cache, {}, archive_root, archive_name) unless version_is_less(agent_version, "1.3.2")
             archive_file_from(host, puppetlabs_data, {}, archive_root, archive_name)
             archive_file_from(host, puppetlabs_logdir, {}, archive_root, archive_name)
           end
