@@ -62,21 +62,22 @@ class Puppet::Node::Facts::Facter < Puppet::Indirector::Code
       end
     end.flatten + Puppet[:factpath].split(File::PATH_SEPARATOR)
 
-    dirs = dirs.select do |dir|
-      next false unless FileTest.directory?(dir)
+    dirs.select! { |dir| FileTest.directory?(dir) }
 
-      # Even through we no longer directly load facts in the terminus,
-      # print out each .rb in the facts directory as module
-      # developers may find that information useful for debugging purposes
-      if Puppet::Util::Log.sendlevel?(:info)
-        Puppet.info _("Loading facts")
-        Dir.glob("#{dir}/*.rb").each do |file|
-          Puppet.debug { "Loading facts from #{file}" }
+    # Even though we no longer directly load facts in the terminus,
+    # print out each .rb in the facts directory as module
+    # developers may find that information useful for debugging purposes
+    unless dirs.empty?
+      Puppet.info _("Loading facts")
+      if Puppet::Util::Log.sendlevel?(:debug)
+        dirs.each do |dir|
+          Dir.glob("#{dir}/*.rb").each do |file|
+            Puppet.debug { "Loading facts from #{file}" }
+          end
         end
       end
-
-      true
     end
+
     dirs << request.options[:custom_dir] if request.options[:custom_dir]
     Puppet.runtime[:facter].search(*dirs)
   end
