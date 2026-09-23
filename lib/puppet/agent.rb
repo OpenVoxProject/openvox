@@ -146,8 +146,55 @@ class Puppet::Agent
       atForkHandler.parent
     end
 
-    exit_code = Process.waitpid2(child_pid)
-    exit_code[1].exitstatus
+    _, status = wait_for_child(child_pid)
+    status.exitstatus
+  end
+
+  # Wait for the forked child to exit. The child enforces `runtimeout` on its
+  # own run, but it may fail to exit afterwards (a stranded thread, a hung
+  # subprocess, etc.). Without a deadline here, the parent blocks forever and
+  # the agent stops checking in. Once the run timeout plus a grace period has
+  # elapsed, the child is killed so the daemon can carry on.
+  def wait_for_child(child_pid)
+    deadline = child_deadline
+    return Process.waitpid2(child_pid) unless deadline
+
+    loop do
+      result = Process.waitpid2(child_pid, Process::WNOHANG)
+      return result if result
+
+      if monotonic_now >= deadline
+        Puppet.err _("Agent run (pid %{pid}) did not exit within %{timeout} seconds of the run timeout, killing it") %
+                   { pid: child_pid, timeout: child_grace_period }
+        begin
+          Process.kill(:KILL, child_pid)
+        rescue Errno::ESRCH
+          # The child exited between the last check and the kill.
+        end
+        return Process.waitpid2(child_pid)
+      end
+
+      sleep 1
+    end
+  end
+
+  # After the run timeout fires inside the child, it may still need to send
+  # its report, which is bounded by the HTTP connect and read timeouts.
+  def child_grace_period
+    Puppet[:http_connect_timeout] + Puppet[:http_read_timeout]
+  end
+
+  # Returns the absolute monotonic deadline for the child, or nil when
+  # `runtimeout` is disabled.
+  def child_deadline
+    runtimeout = Puppet[:runtimeout]
+    return nil if runtimeout.nil? || runtimeout <= 0
+
+    monotonic_now + runtimeout + child_grace_period
+  end
+
+  def monotonic_now
+    Process.clock_gettime(Process::CLOCK_MONOTONIC)
   end
 
   private
