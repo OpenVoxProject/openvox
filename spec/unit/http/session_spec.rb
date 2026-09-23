@@ -264,6 +264,20 @@ describe Puppet::HTTP::Session do
       expect(session.route_to(:puppet).url.to_s).to eq("https://apple.example.com:8140/puppet/v3")
     end
 
+    it 'resolves the ca service using ca_server when server_list is set' do
+      Puppet[:server_list] = 'apple.example.com'
+      Puppet[:ca_server] = 'ca.example.com'
+
+      expect(session.route_to(:ca).url.to_s).to eq("https://ca.example.com:8140/puppet-ca/v1")
+    end
+
+    it 'resolves the report service using report_server when server_list is set' do
+      Puppet[:server_list] = 'apple.example.com'
+      Puppet[:report_server] = 'report.example.com'
+
+      expect(session.route_to(:report).url.to_s).to eq("https://report.example.com:8140/puppet/v3")
+    end
+
     it 'raises when falling back on the server setting' do
       expect {
         session.route_to(:puppet)
