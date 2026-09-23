@@ -15,7 +15,10 @@ on:
         description: 'Branch to promote to (defaults to main)'
         required: false
         default: 'main'
-        type: string
+        type: choice
+        options:
+          - main
+          - '8.x'
 
 permissions: {}
 
