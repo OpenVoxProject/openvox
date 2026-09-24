@@ -22,6 +22,12 @@ class Puppet::Agent
   class RunTimeoutError < Exception # rubocop:disable Lint/InheritException
   end
 
+  # Exit status the forked child uses to tell the daemon that the SSL state
+  # machine gave up waiting for a certificate, so the daemon can exit as it
+  # did when the wait happened in the parent. Must not collide with the
+  # detailed exit codes returned by a run (0, 1, 2, 4, 6) or with 254 (NoMemoryError).
+  CERTIFICATE_FAILURE_EXIT_STATUS = 253
+
   attr_reader :client_class, :client, :should_fork
 
   def initialize(client_class, should_fork = true)
@@ -60,12 +66,28 @@ class Puppet::Agent
         end
       end
 
-      # waiting for certs may sleep for awhile depending on onetime, waitforcert and maxwaitforcert!
-      # this needs to happen before forking so that if we fail to obtain certs and try to exit, then
-      # we exit the main process and not the forked child.
-      ssl_context = wait_for_certificates(client_options)
-
       result = run_in_fork(should_fork) do
+        # waiting for certs may sleep for awhile depending on onetime, waitforcert and maxwaitforcert!
+        #
+        # This happens in the forked child, not in the long-lived daemon. Refreshing
+        # the CRL or renewing the certificate resolves the server's name, and on
+        # Ruby 3.3+ that runs in short-lived native threads. If the daemon forks
+        # while one of those threads is exiting, the child inherits glibc's
+        # resolv.conf lock in the locked state and every name lookup in the run
+        # hangs (#485). Keeping the lookups out of the parent avoids that.
+        #
+        # The state machine calls exit when it gives up waiting for a certificate
+        # (waitforcert 0 or maxwaitforcert exceeded). Report that back so the
+        # daemon exits, as it did when the wait happened in the parent.
+        begin
+          ssl_context = wait_for_certificates(client_options)
+        rescue SystemExit
+          next CERTIFICATE_FAILURE_EXIT_STATUS
+        rescue StandardError => detail
+          Puppet.log_exception(detail, _("Could not obtain certificates: %{detail}") % { detail: detail })
+          next nil
+        end
+
         with_client(client_options[:transaction_uuid], client_options[:job_id]) do |client|
           client_args = client_options.merge(:pluginsync => Puppet::Configurer.should_pluginsync?)
           begin
@@ -115,6 +137,9 @@ class Puppet::Agent
           end
         end
       end
+      # The child could not obtain a certificate and the state machine asked to exit.
+      exit(1) if result == CERTIFICATE_FAILURE_EXIT_STATUS
+
       true
     end
     Puppet.notice _("Shutdown/restart in progress (%{status}); skipping run") % { status: Puppet::Application.run_status.inspect } unless block_run
