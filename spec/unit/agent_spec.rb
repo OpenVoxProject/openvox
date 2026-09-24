@@ -315,6 +315,128 @@ describe Puppet::Agent do
       end
     end
 
+    describe "when obtaining certificates", :if => Puppet.features.posix? && RUBY_PLATFORM != 'java' do
+      let(:ssl_context) { Puppet::SSL::SSLContext.new }
+      let(:machine) { instance_double("Puppet::SSL::StateMachine") }
+      let(:client) { AgentTestClient.new }
+
+      before do
+        @agent = Puppet::Agent.new(AgentTestClient, true)
+        allow(@agent).to receive(:lock).and_yield
+        allow(Puppet::SSL::StateMachine).to receive(:new).and_return(machine)
+        allow(AgentTestClient).to receive(:new).and_return(client)
+      end
+
+      it "waits for certificates in the forked child, after forking" do
+        order = []
+        expect(Kernel).to receive(:fork) { |&block| order << :fork; block.call }
+        allow(machine).to receive(:ensure_client_certificate) { order << :certificates; ssl_context }
+        allow(client).to receive(:run) { order << :run; 0 }
+
+        expect { @agent.run }.to exit_with(0)
+        expect(order).to eq([:fork, :certificates, :run])
+      end
+
+      it "runs the client with the ssl context obtained in the child" do
+        expect(Kernel).to receive(:fork).and_yield
+        allow(machine).to receive(:ensure_client_certificate).and_return(ssl_context)
+        expect(client).to receive(:run) do
+          expect(Puppet.lookup(:ssl_context)).to equal(ssl_context)
+          0
+        end
+
+        expect { @agent.run }.to exit_with(0)
+      end
+
+      it "logs the error, skips the run and exits the child with 1 if certificates cannot be obtained" do
+        expect(Kernel).to receive(:fork).and_yield
+        allow(machine).to receive(:ensure_client_certificate).and_raise(Puppet::Error, 'no certs for you')
+        expect(client).not_to receive(:run)
+        expect(Puppet).to receive(:log_exception).with(be_a(Puppet::Error), /Could not obtain certificates: no certs for you/)
+
+        expect { @agent.run }.to exit_with(1)
+      end
+
+      it "exits the child with the certificate failure status when the state machine gives up waiting for a certificate" do
+        expect(Kernel).to receive(:fork).and_yield
+        allow(machine).to receive(:ensure_client_certificate).and_raise(SystemExit.new(1))
+        expect(client).not_to receive(:run)
+
+        expect { @agent.run }.to exit_with(Puppet::Agent::CERTIFICATE_FAILURE_EXIT_STATUS)
+      end
+
+      it "exits the daemon when the child reports that it gave up waiting for a certificate" do
+        allow(Kernel).to receive(:fork).and_return(1234)
+        allow(Process).to receive(:waitpid2).with(1234, Process::WNOHANG)
+          .and_return([1234, instance_double(Process::Status, exitstatus: Puppet::Agent::CERTIFICATE_FAILURE_EXIT_STATUS)])
+
+        expect { @agent.run }.to exit_with(1)
+      end
+
+      it "exits the process when not forking and the state machine gives up waiting for a certificate" do
+        agent = Puppet::Agent.new(AgentTestClient, false)
+        allow(agent).to receive(:lock).and_yield
+        allow(machine).to receive(:ensure_client_certificate).and_raise(SystemExit.new(1))
+        expect(client).not_to receive(:run)
+
+        expect { agent.run }.to exit_with(1)
+      end
+    end
+
+    describe "when waiting for the forked child", :if => Puppet.features.posix? && RUBY_PLATFORM != 'java' do
+      let(:child_pid) { 1234 }
+      let(:status) { instance_double(Process::Status, exitstatus: 3) }
+
+      before do
+        @agent = Puppet::Agent.new(AgentTestClient, true)
+        allow(Kernel).to receive(:fork).and_return(child_pid)
+        allow(@agent).to receive(:sleep)
+      end
+
+      it "returns the child's exit status when it exits before the deadline" do
+        expect(Process).to receive(:waitpid2).with(child_pid, Process::WNOHANG).and_return(nil, [child_pid, status])
+        expect(Process).not_to receive(:kill)
+
+        expect(@agent.run_in_fork { 0 }).to eq(3)
+      end
+
+      it "blocks without a deadline when runtimeout is disabled" do
+        Puppet[:runtimeout] = 0
+
+        expect(Process).to receive(:waitpid2).with(child_pid).and_return([child_pid, status])
+        expect(Process).not_to receive(:kill)
+
+        expect(@agent.run_in_fork { 0 }).to eq(3)
+      end
+
+      it "kills the child once runtimeout plus the grace period has elapsed" do
+        Puppet[:runtimeout] = 10
+        Puppet[:http_connect_timeout] = 5
+        Puppet[:http_read_timeout] = 5
+        # now, first deadline check, second deadline check
+        allow(Process).to receive(:clock_gettime).with(Process::CLOCK_MONOTONIC).and_return(100, 105, 120)
+
+        expect(Process).to receive(:waitpid2).with(child_pid, Process::WNOHANG).twice.and_return(nil)
+        expect(Process).to receive(:kill).with(:KILL, child_pid)
+        expect(Process).to receive(:waitpid2).with(child_pid).and_return([child_pid, instance_double(Process::Status, exitstatus: nil)])
+        expect(Puppet).to receive(:err).with(/did not exit within 10 seconds of the run timeout/)
+
+        expect(@agent.run_in_fork { 0 }).to be_nil
+      end
+
+      it "reaps the child if it exits between the deadline check and the kill" do
+        Puppet[:runtimeout] = 10
+        allow(Process).to receive(:clock_gettime).with(Process::CLOCK_MONOTONIC).and_return(100, 100_000)
+
+        expect(Process).to receive(:waitpid2).with(child_pid, Process::WNOHANG).and_return(nil)
+        expect(Process).to receive(:kill).with(:KILL, child_pid).and_raise(Errno::ESRCH)
+        expect(Process).to receive(:waitpid2).with(child_pid).and_return([child_pid, status])
+        allow(Puppet).to receive(:err)
+
+        expect(@agent.run_in_fork { 0 }).to eq(3)
+      end
+    end
+
     describe "on Windows", :if => Puppet::Util::Platform.windows? do
       it "should never fork" do
         agent = Puppet::Agent.new(AgentTestClient, true)
