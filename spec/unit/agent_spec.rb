@@ -315,6 +315,74 @@ describe Puppet::Agent do
       end
     end
 
+    describe "when obtaining certificates", :if => Puppet.features.posix? && RUBY_PLATFORM != 'java' do
+      let(:ssl_context) { Puppet::SSL::SSLContext.new }
+      let(:machine) { instance_double("Puppet::SSL::StateMachine") }
+      let(:client) { AgentTestClient.new }
+
+      before do
+        @agent = Puppet::Agent.new(AgentTestClient, true)
+        allow(@agent).to receive(:lock).and_yield
+        allow(Puppet::SSL::StateMachine).to receive(:new).and_return(machine)
+        allow(AgentTestClient).to receive(:new).and_return(client)
+      end
+
+      it "waits for certificates in the forked child, after forking" do
+        order = []
+        expect(Kernel).to receive(:fork) { |&block| order << :fork; block.call }
+        allow(machine).to receive(:ensure_client_certificate) { order << :certificates; ssl_context }
+        allow(client).to receive(:run) { order << :run; 0 }
+
+        expect { @agent.run }.to exit_with(0)
+        expect(order).to eq([:fork, :certificates, :run])
+      end
+
+      it "runs the client with the ssl context obtained in the child" do
+        expect(Kernel).to receive(:fork).and_yield
+        allow(machine).to receive(:ensure_client_certificate).and_return(ssl_context)
+        expect(client).to receive(:run) do
+          expect(Puppet.lookup(:ssl_context)).to equal(ssl_context)
+          0
+        end
+
+        expect { @agent.run }.to exit_with(0)
+      end
+
+      it "logs the error, skips the run and exits the child with 1 if certificates cannot be obtained" do
+        expect(Kernel).to receive(:fork).and_yield
+        allow(machine).to receive(:ensure_client_certificate).and_raise(Puppet::Error, 'no certs for you')
+        expect(client).not_to receive(:run)
+        expect(Puppet).to receive(:log_exception).with(be_a(Puppet::Error), /Could not obtain certificates: no certs for you/)
+
+        expect { @agent.run }.to exit_with(1)
+      end
+
+      it "exits the child with the certificate failure status when the state machine gives up waiting for a certificate" do
+        expect(Kernel).to receive(:fork).and_yield
+        allow(machine).to receive(:ensure_client_certificate).and_raise(SystemExit.new(1))
+        expect(client).not_to receive(:run)
+
+        expect { @agent.run }.to exit_with(Puppet::Agent::CERTIFICATE_FAILURE_EXIT_STATUS)
+      end
+
+      it "exits the daemon when the child reports that it gave up waiting for a certificate" do
+        allow(Kernel).to receive(:fork).and_return(1234)
+        allow(Process).to receive(:waitpid2).with(1234, Process::WNOHANG)
+          .and_return([1234, instance_double(Process::Status, exitstatus: Puppet::Agent::CERTIFICATE_FAILURE_EXIT_STATUS)])
+
+        expect { @agent.run }.to exit_with(1)
+      end
+
+      it "exits the process when not forking and the state machine gives up waiting for a certificate" do
+        agent = Puppet::Agent.new(AgentTestClient, false)
+        allow(agent).to receive(:lock).and_yield
+        allow(machine).to receive(:ensure_client_certificate).and_raise(SystemExit.new(1))
+        expect(client).not_to receive(:run)
+
+        expect { agent.run }.to exit_with(1)
+      end
+    end
+
     describe "when waiting for the forked child", :if => Puppet.features.posix? && RUBY_PLATFORM != 'java' do
       let(:child_pid) { 1234 }
       let(:status) { instance_double(Process::Status, exitstatus: 3) }
