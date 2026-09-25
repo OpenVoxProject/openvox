@@ -29,16 +29,18 @@ describe Puppet::Indirector::FileMetadata::Http do
   end
 
   context "when finding" do
-    it "returns http file metadata" do
+    it "returns http file metadata and fetches content to compute checksum when no headers available" do
       stub_request(:head, key)
         .to_return(status: 200, headers: DEFAULT_HEADERS)
+      stub_request(:get, key)
+        .to_return(status: 200, body: "test content")
 
       result = model.indirection.find(key)
       expect(result.ftype).to eq('file')
       expect(result.path).to eq('/dev/null')
       expect(result.relative_path).to be_nil
       expect(result.destination).to be_nil
-      expect(result.checksum).to match(%r{mtime})
+      expect(result.checksum).to match(%r{sha256})
       expect(result.owner).to be_nil
       expect(result.group).to be_nil
       expect(result.mode).to be_nil
