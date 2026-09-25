@@ -12,9 +12,12 @@ component "puppet" do |pkg, settings, platform|
   platform.get_service_types.each do |servicetype|
     case servicetype
     when "systemd"
+      # the unit file is identical on every platform. Debian is special and gets its orn default file
+      # every other distro is redhatish. They might not be an actual redhat, so we don't use platform.is_deb?
+      # fixes a regression from cfa32f3978716158b84788582b7292159645276d where we tried to ship ext/debian/puppet.service, which doesn't exist
       if platform.is_deb?
-        pkg.install_service "ext/debian/puppet.service", "ext/debian/puppet.default", init_system: servicetype
-      elsif platform.is_rpm?
+        pkg.install_service "ext/systemd/puppet.service", "ext/debian/puppet.default", init_system: servicetype
+      else
         pkg.install_service "ext/systemd/puppet.service", "ext/redhat/client.sysconfig", init_system: servicetype
       end
     when "sysv"
