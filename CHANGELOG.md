@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [9.0.0-rc3](https://github.com/openvoxproject/openvox/tree/9.0.0-rc3) (2026-09-25)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/9.0.0-rc2...9.0.0-rc3)
+
+**Fixed bugs:**
+
+- packaging: ensure every systemd-distro get a service file [\#688](https://github.com/OpenVoxProject/openvox/pull/688) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [9.0.0-rc2](https://github.com/openvoxproject/openvox/tree/9.0.0-rc2) (2026-09-25)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/9.0.0-rc1...9.0.0-rc2)
@@ -18,6 +26,7 @@ All notable changes to this project will be documented in this file.
 - Only require the server setting when no explicit server is given [\#659](https://github.com/OpenVoxProject/openvox/pull/659) ([silug](https://github.com/silug))
 - print "Loading facts" just once [\#656](https://github.com/OpenVoxProject/openvox/pull/656) ([bastelfreak](https://github.com/bastelfreak))
 - Pin json below 3 to unblock CI [\#655](https://github.com/OpenVoxProject/openvox/pull/655) ([miharp](https://github.com/miharp))
+- Install the service defaults file on Debian [\#645](https://github.com/OpenVoxProject/openvox/pull/645) ([jcharaoui](https://github.com/jcharaoui))
 - Do not swallow RunTimeoutError while collecting facts [\#643](https://github.com/OpenVoxProject/openvox/pull/643) ([silug](https://github.com/silug))
 - Kill the forked agent run if it outlives runtimeout [\#642](https://github.com/OpenVoxProject/openvox/pull/642) ([silug](https://github.com/silug))
 
@@ -26,7 +35,6 @@ All notable changes to this project will be documented in this file.
 - puppet-runtime: Update 2026.09.02.1 -\> 2026.09.24.1 [\#684](https://github.com/OpenVoxProject/openvox/pull/684) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
 - Accept ca\_server and report\_server without server when running as root [\#661](https://github.com/OpenVoxProject/openvox/pull/661) ([silug](https://github.com/silug))
 - Document --environment in puppet agent help [\#653](https://github.com/OpenVoxProject/openvox/pull/653) ([miharp](https://github.com/miharp))
-- Install the service defaults file on Debian [\#645](https://github.com/OpenVoxProject/openvox/pull/645) ([jcharaoui](https://github.com/jcharaoui))
 - Fix systemd unreferenced variable warning on Debian [\#644](https://github.com/OpenVoxProject/openvox/pull/644) ([jcharaoui](https://github.com/jcharaoui))
 - Increase delay affordance in waitforlock test [\#641](https://github.com/OpenVoxProject/openvox/pull/641) ([jcharaoui](https://github.com/jcharaoui))
 
