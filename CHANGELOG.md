@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [9.0.0-rc4](https://github.com/openvoxproject/openvox/tree/9.0.0-rc4) (2026-09-29)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/9.0.0-rc3...9.0.0-rc4)
+
+**Fixed bugs:**
+
+- openfact: Update 6.2.0 -\> 6.2.1 [\#692](https://github.com/OpenVoxProject/openvox/pull/692) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+
+**Merged pull requests:**
+
+- Promote puppet-runtime 2026.09.29.1 into main [\#694](https://github.com/OpenVoxProject/openvox/pull/694) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+
 ## [9.0.0-rc3](https://github.com/openvoxproject/openvox/tree/9.0.0-rc3) (2026-09-25)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/9.0.0-rc2...9.0.0-rc3)
