@@ -10,6 +10,8 @@ tag 'audit:high',
                        # to use puppet apply with a local module tree.
     'shard:group4' # For splitting out groups of tests for slow test runners
 
+  skip_test 'puppetserver gem install needs jruby-openssl for https sources, which does not load in FIPS mode' if master.fips_mode?
+
   app_type        = File.basename(__FILE__, '.*')
   tmp_environment = mk_tmp_environment_with_teardown(master, app_type)
   fq_tmp_environmentpath  = "#{environmentpath}/#{tmp_environment}"
