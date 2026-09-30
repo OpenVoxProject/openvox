@@ -8,6 +8,7 @@ test_name "puppetserver_gem provider should install and uninstall" do
   extend Puppet::Acceptance::ManifestUtils
 
   skip_test 'puppetserver_gem is only suitable on server nodes' unless master
+  skip_test 'the puppetserver_gem provider is not functional in FIPS mode' if master.fips_mode?
 
   package = 'world_airports'
 
