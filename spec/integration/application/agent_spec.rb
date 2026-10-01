@@ -824,6 +824,7 @@ describe "puppet agent", unless: Puppet::Util::Platform.jruby? do
 
   context "ssl" do
     context "bootstrapping" do
+      # The certificate wait runs in the forked child, so output is captured at the fd level
       before :each do
         # reconfigure ssl to non-existent dir and files to force bootstrapping
         dir = tmpdir('ssl')
@@ -846,8 +847,8 @@ describe "puppet agent", unless: Puppet::Util::Platform.jruby? do
           expect {
             agent.run
           }.to exit_with(1)
-           .and output(%r{Exiting now because the waitforcert setting is set to 0}).to_stdout
-           .and output(%r{Failed to submit the CSR, HTTP response was 404}).to_stderr
+           .and output(%r{Exiting now because the waitforcert setting is set to 0}).to_stdout_from_any_process
+           .and output(%r{Failed to submit the CSR, HTTP response was 404}).to_stderr_from_any_process
         end
       end
 
@@ -860,8 +861,8 @@ describe "puppet agent", unless: Puppet::Util::Platform.jruby? do
           expect {
             agent.run
           }.to exit_with(1)
-            .and output(%r{Couldn't fetch certificate from CA server; you might still need to sign this agent's certificate \(127.0.0.1\). Exiting now because the maxwaitforcert timeout has been exceeded.}).to_stdout
-            .and output(%r{Failed to submit the CSR, HTTP response was 404}).to_stderr
+            .and output(%r{Couldn't fetch certificate from CA server; you might still need to sign this agent's certificate \(127.0.0.1\). Exiting now because the maxwaitforcert timeout has been exceeded.}).to_stdout_from_any_process
+            .and output(%r{Failed to submit the CSR, HTTP response was 404}).to_stderr_from_any_process
         end
       end
     end
@@ -907,11 +908,12 @@ describe "puppet agent", unless: Puppet::Util::Platform.jruby? do
         end
 
         agent.command_line.args << '--verbose'
+        # The certificate check runs in the forked child, so capture at the fd level
         expect {
           agent.run
         }.to exit_with(1)
-         .and output(%r{Exiting now because the maxwaitforcert timeout has been exceeded}).to_stdout
-         .and output(%r{Certificate 'CN=revoked' is revoked}).to_stderr
+         .and output(%r{Exiting now because the maxwaitforcert timeout has been exceeded}).to_stdout_from_any_process
+         .and output(%r{Certificate 'CN=revoked' is revoked}).to_stderr_from_any_process
       end
     end
 
