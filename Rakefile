@@ -159,7 +159,7 @@ begin
     HEADER
     config.user = "openvoxproject"
     config.project = "openvox"
-    config.exclude_labels = %w[dependencies duplicate question invalid wontfix wont-fix modulesync skip-changelog]
+    config.exclude_labels = %w[dependencies duplicate question invalid wontfix wont-fix modulesync skip-changelog skip-8.x-changelog]
     config.since_tag = "8.18.1"
     config.future_release = Puppet::PUPPETVERSION
     config.exclude_tags_regex = /\A[7,9]\./
