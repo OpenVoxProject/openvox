@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [9.0.0](https://github.com/openvoxproject/openvox/tree/9.0.0) (2026-10-02)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/9.0.0-rc4...9.0.0)
+
+**Fixed bugs:**
+
+- \[Bug\]: Ruby crashes on child side of fork pre-exec macOS 26 \(Tahoe\) [\#538](https://github.com/OpenVoxProject/openvox/issues/538)
+
+**Merged pull requests:**
+
+- Skip the tests that need jruby-openssl in FIPS mode [\#696](https://github.com/OpenVoxProject/openvox/pull/696) ([nmburgan](https://github.com/nmburgan))
+
 ## [9.0.0-rc4](https://github.com/openvoxproject/openvox/tree/9.0.0-rc4) (2026-09-29)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/9.0.0-rc3...9.0.0-rc4)
