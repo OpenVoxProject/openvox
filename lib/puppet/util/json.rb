@@ -42,17 +42,19 @@ module Puppet::Util
       string = string.read if string.respond_to?(:read)
 
       options[:symbolize_names] = true if options.delete(:symbolize_keys)
-      ::JSON.parse(string, options)
+      ::JSON.parse(string, **options)
     rescue JSON::ParserError => e
       raise Puppet::Util::Json::ParseError.build(e, string)
     end
 
     def self.dump(object, options = {})
-      # Options is a state when we're being called recursively
-      if !options.is_a?(JSON::State) && options.delete(:pretty)
-        options.merge!(::JSON::PRETTY_STATE_PROTOTYPE.to_h)
+      return object.to_json(options) if options.is_a?(JSON::State)
+
+      options.delete(:quirks_mode)
+      if options.delete(:pretty)
+        options = { :indent => '  ', :space => ' ', :object_nl => "\n", :array_nl => "\n" }.merge(options)
       end
-      object.to_json(options)
+      object.to_json(JSON::State.new(options))
     end
   end
 end
