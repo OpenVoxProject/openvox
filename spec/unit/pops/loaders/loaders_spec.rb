@@ -678,7 +678,6 @@ describe 'loaders' do
           "name": "example/%1$s",
           "version": "0.0.2",
           "source": "git@github.com/example/example-%1$s.git",
-          "dependencies": [],
           "author": "Bob the Builder",
           "license": "Apache-2.0"%2$s
         }
@@ -732,7 +731,7 @@ describe 'loaders' do
                   'y.pp' => 'type C::D::Y = Integer'
                 }
               },
-              'metadata.json' => sprintf(metadata_json, 'c', '')
+              'metadata.json' => sprintf(metadata_json, 'c', ', "dependencies": []')
             },
             'd' => {
               'types' => {
@@ -746,7 +745,7 @@ describe 'loaders' do
                   }]
                   PUPPET
               },
-              'metadata.json' => sprintf(metadata_json, 'd', '')
+              'metadata.json' => sprintf(metadata_json, 'd', ', "dependencies": []')
             }
           }
         }

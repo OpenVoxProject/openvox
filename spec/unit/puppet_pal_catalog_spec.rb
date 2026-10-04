@@ -208,7 +208,7 @@ describe 'Puppet Pal' do
                 c.with_json_encoding() {|encoder| encoder.encode_resource('notify', 'test') }
               }
             end
-            expect(result).to match(/"message":"yay"/)
+            expect(result).to match(/"message": ?"yay"/)
           end
 
           it 'encodes values as rich data when needed' do
@@ -218,7 +218,7 @@ describe 'Puppet Pal' do
                 c.with_json_encoding(pretty: true) {|encoder| encoder.encode_resource('notify', 'test') }
               }
             end
-            expect(result).to match(/"__ptype":"Regexp"/)
+            expect(result).to match(/"__ptype": ?"Regexp"/)
           end
         end
       end
