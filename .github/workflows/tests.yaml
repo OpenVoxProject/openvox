@@ -256,6 +256,25 @@ jobs:
           puppet --version
           ruby -rpuppet -e 'puts Puppet.version'
 
+      # Distro packages and newer Rubies pair puppet with the newest json gem
+      # rather than the one bundled with this Ruby, which is how json 3 broke
+      # every deserialization in #654. Install the newest json and exercise
+      # the JSON load and dump paths against it.
+      - name: Smoke test with newest json gem
+        shell: bash
+        run: |
+          gem install json --no-document
+          ruby -rjson -e 'puts "json #{JSON::VERSION}"'
+          # Util::Json.dump with the pretty generator options
+          puppet facts show > facts.json
+          # JSON.pretty_generate in the parser face
+          puppet parser dump --format json --pretty -e 'notify { "x": }'
+          # Catalog serialized to JSON, then loaded back through Util::Json.load
+          certname="$(puppet config print certname)"
+          puppet catalog compile "$certname" --code 'notify { "json ok": }' \
+            --render-as json --log_level warning > catalog.json
+          puppet apply --catalog catalog.json
+
   tests:
     if: always()
     needs:
