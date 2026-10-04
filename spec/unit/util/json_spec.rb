@@ -62,6 +62,71 @@ describe Puppet::Util::Json do
         }
       JSON
     end
+
+    it 'passes options to the parser' do
+      expect(Puppet::Util::Json.load('{"a": 1}', symbolize_names: true)).to eq(a: 1)
+    end
+
+    it 'translates symbolize_keys to symbolize_names' do
+      expect(Puppet::Util::Json.load('{"a": 1}', symbolize_keys: true)).to eq(a: 1)
+    end
+
+    it 'does not modify the options it is given' do
+      options = { symbolize_keys: true }
+      Puppet::Util::Json.load('{"a": 1}', options)
+
+      expect(options).to eq(symbolize_keys: true)
+    end
+
+    it 'loads from an IO' do
+      expect(Puppet::Util::Json.load(StringIO.new('{"a": 1}'))).to eq('a' => 1)
+    end
+  end
+
+  context "#dump" do
+    let(:data) { { 'a' => [1, { 'b' => nil }] } }
+
+    it 'dumps compact JSON by default' do
+      expect(Puppet::Util::Json.dump(data)).to eq('{"a":[1,{"b":null}]}')
+    end
+
+    it 'pretty prints when pretty is set' do
+      expect(Puppet::Util::Json.dump(data, pretty: true)).to eq(<<~JSON.chomp)
+        {
+          "a": [
+            1,
+            {
+              "b": null
+            }
+          ]
+        }
+      JSON
+    end
+
+    it 'dumps a scalar' do
+      expect(Puppet::Util::Json.dump(42, pretty: true)).to eq('42')
+    end
+
+    it 'ignores the obsolete quirks_mode option' do
+      expect(Puppet::Util::Json.dump(data, pretty: true, quirks_mode: true)).to eq(JSON.pretty_generate(data))
+    end
+
+    it 'passes generator options through' do
+      expect(Puppet::Util::Json.dump(data, space: ' ')).to eq('{"a": [1,{"b": null}]}')
+    end
+
+    it 'accepts a JSON::State when called recursively' do
+      state = JSON::State.new(indent: '  ', object_nl: "\n")
+
+      expect(Puppet::Util::Json.dump(data, state)).to eq(data.to_json(state))
+    end
+
+    it 'does not modify the options it is given' do
+      options = { pretty: true, quirks_mode: true }
+      Puppet::Util::Json.dump(data, options)
+
+      expect(options).to eq(pretty: true, quirks_mode: true)
+    end
   end
 
   context "load_file_if_valid" do

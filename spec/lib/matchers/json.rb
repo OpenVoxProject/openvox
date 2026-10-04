@@ -112,6 +112,11 @@ module JSONMatchers
     end
 
     def matches?(json)
+      # Parse here rather than letting json-schema do it, since json-schema
+      # (as of 6.2.1) still calls JSON.parse with a positional options hash,
+      # which json 3 rejects.
+      json = Puppet::Util::Json.load(json) if json.is_a?(String)
+
       JSON::Validator.validate!(JSON_META_SCHEMA, @schema)
       JSON::Validator.validate!(@schema, json)
     end

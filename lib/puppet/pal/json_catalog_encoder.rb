@@ -58,7 +58,7 @@ class JsonCatalogEncoder
     r = possibly_filtered_catalog.resource(type, title)
     return nil if r.nil?
 
-    r.to_data_hash.to_json(:pretty => pretty)
+    Puppet::Util::Json.dump(r.to_data_hash, :pretty => pretty)
   end
 
   # Applies a filter for virtual resources and returns filtered catalog

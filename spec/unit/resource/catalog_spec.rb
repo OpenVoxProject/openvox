@@ -1087,7 +1087,7 @@ describe Puppet::Resource::Catalog, "when converting to json" do
     @catalog.add_resource(two)
 
     # TODO this should really guarantee sort order
-    expect(JSON.parse(@catalog.to_json,:create_additions => false)['resources'].sort).to eq(["one_resource", "two_resource"].sort)
+    expect(JSON.parse(@catalog.to_json)['resources'].sort).to eq(["one_resource", "two_resource"].sort)
   end
 
   it "should convert its edges to a JSON-encoded array and store it as the 'edges' data" do
@@ -1101,7 +1101,7 @@ describe Puppet::Resource::Catalog, "when converting to json" do
     expect(@catalog.edges_between(one, two  )[0]).to receive(:to_data_hash).and_return("one_two_json")
     expect(@catalog.edges_between(two, three)[0]).to receive(:to_data_hash).and_return("two_three_json")
 
-    expect(JSON.parse(@catalog.to_json,:create_additions => false)['edges'].sort).to eq(%w{one_two_json two_three_json}.sort)
+    expect(JSON.parse(@catalog.to_json)['edges'].sort).to eq(%w{one_two_json two_three_json}.sort)
   end
 end
 
