@@ -18,7 +18,7 @@ project 'openvox-agent' do |proj|
   metadata_uri = File.join(runtime_details['location'], "#{proj.settings[:puppet_runtime_basename]}.json")
   proj.inherit_yaml_settings(settings_uri, sha1sum_uri, metadata_uri: metadata_uri)
 
-  if platform.is_fedora? || platform.name =~ /el-10/
+  if platform.is_fedora? || platform.name =~ /(el|redhatfips)-10/
     proj.package_override("# Disable check-rpaths since /opt/* is not a valid path\n%global __brp_check_rpaths %{nil}")
     proj.package_override("# Disable the removal of la files, they are still required\n%global __brp_remove_la_files %{nil}")
   end
