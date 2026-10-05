@@ -13,8 +13,6 @@ class Puppet::FileServing::HttpMetadata < Puppet::FileServing::Metadata
 
     # hash available checksums for eventual collection
     @checksums = {}
-    # use a default mtime in case there is no usable HTTP header
-    @checksums[:mtime] = "{mtime}#{Time.now}"
 
     # RFC-1864, deprecated in HTTP/1.1 due to partial responses
     checksum = http_response['content-md5']
@@ -82,5 +80,8 @@ class Puppet::FileServing::HttpMetadata < Puppet::FileServing::Metadata
       @checksum = @checksums[type]
       break if @checksum
     end
+
+    # If no checksum was found in headers, leave checksum as nil
+    # The HTTP indirector will need to fetch content to compute a checksum
   end
 end
