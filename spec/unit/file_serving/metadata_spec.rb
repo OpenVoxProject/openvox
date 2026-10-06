@@ -243,7 +243,39 @@ describe Puppet::FileServing::Metadata, :uses_checksums => true do
   describe "WindowsStat", :if => Puppet::Util::Platform.windows? do
     include PuppetSpec::Files
 
-    it "should return default owner, group and mode when the given path has an invalid DACL (such as a non-NTFS volume)" do
+    it "should return default owner, group and mode when source_permissions is :ignore" do
+      path = tmpfile('foo')
+      FileUtils.touch(path)
+      stat = Puppet::FileSystem.stat(path)
+
+      win_stat = Puppet::FileServing::Metadata::WindowsStat.new(stat, path, :ignore)
+
+      expect(Puppet::Util::Windows::Security).not_to receive(:get_owner)
+      expect(Puppet::Util::Windows::Security).not_to receive(:get_group)
+      expect(Puppet::Util::Windows::Security).not_to receive(:get_mode)
+
+      expect(win_stat.owner).to eq('S-1-5-32-544')
+      expect(win_stat.group).to eq('S-1-0-0')
+      expect(win_stat.mode).to eq(0644)
+    end
+
+    it "should read owner, group and mode from Windows security when source_permissions is :use" do
+      path = tmpfile('foo')
+      FileUtils.touch(path)
+      stat = Puppet::FileSystem.stat(path)
+
+      allow(Puppet::Util::Windows::Security).to receive(:get_owner).with(path).and_return('S-1-5-21-1-2-3-500')
+      allow(Puppet::Util::Windows::Security).to receive(:get_group).with(path).and_return('S-1-5-21-1-2-3-513')
+      allow(Puppet::Util::Windows::Security).to receive(:get_mode).with(path).and_return(0o640)
+
+      win_stat = Puppet::FileServing::Metadata::WindowsStat.new(stat, path, :use)
+
+      expect(win_stat.owner).to eq('S-1-5-21-1-2-3-500')
+      expect(win_stat.group).to eq('S-1-5-21-1-2-3-513')
+      expect(win_stat.mode).to eq(0o640)
+    end
+
+    it "should return default owner, group and mode when the path has an invalid DACL (such as a non-NTFS volume)" do
       invalid_error = Puppet::Util::Windows::Error.new('Invalid DACL', 1336)
       path = tmpfile('foo')
       FileUtils.touch(path)
@@ -253,26 +285,24 @@ describe Puppet::FileServing::Metadata, :uses_checksums => true do
       allow(Puppet::Util::Windows::Security).to receive(:get_mode).with(path).and_raise(invalid_error)
 
       stat = Puppet::FileSystem.stat(path)
-
-      win_stat = Puppet::FileServing::Metadata::WindowsStat.new(stat, path, :ignore)
+      win_stat = Puppet::FileServing::Metadata::WindowsStat.new(stat, path, :use)
 
       expect(win_stat.owner).to eq('S-1-5-32-544')
       expect(win_stat.group).to eq('S-1-0-0')
       expect(win_stat.mode).to eq(0644)
     end
 
-    it "should still raise errors that are not the result of an 'Invalid DACL'" do
-      invalid_error = ArgumentError.new('bar')
+    it "should re-raise errors that are not the result of an 'Invalid DACL'" do
+      invalid_error = Puppet::Util::Windows::Error.new('Access denied', 5)
       path = tmpfile('bar')
       FileUtils.touch(path)
 
       allow(Puppet::Util::Windows::Security).to receive(:get_owner).with(path).and_raise(invalid_error)
-      allow(Puppet::Util::Windows::Security).to receive(:get_group).with(path).and_raise(invalid_error)
-      allow(Puppet::Util::Windows::Security).to receive(:get_mode).with(path).and_raise(invalid_error)
 
       stat = Puppet::FileSystem.stat(path)
+      win_stat = Puppet::FileServing::Metadata::WindowsStat.new(stat, path, :use)
 
-      expect { Puppet::FileServing::Metadata::WindowsStat.new(stat, path, :use) }.to raise_error("Unsupported Windows source permissions option use")
+      expect { win_stat.owner }.to raise_error(Puppet::Util::Windows::Error)
     end
   end
 
