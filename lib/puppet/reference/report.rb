@@ -19,4 +19,8 @@ documents the built-in report processors.
 See [About Reporting](https://docs.openvoxproject.org/openvox/latest/reporting_about.html)
 for more details.
 
+none
+----
+Discard all reports received. This is the default handler when the `reports`
+setting is unset.
 "
