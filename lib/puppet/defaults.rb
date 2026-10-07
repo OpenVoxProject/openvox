@@ -1975,8 +1975,9 @@ EOT
     :pluginmodulesource => {
       :default  => "puppet:///pluginmodules",
       :desc     => "Where to retrieve module type aliases and Puppet language functions
-        for pluginsync. This is only used when the server supports the
-        `pluginmodules` mount.",
+        for pluginsync. If the source does not exist, e.g. because the server
+        does not have the `pluginmodules` mount, OpenVox skips it and removes
+        any type aliases and functions it previously stored in `pluginmoduledest`.",
     },
     :serve_pluginmodules => {
       :default  => true,

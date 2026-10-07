@@ -335,45 +335,6 @@ describe Puppet::HTTP::Session do
       end
     end
 
-    context 'pluginmodules' do
-      it 'does not support pluginmodules if the cached service has not been resolved' do
-        session = described_class.new(client, [])
-
-        expect(session).to_not be_supports(:puppet, 'pluginmodules')
-      end
-
-      ['9.1.0', '9.1.0-rc1', '10.0.0'].each do |version|
-        it "supports pluginmodules if the cached service's version is #{version}" do
-          allow(response).to receive(:[]).with('X-Puppet-Version').and_return(version)
-
-          session.route_to(:puppet)
-          session.process_response(response)
-
-          expect(session).to be_supports(:puppet, 'pluginmodules')
-        end
-      end
-
-      ['9.0.0', '8.24.2'].each do |version|
-        it "does not support pluginmodules if the cached service's version is #{version}" do
-          allow(response).to receive(:[]).with('X-Puppet-Version').and_return(version)
-
-          session.route_to(:puppet)
-          session.process_response(response)
-
-          expect(session).to_not be_supports(:puppet, 'pluginmodules')
-        end
-      end
-
-      it "does not support pluginmodules if the cached service's version is missing" do
-        allow(response).to receive(:[]).with('X-Puppet-Version').and_return(nil)
-
-        session.route_to(:puppet)
-        session.process_response(response)
-
-        expect(session).to_not be_supports(:puppet, 'pluginmodules')
-      end
-    end
-
     context 'json' do
       it 'does not support json if the cached service has not been resolved' do
         session = described_class.new(client, [])

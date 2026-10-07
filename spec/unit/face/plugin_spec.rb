@@ -9,6 +9,11 @@ describe Puppet::Face[:plugin, :current] do
     action.when_rendering(:console).call(result)
   end
 
+  before :each do
+    # These examples are about the plugins, pluginfacts and locales mounts
+    allow_any_instance_of(Puppet::Configurer::Downloader).to receive(:source_exists?).and_return(false)
+  end
+
   context "download" do
     around do |example|
       Puppet.override(server_agent_version: "5.3.4") do

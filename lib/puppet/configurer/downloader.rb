@@ -39,6 +39,31 @@ class Puppet::Configurer::Downloader
     files
   end
 
+  # Check whether the source exists, e.g. whether the server has the mount
+  # the source refers to. This performs the same search that evaluating the
+  # download would, and keeps its results, so evaluating the download
+  # afterwards doesn't need to retrieve them again.
+  #
+  # @return [Boolean] whether the source exists
+  # @raise [Puppet::Error] if the source could not be checked
+  def source_exists?
+    # The file resource needs to be in the catalog to know its environment.
+    # Use its source rather than ours, since it normalizes local paths.
+    catalog
+    file_source = file[:source].first
+    result = file.perform_recursion(file_source)
+    # A server without the mount responds with "not found", which is an
+    # empty result, while an existing source always includes its root.
+    return false if result.nil? || result.empty?
+
+    catalog.recursive_metadata[file.title] = { file_source => result }
+    true
+  rescue Puppet::Error
+    raise
+  rescue => detail
+    raise Puppet::Error.new(_("Failed to retrieve %{name}: %{detail}") % { name: name, detail: detail }, detail)
+  end
+
   def initialize(name, path, source, ignore = nil, environment = nil, source_permissions = :ignore)
     @name = name
     @path = path

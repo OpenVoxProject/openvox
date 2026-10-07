@@ -1,8 +1,11 @@
 require 'spec_helper'
 require 'puppet/configurer'
 require 'puppet/configurer/plugin_handler'
+require 'puppet_spec/files'
 
 describe Puppet::Configurer::PluginHandler do
+  include PuppetSpec::Files
+
   let(:pluginhandler) { Puppet::Configurer::PluginHandler.new() }
   let(:environment)   { Puppet::Node::Environment.create(:myenv, []) }
 
@@ -10,6 +13,10 @@ describe Puppet::Configurer::PluginHandler do
     # PluginHandler#load_plugin has an extra-strong rescue clause
     # this mock is to make sure that we don't silently ignore errors
     expect(Puppet).not_to receive(:err)
+
+    # Only the pluginmodules downloader checks its source, and these
+    # examples are about the other downloaders unless stated otherwise
+    allow_any_instance_of(Puppet::Configurer::Downloader).to receive(:source_exists?).and_return(false)
   end
 
   context "server agent version is 5.3.4" do
@@ -84,11 +91,10 @@ describe Puppet::Configurer::PluginHandler do
     end
   end
 
-  context "when the server supports the pluginmodules mount" do
+  context "when the pluginmodules source exists" do
     before :each do
       Puppet[:disable_i18n] = true
-      allow_any_instance_of(Puppet::HTTP::Session).to receive(:supports?).and_return(false)
-      allow_any_instance_of(Puppet::HTTP::Session).to receive(:supports?).with(:puppet, 'pluginmodules').and_return(true)
+      allow_any_instance_of(Puppet::Configurer::Downloader).to receive(:source_exists?).and_return(true)
     end
 
     it "downloads plugins, facts, and module types and functions" do
@@ -106,16 +112,23 @@ describe Puppet::Configurer::PluginHandler do
       expect(Puppet::Configurer::Downloader).to receive(:new).and_call_original.twice
       expect(Puppet::Configurer::Downloader).to receive(:new)
         .with("pluginmodules", Puppet[:pluginmoduledest], Puppet[:pluginmodulesource], Puppet[:pluginsignore], environment)
-        .and_return(double('downloader', :evaluate => []))
+        .and_return(double('downloader', :source_exists? => true, :evaluate => []))
       allow_any_instance_of(Puppet::Configurer::Downloader).to receive(:evaluate).and_return([])
 
       pluginhandler.download_plugins(environment)
     end
   end
 
-  context "when the server does not support the pluginmodules mount" do
-    it "does not download module types and functions" do
+  context "when the pluginmodules source does not exist" do
+    let(:pluginmoduledest) { tmpdir('plugin_modules') }
+
+    before :each do
       Puppet[:disable_i18n] = true
+      Puppet[:pluginmoduledest] = pluginmoduledest
+      allow_any_instance_of(Puppet::Configurer::Downloader).to receive(:source_exists?).and_return(false)
+    end
+
+    it "does not download module types and functions" do
       names = []
       allow_any_instance_of(Puppet::Configurer::Downloader).to receive(:evaluate) do |downloader|
         names << downloader.name
@@ -124,6 +137,48 @@ describe Puppet::Configurer::PluginHandler do
 
       pluginhandler.download_plugins(environment)
       expect(names).to eq(%w[pluginfacts plugin])
+    end
+
+    it "removes previously synced module types and functions" do
+      FileUtils.mkdir_p(File.join(pluginmoduledest, 'mymod', 'types'))
+      File.write(File.join(pluginmoduledest, 'mymod', 'types', 'port.pp'), 'type Mymod::Port = Integer')
+      allow_any_instance_of(Puppet::Configurer::Downloader).to receive(:evaluate).and_return([])
+
+      expect(Puppet).to receive(:info).with(/Removing the module type aliases and functions in #{Regexp.escape(pluginmoduledest)}/)
+
+      expect(pluginhandler.download_plugins(environment)).to eq([File.join(pluginmoduledest, 'mymod')])
+      expect(Dir.children(pluginmoduledest)).to be_empty
+    end
+
+    it "does nothing when pluginmoduledest does not exist" do
+      Puppet[:pluginmoduledest] = File.join(pluginmoduledest, 'missing')
+      allow_any_instance_of(Puppet::Configurer::Downloader).to receive(:evaluate).and_return([])
+
+      expect(pluginhandler.download_plugins(environment)).to eq([])
+    end
+  end
+
+  context "when checking whether the pluginmodules source exists fails" do
+    let(:pluginmoduledest) { tmpdir('plugin_modules') }
+
+    before :each do
+      Puppet[:disable_i18n] = true
+      Puppet[:pluginmoduledest] = pluginmoduledest
+      FileUtils.mkdir_p(File.join(pluginmoduledest, 'mymod'))
+      allow_any_instance_of(Puppet::Configurer::Downloader).to receive(:source_exists?).and_raise(Puppet::Error, "Failed to retrieve pluginmodules: boom")
+      allow_any_instance_of(Puppet::Configurer::Downloader).to receive(:evaluate).and_return([])
+    end
+
+    it "raises the error" do
+      expect { pluginhandler.download_plugins(environment) }.to raise_error(Puppet::Error, /boom/)
+    end
+
+    it "logs the error and keeps the previously synced copies when ignore_plugin_errors is true" do
+      Puppet[:ignore_plugin_errors] = true
+
+      expect(pluginhandler.download_plugins(environment)).to eq([])
+      expect(@logs).to include(an_object_having_attributes(level: :err, message: /Could not retrieve pluginmodules: .*boom/))
+      expect(Dir.children(pluginmoduledest)).to eq(['mymod'])
     end
   end
 

@@ -24,12 +24,12 @@ describe "puppet plugin", unless: Puppet::Util::Platform.jruby? do
         plugin.run
       }.to exit_with(0)
        .and output(matching(
-         "Downloaded these plugins: #{Regexp.escape(Puppet[:pluginfactdest])}, #{Regexp.escape(Puppet[:plugindest])}, #{Regexp.escape(Puppet[:localedest])}"
+         "Downloaded these plugins: #{Regexp.escape(Puppet[:pluginfactdest])}, #{Regexp.escape(Puppet[:plugindest])}, #{Regexp.escape(Puppet[:pluginmoduledest])}, #{Regexp.escape(Puppet[:localedest])}"
        )).to_stdout
     end
   end
 
-  it "downloads from plugins, pluginsfacts but no locales mounts when i18n is disabled" do
+  it "downloads from plugins, pluginsfacts and pluginmodules but no locales mounts when i18n is disabled" do
     Puppet[:disable_i18n] = true
 
     current_version_handler = -> (req, res) {
@@ -45,26 +45,31 @@ describe "puppet plugin", unless: Puppet::Util::Platform.jruby? do
         plugin.run
       }.to exit_with(0)
        .and output(matching(
-         "Downloaded these plugins: #{Regexp.escape(Puppet[:pluginfactdest])}, #{Regexp.escape(Puppet[:plugindest])}"
+         "Downloaded these plugins: #{Regexp.escape(Puppet[:pluginfactdest])}, #{Regexp.escape(Puppet[:plugindest])}, #{Regexp.escape(Puppet[:pluginmoduledest])}\n"
        )).to_stdout
     end
   end
 
   it "downloads from plugins and pluginsfacts from older puppetservers" do
-    no_locales_handler = -> (req, res) {
+    old_server_handler = -> (req, res) {
       res['X-Puppet-Version'] = '5.3.3' # locales mount was added in 5.3.4
-      res['Content-Type'] = 'application/json'
-      res.body = response_body
+      if req.path.include?('pluginmodules')
+        # pluginmodules mount was added in 9.1.0
+        res.status = 404
+      else
+        res['Content-Type'] = 'application/json'
+        res.body = response_body
+      end
     }
 
-    server.start_server(mounts: {file_metadatas: no_locales_handler}) do |port|
+    server.start_server(mounts: {file_metadatas: old_server_handler}) do |port|
       Puppet[:serverport] = port
       expect {
         plugin.command_line.args << 'download'
         plugin.run
       }.to exit_with(0)
        .and output(matching(
-         "Downloaded these plugins: #{Regexp.escape(Puppet[:pluginfactdest])}, #{Regexp.escape(Puppet[:plugindest])}"
+         "Downloaded these plugins: #{Regexp.escape(Puppet[:pluginfactdest])}, #{Regexp.escape(Puppet[:plugindest])}\n"
        )).to_stdout
     end
   end
@@ -108,6 +113,9 @@ describe "puppet plugin", unless: Puppet::Util::Platform.jruby? do
       # response retains owner/group/mode due to source_permissions => use
       facts_metadata = "[{\"path\":\"/etc/puppetlabs/code\",\"relative_path\":\".\",\"links\":\"follow\",\"owner\":500,\"group\":500,\"mode\":493,\"checksum\":{\"type\":\"ctime\",\"value\":\"{ctime}2020-07-10 14:00:00 -0700\"},\"type\":\"directory\",\"destination\":null}]"
       stub_request(:get, %r{/puppet/v3/file_metadatas/pluginfacts}).to_return(status: 200, body: facts_metadata, headers: {'Content-Type' => 'application/json'})
+
+      # a server without the pluginmodules mount
+      stub_request(:get, %r{/puppet/v3/file_metadatas/pluginmodules}).to_return(status: 404)
     end
 
     it "processes a download request resulting in no changes" do

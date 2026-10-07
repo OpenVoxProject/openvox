@@ -169,7 +169,9 @@ describe Puppet::FileServing::Mount::PluginModules do
 
     def sync
       Puppet[:default_file_terminus] = :file_server
-      Puppet::Configurer::Downloader.new("pluginmodules", dest, "puppet:///pluginmodules", Puppet[:pluginsignore], environment).evaluate
+      downloader = Puppet::Configurer::Downloader.new("pluginmodules", dest, "puppet:///pluginmodules", Puppet[:pluginsignore], environment)
+      expect(downloader.source_exists?).to eq(true)
+      downloader.evaluate
     end
 
     def synced_files
