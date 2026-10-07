@@ -278,6 +278,32 @@ describe Puppet::Type.type(:package).provider(:yum) do
       end
     end
 
+    context "without updates header" do
+      let(:check_update) { File.read(my_fixture("yum-check-update-without-updates-header.txt")) }
+      let(:output) { described_class.parse_updates(check_update) }
+
+      it "parses correctly formatted entries" do
+        expect(output['curl']).to eq([{:name => 'curl', :epoch => '0', :version => '8.15.0', :release => '10.fc43', :arch => 'x86_64'}])
+      end
+
+      it "ignores all mentions of updates header" do
+        expect(output).not_to include("Upgrades (available for reinstall, available for upgrade)")
+      end
+    end
+
+    context "with updates header" do
+      let(:check_update) { File.read(my_fixture("yum-check-update-with-updates-header.txt")) }
+      let(:output) { described_class.parse_updates(check_update) }
+
+      it "parses correctly formatted entries" do
+        expect(output['curl']).to eq([{:name => 'curl', :epoch => '0', :version => '8.18.0', :release => '10.fc44', :arch => 'x86_64'}])
+      end
+
+      it "ignores all mentions of updates header" do
+        expect(output).not_to include("Upgrades (available for reinstall, available for upgrade)")
+      end
+    end
+
     context "with subscription manager enabled " do
       let(:check_update) { File.read(my_fixture("yum-check-update-subscription-manager.txt")) }
       let(:output) { described_class.parse_updates(check_update) }
