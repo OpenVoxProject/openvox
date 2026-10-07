@@ -138,6 +138,118 @@ describe 'loaders' do
     expect(loaders.puppet_cache_loader.loadables).to eq([:func_4x, :func_3x, :datatype])
   end
 
+  context 'when loading pluginsynced modules for the agent' do
+    let(:libdir) do
+      dir_containing('lib', 'puppet' => {
+        'functions' => {
+          'synced' => {
+            'port.rb' => <<~RUBY
+              Puppet::Functions.create_function(:'synced::port') do
+                dispatch :port do
+                  param 'Synced::Port', :value
+                end
+
+                def port(value)
+                  value
+                end
+              end
+            RUBY
+          }
+        }
+      })
+    end
+
+    let(:pluginmoduledest) do
+      dir_containing('plugin_modules', {
+        'synced' => {
+          'types' => {
+            'port.pp' => 'type Synced::Port = Integer[1, 65535]',
+            'ports.pp' => 'type Synced::Ports = Array[Synced::Port]',
+          },
+          'functions' => {
+            'double.pp' => <<~PUPPET
+              function synced::double(Synced::Port $value) >> Integer {
+                synced::port($value) * 2
+              }
+            PUPPET
+          }
+        },
+        'other' => {
+          'types' => {
+            'list.pp' => 'type Other::List = Synced::Ports',
+          }
+        },
+        'not-a-module' => {
+          'types' => {
+            'bad.pp' => 'type Not::Valid = Integer',
+          }
+        }
+      })
+    end
+
+    before(:each) do
+      Puppet[:libdir] = libdir
+      Puppet[:pluginmoduledest] = pluginmoduledest
+    end
+
+    let(:loaders) { Puppet::Pops::Loaders.new(empty_test_env, true) }
+    let(:loader) { loaders.private_environment_loader }
+
+    def load_type(name)
+      loader.load_typed(Puppet::Pops::Loader::TypedName.new(:type, name))
+    end
+
+    def load_function(name)
+      Puppet.override(:loaders => loaders) do
+        loader.load_typed(Puppet::Pops::Loader::TypedName.new(:function, name))
+      end
+    end
+
+    def parse_type(name)
+      Puppet.override(:loaders => loaders) do
+        Puppet::Pops::Types::TypeParser.singleton.parse(name, loader)
+      end
+    end
+
+    it 'loads a type alias' do
+      type = parse_type('Synced::Port')
+      expect(type).to be_a(Puppet::Pops::Types::PTypeAliasType)
+      expect(type.resolved_type).to eq(Puppet::Pops::Types::TypeFactory.range(1, 65535))
+    end
+
+    it 'loads a type alias that refers to a type alias in another module' do
+      type = parse_type('Other::List')
+      expect(type.resolved_type).to eq(parse_type('Synced::Ports'))
+    end
+
+    it 'does not load a type alias from a directory that is not a valid module name' do
+      expect(load_type('not::valid')).to be_nil
+    end
+
+    it 'loads a Puppet language function' do
+      expect(load_function('synced::double').value).to be_a(Puppet::Pops::Functions::Function)
+    end
+
+    it 'resolves the type aliases in the signature of a pluginsynced ruby function' do
+      function = load_function('synced::port').value
+      param_type = function.class.dispatcher.dispatchers.first.type.param_types.first
+      expect(param_type).to eq(parse_type('Synced::Port'))
+    end
+
+    it 'finds modules that are added after the loaders are created' do
+      loaders
+      FileUtils.mkdir_p(File.join(pluginmoduledest, 'late', 'types'))
+      File.write(File.join(pluginmoduledest, 'late', 'types', 'size.pp'), 'type Late::Size = Integer')
+
+      expect(load_type('late::size')).not_to be_nil
+    end
+
+    it 'does not fail when the pluginmoduledest directory does not exist' do
+      Puppet[:pluginmoduledest] = File.join(pluginmoduledest, 'missing')
+      expect(load_type('synced::port')).to be_nil
+    end
+  end
+
   it 'does not create a cached_puppet loader when for_agent is the default false value' do
     loaders = Puppet::Pops::Loaders.new(empty_test_env)
     expect(loaders.puppet_cache_loader()).to be(nil)
@@ -185,6 +297,7 @@ describe 'loaders' do
       [
         [nil,                   Puppet::Pops::Loader::StaticLoader],
         ['puppet_system',       Puppet::Pops::Loader::ModuleLoaders::LibRootedFileBased],
+        ['cached_puppet_modules', Puppet::Pops::Loader::PluginModulesLoader],
         ['cached_puppet_lib',   Puppet::Pops::Loader::ModuleLoaders::LibRootedFileBased],
         [empty_test_env.name,   Puppet::Pops::Loader::Runtime3TypeLoader],
         ['environment',         Puppet::Pops::Loader::SimpleEnvironmentLoader],

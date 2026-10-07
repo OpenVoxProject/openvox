@@ -31,6 +31,17 @@ class Puppet::Configurer::PluginHandler
     result += plugin_fact_downloader.evaluate
     result += plugin_downloader.evaluate
 
+    if server_supports_pluginmodules?
+      plugin_module_downloader = Puppet::Configurer::Downloader.new(
+        "pluginmodules",
+        Puppet[:pluginmoduledest],
+        Puppet[:pluginmodulesource],
+        Puppet[:pluginsignore],
+        environment
+      )
+      result += plugin_module_downloader.evaluate
+    end
+
     unless Puppet[:disable_i18n]
       # until file metadata/content are using the rest client, we need to check
       # both :server_agent_version and the session to see if the server supports
@@ -57,5 +68,16 @@ class Puppet::Configurer::PluginHandler
     Puppet::Util::Autoload.reload_changed(Puppet.lookup(:current_environment))
 
     result
+  end
+
+  private
+
+  # Older servers don't have the pluginmodules mount, and requesting it from
+  # them would fail the run, so only sync it when the server is known to
+  # support it.
+  def server_supports_pluginmodules?
+    session = Puppet.lookup(:http_session)
+    session.supports?(:fileserver, Puppet::HTTP::Session::CAP_PLUGINMODULES) ||
+      session.supports?(:puppet, Puppet::HTTP::Session::CAP_PLUGINMODULES)
   end
 end

@@ -7,12 +7,16 @@ class Puppet::HTTP::Session
   # capabilities for a site
   CAP_LOCALES = 'locales'
   CAP_JSON = 'json'
+  CAP_PLUGINMODULES = 'pluginmodules'
 
   # puppet version where locales mount was added
   SUPPORTED_LOCALES_MOUNT_AGENT_VERSION = Gem::Version.new("5.3.4")
 
   # puppet version where JSON was enabled by default
   SUPPORTED_JSON_DEFAULT = Gem::Version.new("5.0.0")
+
+  # openvox version where the pluginmodules mount was added
+  SUPPORTED_PLUGINMODULES_MOUNT_VERSION = Gem::Version.new("9.1.0")
 
   # Create a new HTTP session. The session is the mechanism by which services
   # may be connected to and accessed. Sessions should be created using
@@ -98,7 +102,7 @@ class Puppet::HTTP::Session
   # specifications are defined here so we can modify our requests appropriately.
   #
   # @param [Symbol] name name of the service to check
-  # @param [String] capability the capability, ie `locales` or `json`
+  # @param [String] capability the capability, ie `locales`, `json` or `pluginmodules`
   #
   # @return [Boolean]
   #
@@ -117,6 +121,8 @@ class Puppet::HTTP::Session
       !server_version.nil? && Gem::Version.new(server_version) >= SUPPORTED_LOCALES_MOUNT_AGENT_VERSION
     when CAP_JSON
       server_version.nil? || Gem::Version.new(server_version) >= SUPPORTED_JSON_DEFAULT
+    when CAP_PLUGINMODULES
+      !server_version.nil? && Gem::Version.new(server_version).release >= SUPPORTED_PLUGINMODULES_MOUNT_VERSION
     else
       false
     end

@@ -84,6 +84,49 @@ describe Puppet::Configurer::PluginHandler do
     end
   end
 
+  context "when the server supports the pluginmodules mount" do
+    before :each do
+      Puppet[:disable_i18n] = true
+      allow_any_instance_of(Puppet::HTTP::Session).to receive(:supports?).and_return(false)
+      allow_any_instance_of(Puppet::HTTP::Session).to receive(:supports?).with(:puppet, 'pluginmodules').and_return(true)
+    end
+
+    it "downloads plugins, facts, and module types and functions" do
+      sources = []
+      allow_any_instance_of(Puppet::Configurer::Downloader).to receive(:evaluate) do |downloader|
+        sources << downloader.source
+        ["/#{downloader.name}"]
+      end
+
+      expect(pluginhandler.download_plugins(environment)).to match_array(%w[/pluginfacts /plugin /pluginmodules])
+      expect(sources).to eq([Puppet[:pluginfactsource], Puppet[:pluginsource], Puppet[:pluginmodulesource]])
+    end
+
+    it "stores module types and functions in pluginmoduledest" do
+      expect(Puppet::Configurer::Downloader).to receive(:new).and_call_original.twice
+      expect(Puppet::Configurer::Downloader).to receive(:new)
+        .with("pluginmodules", Puppet[:pluginmoduledest], Puppet[:pluginmodulesource], Puppet[:pluginsignore], environment)
+        .and_return(double('downloader', :evaluate => []))
+      allow_any_instance_of(Puppet::Configurer::Downloader).to receive(:evaluate).and_return([])
+
+      pluginhandler.download_plugins(environment)
+    end
+  end
+
+  context "when the server does not support the pluginmodules mount" do
+    it "does not download module types and functions" do
+      Puppet[:disable_i18n] = true
+      names = []
+      allow_any_instance_of(Puppet::Configurer::Downloader).to receive(:evaluate) do |downloader|
+        names << downloader.name
+        []
+      end
+
+      pluginhandler.download_plugins(environment)
+      expect(names).to eq(%w[pluginfacts plugin])
+    end
+  end
+
   context "server agent version is 5.3.3" do
     around do |example|
       Puppet.override(server_agent_version: "5.3.3") do
