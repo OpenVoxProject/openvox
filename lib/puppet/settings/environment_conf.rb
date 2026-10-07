@@ -216,5 +216,11 @@ class Puppet::Settings::EnvironmentConf
     def config_version
       @environment.config_version
     end
+
+    # A static environment has no environment.conf, so it never explicitly
+    # sets anything.
+    def raw_setting(_setting_name)
+      nil
+    end
   end
 end

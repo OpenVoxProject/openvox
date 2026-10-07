@@ -400,4 +400,73 @@ modulepath =
       it_behaves_like :config_printing_a_section, :master
     end
   end
+
+  context "when printing settings that environment.conf can override" do
+    let(:environments) { File.expand_path("/dev/null/environments") }
+
+    before(:each) do
+      Puppet.settings.parse_config(<<-CONF)
+      [main]
+      environmentpath=#{environments}
+      [server]
+      environment_timeout=unlimited
+      static_catalogs=false
+      rich_data=false
+      CONF
+    end
+
+    def print_from_server_section
+      result = subject.print("environment_timeout", "rich_data", "static_catalogs", :section => "server")
+      render(:print, result)
+    end
+
+    it "prints the [server] values when the environment's environment.conf does not set them" do
+      FS.overlay(
+        FS::MemoryFile.a_directory(environments, [
+          FS::MemoryFile.a_directory("production", [
+            FS::MemoryFile.a_missing_file("environment.conf"),
+          ]),
+        ])
+      ) do
+        expect(print_from_server_section).to eq(<<-OUTPUT)
+environment_timeout = unlimited
+rich_data = false
+static_catalogs = false
+        OUTPUT
+      end
+    end
+
+    it "prints the environment.conf values when it sets them" do
+      FS.overlay(
+        FS::MemoryFile.a_directory(environments, [
+          FS::MemoryFile.a_directory("production", [
+            FS::MemoryFile.a_regular_file_containing("environment.conf", <<-CONTENT),
+            environment_timeout=30
+            static_catalogs=true
+            CONTENT
+          ]),
+        ])
+      ) do
+        expect(print_from_server_section).to eq(<<-OUTPUT)
+environment_timeout = 30
+rich_data = false
+static_catalogs = true
+        OUTPUT
+      end
+    end
+
+    it "prints the [server] values when the environment directory does not exist" do
+      FS.overlay(
+        FS::MemoryFile.a_directory(environments, [
+          FS::MemoryFile.a_missing_file("production")
+        ])
+      ) do
+        expect(print_from_server_section).to eq(<<-OUTPUT)
+environment_timeout = unlimited
+rich_data = false
+static_catalogs = false
+        OUTPUT
+      end
+    end
+  end
 end
