@@ -54,6 +54,7 @@ class Loaders
     @puppet_system_loader = create_puppet_system_loader()
 
     # 2. Cache loader(optional) - i.e. what puppet stores on disk via pluginsync; gate behind the for_agent flag.
+    #    Its parent provides the type aliases and Puppet language functions of the pluginsynced modules.
     # 3. Environment loader - i.e. what is bound across the environment, may change for each setup
     #    TODO: loaders need to work when also running in an agent doing catalog application. There is no
     #    concept of environment the same way as when running as a server (except when doing apply).
@@ -370,7 +371,10 @@ class Loaders
   end
 
   def create_puppet_cache_loader
-    Loader::ModuleLoaders.cached_loader_from(puppet_system_loader, self)
+    plugin_modules_loader = add_loader_by_name(Loader::PluginModulesLoader.new(puppet_system_loader, self, Puppet[:pluginmoduledest]))
+    cache_loader = Loader::ModuleLoaders.cached_loader_from(plugin_modules_loader, self)
+    plugin_modules_loader.module_private_loader = cache_loader
+    cache_loader
   end
 
   def create_environment_loader(environment, parent_loader, load_from_pcore = true)

@@ -14,8 +14,11 @@ Puppet::Face.define(:plugin, '0.0.1') do
 
     The OpenVox server serves Ruby code collected from the `lib` directories
     of its modules. These plugins can be used on agent nodes to extend
-    OpenFact and implement custom types and providers. Plugins are normally
-    downloaded by the OpenVox agent during the course of a run.
+    OpenFact and implement custom types and providers. Servers that support
+    it also serve the type aliases (`types`) and Puppet language functions
+    (`functions`) of its modules, which agents use when resolving deferred
+    functions. Plugins are normally downloaded by the OpenVox agent during
+    the course of a run.
   EOT
 
   action :download do
