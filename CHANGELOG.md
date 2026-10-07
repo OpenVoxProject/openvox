@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## [8.30.0](https://github.com/openvoxproject/openvox/tree/8.30.0) (2026-10-07)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.29.0...8.30.0)
+
+**Fixed bugs:**
+
+- \[Bug\]: use of "server\_list" \(instead of server\) throws an error [\#658](https://github.com/OpenVoxProject/openvox/issues/658)
+- \[Bug\]: Ruby crashes on child side of fork pre-exec macOS 26 \(Tahoe\) [\#538](https://github.com/OpenVoxProject/openvox/issues/538)
+- \[Backport 8.x\] Pin json below 3 to unblock CI [\#676](https://github.com/OpenVoxProject/openvox/pull/676) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- \[backport 8.x\] fix: `Deferred` resolution of Puppet-language functions \(e.g. mocks in tests\) failing due to lack of `:global_scope` [\#671](https://github.com/OpenVoxProject/openvox/pull/671) ([griggi-ws](https://github.com/griggi-ws))
+- \[Backport 8.x\] print "Loading facts" just once [\#663](https://github.com/OpenVoxProject/openvox/pull/663) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+
+**Closed issues:**
+
+- json 3.0.0 breaks Puppet::Util::Json and the test suite [\#654](https://github.com/OpenVoxProject/openvox/issues/654)
+
+**Merged pull requests:**
+
+- \[Backport 8.x\] Skip the tests that need jruby-openssl in FIPS mode [\#714](https://github.com/OpenVoxProject/openvox/pull/714) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Promote openfact 5.7.2 into 8.x [\#711](https://github.com/OpenVoxProject/openvox/pull/711) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Promote puppet-runtime 2026.09.29.1 into 8.x [\#704](https://github.com/OpenVoxProject/openvox/pull/704) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- \[Backport 8.x\] Kill the forked agent run if it outlives runtimeout [\#698](https://github.com/OpenVoxProject/openvox/pull/698) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- \[Backport 8.x\] Wait for certificates in the forked child, not in the daemon [\#697](https://github.com/OpenVoxProject/openvox/pull/697) ([nmburgan](https://github.com/nmburgan))
+- openfact: Update 5.7.0 -\> 5.7.1 [\#678](https://github.com/OpenVoxProject/openvox/pull/678) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- \[Backport 8.x\] Proper markdown for alias reference documentation. [\#650](https://github.com/OpenVoxProject/openvox/pull/650) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+
 ## [8.29.0](https://github.com/openvoxproject/openvox/tree/8.29.0) (2026-09-04)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/8.28.1...8.29.0)
