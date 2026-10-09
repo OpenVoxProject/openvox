@@ -499,6 +499,38 @@ describe "validating 4x" do
   end
 
   context 'for non productive expressions' do
+    it 'flags an ineffective conditional at the end of a discarded case branch' do
+      source = <<~'PUPPET'
+        case 'Ubuntu' {
+          'Ubuntu': {
+            $packages = if true { ['base'] } else { [] }
+            if true {
+              $packages << 'extra'
+            }
+          }
+        }
+        $x = 1
+      PUPPET
+
+      expect(validate(parse(source))).to have_issue(Puppet::Pops::Issues::IDEM_EXPRESSION_NOT_LAST)
+    end
+
+    it 'allows a final value when the case result is used' do
+      source = <<~PUPPET
+        class example {
+          $packages = case $os_name {
+            'Ubuntu': {
+              $base = ['base']
+              if $virtual { $base + ['vm'] } else { $base }
+            }
+            default: { [] }
+          }
+          notice($packages)
+        }
+      PUPPET
+
+      expect(validate(parse(source))).not_to have_issue(Puppet::Pops::Issues::IDEM_EXPRESSION_NOT_LAST)
+    end
     [ '1',
       '3.14',
       "'a'",
