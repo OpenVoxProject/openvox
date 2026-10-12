@@ -18,6 +18,14 @@ module Puppet::Util
 
     require 'json'
 
+    # Generator options equivalent to the `JSON::PRETTY_STATE_PROTOTYPE`
+    # that json 2.x provided and json 3 removed.
+    PRETTY_OPTIONS = { :indent => '  ', :space => ' ', :object_nl => "\n", :array_nl => "\n" }.freeze
+
+    # Generator options that json 3 rejects as unknown. `quirks_mode` has been
+    # a no-op since json 2.0, when quirks mode became the only mode.
+    OBSOLETE_DUMP_OPTIONS = [:quirks_mode].freeze
+
     # Load the content from a file as JSON if
     # contents are in valid format. This method does not
     # raise error but returns `nil` when invalid file is
@@ -41,16 +49,20 @@ module Puppet::Util
     def self.load(string, options = {})
       string = string.read if string.respond_to?(:read)
 
+      options = options.dup
       options[:symbolize_names] = true if options.delete(:symbolize_keys)
-      ::JSON.parse(string, options)
+      # json 3 only accepts parser options as keyword arguments
+      ::JSON.parse(string, **options)
     rescue JSON::ParserError => e
       raise Puppet::Util::Json::ParseError.build(e, string)
     end
 
     def self.dump(object, options = {})
       # Options is a state when we're being called recursively
-      if !options.is_a?(JSON::State) && options.delete(:pretty)
-        options.merge!(::JSON::PRETTY_STATE_PROTOTYPE.to_h)
+      unless options.is_a?(JSON::State)
+        options = options.dup
+        OBSOLETE_DUMP_OPTIONS.each { |key| options.delete(key) }
+        options.merge!(PRETTY_OPTIONS) if options.delete(:pretty)
       end
       object.to_json(options)
     end

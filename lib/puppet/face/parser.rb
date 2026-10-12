@@ -194,7 +194,7 @@ Puppet::Face.define(:parser, '0.0.1') do
         pn = Puppet::Pops::Model::PNTransformer.transform(parse_result)
         case fmt
         when 'json'
-          options[:pretty] ? JSON.pretty_unparse(pn.to_data) : JSON.dump(pn.to_data)
+          options[:pretty] ? JSON.pretty_generate(pn.to_data) : JSON.dump(pn.to_data)
         else
           pn.format(options[:pretty] ? Puppet::Pops::PN::Indent.new('  ') : nil, output)
         end
