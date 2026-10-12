@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [8.31.0](https://github.com/openvoxproject/openvox/tree/8.31.0) (2026-10-12)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.30.0...8.31.0)
+
+**Implemented enhancements:**
+
+- \[Backport 8.x\] Port Puppet::Util::Json to the json 3 API [\#721](https://github.com/OpenVoxProject/openvox/pull/721) ([miharp](https://github.com/miharp))
+
+**Merged pull requests:**
+
+- Promote puppet-runtime 2026.10.12.2 into 8.x [\#723](https://github.com/OpenVoxProject/openvox/pull/723) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+
 ## [8.30.0](https://github.com/openvoxproject/openvox/tree/8.30.0) (2026-10-07)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/8.29.0...8.30.0)
