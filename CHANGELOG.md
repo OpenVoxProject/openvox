@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [9.1.0](https://github.com/openvoxproject/openvox/tree/9.1.0) (2026-10-12)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/9.0.0...9.1.0)
+
+**Implemented enhancements:**
+
+- Port Puppet::Util::Json to the json 3 API [\#706](https://github.com/OpenVoxProject/openvox/pull/706) ([miharp](https://github.com/miharp))
+
+**Closed issues:**
+
+- json 3.0.0 breaks Puppet::Util::Json and the test suite [\#654](https://github.com/OpenVoxProject/openvox/issues/654)
+
+**Merged pull requests:**
+
+- Promote puppet-runtime 2026.10.12.2 into main [\#722](https://github.com/OpenVoxProject/openvox/pull/722) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Add redhatfips-10-x86\_64 platform and remove outdated comments [\#707](https://github.com/OpenVoxProject/openvox/pull/707) ([nmburgan](https://github.com/nmburgan))
+- Fix documentation for default disabled reports [\#701](https://github.com/OpenVoxProject/openvox/pull/701) ([ekohl](https://github.com/ekohl))
+
 ## [9.0.0](https://github.com/openvoxproject/openvox/tree/9.0.0) (2026-10-02)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/9.0.0-rc4...9.0.0)
