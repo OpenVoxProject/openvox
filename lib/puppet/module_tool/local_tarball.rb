@@ -33,7 +33,7 @@ module Puppet::ModuleTool
     def install(release, dir)
       staging_dir = release.prepare
 
-      module_dir = dir + release.name[/-(.*)/, 1]
+      module_dir = Puppet::ModuleTool.module_dir_for(dir, release.name)
       module_dir.rmtree if module_dir.exist?
 
       # Make sure unpacked module has the same ownership as the folder we are moving it into.

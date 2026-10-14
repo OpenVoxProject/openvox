@@ -41,6 +41,38 @@ module Puppet
       end
     end
 
+    # Return the directory that the module named +full_module_name+ should be
+    # installed into, underneath +install_dir+.
+    #
+    # A module's name is read from its own metadata, so it cannot be trusted,
+    # and installing removes whatever directory the name resolves to. The name
+    # is therefore validated as a well-formed, namespaced module name, and the
+    # result is then confirmed to sit directly beneath +install_dir+. That
+    # second check cannot fail while the first one rejects every name
+    # containing a path separator, but it keeps the guarantee beside the path
+    # arithmetic it protects.
+    #
+    # @param install_dir [Pathname, String] the directory modules are installed into
+    # @param full_module_name [String] a namespaced module name, e.g. 'puppetlabs-stdlib'
+    # @return [Pathname] the directory the module should be installed into
+    # @raise [ArgumentError] if +full_module_name+ is not a well-formed,
+    #   namespaced module name, or does not resolve to a directory directly
+    #   beneath +install_dir+
+    def self.module_dir_for(install_dir, full_module_name)
+      # Metadata validates the name and parses out the module portion of it, so
+      # that both rules live in one place.
+      module_name = Metadata.new.update('name' => full_module_name).module_name
+
+      install_dir = Pathname.new(install_dir)
+      module_dir = install_dir + module_name
+
+      unless module_dir.dirname.cleanpath == install_dir.cleanpath
+        raise ArgumentError, _("Module name %{full_module_name} does not resolve to a directory inside %{install_dir}") % { full_module_name: full_module_name, install_dir: install_dir }
+      end
+
+      module_dir
+    end
+
     # Find the module root when given a path by checking each directory up from
     # its current location until it finds one that satisfies is_module_root?
     #
