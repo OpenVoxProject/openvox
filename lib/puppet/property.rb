@@ -526,7 +526,7 @@ class Puppet::Property < Puppet::Parameter
 
     devfail "should for #{self.class.name} on #{resource.name} is not an array" unless @should.is_a?(Array)
 
-    if match_all?
+    if match_all? and ! (@should.one? and @should.first.instance_of? Puppet::Pops::Evaluator::DeferredValue)
       @should.collect { |val| unmunge(val) }
     else
       unmunge(@should[0])
