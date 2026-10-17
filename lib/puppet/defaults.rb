@@ -1964,6 +1964,30 @@ EOT
       :default  => "puppet:///pluginfacts",
       :desc     => "Where to retrieve external facts for pluginsync",
     },
+    :pluginmoduledest => {
+      :type     => :directory,
+      :default  => "$vardir/plugin_modules",
+      :desc     => "Where OpenVox should store the type aliases (`types`) and Puppet language
+        functions (`functions`) of modules that are handled by pluginsync. These are
+        stored in per-module subdirectories so that they can be loaded when resolving
+        deferred functions on the agent.",
+    },
+    :pluginmodulesource => {
+      :default  => "puppet:///pluginmodules",
+      :desc     => "Where to retrieve module type aliases and Puppet language functions
+        for pluginsync. If the source does not exist, e.g. because the server
+        does not have the `pluginmodules` mount, OpenVox skips it and removes
+        any type aliases and functions it previously stored in `pluginmoduledest`.",
+    },
+    :serve_pluginmodules => {
+      :default  => true,
+      :type     => :boolean,
+      :desc     => "Whether the `pluginmodules` file server mount serves the type aliases
+        (`types`) and Puppet language functions (`functions`) of modules to agents
+        during pluginsync. Agents use them when resolving deferred functions. When
+        this is false, the mount serves an empty directory, and agents remove any
+        copies they previously synced. This setting affects the server only.",
+    },
     :localedest => {
       :type       => :directory,
       :default    => "$vardir/locales",

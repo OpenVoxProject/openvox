@@ -19,9 +19,13 @@ module Puppet::FileServing::TerminusHelper
     result
   end
 
-  # Create model instances for all files in a fileset.
+  # Create model instances for all files in a fileset. Each element of
+  # `paths` is either a directory to search or an already constructed
+  # fileset (e.g. a Fileset::Relocated).
   def path2instances(request, *paths)
     filesets = paths.collect do |path|
+      next path unless path.is_a?(String)
+
       # Filesets support indirector requests as an options collection
       Puppet::FileServing::Fileset.new(path, request)
     end
