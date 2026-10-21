@@ -1241,6 +1241,38 @@ describe Puppet::Type, :unless => Puppet::Util::Platform.windows? do
       expect(TestEnsurableType).not_to be_ensurable
     end
   end
+
+  describe "::clear_misses" do
+    let(:types) { Puppet::Type.instance_variable_get(:@types) }
+
+    before :each do
+      Puppet[:always_retry_plugins] = false
+    end
+
+    it "forgets types that were looked up but not found" do
+      expect(Puppet::Type.type(:no_such_type_for_clear_misses)).to be_nil
+      expect(types).to have_key(:no_such_type_for_clear_misses)
+
+      Puppet::Type.clear_misses
+
+      expect(types).not_to have_key(:no_such_type_for_clear_misses)
+    end
+
+    it "keeps types that were loaded" do
+      expect(Puppet::Type.type(:notify)).not_to be_nil
+
+      Puppet::Type.clear_misses
+
+      expect(types[:notify]).to eq(Puppet::Type.type(:notify))
+    end
+
+    it "modifies the type registry under the manager lock" do
+      lock = Puppet::Type.instance_variable_get(:@manager_lock)
+      expect(lock).to receive(:synchronize).and_call_original
+
+      Puppet::Type.clear_misses
+    end
+  end
 end
 
 describe Puppet::Type::RelationshipMetaparam do
