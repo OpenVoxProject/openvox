@@ -27,8 +27,8 @@ module Manager
   # @api private
   #
   def clear_misses
-    unless @types.nil?
-      @types.compact
+    @manager_lock.synchronize do
+      @types&.compact!
     end
   end
 
