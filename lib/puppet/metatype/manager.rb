@@ -25,8 +25,10 @@ module Manager
   # @api private
   #
   def clear_misses
-    unless @types.nil?
-      @types.delete_if {|_, v| v.nil? }
+    @manager_lock.synchronize do
+      unless @types.nil?
+        @types.delete_if {|_, v| v.nil? }
+      end
     end
   end
 
