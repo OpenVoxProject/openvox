@@ -195,4 +195,54 @@ describe Puppet::Transaction::Event do
       expect(tripped.status).to eq(event.status)
       expect(tripped.time).to eq(event.time)
   end
+
+  describe "deserializing event data" do
+    def wire_event(desired_value)
+      {
+        'audited' => false,
+        'property' => 'content',
+        'previous_value' => 'old',
+        'desired_value' => desired_value,
+        'historical_value' => nil,
+        'message' => 'content changed',
+        'name' => 'content_changed',
+        'status' => 'success',
+        'time' => '2015-03-01T11:12:13.000000000 UTC',
+        'redacted' => false,
+        'corrective_change' => false,
+      }
+    end
+
+    it "holds only plain data when a value carries a type tag" do
+      tagged = { '__ptype' => 'Timestamp', '__pvalue' => '2015-03-01T11:12:13.000000000 UTC' }
+      event = Puppet::Transaction::Event.from_data_hash(wire_event(tagged))
+
+      expect(event.desired_value).to be_a(Hash)
+      expect(event.desired_value).not_to have_key('__ptype')
+      expect(Puppet::Pops::Types::TypeFactory.data).to be_instance(event.desired_value)
+    end
+
+    it "holds only plain data and generates no class when a value carries an inline type definition" do
+      inline = { '__ptype' => "Object[{name => 'Ev', attributes => {'a' => Integer}}]", '__pvalue' => { 'a' => 1 } }
+      expect_any_instance_of(Puppet::Pops::Types::RubyGenerator).not_to receive(:create_class)
+
+      event = Puppet::Transaction::Event.from_data_hash(wire_event(inline))
+
+      expect(event.desired_value).to be_a(Hash)
+      expect(event.desired_value).not_to have_key('__ptype')
+      expect(Puppet::Pops::Types::TypeFactory.data).to be_instance(event.desired_value)
+    end
+
+    it "holds only plain data and generates no class when a value carries an embedded type description" do
+      description = { '__ptype' => 'Pcore::ObjectType', '_pcore_init_hash' => { 'name' => 'Ev', 'attributes' => { 'a' => { '__ptype' => 'Pcore::IntegerType' } } } }
+      embedded = { '__ptype' => description, 'a' => 1 }
+      expect_any_instance_of(Puppet::Pops::Types::RubyGenerator).not_to receive(:create_class)
+
+      event = Puppet::Transaction::Event.from_data_hash(wire_event(embedded))
+
+      expect(event.desired_value).to be_a(Hash)
+      expect(event.desired_value).not_to have_key('__ptype')
+      expect(Puppet::Pops::Types::TypeFactory.data).to be_instance(event.desired_value)
+    end
+  end
 end

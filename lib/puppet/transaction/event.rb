@@ -67,10 +67,9 @@ class Puppet::Transaction::Event
   alias == eql?
 
   def initialize_from_hash(data)
-    data = Puppet::Pops::Serialization::FromDataConverter.convert(data, {
-                                                                    :allow_unresolved => true,
-                                                                    :loader => Puppet::Pops::Loaders.static_loader
-                                                                  })
+    # Read with the stringifying converter, the same one #to_data_hash writes with.
+    # Event values contain no rich data downstream, so there is nothing to reconstruct.
+    data = Puppet::Pops::Serialization::ToStringifiedConverter.convert(data, :message_prefix => 'Event')
     @audited = data['audited']
     @property = data['property']
     @previous_value = data['previous_value']
