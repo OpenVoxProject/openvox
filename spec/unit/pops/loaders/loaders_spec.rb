@@ -260,6 +260,22 @@ describe 'loaders' do
       function = moduleb_loader.load_typed(typed_name(:function, 'user::caller')).value
       expect(function.call({})).to eql("usee::callee() was told 'passed value' + I am user::caller()")
     end
+
+    it 'resolves a module private loader by name under the environment lock' do
+      env = environment_for(module_with_metadata)
+      loaders = Puppet::Pops::Loaders.new(env)
+      expect(env.lock).to receive(:synchronize).at_least(:once).and_call_original
+
+      expect(loaders['modulea private']).to equal(loaders.private_loader_for_module('modulea'))
+    end
+
+    it 'finds a module public loader under the environment lock' do
+      env = environment_for(module_with_metadata)
+      loaders = Puppet::Pops::Loaders.new(env)
+      expect(env.lock).to receive(:synchronize).at_least(:once).and_call_original
+
+      expect(loaders.find_loader('modulea')).to equal(loaders.public_loader_for_module('modulea'))
+    end
   end
 
   context 'when loading from a module with metadata' do
