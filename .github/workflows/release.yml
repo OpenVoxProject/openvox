@@ -51,6 +51,8 @@ jobs:
   build:
     needs: release
     uses: $/.github/workflows/build.yml
+    permissions:
+      contents: read
     with:
       ref: ${{ inputs.version }}
       branch: ${{ inputs.base-branch }}
