@@ -73,6 +73,35 @@ describe Puppet::ModuleTool::Applications::Unpacker do
     expect(File).to be_directory(File.join(target, 'mytarball'))
   end
 
+  it "should refuse to install a module whose metadata name resolves outside the target directory" do
+    # The target is nested inside a directory of its own so that a regression
+    # cannot reach anything beyond this test, and the sentinel confirms that
+    # the parent directory was left alone.
+    parent = tmpdir("unpacker_parent")
+    nested_target = File.join(parent, 'modules')
+    sentinel = File.join(parent, 'sentinel')
+    FileUtils.mkdir(nested_target)
+    FileUtils.touch(sentinel)
+
+    untar = double('Tar')
+    expect(untar).to receive(:unpack).with(filename, anything, anything) do |src, dest, _|
+      FileUtils.mkdir(File.join(dest, 'extractedmodule'))
+      File.open(File.join(dest, 'extractedmodule', 'metadata.json'), 'w+') do |file|
+        file.puts Puppet::Util::Json.dump('name' => 'myusername-..', 'version' => '1.0.0')
+      end
+      true
+    end
+
+    expect(Puppet::ModuleTool::Tar).to receive(:instance).and_return(untar)
+
+    expect {
+      Puppet::ModuleTool::Applications::Unpacker.run(filename, :target_dir => nested_target)
+    }.to raise_error(ArgumentError, /Invalid 'name' field in metadata\.json/)
+
+    expect(File).to exist(sentinel)
+    expect(File).to be_directory(nested_target)
+  end
+
   describe '.harmonize_ownership' do
     let(:source_stat) { instance_double(File::Stat, uid: 1010, gid: 2020) }
     let(:source) { instance_double(Pathname, stat: source_stat) }

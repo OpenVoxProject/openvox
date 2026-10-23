@@ -41,6 +41,47 @@ describe Puppet::ModuleTool do
     end
   end
 
+  describe '.module_dir_for' do
+    let(:install_dir) { Pathname.new('/etc/puppetlabs/code/modules') }
+
+    it 'should return the module directory for a dash separated name' do
+      expect(subject.module_dir_for(install_dir, 'puppetlabs-stdlib')).to eq(install_dir + 'stdlib')
+    end
+
+    it 'should return the module directory for a slash separated name' do
+      expect(subject.module_dir_for(install_dir, 'puppetlabs/stdlib')).to eq(install_dir + 'stdlib')
+    end
+
+    it 'should accept a string install directory' do
+      expect(subject.module_dir_for(install_dir.to_s, 'puppetlabs-stdlib')).to eq(install_dir + 'stdlib')
+    end
+
+    ['puppetlabs-..', 'puppetlabs-../../..', 'puppetlabs-/etc/cron.d', 'puppetlabs-.ssh'].each do |full_module_name|
+      it "should reject #{full_module_name.inspect}, which would resolve outside the install directory" do
+        expect { subject.module_dir_for(install_dir, full_module_name) }.
+          to raise_error(ArgumentError, /Invalid 'name' field in metadata\.json/)
+      end
+    end
+
+    it 'should reject a name that is not namespaced' do
+      expect { subject.module_dir_for(install_dir, 'stdlib') }.
+        to raise_error(ArgumentError, /must be a namespaced module name/)
+    end
+
+    it 'should reject a name whose module portion is not a valid module name' do
+      expect { subject.module_dir_for(install_dir, 'puppetlabs-my-module') }.
+        to raise_error(ArgumentError, /non-alphanumeric/)
+    end
+
+    it 'should reject a module name that resolves outside the install directory even if it validates' do
+      updated = double('updated metadata', :module_name => '..')
+      allow(Puppet::ModuleTool::Metadata).to receive(:new).and_return(double('metadata', :update => updated))
+
+      expect { subject.module_dir_for(install_dir, 'puppetlabs-stdlib') }.
+        to raise_error(ArgumentError, /does not resolve to a directory inside/)
+    end
+  end
+
   describe '.format_tree' do
     it 'should return an empty tree when given an empty list' do
       expect(subject.format_tree([])).to eq('')
