@@ -3,15 +3,6 @@ component "openssl-fips" do |pkg, settings, platform|
   raise "openssl-fips is not a valid component on non-fips platforms" unless platform.is_fips?
 
   pkg.build_requires "puppet-runtime"
-
-  openssl_fips_details = JSON.parse(File.read('configs/components/openssl-fips.json'))
-  openssl_fips_version = openssl_fips_details['version']
-  openssl_fips_location = openssl_fips_details['location']
-
-  tarball_name = "#{pkg.get_name}-#{openssl_fips_version}.#{platform.name}.tar.gz"
-  pkg.url File.join(openssl_fips_location, tarball_name)
-  pkg.sha1sum File.join(openssl_fips_location, "#{tarball_name}.sha1")
-  pkg.version openssl_fips_version
   pkg.install_only true
 
   pkg.add_source("file://resources/patches/openssl/openssl-fips.cnf.patch")
@@ -20,7 +11,8 @@ component "openssl-fips" do |pkg, settings, platform|
   openssl_cnf      = File.join(openssl_ssldir, 'openssl.cnf')
   openssl_fips_cnf = File.join(openssl_ssldir, 'openssl-fips.cnf')
 
-  # Overlay openssl-fips shared library onto puppet-runtime in /opt at *build* time
+  # puppet-runtime builds the fips provider (fips.so) together with OpenSSL on
+  # fips platforms, so this component only prepares the configuration.
   #
   # Don't generate `fipsmodule.cnf` during the build. It must be generated
   # during postinstall action.
@@ -29,10 +21,8 @@ component "openssl-fips" do |pkg, settings, platform|
   # into place after `fipsmodule.cnf` is generated. So ship `openssl-fips.cnf`
   # and rename it to `openssl.cnf` during postinstall action.
   #
-  extract_dir = platform.is_windows? ? '/cygdrive/c' : '/'
   pkg.install do
     [
-      "#{platform.tar} --skip-old-files --directory=#{extract_dir} --extract --gunzip --file=#{tarball_name}",
       "mv #{openssl_cnf} #{openssl_fips_cnf}",
       "#{platform.patch} --strip=1 --fuzz=0 --ignore-whitespace --no-backup-if-mismatch -d #{openssl_ssldir}/ < openssl-fips.cnf.patch"
     ]
