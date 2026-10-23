@@ -335,27 +335,9 @@ class CommandLine
               when /^-([^-])$/
                 @short[::Regexp.last_match(1)]
               when /^--no-([^-]\S*)$/
-                possible_match = @long["[no-]#{::Regexp.last_match(1)}"]
-                if !possible_match
-                  partial_match = @long["[no-]#{::Regexp.last_match(1).tr('-', '_')}"] || @long["[no-]#{::Regexp.last_match(1).tr('_', '-')}"]
-                  if partial_match
-                    Puppet.deprecation_warning _("Partial argument match detected: correct argument is %{partial_match}, got %{arg}. Partial argument matching is deprecated and will be removed in a future release.") % { arg: arg, partial_match: partial_match }
-                  end
-                  partial_match
-                else
-                  possible_match
-                end
+                @long["[no-]#{::Regexp.last_match(1)}"]
               when /^--([^-]\S*)$/
-                possible_match = @long[::Regexp.last_match(1)] || @long["[no-]#{::Regexp.last_match(1)}"]
-                if !possible_match
-                  partial_match = @long[::Regexp.last_match(1).tr('-', '_')] || @long[::Regexp.last_match(1).tr('_', '-')] || @long["[no-]#{::Regexp.last_match(1).tr('-', '_')}"] || @long["[no-]#{::Regexp.last_match(1).tr('_', '-')}"]
-                  if partial_match
-                    Puppet.deprecation_warning _("Partial argument match detected: correct argument is %{partial_match}, got %{arg}. Partial argument matching is deprecated and will be removed in a future release.") % { arg: arg, partial_match: partial_match }
-                  end
-                  partial_match
-                else
-                  possible_match
-                end
+                @long[::Regexp.last_match(1)] || @long["[no-]#{::Regexp.last_match(1)}"]
               else
                 raise CommandlineError, _("invalid argument syntax: '%{arg}'") % { arg: arg }
               end
