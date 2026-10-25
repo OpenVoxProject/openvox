@@ -43,11 +43,13 @@ describe Puppet::Type.type(:package).provider(:dnf) do
       expect(described_class).to be_default
     end
 
-    it "should be the default provider on Amazon Linux 2023" do
-      allow(Facter).to receive(:value).with('os.family').and_return(:redhat)
-      allow(Facter).to receive(:value).with('os.name').and_return(:amazon)
-      allow(Facter).to receive(:value).with('os.release.major').and_return("2023")
-      expect(described_class).to be_default
+    ["2023", "2027"].each do |ver|
+      it "should be the default provider on Amazon Linux #{ver}" do
+        allow(Facter).to receive(:value).with('os.family').and_return(:redhat)
+        allow(Facter).to receive(:value).with('os.name').and_return(:amazon)
+        allow(Facter).to receive(:value).with('os.release.major').and_return(ver)
+        expect(described_class).to be_default
+      end
     end
   end
 
