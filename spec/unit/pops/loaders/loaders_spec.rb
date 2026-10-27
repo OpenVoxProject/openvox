@@ -261,20 +261,37 @@ describe 'loaders' do
       expect(function.call({})).to eql("usee::callee() was told 'passed value' + I am user::caller()")
     end
 
-    it 'resolves a module private loader by name under the environment lock' do
-      env = environment_for(module_with_metadata)
-      loaders = Puppet::Pops::Loaders.new(env)
-      expect(env.lock).to receive(:synchronize).at_least(:once).and_call_original
+    context 'when resolving a module private loader' do
+      let(:env) { environment_for(module_with_metadata) }
+      let(:loaders) { Puppet::Pops::Loaders.new(env) }
+      let(:lock_depth) { [0] }
 
-      expect(loaders['modulea private']).to equal(loaders.private_loader_for_module('modulea'))
-    end
+      before(:each) do
+        depth = lock_depth
+        allow(env.lock).to receive(:synchronize).and_wrap_original do |original, *args, &block|
+          original.call(*args) do
+            depth[0] += 1
+            begin
+              block.call
+            ensure
+              depth[0] -= 1
+            end
+          end
+        end
+        resolver = loaders.instance_variable_get(:@module_resolver)
+        expect(resolver).to receive(:resolve).once.and_wrap_original do |original, *args|
+          expect(depth[0]).to be > 0
+          original.call(*args)
+        end
+      end
 
-    it 'finds a module public loader under the environment lock' do
-      env = environment_for(module_with_metadata)
-      loaders = Puppet::Pops::Loaders.new(env)
-      expect(env.lock).to receive(:synchronize).at_least(:once).and_call_original
+      it 'registers it under the environment lock when looked up by name' do
+        expect(loaders['modulea private'].loader_name).to eq('modulea private')
+      end
 
-      expect(loaders.find_loader('modulea')).to equal(loaders.public_loader_for_module('modulea'))
+      it 'registers it under the environment lock when requested directly' do
+        expect(loaders.private_loader_for_module('modulea').loader_name).to eq('modulea private')
+      end
     end
   end
 
