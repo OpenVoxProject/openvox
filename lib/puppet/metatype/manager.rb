@@ -28,7 +28,7 @@ module Manager
   #
   def clear_misses
     @manager_lock.synchronize do
-      @types&.compact!
+      @types.compact!
     end
   end
 
