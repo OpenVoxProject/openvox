@@ -217,14 +217,12 @@ class Loaders
     else
       # TODO : Later check if definition is private, and then add it to private_loader_for_module
       #
-      environment.lock.synchronize do
-        loader = public_loader_for_module(module_name)
-        if loader.nil?
-          raise Puppet::ParseError, _("Internal Error: did not find public loader for module: '%{module_name}'") % { module_name: module_name }
-        end
-
-        loader
+      loader = public_loader_for_module(module_name)
+      if loader.nil?
+        raise Puppet::ParseError, _("Internal Error: did not find public loader for module: '%{module_name}'") % { module_name: module_name }
       end
+
+      loader
     end
   end
 
@@ -259,10 +257,12 @@ class Loaders
     # Since there is interest in the visibility from the perspective of entities contained in the
     # module, it must be resolved (to provide this visibility).
     # See {#configure_loaders_for_modules}
-    unless md.resolved?
-      @module_resolver.resolve(md)
+    environment.lock.synchronize do
+      unless md.resolved?
+        @module_resolver.resolve(md)
+      end
+      md.private_loader
     end
-    md.private_loader
   end
 
   def add_loader_by_name(loader)
