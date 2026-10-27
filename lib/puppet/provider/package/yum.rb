@@ -133,7 +133,7 @@ Puppet::Type.type(:package).provide :yum, :parent => :rpm, :source => :rpm do
   def self.parse_updates(str)
     # Strip off all content that contains Obsoleting, Security: or Update
     body = str.partition(/^(Obsoleting|Security:|Update)/).first
-
+    body = body.gsub(/^Upgrades.*?$/m, '')
     updates = Hash.new { |h, k| h[k] = [] }
 
     body.split(/^\s*\n/).each do |line|
