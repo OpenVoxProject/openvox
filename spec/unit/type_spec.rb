@@ -1259,16 +1259,39 @@ describe Puppet::Type, :unless => Puppet::Util::Platform.windows? do
     end
 
     it "keeps types that were loaded" do
-      expect(Puppet::Type.type(:notify)).not_to be_nil
+      notify = Puppet::Type.type(:notify)
+      expect(notify).not_to be_nil
 
       Puppet::Type.clear_misses
 
-      expect(types[:notify]).to eq(Puppet::Type.type(:notify))
+      expect(types[:notify]).to equal(notify)
     end
 
-    it "modifies the type registry under the manager lock" do
+    it "looks a missing type up again after the misses are cleared" do
+      expect(Puppet::Type.typeloader).to receive(:load).with(:no_such_type_for_clear_misses, anything).twice.and_return(false)
+
+      Puppet::Type.type(:no_such_type_for_clear_misses)
+      Puppet::Type.clear_misses
+      Puppet::Type.type(:no_such_type_for_clear_misses)
+    end
+
+    it "removes the misses while holding the manager lock" do
       lock = Puppet::Type.instance_variable_get(:@manager_lock)
-      expect(lock).to receive(:synchronize).and_call_original
+      held = false
+      allow(lock).to receive(:synchronize).and_wrap_original do |original, *args, &block|
+        original.call(*args) do
+          held = true
+          begin
+            block.call
+          ensure
+            held = false
+          end
+        end
+      end
+      expect(types).to receive(:compact!).and_wrap_original do |original, *args|
+        expect(held).to be(true)
+        original.call(*args)
+      end
 
       Puppet::Type.clear_misses
     end
