@@ -45,10 +45,38 @@ on:
         required: false
         type: boolean
         default: false
+  workflow_call:
+    inputs:
+      ref:
+        type: string
+        required: true
+      project_name:
+        type: string
+        required: false
+        default: 'openvox-agent'
+      branch:
+        type: string
+        required: false
+        default: 'main'
+      platform_list:
+        type: string
+        required: false
+      vanagon_branch:
+        type: string
+        required: false
+        default: 'main'
+      upload_to_s3:
+        type: boolean
+        required: false
+        default: true
+      use_dev:
+        type: boolean
+        required: false
+        default: false
 
 jobs:
   build:
-    if: ${{ github.event.inputs.use_dev == 'false' }}
+    if: ${{ !inputs.use_dev }}
     uses: 'openvoxproject/shared-actions/.github/workflows/build_vanagon.yml@main'
     with:
       ref: ${{ inputs.ref }}
@@ -60,7 +88,7 @@ jobs:
       branch: ${{ inputs.branch }}
     secrets: inherit
   build_dev:
-    if: ${{ github.event.inputs.use_dev == 'true' }}
+    if: ${{ inputs.use_dev }}
     uses: 'openvoxproject/shared-actions/.github/workflows/build_vanagon.yml@dev'
     with:
       ref: ${{ inputs.ref }}

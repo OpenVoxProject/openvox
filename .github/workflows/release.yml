@@ -47,3 +47,13 @@ jobs:
     secrets:
       github_pat: ${{ secrets.OPENVOXBOT_COMMIT_AND_PRS }}
       ssh_private_key: ${{ secrets.OPENVOXBOT_SSH_PRIVATE_KEY }}
+
+  build:
+    needs: release
+    uses: $/.github/workflows/build.yml
+    permissions:
+      contents: read
+    with:
+      ref: ${{ inputs.version }}
+      branch: ${{ inputs.base-branch }}
+    secrets: inherit
