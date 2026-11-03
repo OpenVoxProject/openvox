@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [9.3.0](https://github.com/openvoxproject/openvox/tree/9.3.0) (2026-11-03)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/9.2.1...9.3.0)
+
+**Security fixes:**
+
+- Read event data hashes with the stringifying converter [\#765](https://github.com/OpenVoxProject/openvox/pull/765) ([nmburgan](https://github.com/nmburgan))
+
 ## [9.2.1](https://github.com/openvoxproject/openvox/tree/9.2.1) (2026-10-23)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/9.2.0...9.2.1)
