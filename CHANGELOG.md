@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [8.32.0](https://github.com/openvoxproject/openvox/tree/8.32.0) (2026-11-03)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.31.2...8.32.0)
+
+**Security fixes:**
+
+- Read event data hashes with the stringifying converter [\#766](https://github.com/OpenVoxProject/openvox/pull/766) ([nmburgan](https://github.com/nmburgan))
+
 ## [8.31.2](https://github.com/openvoxproject/openvox/tree/8.31.2) (2026-10-29)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/8.31.1...8.31.2)
