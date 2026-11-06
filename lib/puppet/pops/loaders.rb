@@ -192,13 +192,15 @@ class Loaders
   # @return [Loader] the found loader
   # @raise [Puppet::ParserError] if no loader is found
   def [](loader_name)
-    loader = @loaders_by_name[loader_name]
-    if loader.nil?
-      # Unable to find the module private loader. Try resolving the module
-      loader = private_loader_for_module(loader_name[0..-9]) if loader_name.end_with?(' private')
-      raise Puppet::ParseError, _("Unable to find loader named '%{loader_name}'") % { loader_name: loader_name } if loader.nil?
+    environment.lock.synchronize do
+      loader = @loaders_by_name[loader_name]
+      if loader.nil?
+        # Unable to find the module private loader. Try resolving the module
+        loader = private_loader_for_module(loader_name[0..-9]) if loader_name.end_with?(' private')
+        raise Puppet::ParseError, _("Unable to find loader named '%{loader_name}'") % { loader_name: loader_name } if loader.nil?
+      end
+      loader
     end
-    loader
   end
 
   # Finds the appropriate loader for the given `module_name`, or for the environment in case `module_name`
@@ -255,10 +257,12 @@ class Loaders
     # Since there is interest in the visibility from the perspective of entities contained in the
     # module, it must be resolved (to provide this visibility).
     # See {#configure_loaders_for_modules}
-    unless md.resolved?
-      @module_resolver.resolve(md)
+    environment.lock.synchronize do
+      unless md.resolved?
+        @module_resolver.resolve(md)
+      end
+      md.private_loader
     end
-    md.private_loader
   end
 
   def add_loader_by_name(loader)
