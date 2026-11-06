@@ -77,6 +77,11 @@ describe Puppet::Type.type(:package).provider(:openbsd) do
       expect(provider.get_full_name).to eq('bash--%stable')
     end
 
+    it "should return the full unversioned package name when installing with a branch with . in branch name" do
+      provider.resource[:name] = 'bash%8.4'
+      expect(provider.get_full_name).to eq('bash--%8.4')
+    end
+
     it "should return the full unversioned package name when installing without a flavor" do
         provider.resource[:name] = 'openvox'
         expect(provider.get_full_name).to eq('openvox--')
