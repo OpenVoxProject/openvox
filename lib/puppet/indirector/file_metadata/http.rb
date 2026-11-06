@@ -17,17 +17,23 @@ class Puppet::Indirector::FileMetadata::Http < Puppet::Indirector::GenericHttp
     client = Puppet.runtime[:http]
     head = client.head(uri, options: { include_system_store: true })
 
-    return create_httpmetadata(head, checksum_type) if head.success?
+    metadata = create_httpmetadata(head, checksum_type) if head.success?
 
     case head.code
     when 403, 405
       # AMZ presigned URL and puppetserver may return 403
       # instead of 405. Fallback to partial get
       get = partial_get(client, uri)
-      return create_httpmetadata(get, checksum_type) if get.success?
+      metadata = create_httpmetadata(get, checksum_type) if get.success?
     end
 
-    nil
+    return metadata if metadata.nil? || metadata.checksum
+
+    # No usable checksum headers, so checksum the content itself
+    client.get(uri, options: { include_system_store: true }) do |response|
+      metadata.collect_from_body(response, checksum_type) if response.success?
+    end
+    metadata if metadata.checksum
   end
 
   def search(request)

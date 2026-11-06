@@ -34,20 +34,14 @@ describe Puppet::FileServing::HttpMetadata do
       http_response['X-Checksum-Md5'] = 'c58989e9740a748de4f5054286faf99b'
       metadata = described_class.new(http_response)
       metadata.collect
-      expect( metadata.checksum_type ).to eq :mtime
+      expect( metadata.checksum ).to be_nil
     end
 
     context "with no Last-Modified or Content-MD5 header from the server" do
-      it "should use :mtime as the checksum type, based on current time" do
-        # Stringifying Time.now does some rounding; do so here so we don't end up with a time
-        # that's greater than the stringified version returned by collect.
-        time = Time.parse(Time.now.to_s)
+      it "should not report a checksum" do
         metadata = described_class.new(http_response)
         metadata.collect
-        expect( metadata.checksum_type ).to eq :mtime
-        checksum = metadata.checksum
-        expect( checksum[0...7] ).to eq '{mtime}'
-        expect( Time.parse(checksum[7..-1]) ).to be >= time
+        expect( metadata.checksum ).to be_nil
       end
     end
 
@@ -118,11 +112,11 @@ describe Puppet::FileServing::HttpMetadata do
       context "without checksum => etag" do
         let(:md5) { "f5ffec8d8d16b43d5e9ac6ad4330c445" }
 
-        it "does not auto-activate ETag and falls back to mtime" do
+        it "does not auto-activate ETag" do
           http_response.add_field('ETag', %("#{md5}"))
           metadata = described_class.new(http_response)
           metadata.collect
-          expect( metadata.checksum_type ).to eq :mtime
+          expect( metadata.checksum ).to be_nil
         end
       end
 
@@ -175,22 +169,22 @@ describe Puppet::FileServing::HttpMetadata do
         end
 
         context "that is a weak ETag" do
-          it "ignores the ETag and falls back to mtime" do
+          it "ignores the ETag" do
             http_response.add_field('ETag', 'W/"f5ffec8d8d16b43d5e9ac6ad4330c445"')
             metadata = described_class.new(http_response)
             metadata.checksum_type = :etag
             metadata.collect
-            expect( metadata.checksum_type ).to eq :mtime
+            expect( metadata.checksum ).to be_nil
           end
         end
 
         context "that is not a recognizable hash" do
-          it "ignores the ETag and falls back to mtime" do
+          it "ignores the ETag" do
             http_response.add_field('ETag', '"5e8c5-27a-3e8b8840"')
             metadata = described_class.new(http_response)
             metadata.checksum_type = :etag
             metadata.collect
-            expect( metadata.checksum_type ).to eq :mtime
+            expect( metadata.checksum ).to be_nil
           end
         end
 
@@ -224,21 +218,59 @@ describe Puppet::FileServing::HttpMetadata do
           end
         end
 
-        it "skips ETag-derived md5 on FIPS platforms and falls back" do
+        it "skips ETag-derived md5 on FIPS platforms" do
           allow(Puppet::Util::Platform).to receive(:fips_enabled?).and_return(true)
           http_response.add_field('ETag', '"f5ffec8d8d16b43d5e9ac6ad4330c445"')
           metadata = described_class.new(http_response)
           metadata.checksum_type = :etag
           metadata.collect
-          expect( metadata.checksum_type ).to eq :mtime
+          expect( metadata.checksum ).to be_nil
         end
 
         it "falls back to other checksums when no ETag is present" do
+          time = Time.now.utc
+          http_response.add_field('last-modified', time.strftime("%a, %d %b %Y %T GMT"))
           metadata = described_class.new(http_response)
           metadata.checksum_type = :etag
           metadata.collect
           expect( metadata.checksum_type ).to eq :mtime
+          expect( metadata.checksum ).to eq "{mtime}#{time.to_time.utc}"
         end
+      end
+    end
+  end
+
+  describe "when checksumming the response body" do
+    let(:http_response) { Net::HTTPOK.new(1.0, '200', 'OK') }
+    let(:body_response) { double('response') }
+    let(:content) { "test content" }
+
+    before :each do
+      allow(body_response).to receive(:read_body).and_yield(content[0, 4]).and_yield(content[4..-1])
+    end
+
+    it "uses Puppet[:digest_algorithm] by default" do
+      Puppet[:digest_algorithm] = 'sha384'
+      metadata = described_class.new(http_response)
+      metadata.collect_from_body(body_response)
+      expect( metadata.checksum_type ).to eq :sha384
+      expect( metadata.checksum ).to eq "{sha384}#{Digest::SHA384.hexdigest(content)}"
+    end
+
+    it "uses the requested checksum type when it is a content digest" do
+      metadata = described_class.new(http_response)
+      metadata.collect_from_body(body_response, :sha512)
+      expect( metadata.checksum_type ).to eq :sha512
+      expect( metadata.checksum ).to eq "{sha512}#{Digest::SHA512.hexdigest(content)}"
+    end
+
+    [:mtime, :etag, :sha256lite].each do |type|
+      it "uses Puppet[:digest_algorithm] when #{type} is requested" do
+        Puppet[:digest_algorithm] = 'sha384'
+        metadata = described_class.new(http_response)
+        metadata.collect_from_body(body_response, type)
+        expect( metadata.checksum_type ).to eq :sha384
+        expect( metadata.checksum ).to eq "{sha384}#{Digest::SHA384.hexdigest(content)}"
       end
     end
   end
