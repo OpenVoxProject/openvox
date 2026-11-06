@@ -742,6 +742,9 @@ describe Puppet::Configurer do
     # response retains owner/group/mode due to source_permissions => use
     facts_metadata = "[{\"path\":\"/etc/puppetlabs/code\",\"relative_path\":\".\",\"links\":\"follow\",\"owner\":500,\"group\":500,\"mode\":493,\"checksum\":{\"type\":\"ctime\",\"value\":\"{ctime}2020-07-10 14:00:00 -0700\"},\"type\":\"directory\",\"destination\":null}]"
     stub_request(:get, %r{/puppet/v3/file_metadatas/pluginfacts}).to_return(status: 200, body: facts_metadata, headers: {'Content-Type' => 'application/json'})
+
+    # a server without the pluginmodules mount
+    stub_request(:get, %r{/puppet/v3/file_metadatas/pluginmodules}).to_return(status: 404)
   end
 
   def expects_new_catalog_only(catalog)

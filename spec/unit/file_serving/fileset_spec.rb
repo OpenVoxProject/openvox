@@ -413,5 +413,25 @@ describe Puppet::FileServing::Fileset do
       expect(Puppet::FileServing::Fileset.merge(*@filesets)["one"]).to eq(make_absolute("/first/path"))
     end
   end
-end
 
+  context "when relocated" do
+    include PuppetSpec::Files
+
+    it "reports files relative to the given ancestor directory" do
+      base = dir_containing('base', 'mod' => { 'types' => { 'a.pp' => '', 'sub' => { 'b.pp' => '' } } })
+      fileset = Puppet::FileServing::Fileset.new(File.join(base, 'mod', 'types'), :recurse => true)
+      relocated = Puppet::FileServing::Fileset::Relocated.new(fileset, base)
+
+      expect(relocated.path).to eq(base)
+      expect(relocated.files).to contain_exactly('mod/types', 'mod/types/a.pp', 'mod/types/sub', 'mod/types/sub/b.pp')
+    end
+
+    it "can be merged with other filesets" do
+      base = dir_containing('base', 'mod' => { 'types' => { 'a.pp' => '' } })
+      fileset = Puppet::FileServing::Fileset.new(File.join(base, 'mod', 'types'), :recurse => true)
+      relocated = Puppet::FileServing::Fileset::Relocated.new(fileset, base)
+
+      expect(Puppet::FileServing::Fileset.merge(relocated)).to eq('mod/types' => base, 'mod/types/a.pp' => base)
+    end
+  end
+end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'find'
+require 'pathname'
 require_relative '../../puppet/file_serving'
 require_relative '../../puppet/file_serving/metadata'
 
@@ -186,5 +187,26 @@ class Puppet::FileServing::Fileset
   def continue_recursion_at?(depth)
     # recurse if told to, and infinite recursion or current depth not at the limit
     recurse && (recurselimit == :infinite || depth <= recurselimit)
+  end
+
+  # Wraps a fileset so that its files are reported relative to an ancestor
+  # of its root directory instead of the root itself. This lets a mount
+  # serve several directories, e.g. `<module>/types`, under one tree while
+  # still preserving each directory's location within that tree.
+  class Relocated
+    # @return [String] the ancestor directory that files are relative to
+    attr_reader :path
+
+    # @param fileset [Puppet::FileServing::Fileset] the fileset to wrap
+    # @param base_path [String] an ancestor directory of the fileset's root
+    def initialize(fileset, base_path)
+      @fileset = fileset
+      @path = base_path
+      @prefix = Pathname.new(fileset.path).relative_path_from(Pathname.new(base_path)).to_s
+    end
+
+    def files
+      @fileset.files.map { |file| file == '.' ? @prefix : File.join(@prefix, file) }
+    end
   end
 end
