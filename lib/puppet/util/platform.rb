@@ -7,12 +7,13 @@ module Puppet
       WINDOWS_FIPS_REGISTRY_KEY = 'System\\CurrentControlSet\\Control\\Lsa\\FipsAlgorithmPolicy'
 
       def windows?
-        # Ruby only sets File::ALT_SEPARATOR on Windows and the Ruby standard
-        # library uses that to test what platform it's on. In some places we
-        # would use Puppet.features.microsoft_windows?, but this method can be
-        # used to determine the behavior of the underlying system without
-        # requiring features to be initialized and without side effect.
-        !!File::ALT_SEPARATOR
+        # This used to look solely at File::ALT_SEPARATOR, as this was only populated on
+        # Windows Ruby. However, this is not a reliable check when attempting to run things
+        # inside Cygwin or MSys2. Ruby generally uses RUBY_PLATFORM these days to check
+        # platform type, e.g.
+        # https://github.com/ruby/ruby/blob/6e2906f60da20d6cd057aa8ad4b84f8c988406d9/ext/socket/lib/socket.rb#L698
+        # In our builds, RUBY_PLATFORM = x64-mingw32 and in tests run via Cygwin, x86_64-cygwin.
+        !(RUBY_PLATFORM =~ /mswin|mingw|cygwin/).nil?
       end
       module_function :windows?
 
