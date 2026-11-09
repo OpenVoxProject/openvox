@@ -125,6 +125,9 @@ project 'openvox-agent' do |proj|
   # Execution wrapper used by Choria
   proj.component "execution_wrapper"
 
+  # PowerShell shim used by Choria for tasks with the powershell input method
+  proj.component "powershell_shim"
+
   # Vendored modules
   proj.component "module-puppetlabs-augeas_core"
   proj.component "module-puppetlabs-cron_core"
