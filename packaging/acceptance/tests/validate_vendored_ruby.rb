@@ -66,7 +66,7 @@ def setup_build_environment(agent)
 end
 
 def install_dependencies(agent)
-  return if agent['platform'] =~ /macos|solaris-11|sparc/
+  return if agent['platform'] =~ /osx|solaris-11|sparc/
 
   install_package_on_agent = package_installer(agent)
   dependencies = {
