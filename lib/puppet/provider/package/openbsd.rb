@@ -93,7 +93,7 @@ Puppet::Type.type(:package).provide :openbsd, :parent => Puppet::Provider::Packa
     # done so we can feed pkg_add(1) the full package name to install to
     # prevent ambiguity.
 
-    name_branch_regex = /^(\S*)(%\w*)$/
+    name_branch_regex = /^([^%]+)(%\S*)?$/
     match = name_branch_regex.match(@resource[:name])
     if match
       use_name = match.captures[0]
