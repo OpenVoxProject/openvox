@@ -19,7 +19,7 @@ module Puppet
           'Administrators'
         when /aix/
           'system'
-        when /macos|bsd/
+        when /osx|bsd/
           'wheel'
         else
           'root'
