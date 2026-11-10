@@ -1241,6 +1241,61 @@ describe Puppet::Type, :unless => Puppet::Util::Platform.windows? do
       expect(TestEnsurableType).not_to be_ensurable
     end
   end
+
+  describe "::clear_misses" do
+    let(:types) { Puppet::Type.instance_variable_get(:@types) }
+
+    before :each do
+      Puppet[:always_retry_plugins] = false
+    end
+
+    it "forgets types that were looked up but not found" do
+      expect(Puppet::Type.type(:no_such_type_for_clear_misses)).to be_nil
+      expect(types).to have_key(:no_such_type_for_clear_misses)
+
+      Puppet::Type.clear_misses
+
+      expect(types).not_to have_key(:no_such_type_for_clear_misses)
+    end
+
+    it "keeps types that were loaded" do
+      notify = Puppet::Type.type(:notify)
+      expect(notify).not_to be_nil
+
+      Puppet::Type.clear_misses
+
+      expect(types[:notify]).to equal(notify)
+    end
+
+    it "looks a missing type up again after the misses are cleared" do
+      expect(Puppet::Type.typeloader).to receive(:load).with(:no_such_type_for_clear_misses, anything).twice.and_return(false)
+
+      Puppet::Type.type(:no_such_type_for_clear_misses)
+      Puppet::Type.clear_misses
+      Puppet::Type.type(:no_such_type_for_clear_misses)
+    end
+
+    it "removes the misses while holding the manager lock" do
+      lock = Puppet::Type.instance_variable_get(:@manager_lock)
+      held = false
+      allow(lock).to receive(:synchronize).and_wrap_original do |original, *args, &block|
+        original.call(*args) do
+          held = true
+          begin
+            block.call
+          ensure
+            held = false
+          end
+        end
+      end
+      expect(types).to receive(:compact!).and_wrap_original do |original, *args|
+        expect(held).to be(true)
+        original.call(*args)
+      end
+
+      Puppet::Type.clear_misses
+    end
+  end
 end
 
 describe Puppet::Type::RelationshipMetaparam do
