@@ -56,15 +56,7 @@ agents.each do |agent|
     module_path_config_property = "codedir"
   end
 
-  native_modules_path = on(agent, puppet("config print #{module_path_config_property}")).stdout.gsub('C:', '/cygdrive/c').strip
-
-  #Check to see if we are running on Windows 2003. Do a crazy hack to get around SCP issues.
-  if (on(agent, facter("os.release.major")).stdout =~ /2003/)
-    on(agent, "ln -s #{native_modules_path.gsub(/ /, '\ ')} /tmp/puppet_etc")
-    modules_path = '/tmp/puppet_etc'
-  else
-    modules_path = native_modules_path
-  end
+  modules_path = on(agent, puppet("config print #{module_path_config_property}")).stdout.gsub('C:', '/cygdrive/c').strip
 
   #Create the modules directory if it doesn't exist
   if on(agent, "test ! -d #{modules_path}/modules", :acceptable_exit_codes => [0,1]).exit_code == 0
