@@ -6,7 +6,6 @@ tag 'audit:high',
     'shard:group2' # For splitting out groups of tests for slow test runners
 
 agents.each do |agent|
-  next if agent == master
   skip_test('this test fails on windows French due to Cygwin/UTF Issues - PUP-8319,IMAGES-492') if agent['platform'] =~ /windows/ && agent['locale'] == 'fr'
 
   step "query natively"
