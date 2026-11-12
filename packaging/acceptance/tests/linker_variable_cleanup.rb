@@ -1,7 +1,8 @@
 require 'puppet/acceptance/common_utils'
 extend Puppet::Acceptance::CommandUtils
 
-confine :except, :platform => 'windows'
+# fixtures/dyld only has crashing libraries for x86 Linux, AIX and Solaris.
+confine :except, :platform => /windows|osx|aarch64|arm64/
 
 def libsource(host)
   kernel = on(host, facter("kernel")).stdout.chomp.downcase
