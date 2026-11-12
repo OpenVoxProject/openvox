@@ -1,5 +1,5 @@
 test_name "gem provider should install and uninstall" do
-  confine :to, :template => /centos-7-x86_64|redhat-7-x86_64/
+  confine :to, :platform => /el-|centos|fedora|sles|debian|ubuntu/
   tag 'audit:high',
       'shard:group2' # For splitting out groups of tests for slow test runners
 
@@ -22,8 +22,6 @@ test_name "gem provider should install and uninstall" do
     # Puppet's Ruby makes a fine target. Unfortunately, it's first in the PATH on Windows: PUP-6134.
     # Also, privatebindir isn't a directory on Windows, it's a PATH:
     # https://github.com/puppetlabs/beaker-puppet/blob/master/lib/beaker-puppet/install_utils/aio_defaults.rb
-    #
-    # These tests depend upon testing being confined to /centos-7-x86_64|redhat-7-x86_64/.
     if agent['roles'].include?('master')
       original_path = agent.get_env_var('PATH').split('=').last
 
@@ -31,6 +29,8 @@ test_name "gem provider should install and uninstall" do
       puppet_agent_sh_path = '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin:/opt/puppetlabs/bin'
 
       system_gem_command = '/usr/bin/gem'
+      # colorize 1.x needs Ruby 2.6 or newer, and EL8's default system Ruby is 2.5
+      system_ruby_package_version = '0.8.1'
 
       teardown do
         step "Teardown: Uninstall System Ruby, and reset PATH" do
@@ -46,7 +46,7 @@ test_name "gem provider should install and uninstall" do
       end
     
       step "Install a gem package in System Ruby" do
-        package_manifest = resource_manifest('package', package, { ensure: 'present', provider: 'gem' } )
+        package_manifest = resource_manifest('package', package, { ensure: system_ruby_package_version, provider: 'gem' } )
         apply_manifest_on(agent, package_manifest, :catch_failures => true) do
           list = on(agent, "#{system_gem_command} list").stdout
           assert_match(/#{package} \(/, list)
@@ -55,7 +55,7 @@ test_name "gem provider should install and uninstall" do
       end
 
       step "Uninstall a gem package in System Ruby" do
-        on(agent, "/usr/bin/gem install #{package}")
+        on(agent, "#{system_gem_command} install #{package} -v #{system_ruby_package_version}")
         package_manifest = resource_manifest('package', package, { ensure: 'absent', provider: 'gem' } )
         apply_manifest_on(agent, package_manifest, :catch_failures => true) do
           list = on(agent, "#{system_gem_command} list").stdout
