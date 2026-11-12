@@ -13,7 +13,7 @@ def location_for(place, fake_version = nil)
 end
 
 gem "beaker", *location_for(ENV['BEAKER_VERSION'] || '~> 7.6')
-gem "beaker-puppet", *location_for(ENV['BEAKER_PUPPET_VERSION' || "~> 4.4"])
+gem "beaker-puppet", *location_for(ENV['BEAKER_PUPPET_VERSION'] || "~> 4.4")
 gem "beaker-vagrant", *location_for(ENV['BEAKER_VAGRANT_VERSION'] || "~> 2.1")
 gem "beaker-vcloud", *location_for(ENV['BEAKER_VCLOUD_VERSION'] || "~> 2.2")
 gem "beaker-docker", *location_for(ENV['BEAKER_DOCKER_VERSION'] || "~> 3.1")
