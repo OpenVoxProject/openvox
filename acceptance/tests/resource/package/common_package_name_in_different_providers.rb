@@ -32,7 +32,7 @@ test_name "ticket 1073: common package name in two different providers should be
   step "Verify gem and ruby-devel on fedora-22 and above if not aio" do
     if @options[:type] != 'aio' then
       agents.each do |agent|
-        if agent[:platform] =~ /fedora-2[2-9]/ then
+        if agent[:platform] =~ /fedora/ then
           unless check_for_package agent, 'rubygems'
             install_package agent, 'rubygems'
           end
