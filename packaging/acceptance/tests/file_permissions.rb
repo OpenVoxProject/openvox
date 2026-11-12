@@ -79,11 +79,10 @@ if ($children.Length -ne $expected.Length) {
 SCRIPT
 
 test_name 'PA-2019: Verify file permissions' do
+  confine :to, :platform => 'windows'
   skip_test 'requires version file which is created by AIO' if [:gem, :git].include?(@options[:type])
 
   agents.each do |agent|
-    next if agent.platform !~ /windows/
-
     execute_powershell_script_on(agent, script)
   end
 end
