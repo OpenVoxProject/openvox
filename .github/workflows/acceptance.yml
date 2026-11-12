@@ -95,12 +95,18 @@ on:
           (5x-20x).
         type: string
         default: 'x86_64'
+      use_dev:
+        description: 'Use the "dev" branch of the shared-actions repo'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 jobs:
   acceptance:
+    if: ${{ !inputs.use_dev }}
     strategy:
       fail-fast: false
       matrix:
@@ -108,6 +114,26 @@ jobs:
           - openvox
           - openvox-agent
     uses: 'OpenVoxProject/shared-actions/.github/workflows/beaker_acceptance.yml@main'
+    with:
+      suite-name: ${{ matrix.suite-name }}
+      ref: ${{ inputs.ref }}
+      fork: ${{ inputs.fork }}
+      openvox-collection: ${{ inputs.collection }}
+      openvox-agent-version: ${{ inputs.openvox-agent-version }}
+      openvox-agent-pre-release-build: ${{ inputs.pre-release-build }}
+      openvox-server-version: ${{ inputs.openvox-server-version }}
+      openvox-server-pre-release-build: ${{ inputs.pre-release-build }}
+      artifacts-url: ${{ inputs.artifacts-url }}
+      guest-arch: ${{ inputs.guest-arch }}
+  acceptance_dev:
+    if: ${{ inputs.use_dev }}
+    strategy:
+      fail-fast: false
+      matrix:
+        suite-name:
+          - openvox
+          - openvox-agent
+    uses: 'OpenVoxProject/shared-actions/.github/workflows/beaker_acceptance.yml@dev'
     with:
       suite-name: ${{ matrix.suite-name }}
       ref: ${{ inputs.ref }}
