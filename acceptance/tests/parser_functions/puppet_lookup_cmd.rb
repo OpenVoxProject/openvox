@@ -2579,6 +2579,12 @@ with_puppet_running_on master, @master_opts, @coderoot do
     result,
     "lookup in ENC specified environment failed"
   )
+  # lookup falls back to the same result without trusted facts, so check it got them
+  refute_match(
+    /CA is not available/,
+    r.stderr,
+    "lookup could not get the node certificate from the CA"
+  )
 
   step "without --compile does not use environment specified in ENC"
   r = on(master, puppet('lookup', "--node #{@node1}", "--confdir #{@confdir}", "--facts #{@coderoot}/facts.yaml", 'environment_key'))
