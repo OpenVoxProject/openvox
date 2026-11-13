@@ -160,7 +160,7 @@ module Puppet
 
         # we need one list of all of the hosts, to assist in managing temp dirs.  It's possible
         # that the master is also an agent, so this will consolidate them into a unique set
-        @all_hosts = Set[master, *agents]
+        @all_hosts = Set.new([master, *agents].compact)
 
         # now we can create a hash of temp dirs--one per host, and unique to this test--without worrying about
         # doing it twice on any individual host

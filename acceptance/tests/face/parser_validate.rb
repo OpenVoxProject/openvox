@@ -24,7 +24,8 @@ tag 'audit:high',
     skip_test('this test fails on windows French due to Cygwin/UTF Issues - PUP-8319,IMAGES-492') if agent['platform'] =~ /windows/ && agent['locale'] == 'fr'
 
     step 'manifest with parser function call' do
-      if agent.platform !~ /windows/
+      # mk_tmp_environment_with_teardown uses the server's environmentpath
+      if agent.platform !~ /windows/ && master
         tmp_environment   = mk_tmp_environment_with_teardown(agent, app_type)
 
         create_sitepp(agent, tmp_environment, <<-SITE)
