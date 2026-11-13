@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [8.33.0](https://github.com/openvoxproject/openvox/tree/8.33.0) (2026-11-13)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.32.0...8.33.0)
+
+**Implemented enhancements:**
+
+- \[Backport 8.x\] Add the PowerShell task shim adapted from pxp-agent [\#784](https://github.com/OpenVoxProject/openvox/pull/784) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+
+**Fixed bugs:**
+
+- \[Backport 8.x\] Fix OpenBSD package branch handling [\#791](https://github.com/OpenVoxProject/openvox/pull/791) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Fix `puppet-resource_api` gem dependency [\#733](https://github.com/OpenVoxProject/openvox/pull/733) ([alexjfisher](https://github.com/alexjfisher))
+
+**Merged pull requests:**
+
+- Promote puppet-runtime 2026.11.12.1 into 8.x [\#787](https://github.com/OpenVoxProject/openvox/pull/787) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- \[Backport 8.x\] Remove packaging configuration for Ubuntu 25.04 [\#775](https://github.com/OpenVoxProject/openvox/pull/775) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Update OpenVox 8 Ruby unit test matrix to drop test cells with marginal utility [\#770](https://github.com/OpenVoxProject/openvox/pull/770) ([Sharpie](https://github.com/Sharpie))
+
 ## [8.32.0](https://github.com/openvoxproject/openvox/tree/8.32.0) (2026-11-03)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/8.31.2...8.32.0)
