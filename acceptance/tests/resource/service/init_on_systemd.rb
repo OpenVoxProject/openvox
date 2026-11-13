@@ -87,6 +87,12 @@ INITD
   agents.each do |agent|
     sleep_bin = on(agent, 'which sleep').stdout.chomp
 
+    step "Setup: Install chkconfig and the service command" do
+      # The EL 9 and 10 images lack chkconfig, and from EL 9 on the service command has its own package
+      agent.install_package('chkconfig') unless agent.check_for_command('chkconfig')
+      agent.install_package('initscripts-service') unless agent.check_for_command('service')
+    end
+
     step "Create initd script with status command" do
       create_remote_file agent, initd_location, initd_file(svc, pidfile, initd_location, true)
       apply_manifest_on agent, <<MANIFEST
