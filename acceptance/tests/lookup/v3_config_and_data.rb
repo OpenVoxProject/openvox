@@ -72,7 +72,7 @@ notify { "${lookup('environment_key4')}": }
       SITE
 
       on(master, "chmod -R 775 #{fq_tmp_environmentpath}")
-      on(master, "chmod -R 775 #{confdir}")
+      on(master, "chmod 755 #{confdir}/hiera.yaml")
     end
   end
 

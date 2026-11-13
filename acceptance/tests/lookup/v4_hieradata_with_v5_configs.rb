@@ -45,16 +45,6 @@ hierarchy:
     path: "common.yaml"
     HIERA
     on(master, "chmod 755 #{confdir}/hiera.yaml")
-    create_remote_file(master, "#{confdir}/#{tmp_environment}.yaml", <<-YAML)
----
-environment_key: environment_key-global_env_file
-global_key: global_key-global_env_file
-    YAML
-    create_remote_file(master, "#{confdir}/common.yaml", <<-YAML)
----
-environment_key: environment_key-global_common_file
-global_key: global_key-global_common_file
-    YAML
   end
 
   step "create environment hiera.yaml and data" do
