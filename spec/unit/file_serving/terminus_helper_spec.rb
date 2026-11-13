@@ -58,6 +58,14 @@ describe Puppet::FileServing::TerminusHelper do
     @helper.path2instances(@request, "/first/file", "/second/file")
   end
 
+  it "should use a provided fileset instead of creating one" do
+    relocated = double('relocated fileset', :files => [], :path => "/base")
+    expect(Puppet::FileServing::Fileset).to receive(:new).with("/my/file", anything).and_return(@fileset)
+    expect(Puppet::FileServing::Fileset).to receive(:merge).with(@fileset, relocated).and_return({})
+
+    @helper.path2instances(@request, "/my/file", relocated)
+  end
+
   it "should pass the indirection request to the Fileset at initialization" do
     expect(Puppet::FileServing::Fileset).to receive(:new).with(anything, @request).and_return(@fileset)
     @helper.path2instances(@request, "/my/file")

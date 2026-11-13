@@ -1002,6 +1002,9 @@ describe "puppet agent", unless: Puppet::Util::Platform.jruby? do
         # the server needs to provide metadata that matches what the agent has
         # so that the agent doesn't delete them during pluginsync
         file_metadatas: -> (req, res) {
+          # a server without the pluginmodules mount
+          next res.status = 404 if req.path.include?('pluginmodules')
+
           path = case req.path
                  when /pluginfacts/
                    external_dir

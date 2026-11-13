@@ -8,6 +8,7 @@ require_relative '../../puppet/file_serving/mount/modules'
 require_relative '../../puppet/file_serving/mount/plugins'
 require_relative '../../puppet/file_serving/mount/locales'
 require_relative '../../puppet/file_serving/mount/pluginfacts'
+require_relative '../../puppet/file_serving/mount/plugin_modules'
 require_relative '../../puppet/file_serving/mount/scripts'
 require_relative '../../puppet/file_serving/mount/tasks'
 
@@ -88,6 +89,7 @@ class Puppet::FileServing::Configuration
     @mounts["plugins"] ||= Mount::Plugins.new("plugins")
     @mounts["locales"] ||= Mount::Locales.new("locales")
     @mounts["pluginfacts"] ||= Mount::PluginFacts.new("pluginfacts")
+    @mounts["pluginmodules"] ||= Mount::PluginModules.new("pluginmodules")
     @mounts["scripts"] ||= Mount::Scripts.new("scripts")
     @mounts["tasks"] ||= Mount::Tasks.new("tasks")
   end
