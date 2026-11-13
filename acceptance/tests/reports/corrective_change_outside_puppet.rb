@@ -11,6 +11,7 @@ test_name "C98093 - a resource changed outside of Puppet will be reported as a c
       'audit:integration',
       'audit:refactor',    # Uses a server currently, but is testing agent report
       'broken:images',
+      'server',
       'shard:group4' # For splitting out groups of tests for slow test runners
 
   test_file_name  = File.basename(__FILE__, '.*')

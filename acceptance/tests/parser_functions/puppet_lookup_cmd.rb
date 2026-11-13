@@ -4,6 +4,7 @@ tag 'audit:high',
     'audit:acceptance',
     'audit:refactor',  # Master is not required for this test. Replace with agents.each
                        # Wrap steps in blocks in accordance with Beaker style guide
+    'server',
     'shard:group3' # For splitting out groups of tests for slow test runners
 
 # doc:

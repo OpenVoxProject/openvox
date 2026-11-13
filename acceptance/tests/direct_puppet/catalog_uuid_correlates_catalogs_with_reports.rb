@@ -4,6 +4,7 @@ test_name "PUP-5872: catalog_uuid correlates catalogs with reports" do
       'audit:acceptance',
       'audit:refactor',   # remove dependence on server by adding a
                           # catalog and report fixture to validate against.
+      'server',
       'shard:group1' # For splitting out groups of tests for slow test runners
 
   master_reportdir = create_tmpdir_for_user(master, 'reportdir')

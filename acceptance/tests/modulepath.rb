@@ -1,5 +1,6 @@
 test_name 'Supports vendored modules' do
   tag 'risk:high',
+      'server',
       'shard:group3' # For splitting out groups of tests for slow test runners
 
   # beacon custom type emits a message so we can tell where the
