@@ -2,11 +2,10 @@ test_name "Calling Hiera function from inside templates"
 
 tag 'audit:high',
     'audit:integration',
-    'audit:refactor',   # Master is not required for this test. Replace with agents.each
     'shard:group1' # For splitting out groups of tests for slow test runners
 
 @module_name = "hieratest"
-@coderoot = master.tmpdir("#{@module_name}")
+@coderoot = master.tmpdir("#{@module_name}") if master
 
 @msg_default = 'message from default.yaml'
 @msg_production = 'message from production.yaml'
@@ -69,12 +68,12 @@ hash_value:
 NEW_YAML
     osfamily_yamls += new_yaml
   end
+  file_owner = master ? "owner => #{master.puppet['user']}, group => #{master.puppet['group']}," : ''
   environ = <<ENV
 
 File {
   ensure => file,
-  owner => #{master.puppet['user']},
-  group => #{master.puppet['group']},
+  #{file_owner}
   mode   => "0644",
 }
 
@@ -298,20 +297,31 @@ end
 
 step 'Setup'
 
-with_puppet_running_on master, @master_opts, @coderoot do
+def apply_and_verify_hiera_templates
   res = find_tmp_dirs
   tmp_dirs = res['tmp_dirs']
   host_to_result_dir = res['host_to_result_dir']
-  env_manifest = create_environment(find_osfamilies, tmp_dirs)
-  apply_manifest_on(master, env_manifest, :catch_failures => true)
+  if master
+    env_manifest = create_environment(find_osfamilies, tmp_dirs)
+    apply_manifest_on(master, env_manifest, :catch_failures => true)
+  end
   agents.each do |agent|
     resultdir = host_to_result_dir[on(agent, facter("networking.hostname")).stdout.chomp]
     step "Applying catalog to agent: #{agent}. result files in #{resultdir}"
-    on(
-      agent,
-      puppet('agent', "-t"),
-      :acceptable_exit_codes => [2]
-    )
+    if master
+      on(
+        agent,
+        puppet('agent', "-t"),
+        :acceptable_exit_codes => [2]
+      )
+    else
+      @coderoot = agent.tmpdir("#{@module_name}")
+      apply_manifest_on(agent, create_environment(find_osfamilies, tmp_dirs), :catch_failures => true)
+      on(agent, puppet('apply', "#{@coderoot}/environments/production/manifests/site.pp",
+                       "--environmentpath=#{@coderoot}/environments", "--hiera_config=#{@coderoot}/hiera.yaml",
+                       '--detailed-exitcodes'),
+         :acceptable_exit_codes => [2])
+    end
 
     step "####### Verifying hiera calls from erb template #######"
     r1 = on(agent, "cat #{resultdir}/hieratest_results_erb")
@@ -473,4 +483,12 @@ with_puppet_running_on master, @master_opts, @coderoot do
       "#{@hh_h_call}: failed.  Expected: '#{@k1} => #{@hval1os}'"
     )
   end
+end
+
+if master
+  with_puppet_running_on master, @master_opts, @coderoot do
+    apply_and_verify_hiera_templates
+  end
+else
+  apply_and_verify_hiera_templates
 end
