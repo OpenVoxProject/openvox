@@ -71,30 +71,30 @@ agents.each do |agent|
   step "Verify '0' is a Valid Exit Code"
 
   #Apply the manifest and verify Puppet returns success.
-  on(agent, puppet('apply', '--debug'), :stdin => pass_exitcode_manifest)
+  on(agent, puppet('apply', '--debug', '--detailed-exitcodes'), :stdin => pass_exitcode_manifest, :acceptable_exit_codes => [2])
 
   step "Verify Unsigned 8bit Upper Boundary"
 
   #Apply the manifest and verify Puppet returns success.
-  on(agent, puppet('apply', '--debug'), :stdin => upper_8bit_boundary_manifest)
+  on(agent, puppet('apply', '--debug', '--detailed-exitcodes'), :stdin => upper_8bit_boundary_manifest, :acceptable_exit_codes => [2])
 
   step "Verify Unsigned 8bit Cross Boundary"
 
   #Apply the manifest and verify Puppet returns success.
-  on(agent, puppet('apply', '--debug'), :stdin => cross_8bit_boundary_manifest)
+  on(agent, puppet('apply', '--debug', '--detailed-exitcodes'), :stdin => cross_8bit_boundary_manifest, :acceptable_exit_codes => [2])
 
   step "Verify Unsigned 32bit Upper Boundary"
 
   #Apply the manifest and verify Puppet returns success.
-  on(agent, puppet('apply', '--debug'), :stdin => upper_32bit_boundary_manifest)
+  on(agent, puppet('apply', '--debug', '--detailed-exitcodes'), :stdin => upper_32bit_boundary_manifest, :acceptable_exit_codes => [2])
 
   step "Verify Unsigned 32bit Cross Boundary"
 
   #Apply the manifest and verify Puppet returns success.
-  on(agent, puppet('apply', '--debug'), :stdin => cross_32bit_boundary_manifest)
+  on(agent, puppet('apply', '--debug', '--detailed-exitcodes'), :stdin => cross_32bit_boundary_manifest, :acceptable_exit_codes => [2])
 
   step "Verify Negative Exit Code Rollover Boundary"
 
   #Apply the manifest and verify Puppet returns success.
-  on(agent, puppet('apply', '--debug'), :stdin => negative_boundary_manifest)
+  on(agent, puppet('apply', '--debug', '--detailed-exitcodes'), :stdin => negative_boundary_manifest, :acceptable_exit_codes => [2])
 end
