@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [9.4.0](https://github.com/openvoxproject/openvox/tree/9.4.0) (2026-11-13)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/9.3.0...9.4.0)
+
+**Implemented enhancements:**
+
+- Add the PowerShell task shim adapted from pxp-agent [\#780](https://github.com/OpenVoxProject/openvox/pull/780) ([nmburgan](https://github.com/nmburgan))
+- Use shared promote workflow [\#771](https://github.com/OpenVoxProject/openvox/pull/771) ([bastelfreak](https://github.com/bastelfreak))
+- Add openvox-agent builds for Fedora 45 [\#750](https://github.com/OpenVoxProject/openvox/pull/750) ([Sharpie](https://github.com/Sharpie))
+
+**Fixed bugs:**
+
+- Fix OpenBSD package branch handling [\#774](https://github.com/OpenVoxProject/openvox/pull/774) ([buzzdeee](https://github.com/buzzdeee))
+
+**Merged pull requests:**
+
+- Promote puppet-runtime 2026.11.12.1 into main [\#786](https://github.com/OpenVoxProject/openvox/pull/786) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Update OpenVox 9 Ruby unit test matrix to drop test cells with marginal utility [\#769](https://github.com/OpenVoxProject/openvox/pull/769) ([Sharpie](https://github.com/Sharpie))
+- Remove packaging configuration for Ubuntu 25.04 [\#768](https://github.com/OpenVoxProject/openvox/pull/768) ([Sharpie](https://github.com/Sharpie))
+
 ## [9.3.0](https://github.com/openvoxproject/openvox/tree/9.3.0) (2026-11-03)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/9.2.1...9.3.0)
