@@ -28,6 +28,7 @@ tag 'audit:high',
 @ha_m_call = "hiera_array\\('message'\\)"
 @ha_i_call = "hiera_array\\('includes'\\)"
 @hh_h_call = "hiera_hash\\('hash_value'\\)"
+@hi_i_call = "hiera_include\\('includes'\\)"
 
 @mod_default_msg = 'This file created by mod_default.'
 @mod_osfamily_msg = 'This file created by mod_osfamily.'
@@ -42,7 +43,7 @@ tag 'audit:high',
 }
 
 
-def create_environment(osfamilies, tmp_dirs)
+def create_environment(osfamilies, tmp_dirs, certnames)
   envroot = "#{@coderoot}/environments"
   production = "#{envroot}/production"
   modroot = "#{production}/modules"
@@ -67,6 +68,19 @@ hash_value:
 }
 NEW_YAML
     osfamily_yamls += new_yaml
+  end
+
+  certname_yamls = ""
+  certnames.each do |certname|
+    certname_yamls += <<CERTNAME_YAML
+file {"#{hieradir}/#{certname}.yaml":
+  content => "
+---
+message: '#{@msg_fqdn}'
+includes: '#{@module_name}::mod_fqdn'
+"
+}
+CERTNAME_YAML
   end
   file_owner = master ? "owner => #{master.puppet['user']}, group => #{master.puppet['group']}," : ''
   environ = <<ENV
@@ -148,13 +162,7 @@ hash_value:
 "
 }
 
-file {"#{hieradir}/#{$fqdn}.yaml":
-  content => "
----
-message: '#{@msg_fqdn}'
-includes: '#{@module_name}::mod_fqdn'
-"
-}
+#{certname_yamls}
 
 file {"#{moduledir}/examples/init.pp":
   content => "
@@ -278,6 +286,10 @@ def find_osfamilies
   family_hash.keys
 end
 
+def find_certnames
+  agents.map { |agent| agent.puppet['certname'] }
+end
+
 def find_tmp_dirs
   tmp_dirs = ""
   host_to_result_dir = {}
@@ -302,7 +314,7 @@ def apply_and_verify_hiera_templates
   tmp_dirs = res['tmp_dirs']
   host_to_result_dir = res['host_to_result_dir']
   if master
-    env_manifest = create_environment(find_osfamilies, tmp_dirs)
+    env_manifest = create_environment(find_osfamilies, tmp_dirs, find_certnames)
     apply_manifest_on(master, env_manifest, :catch_failures => true)
   end
   agents.each do |agent|
@@ -316,7 +328,7 @@ def apply_and_verify_hiera_templates
       )
     else
       @coderoot = agent.tmpdir("#{@module_name}")
-      apply_manifest_on(agent, create_environment(find_osfamilies, tmp_dirs), :catch_failures => true)
+      apply_manifest_on(agent, create_environment(find_osfamilies, tmp_dirs, find_certnames), :catch_failures => true)
       on(agent, puppet('apply', "#{@coderoot}/environments/production/manifests/site.pp",
                        "--environmentpath=#{@coderoot}/environments", "--hiera_config=#{@coderoot}/hiera.yaml",
                        '--detailed-exitcodes'),
@@ -329,9 +341,9 @@ def apply_and_verify_hiera_templates
 
     step "Verifying hiera() call #1."
     assert_match(
-      /#{@h_m_call}: #{@msg_production}/,
+      /#{@h_m_call}: #{@msg_fqdn}/,
       result,
-      "#{@h_m_call} failed. Expected: '#{@msg_production}'"
+      "#{@h_m_call} failed. Expected: '#{@msg_fqdn}'"
     )
 
     step "Verifying hiera() call #2."
@@ -350,23 +362,23 @@ def apply_and_verify_hiera_templates
 
     step "Verifying hiera() call #4."
     assert_match(
-      /#{@h_i_call}: #{@module_name}::mod_production/,
+      /#{@h_i_call}: #{@module_name}::mod_fqdn/,
       result,
-      "#{@h_i_call} failed.  Expected:'#{@module_name}::mod_production'"
+      "#{@h_i_call} failed.  Expected:'#{@module_name}::mod_fqdn'"
     )
 
     step "Verifying hiera_array() call. #1"
     assert_match(
-/#{@ha_m_call}: \[\"#{@msg_production}\", \"#{@msg1os}\", \"#{@msg2os}\", \"#{@msg_default}\"\]/,
+/#{@ha_m_call}: \[\"#{@msg_fqdn}\", \"#{@msg_production}\", \"#{@msg1os}\", \"#{@msg2os}\", \"#{@msg_default}\"\]/,
       result,
-      "#{@ha_m_call} failed. Expected: '[\"#{@msg_production}\", \"#{@msg1os}\", \"#{@msg2os}\", \"#{@msg_default}\"]'"
+      "#{@ha_m_call} failed. Expected: '[\"#{@msg_fqdn}\", \"#{@msg_production}\", \"#{@msg1os}\", \"#{@msg2os}\", \"#{@msg_default}\"]'"
     )
 
     step "Verifying hiera_array() call. #2"
     assert_match(
-/#{@ha_i_call}: \[\"#{@module_name}::mod_production\", \"#{@module_name}::mod_osfamily\", \"#{@module_name}::mod_default\"\]/,
+/#{@ha_i_call}: \[\"#{@module_name}::mod_fqdn\", \"#{@module_name}::mod_production\", \"#{@module_name}::mod_osfamily\", \"#{@module_name}::mod_default\"\]/,
       result,
-      "#{@ha_i_call} failed. Expected: '[\"#{@module_name}::mod_production\", \"#{@module_name}::mod_osfamily\", \"#{@module_name}::mod_default\"]'"
+      "#{@ha_i_call} failed. Expected: '[\"#{@module_name}::mod_fqdn\", \"#{@module_name}::mod_production\", \"#{@module_name}::mod_osfamily\", \"#{@module_name}::mod_default\"]'"
     )
 
     step "Verifying hiera_hash() call. #1"
@@ -417,15 +429,24 @@ def apply_and_verify_hiera_templates
       "#{@hi_i_call} failed.  Expected: '#{@mod_production_msg}'"
     )
 
+    r6 = on(agent, "cat #{resultdir}/mod_fqdn")
+    result = r6.stdout
+    step "Verifying hiera_include() call. #4"
+    assert_match(
+      "#{@mod_fqdn_msg}",
+      result,
+      "#{@hi_i_call} failed.  Expected: '#{@mod_fqdn_msg}'"
+    )
+
     step "####### Verifying hiera calls from epp template #######"
     r5 = on(agent, "cat #{resultdir}/hieratest_results_epp")
     result = r5.stdout
 
     step "Verifying hiery() call #1."
     assert_match(
-      /#{@h_m_call}: #{@msg_production}/,
+      /#{@h_m_call}: #{@msg_fqdn}/,
       result,
-      "#{@hi_m_call} failed.  Expected '#{@msg_production}'"
+      "#{@h_m_call} failed.  Expected '#{@msg_fqdn}'"
     )
 
     step "Verifying hiera() call #2."
@@ -443,23 +464,23 @@ def apply_and_verify_hiera_templates
 
     step "Verifying hiera() call #4."
     assert_match(
-      /#{@h_i_call}: #{@module_name}::mod_production/,
+      /#{@h_i_call}: #{@module_name}::mod_fqdn/,
       result,
-      "#{@h_i_call} failed.  Expected: '#{@module_name}::mod_production'"
+      "#{@h_i_call} failed.  Expected: '#{@module_name}::mod_fqdn'"
     )
 
     step "Verifying hiera_array() call. #1"
     assert_match(
-/#{@ha_m_call}: \[#{@msg_production}, #{@msg1os}, #{@msg2os}, #{@msg_default}\]/,
+/#{@ha_m_call}: \[#{@msg_fqdn}, #{@msg_production}, #{@msg1os}, #{@msg2os}, #{@msg_default}\]/,
       result,
-      "#{@ha_m_call} failed.  Expected: '[#{@msg_production}, #{@msg1os}, #{@msg2os}, #{@msg_default}]'"
+      "#{@ha_m_call} failed.  Expected: '[#{@msg_fqdn}, #{@msg_production}, #{@msg1os}, #{@msg2os}, #{@msg_default}]'"
     )
 
     step "Verifying hiera_array() call. #2"
     assert_match(
-/#{@ha_i_call}: \[#{@module_name}::mod_production, #{@module_name}::mod_osfamily, #{@module_name}::mod_default\]/,
+/#{@ha_i_call}: \[#{@module_name}::mod_fqdn, #{@module_name}::mod_production, #{@module_name}::mod_osfamily, #{@module_name}::mod_default\]/,
       result,
-      "#{@ha_i_call} failed.  Expected: '[#{@module_name}::mod_production, #{@module_name}::mod_osfamily, #{@module_name}::mod_default'"
+      "#{@ha_i_call} failed.  Expected: '[#{@module_name}::mod_fqdn, #{@module_name}::mod_production, #{@module_name}::mod_osfamily, #{@module_name}::mod_default'"
     )
 
     step "Verifying hiera_hash() call. #1"
