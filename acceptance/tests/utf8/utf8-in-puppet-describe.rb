@@ -5,6 +5,7 @@ test_name 'utf-8 characters in module doc string, puppet describe' do
       'audit:refactor',    # if keeping, use mk_tmp_environment_with_teardown
                            # remove with_puppet_running_on unless pluginsync is absolutely necessary
                            # (if it is, add 'server' tag
+      'server',
       'shard:group2' # For splitting out groups of tests for slow test runners
 
   # utf8chars = "€‰ㄘ万竹ÜÖ"

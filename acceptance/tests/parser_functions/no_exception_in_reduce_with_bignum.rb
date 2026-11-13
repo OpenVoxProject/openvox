@@ -4,6 +4,7 @@ test_name 'C97760: Integer in reduce() should not cause exception' do
 
   tag 'audit:high',
       'audit:unit',
+      'server',
       'shard:group2' # For splitting out groups of tests for slow test runners
 
   # Remove all traces of the last used environment

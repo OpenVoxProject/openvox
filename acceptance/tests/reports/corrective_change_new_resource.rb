@@ -11,6 +11,7 @@ test_name "C98092 - a new resource should not be reported as a corrective change
       'audit:integration',
       'audit:refactor',    # Uses a server currently but is testing agent report
       'broken:images',
+      'server',
       'shard:group3' # For splitting out groups of tests for slow test runners
 
   test_file_name  = File.basename(__FILE__, '.*')

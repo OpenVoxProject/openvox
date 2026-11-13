@@ -3,7 +3,7 @@
 # It does not test r10k functionality itself.
 test_name 'Can install and execute r10k with no gem conflicts'
 
-tag 'shard:group4'
+tag 'server', 'shard:group4'
 
 # On pre-8.23.0, we already had fast_gettext installed to the
 # /opt/puppetlabs/puppet/lib/ruby/vendor_gems/gems directory, so

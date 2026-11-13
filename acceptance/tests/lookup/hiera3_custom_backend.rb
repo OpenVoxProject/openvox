@@ -8,6 +8,7 @@ tag 'audit:high',
     'audit:acceptance',
     'audit:refactor',  # Master is not needed for this test. Refactor
                        # to use puppet apply with a local module tree.
+    'server',
     'shard:group4' # For splitting out groups of tests for slow test runners
 
   skip_test 'puppetserver gem install needs jruby-openssl for https sources, which does not load in FIPS mode' if master.fips_mode?

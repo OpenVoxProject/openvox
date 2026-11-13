@@ -2,6 +2,7 @@ test_name "Pluginsync'ed custom facts should be resolvable during application ru
 
   tag 'audit:high',
       'audit:integration',
+      'server',
       'shard:group2' # For splitting out groups of tests for slow test runners
 
   #

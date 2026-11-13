@@ -6,6 +6,7 @@ tag 'audit:high',
     'audit:acceptance',
     'audit:refactor',  # Master is not needed for this test. Refactor
                        # to use puppet apply with a local module tree.
+    'server',
     'shard:group1' # For splitting out groups of tests for slow test runners
 
   app_type        = File.basename(__FILE__, '.*')

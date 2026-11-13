@@ -3,6 +3,7 @@ test_name 'C100565: puppet agent with module should translate messages' do
 
   tag 'audit:medium',
       'audit:acceptance',
+      'server',
       'shard:group4' # For splitting out groups of tests for slow test runners
 
   skip_test('i18n test module uses deprecated function; update module to resume testing.')

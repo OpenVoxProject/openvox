@@ -9,6 +9,7 @@ test_name "C97172: static catalogs support utf8" do
   tag 'audit:high',
       'audit:acceptance',
       'audit:refactor', # Review for agent side UTF validation.
+      'server',
       'shard:group3' # For splitting out groups of tests for slow test runners
 
   app_type = File.basename(__FILE__, '.*')
