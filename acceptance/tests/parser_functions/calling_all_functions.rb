@@ -192,7 +192,7 @@ PP
        functions_4x.each do |function|
          expected = "#{function[:name].capitalize}: #{scope} #{function[:expected]}"
          unless agent['locale'] == 'ja'
-           assert_match(expected, result.output,
+           assert_match(expected, result.stdout + result.stderr,
                         "#{function[:name]} output didn't match expected value")
          end
        end
@@ -228,7 +228,7 @@ PP
           end
 
           unless agent['locale'] == 'ja'
-            assert_match(expected, result.output, "#{function[:name]} output didn't match expected value")
+            assert_match(expected, result.stdout + result.stderr, "#{function[:name]} output didn't match expected value")
           end
         end
      end
