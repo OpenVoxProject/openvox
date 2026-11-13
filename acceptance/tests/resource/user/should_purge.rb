@@ -45,7 +45,8 @@ test_name "should purge a user" do
 
     step "verify system user is not purged" do
       if agent['platform'] =~ /windows/
-        win_admin_user = agent['locale'] == 'fr' ? "Administrateur" : "Administrator"
+        # The built-in Administrator has RID 500, whatever its name
+        win_admin_user = execute_powershell_script_on(agent, "(Get-LocalUser | Where-Object { $_.SID -like '*-500' }).Name").stdout.strip
         assert(agent.user_list.include?(win_admin_user), "System user (Administrator) was purged")
       else
         assert(agent.user_list.include?("root"), "System user (root) was purged")
