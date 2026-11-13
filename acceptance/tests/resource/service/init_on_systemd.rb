@@ -1,6 +1,6 @@
 test_name 'SysV on default Systemd Service Provider Validation' do
 
-  confine :to, :platform => /el-[6-8]|centos|fedora-(2[0-9])/ do |h|
+  confine :to, :platform => /el-|centos|fedora/ do |h|
     result = on(h, 'which systemctl', :acceptable_exit_codes => [0, 1])
     result.stdout =~ /systemctl/
   end
@@ -86,6 +86,12 @@ INITD
 
   agents.each do |agent|
     sleep_bin = on(agent, 'which sleep').stdout.chomp
+
+    step "Setup: Install chkconfig and the service command" do
+      # The EL 9 and 10 images lack chkconfig, and from EL 9 on the service command has its own package
+      agent.install_package('chkconfig') unless agent.check_for_command('chkconfig')
+      agent.install_package('initscripts-service') unless agent.check_for_command('service')
+    end
 
     step "Create initd script with status command" do
       create_remote_file agent, initd_location, initd_file(svc, pidfile, initd_location, true)

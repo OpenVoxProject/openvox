@@ -56,7 +56,7 @@ test_name 'C100574: puppet apply using a module should translate messages in a l
                        apply_result.stderr, 'missing translated message for raise from ruby fact')
           assert_match(/Notice: Applied catalog in [0-9.]+ seconds/, apply_result.stdout, 'missing untranslated message for catalog applied')
         end
-      end unless agent['platform'] =~ /ubuntu-16.04/ # Condition to be removed after FACT-2799 gets resolved
+      end
 
       step 'verify warning translated from init.pp' do
         on(agent, puppet("apply -e \"class { 'i18ndemo': filename => '#{type_path}' }\"", 'ENV' => shell_env_language)) do |apply_result|
