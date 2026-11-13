@@ -33,7 +33,7 @@ END
   mkdir -Force $env:TMP\\fake-dir-for-acl
   $acl = Get-ACL $env:TMP\\fake-dir-for-acl
   rm -Force $env:TMP\\fake-dir-for-acl
-  $ar = New-Object system.security.accesscontrol.filesystemaccessrule("Administrator","FullControl","Deny")
+  $ar = New-Object system.security.accesscontrol.filesystemaccessrule("#{host['user']}","FullControl","Deny")
   $acl.SetAccessRule($ar)
   Set-ACL #{filepath} $acl
         PS1

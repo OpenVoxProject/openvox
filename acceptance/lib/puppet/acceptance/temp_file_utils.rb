@@ -8,7 +8,7 @@ module Puppet
       def root_user(host)
         case host['platform']
         when /windows/
-          'Administrator'
+          host['user']
         else
           'root'
         end
