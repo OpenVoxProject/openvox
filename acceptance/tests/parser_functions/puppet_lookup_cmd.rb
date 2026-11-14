@@ -4,6 +4,7 @@ tag 'audit:high',
     'audit:acceptance',
     'audit:refactor',  # Master is not required for this test. Replace with agents.each
                        # Wrap steps in blocks in accordance with Beaker style guide
+    'server',
     'shard:group3' # For splitting out groups of tests for slow test runners
 
 # doc:
@@ -2577,6 +2578,12 @@ with_puppet_running_on master, @master_opts, @coderoot do
     /env-env2-ruby-function/,
     result,
     "lookup in ENC specified environment failed"
+  )
+  # lookup falls back to the same result without trusted facts, so check it got them
+  refute_match(
+    /CA is not available/,
+    r.stderr,
+    "lookup could not get the node certificate from the CA"
   )
 
   step "without --compile does not use environment specified in ENC"

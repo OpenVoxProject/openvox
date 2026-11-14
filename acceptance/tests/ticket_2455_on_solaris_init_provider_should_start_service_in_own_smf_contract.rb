@@ -5,6 +5,7 @@ tag 'audit:high',
                        # Use mk_tmp_environment_with_teardown
                        # Combine with Service resource tests
     'audit:acceptance',# Service provider functionality
+    'server',
     'shard:group4' # For splitting out groups of tests for slow test runners
 
 skip_test unless agents.any? {|agent| agent['platform'] =~ /solaris/ }

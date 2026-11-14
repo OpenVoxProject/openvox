@@ -71,8 +71,8 @@ test_name "C98094 - a resource changed via Puppet manifest will not be reported 
         end
 
         step 'Verify the file resource is created' do
-          on(agent, "cat '#{tmp_file[agent_to_fqdn(agent)]}'").stdout do |file_contents|
-            assert_equal(original_test_data, file_contents, 'file contents did not match expected contents')
+          on(agent, "cat '#{tmp_file[agent_to_fqdn(agent)]}'") do |file_result|
+            assert_equal(original_test_data, file_result.stdout.chomp, 'file contents did not match expected contents')
           end
         end
       end
@@ -87,8 +87,8 @@ test_name "C98094 - a resource changed via Puppet manifest will not be reported 
         end
 
         step 'Verify the file resource is created' do
-          on(agent, "cat '#{tmp_file[agent_to_fqdn(agent)]}'").stdout do |file_contents|
-            assert_equal(modified_test_data, file_contents, 'file contents did not match expected contents')
+          on(agent, "cat '#{tmp_file[agent_to_fqdn(agent)]}'") do |file_result|
+            assert_equal(modified_test_data, file_result.stdout.chomp, 'file contents did not match expected contents')
           end
         end
       end
@@ -100,9 +100,9 @@ test_name "C98094 - a resource changed via Puppet manifest will not be reported 
     agents.each do |agent|
       on(agent, puppet('config print statedir')) do |command_result|
         report_path = command_result.stdout.chomp + '/last_run_report.yaml'
-        on(agent, "cat '#{report_path}'").stdout do |report_contents|
+        on(agent, "cat '#{report_path}'") do |report_result|
 
-          yaml_data = YAML::parse(report_contents)
+          yaml_data = YAML::parse(report_result.stdout)
           # Remove any Ruby class tags from the yaml
           yaml_data.root.each do |o|
             if o.respond_to?(:tag=) and o.tag != nil and o.tag.start_with?("!ruby")

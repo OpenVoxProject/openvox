@@ -2,6 +2,7 @@ test_name "Report submission"
 
 tag 'audit:high',
     'audit:integration',
+    'server',
     'shard:group2' # For splitting out groups of tests for slow test runners
 
 if master.is_pe?
