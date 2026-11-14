@@ -3,7 +3,6 @@ tag 'audit:integration', # lockfile uses the standard `vardir` location to store
                          # The validation of the `vardir` at the OS level
                          # should be accomplished in another test.
     'audit:high',
-    'audit:refactor',    # This test should not require a master. Remove the use of `with_puppet_running_on`.
     'shard:group1' # For splitting out groups of tests for slow test runners
 
 #
@@ -39,7 +38,11 @@ tuples = [
     ["I'm busy; go away.'", true]
 ]
 
-with_puppet_running_on(master, {}) do
+def with_server_if_present(&block)
+  master ? with_puppet_running_on(master, {}, &block) : block.call
+end
+
+with_server_if_present do
   tuples.each do |expected_message, explicitly_specify_message|
     step "disable the agent; specify message? '#{explicitly_specify_message}', message: '#{expected_message}'" do
       agents.each do |agent|
@@ -87,12 +90,15 @@ with_puppet_running_on(master, {}) do
       end
     end
 
+    # A full agent run needs a server, so it only runs where there is one.
+    next unless master
+
     step "verify that we can run the agent (message: '#{expected_message}')" do
       agents.each do |agent|
         on(agent, puppet('agent', "--test"))
       end
     end
   end # tuples block
-end # with_puppet_running_on block
+end # with_server_if_present block
 
 @all_tests_passed = true

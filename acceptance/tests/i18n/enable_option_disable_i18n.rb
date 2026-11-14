@@ -3,6 +3,7 @@ test_name 'Verify that disable_i18n can be set to true and have translations dis
 
   tag 'audit:medium',
       'audit:acceptance',
+      'server',
       'shard:group3' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/environment_utils.rb'

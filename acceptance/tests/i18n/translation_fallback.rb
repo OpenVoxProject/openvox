@@ -3,6 +3,7 @@ test_name 'C100560: puppet agent run output falls back to english when language 
 
   tag 'audit:medium',
       'audit:acceptance',
+      'server',
       'shard:group1' # For splitting out groups of tests for slow test runners
 
   agents.each do |agent|

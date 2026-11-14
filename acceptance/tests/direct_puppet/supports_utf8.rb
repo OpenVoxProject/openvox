@@ -9,6 +9,7 @@ test_name "C97172: static catalogs support utf8" do
   tag 'audit:high',
       'audit:acceptance',
       'audit:refactor', # Review for agent side UTF validation.
+      'server',
       'shard:group3' # For splitting out groups of tests for slow test runners
 
   app_type = File.basename(__FILE__, '.*')
@@ -60,22 +61,22 @@ MANIFEST
         config_version = ''
         config_version_matcher = /configuration version '(\d+)'/
         on(agent, puppet("agent -t --environment '#{tmp_environment}'"),
-           :acceptable_exit_codes => 2).stdout do |result|
-          config_version = result.match(config_version_matcher)[1]
+           :acceptable_exit_codes => 2) do |result|
+          config_version = result.stdout.match(config_version_matcher)[1]
         end
-        on(agent, "cat '#{tmp_file[agent_to_fqdn(agent)]}'").stdout do |result|
-          assert_equal(file_contents, result, 'file contents did not match accepted')
+        on(agent, "cat '#{tmp_file[agent_to_fqdn(agent)]}'") do |result|
+          assert_equal(file_contents, result.stdout.chomp, 'file contents did not match accepted')
         end
 
         on(agent, "rm -f '#{tmp_file[agent_to_fqdn(agent)]}'")
         on(agent, puppet("agent -t --environment '#{tmp_environment}' --use_cached_catalog"),
-           :acceptable_exit_codes => 2).stdout do |result|
-          assert_match(config_version_matcher, result, 'agent did not use cached catalog')
-          second_config_version = result.match(config_version_matcher)[1]
-          asset_equal(config_version, second_config_version, 'config version should have been the same')
+           :acceptable_exit_codes => 2) do |result|
+          assert_match(config_version_matcher, result.stdout, 'agent did not use cached catalog')
+          second_config_version = result.stdout.match(config_version_matcher)[1]
+          assert_equal(config_version, second_config_version, 'config version should have been the same')
         end
-        on(agent, "cat '#{tmp_file[agent_to_fqdn(agent)]}'").stdout do |result|
-          assert_equal(file_contents, result, 'file contents did not match accepted')
+        on(agent, "cat '#{tmp_file[agent_to_fqdn(agent)]}'") do |result|
+          assert_equal(file_contents, result.stdout.chomp, 'file contents did not match accepted')
         end
       end
     end
