@@ -25,6 +25,7 @@ describe Puppet::Environments do
         FS::MemoryFile.a_regular_file_containing("ignored_file", ''),
         FS::MemoryFile.a_directory("an_environment", [
           FS::MemoryFile.a_missing_file("environment.conf"),
+          FS::MemoryFile.a_directory("site-modules"),
           FS::MemoryFile.a_directory("modules"),
           FS::MemoryFile.a_directory("manifests"),
         ]),
@@ -35,6 +36,7 @@ describe Puppet::Environments do
         FS::MemoryFile.a_symlink("symlinked_environment", File.expand_path(File.join("top_level_dir", "versioned_env")))]),
       FS::MemoryFile.a_directory("versioned_env", [
         FS::MemoryFile.a_regular_file_containing("environment.conf", ''),
+        FS::MemoryFile.a_directory("site-modules"),
         FS::MemoryFile.a_directory("modules"),
         FS::MemoryFile.a_directory("manifests"),
       ]),
@@ -55,13 +57,15 @@ describe Puppet::Environments do
         expect(loader.list).to contain_exactly(
           environment(:an_environment).
             with_manifest("#{FS.path_string(directory_tree)}/envdir/an_environment/manifests").
-            with_modulepath(["#{FS.path_string(directory_tree)}/envdir/an_environment/modules",
+            with_modulepath(["#{FS.path_string(directory_tree)}/envdir/an_environment/site-modules",
+                             "#{FS.path_string(directory_tree)}/envdir/an_environment/modules",
                              global_path_1_location,
                              global_path_2_location]),
           environment(:another_environment),
           environment(:symlinked_environment).
             with_manifest("#{FS.path_string(directory_tree)}/versioned_env/manifests").
-            with_modulepath(["#{FS.path_string(directory_tree)}/versioned_env/modules",
+            with_modulepath(["#{FS.path_string(directory_tree)}/versioned_env/site-modules",
+                             "#{FS.path_string(directory_tree)}/versioned_env/modules",
                              global_path_1_location,
                              global_path_2_location]))
       end
@@ -234,16 +238,17 @@ static_catalogs=false
         ])
 
         manifestdir = FS::MemoryFile.a_directory(File.join(envdir, "env1", "manifests"))
+        sitemodsdir = FS::MemoryFile.a_directory(File.join(envdir, "env1", "site-modules"))
         modulesdir = FS::MemoryFile.a_directory(File.join(envdir, "env1", "modules"))
         global_path_location = File.expand_path("global_path")
         global_path = FS::MemoryFile.a_directory(global_path_location)
 
-        loader_from(:filesystem => [envdir, manifestdir, modulesdir, global_path].flatten,
+        loader_from(:filesystem => [envdir, manifestdir, sitemodsdir, modulesdir, global_path].flatten,
                     :directory => envdir,
                     :modulepath => [global_path]) do |loader|
           expect(loader.get("env1")).to environment(:env1).
             with_manifest("#{FS.path_string(envdir)}/env1/manifests").
-            with_modulepath(["#{FS.path_string(envdir)}/env1/modules", global_path_location]).
+            with_modulepath(["#{FS.path_string(envdir)}/env1/site-modules", "#{FS.path_string(envdir)}/env1/modules", global_path_location]).
             with_config_version(nil).
             with_static_catalogs(true)
         end
@@ -961,7 +966,7 @@ config_version=$vardir/random/scripts
     context '#clear_all' do
       let(:service) { ReplayExpirationService.new }
       let(:envdir) { File.expand_path("envdir") }
-      let(:default_dir) { File.join(envdir, "cached_env", "modules") }
+      let(:default_dir) { "#{File.join(envdir, "cached_env", "site-modules")}#{File::PATH_SEPARATOR}#{File.join(envdir, "cached_env", "modules")}" }
       let(:expected_dir) { File.join(envdir, "cached_env", "site") }
 
       let(:base_dir) do

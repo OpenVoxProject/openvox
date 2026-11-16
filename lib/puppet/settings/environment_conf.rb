@@ -92,7 +92,7 @@ class Puppet::Settings::EnvironmentConf
   end
 
   def modulepath
-    default_modulepath = [File.join(@path_to_env, "modules")] + @global_module_path
+    default_modulepath = [File.join(@path_to_env, "site-modules"), File.join(@path_to_env, "modules")] + @global_module_path
     get_setting(:modulepath, default_modulepath) do |modulepath|
       path = modulepath.is_a?(String) ?
         modulepath.split(File::PATH_SEPARATOR) :

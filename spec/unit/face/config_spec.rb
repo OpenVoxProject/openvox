@@ -325,7 +325,7 @@ basemodulepath = #{File.expand_path("/some/base")}
 environment = production
 environmentpath = #{File.expand_path("/dev/null/environments")}
 manifest = #{File.expand_path("/dev/null/environments/production/manifests")}
-modulepath = #{File.expand_path("/dev/null/environments/production/modules")}#{File::PATH_SEPARATOR}#{File.expand_path("/some/base")}
+modulepath = #{File.expand_path("/dev/null/environments/production/site-modules")}#{File::PATH_SEPARATOR}#{File.expand_path("/dev/null/environments/production/modules")}#{File::PATH_SEPARATOR}#{File.expand_path("/some/base")}
         OUTPUT
       end
     end
