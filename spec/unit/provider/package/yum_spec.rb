@@ -304,6 +304,16 @@ describe Puppet::Type.type(:package).provider(:yum) do
       end
     end
 
+    context "with bare updates header (dnf5 5.4)" do
+      let(:check_update) { File.read(my_fixture("yum-check-update-with-bare-updates-header.txt")) }
+      let(:output) { described_class.parse_updates(check_update) }
+
+      it "parses only the package entries" do
+        expect(output.keys).to contain_exactly('curl', 'curl.x86_64')
+        expect(output['curl']).to eq([{:name => 'curl', :epoch => '0', :version => '8.18.0', :release => '14.fc44', :arch => 'x86_64'}])
+      end
+    end
+
     context "with subscription manager enabled " do
       let(:check_update) { File.read(my_fixture("yum-check-update-subscription-manager.txt")) }
       let(:output) { described_class.parse_updates(check_update) }
