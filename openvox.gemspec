@@ -22,20 +22,18 @@ Gem::Specification.new do |spec|
   EOF
   spec.email = "openvox@voxpupuli.org"
   spec.executables = ["puppet"]
-  spec.files = Dir.chdir(__dir__) do
-    Dir.glob(%w[
-      [A-Z]*
-      install.rb
-      bin/*
-      lib/**/*
-      conf/*
-      man/**/*
-      tasks/*
-      locales/**/*
-      ext/**/*
-      examples/**/*
-    ]).reject { |path| File.directory?(path) || File.extname(path) == '.gem' }
-  end
+  spec.files = Dir.glob(%w[
+    [A-Z]*
+    install.rb
+    bin/*
+    lib/**/*
+    conf/*
+    man/**/*
+    tasks/*
+    locales/**/*
+    ext/**/*
+    examples/**/*
+  ], base: __dir__).reject { |path| File.directory?(File.join(__dir__, path)) || File.extname(path) == '.gem' }
   spec.license = "Apache-2.0"
   spec.homepage = "https://github.com/OpenVoxProject/openvox"
   spec.rdoc_options = ["--title", "OpenVox - Configuration Management", "--main", "README", "--line-numbers"]
