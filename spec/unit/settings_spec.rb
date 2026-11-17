@@ -323,6 +323,52 @@ describe Puppet::Settings do
       expect(@settings.set_by_config?(:manifest, Puppet[:environment])).to be_truthy
     end
 
+    describe "when looking up settings an environment.conf can override" do
+      let(:environments) { Puppet.lookup(:environments) }
+
+      before do
+        @settings.define_settings :main, :environment_timeout => { :type => :ttl, :default => 0, :desc => "desc" }
+        stub_config_with(<<~CONFIG)
+        [server]
+        environment_timeout = unlimited
+        CONFIG
+      end
+
+      it "uses the environment.conf value when it sets the setting" do
+        conf = double('conf')
+        allow(conf).to receive(:raw_setting).with(:environment_timeout).and_return('30')
+        allow(conf).to receive(:environment_timeout).and_return(30)
+        expect(environments).to receive(:get_conf).with(:production).and_return(conf)
+
+        expect(@settings.values(:production, :server).interpolate(:environment_timeout)).to eq(30)
+      end
+
+      it "uses the requested section's value when environment.conf does not set the setting" do
+        conf = double('conf')
+        allow(conf).to receive(:raw_setting).with(:environment_timeout).and_return(nil)
+        expect(conf).not_to receive(:environment_timeout)
+        expect(environments).to receive(:get_conf).with(:production).and_return(conf)
+
+        expect(@settings.values(:production, :server).interpolate(:environment_timeout)).to eq(Float::INFINITY)
+      end
+
+      it "uses the requested section's value for a static environment" do
+        env = Puppet::Node::Environment.create(:production, [])
+        conf = Puppet::Settings::EnvironmentConf.static_for(env, 0)
+        expect(environments).to receive(:get_conf).with(:production).and_return(conf)
+
+        expect(@settings.values(:production, :server).interpolate(:environment_timeout)).to eq(Float::INFINITY)
+      end
+
+      it "does not treat the setting as configured by an environment.conf that does not set it" do
+        conf = double('conf')
+        allow(conf).to receive(:raw_setting).with(:environment_timeout).and_return(nil)
+        expect(environments).to receive(:get_conf).with(:production).and_return(conf)
+
+        expect(@settings.set_by_config?(:environment_timeout, :production, :agent)).to be_falsey
+      end
+    end
+
     context "when handling puppet.conf" do
       describe "#set_by_config?" do
         it "should identify configured settings from the preferred run mode" do
