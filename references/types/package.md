@@ -695,6 +695,9 @@ libraries.
 Ruby Gem support. If a URL is passed via `source`, then that URL is
 appended to the list of remote gem repositories; to ensure that only the
 specified source is used, also pass `--clear-sources` via `install_options`.
+When `ensure` is `latest`, the check for the newest available version
+queries the same repositories as the install, honoring `--clear-sources`
+when it is set. No other `install_options` are used for that check.
 If source is present but is not a valid URL, it will be interpreted as the
 path to a local gem file. If source is not present, the gem will be
 installed from the default gem repositories. Note that to modify this for Windows, it has to be a valid URL.
