@@ -3,6 +3,7 @@ test_name 'C100575: puppet agent with different modules in different environment
 
   tag 'audit:medium',
       'audit:acceptance',
+      'server',
       'shard:group2' # For splitting out groups of tests for slow test runners
 
   require 'puppet/acceptance/environment_utils.rb'

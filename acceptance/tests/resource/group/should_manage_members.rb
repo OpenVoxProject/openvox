@@ -163,7 +163,7 @@ RUBY
           stdout = result.stdout.chomp
 
           group_members.each do |user|
-            assert_match(/#{domain}\\#{user}/, stdout, "Puppet fails to print the group member #{user} as #{domain}\\#{user}")
+            assert_match(/#{domain}\\#{user}/i, stdout, "Puppet fails to print the group member #{user} as #{domain}\\#{user}")
           end
         end
       end
@@ -173,7 +173,7 @@ RUBY
           stdout = result.stdout.chomp
 
           group_members.each do |user|
-            assert_match(/#{domain}\\#{user}/, stdout, "`puppet resource` fails to print the group member #{user} as #{domain}\\#{user}")
+            assert_match(/#{domain}\\#{user}/i, stdout, "`puppet resource` fails to print the group member #{user} as #{domain}\\#{user}")
           end
         end
       end

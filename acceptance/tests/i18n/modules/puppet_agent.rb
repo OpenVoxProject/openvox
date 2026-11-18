@@ -3,6 +3,7 @@ test_name 'C100565: puppet agent with module should translate messages' do
 
   tag 'audit:medium',
       'audit:acceptance',
+      'server',
       'shard:group4' # For splitting out groups of tests for slow test runners
 
   skip_test('i18n test module uses deprecated function; update module to resume testing.')
@@ -85,7 +86,7 @@ test_name 'C100565: puppet agent with module should translate messages' do
         on(agent, puppet("agent -t --no-disable_i18n --environment #{tmp_environment}", 'ENV' => shell_env_language), :acceptable_exit_codes => [0, 2]) do |result|
           assert_match(/.*\w+-i18ndemo fact: これは\w+-i18ndemoからのカスタムファクトからのレイズです/, result.stderr, 'missing translation for raise from ruby fact')
         end
-      end unless agent['platform'] =~ /ubuntu-16.04/ # Condition to be removed after FACT-2799 gets resolved
+      end
 
       step 'verify custom type translations' do
         site_pp_content_2 = <<-PP

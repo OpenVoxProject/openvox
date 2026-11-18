@@ -36,7 +36,7 @@ test_name "should allow managed macOS users to login" do
       on(agent, "dscl /Local/Default -authonly testuser helloworld", :acceptable_exit_codes => 0)
     end
 
-    unless agent['platform'] =~ /^osx-1[1-9]/
+    if agent.platform.version.to_i < 11
       skip_test "AuthenticationAuthority field fix test is not valid for macOS before Big Sur (11.0)"
     end
 

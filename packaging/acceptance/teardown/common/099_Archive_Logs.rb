@@ -85,7 +85,7 @@ test_name 'Backup puppet logs and app data on all hosts' do
             @logger.log_level = previous_level
             on(host, 'egrep -i \'reboot after panic\' /var/adm/messages', :acceptable_exit_codes => [0,1,2])
             @logger.log_level = :warn
-          elsif host[:platform] =~ /macos/
+          elsif host[:platform] =~ /osx/
             syslog_name = "system.log"
           elsif host[:platform] =~ /fedora/
             on(host, "journalctl --no-pager > /var/log/messages")

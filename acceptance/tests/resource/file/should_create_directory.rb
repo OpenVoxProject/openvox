@@ -36,7 +36,7 @@ agents.each do |agent|
     options = {:acceptable_exit_codes => [1]}
     on(agent, puppet_apply("--noop #{dir_manifest}"), options) do |result|
       unless agent['locale'] == 'ja'
-        assert_match('Cannot alias File', result.output,
+        assert_match('Cannot alias File', result.stderr,
                      'duplicate directory resources did not fail properly')
       end
     end

@@ -2,6 +2,7 @@ test_name 'the pluginsync functionality should sync app definitions, and they sh
 
   tag 'audit:high',
       'audit:integration',
+      'server',
       'shard:group3' # For splitting out groups of tests for slow test runners
 
   #

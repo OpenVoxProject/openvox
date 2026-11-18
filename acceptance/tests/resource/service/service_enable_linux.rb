@@ -8,9 +8,8 @@ tag 'audit:high',
                        # host running this, or require special permissions.
     'shard:group4' # For splitting out groups of tests for slow test runners
 
-confine :to, :platform => /el-|centos|fedora|debian|sles|ubuntu-v/
+confine :to, :platform => /el-|centos|fedora|debian|sles|ubuntu/
 # osx covered by launchd_provider.rb
-# ubuntu-[a-u] upstart covered by ticket_14297_handle_upstart.rb
 
 package_name = {'el'     => 'httpd',
                 'centos' => 'httpd',
@@ -33,9 +32,6 @@ agents.each do |agent|
   if platform == 'sles'
     start_runlevels   = ["3", "5"]
     kill_runlevels    = ["3", "5"]
-  elsif platform == 'ubuntu'
-    start_runlevels   = ["2", "3", "4", "5"]
-    kill_runlevels    = ["2", "3", "4", "5"]
   end
 
   manifest_uninstall_package = %Q{
@@ -72,7 +68,7 @@ agents.each do |agent|
   # majrelease and is based on el-7 (systemd).
   is_sysV = ((platform == 'centos' || platform == 'el') && osname != 'Amazon' && majrelease < 7) ||
              (osname == 'Amazon' && majrelease > 2010) ||
-             platform == 'debian' || platform == 'ubuntu' ||
+             platform == 'debian' ||
              (platform == 'sles' && majrelease < 12)
   apply_manifest_on(agent, manifest_service_disabled, :catch_failures => true)
   apply_manifest_on(agent, manifest_service_enabled, :catch_failures => true) do
@@ -85,12 +81,8 @@ agents.each do |agent|
         assert_match(/\/etc(\/rc\.d)?\/init\.d\/#{package_name[platform]}/, rc_symlinks, "did not find #{package_name[platform]} init script")
       end
 
-      # Temporary measure until the Ubuntu SysV bugs are fixed. The cron service doesn't keep kill symlinks around while
-      # the service is enabled, unlike Apache2.
-      unless platform == 'ubuntu'
-        kill_runlevels.each do |runlevel|
-          assert_match(/rc#{runlevel}\.d\/K\d\d#{package_name[platform]}/, rc_symlinks, "did not find kill symlink for #{package_name[platform]} in runlevel #{runlevel}")
-        end
+      kill_runlevels.each do |runlevel|
+        assert_match(/rc#{runlevel}\.d\/K\d\d#{package_name[platform]}/, rc_symlinks, "did not find kill symlink for #{package_name[platform]} in runlevel #{runlevel}")
       end
     else
       rc_symlinks = on(agent, "ls #{symlink_systemd} #{init_script_systemd}", :accept_all_exit_codes => true).stdout

@@ -27,9 +27,11 @@ agents.each do |agent|
   on(agent, puppet('agent', '--server', '127.0.0.1', '--test'), :acceptable_exit_codes => [1])
 
   # make sure there's a Puppet error message in the log
-  # cygwin + ssh + wmic hangs trying to read stdin, so echo '' |
-  on(agent, "cmd /c echo '' | wmic ntevent where \"LogFile='Application' and SourceName='Puppet' and TimeWritten >= '#{now}'\"  get Message,Type /format:csv") do |result|
-    fail_test "Event not found in Application event log" unless
-      result.stdout.include?('target machine actively refused it. - connect(2) for "127.0.0.1"')
-  end
+  script = <<~PS1
+    Get-CimInstance -ClassName Win32_NTLogEvent -Filter "LogFile='Application' and SourceName='Puppet' and TimeWritten >= '#{now}'" |
+      ForEach-Object { $_.Message }
+  PS1
+  result = execute_powershell_script_on(agent, script)
+  fail_test "Event not found in Application event log" unless
+    result.stdout.include?('target machine actively refused it. - connect(2) for "127.0.0.1"')
 end

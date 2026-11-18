@@ -4,6 +4,7 @@ test_name "PUP-5872: catalog_uuid correlates catalogs with reports" do
       'audit:acceptance',
       'audit:refactor',   # remove dependence on server by adding a
                           # catalog and report fixture to validate against.
+      'server',
       'shard:group1' # For splitting out groups of tests for slow test runners
 
   master_reportdir = create_tmpdir_for_user(master, 'reportdir')
@@ -48,7 +49,7 @@ test_name "PUP-5872: catalog_uuid correlates catalogs with reports" do
       end
 
       step "Run with --use_cached_catalog and ensure catalog_uuid in the new report matches the cached catalog" do
-        on(agent, puppet("agent", "--onetime", "--no-daemonize", "--use_cached_catalog", "--vardir #{agent_vardir}"), :acceptance_exit_codes => [0,2])
+        on(agent, puppet("agent", "--onetime", "--no-daemonize", "--use_cached_catalog", "--vardir #{agent_vardir}"), :acceptable_exit_codes => [0,2])
         report_catalog_uuid = get_catalog_uuid_from_report(master_reportdir, agent.node_name)
         assert_equal(cache_catalog_uuid, report_catalog_uuid, "catalog_uuid found in cached catalog, #{cache_catalog_uuid} did not match report #{report_catalog_uuid}")
       end

@@ -6,6 +6,7 @@ test_name 'hiera-eyaml backend resolves encrypted values via eyaml_lookup_key' d
 
   tag 'audit:high',
       'audit:acceptance',
+      'server',
       'shard:group1' # For splitting out groups of tests for slow test runners
 
   skip_test 'hiera-eyaml needs jruby-openssl, which does not load in puppetserver in FIPS mode' if master.fips_mode?

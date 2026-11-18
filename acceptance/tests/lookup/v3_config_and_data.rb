@@ -6,6 +6,7 @@ tag 'audit:high',
     'audit:acceptance',
     'audit:refactor',  # Master is not needed for this test. Refactor
                        # to use puppet apply with a local module tree.
+    'server',
     'shard:group1' # For splitting out groups of tests for slow test runners
 
   app_type        = File.basename(__FILE__, '.*')
@@ -71,7 +72,7 @@ notify { "${lookup('environment_key4')}": }
       SITE
 
       on(master, "chmod -R 775 #{fq_tmp_environmentpath}")
-      on(master, "chmod -R 775 #{confdir}")
+      on(master, "chmod 755 #{confdir}/hiera.yaml")
     end
   end
 

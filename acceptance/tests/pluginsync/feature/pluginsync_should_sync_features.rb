@@ -2,6 +2,7 @@ test_name "the pluginsync functionality should sync feature and function definit
 
   tag 'audit:high',
       'audit:integration',
+      'server',
       'shard:group1' # For splitting out groups of tests for slow test runners
 
   #

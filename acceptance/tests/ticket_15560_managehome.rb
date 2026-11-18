@@ -29,21 +29,9 @@ EOM
 agents.each do |host|
   on(host, puppet_apply, :stdin => manifest_present)
 
-  deleteable_profile = true
-
-  version = on(host, facter('os.release.full')).stdout.chomp
-  if version =~ /^5\.[012]|2003/
-    homedir = "C:/Documents and Settings/#{username}"
-    deleteable_profile = false
-  else
-    homedir = "C:/Users/#{username}"
-  end
-
+  homedir = "C:/Users/#{username}"
   on(host, "test -d '#{homedir}'")
 
   on(host, puppet_apply, :stdin => manifest_absent)
-
-  if deleteable_profile
-    on(host, "test ! -d '#{homedir}'")
-  end
+  on(host, "test ! -d '#{homedir}'")
 end

@@ -11,11 +11,13 @@ test_name "C98092 - a new resource should not be reported as a corrective change
       'audit:integration',
       'audit:refactor',    # Uses a server currently but is testing agent report
       'broken:images',
+      'server',
       'shard:group3' # For splitting out groups of tests for slow test runners
 
   test_file_name  = File.basename(__FILE__, '.*')
   tmp_environment = mk_tmp_environment_with_teardown(master, test_file_name)
   tmp_file        = {}
+  file_contents   = 'this is a test'
 
   agents.each do |agent|
     tmp_file[agent_to_fqdn(agent)] = agent.tmpfile(tmp_environment)
@@ -37,7 +39,6 @@ test_name "C98092 - a new resource should not be reported as a corrective change
   end
 
   step 'create file resource - site.pp to verify corrective change flag' do
-    file_contents = 'this is a test'
     manifest      = <<-MANIFEST
     file { '#{environmentpath}/#{tmp_environment}/manifests/site.pp':
       ensure => file,
@@ -64,8 +65,8 @@ test_name "C98092 - a new resource should not be reported as a corrective change
 
         #Verify the file resource is created
         step 'Verify the file resource is created' do
-          on(agent, "cat '#{tmp_file[agent_to_fqdn(agent)]}'").stdout do |file_result|
-            assert_equal(file_contents, file_result, 'file contents did not match accepted')
+          on(agent, "cat '#{tmp_file[agent_to_fqdn(agent)]}'") do |file_result|
+            assert_equal(file_contents, file_result.stdout.chomp, 'file contents did not match accepted')
           end
         end
       end
@@ -77,9 +78,9 @@ test_name "C98092 - a new resource should not be reported as a corrective change
     agents.each do |agent|
       on(agent, puppet('config print statedir')) do |command_result|
         report_path = command_result.stdout.chomp + '/last_run_report.yaml'
-        on(agent, "cat '#{report_path}'").stdout do |report_contents|
+        on(agent, "cat '#{report_path}'") do |report_result|
 
-          yaml_data = YAML::parse(report_contents)
+          yaml_data = YAML::parse(report_result.stdout)
           # Remove any Ruby class tags from the yaml
           yaml_data.root.each do |o|
             if o.respond_to?(:tag=) and o.tag != nil and o.tag.start_with?("!ruby")

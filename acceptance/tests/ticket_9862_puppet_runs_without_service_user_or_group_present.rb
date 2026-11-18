@@ -2,7 +2,7 @@ test_name "#9862: puppet runs without service user or group present"
 
 tag 'audit:high',     # startup/configuration, high impact, low risk
     'audit:refactor',    # Use block style `test_name`
-    'audit:integration' # could easily be acceptance, not package dependant,
+    'audit:integration', # could easily be acceptance, not package dependant,
                         # but changing a person running the tests users and
                         # groups can be very onerous
     'shard:group2' # For splitting out groups of tests for slow test runners
