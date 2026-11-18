@@ -188,6 +188,32 @@ context Puppet::Type.type(:package).provider(:gem) do
           })
         expect(provider.latest).to eq("3.0")
       end
+
+      it "should clear the default sources when --clear-sources is in install_options" do
+        resource[:source] = "http://foo.bar.baz/gems"
+        resource[:install_options] = ['--clear-sources']
+        expect(provider.class).to receive(:gemlist).
+          with({:command => provider_gem_cmd, :justme => 'myresource', :source => "http://foo.bar.baz/gems", :clear_sources => true}).
+          and_return({
+            :name     => 'myresource',
+            :ensure   => ["3.0"],
+            :provider => :gem,
+          })
+        expect(provider.latest).to eq("3.0")
+      end
+
+      it "should not pass other install_options to the remote query" do
+        resource[:source] = "http://foo.bar.baz/gems"
+        resource[:install_options] = ['--force', {'--bindir' => '/usr/bin'}]
+        expect(provider.class).to receive(:gemlist).
+          with({:command => provider_gem_cmd, :justme => 'myresource', :source => "http://foo.bar.baz/gems"}).
+          and_return({
+            :name     => 'myresource',
+            :ensure   => ["3.0"],
+            :provider => :gem,
+          })
+        expect(provider.latest).to eq("3.0")
+      end
     end
 
     context "#instances" do
@@ -257,6 +283,23 @@ context Puppet::Type.type(:package).provider(:gem) do
           expect(described_class).to receive(:execute_gem_command).with(provider_gem_cmd, array_including('\Abundler\z')).and_return(File.read(my_fixture('gem-list-single-package')))
           expected = {:name=>"bundler", :provider=>:gem, :ensure=>["1.6.2"]}
           expect(described_class.gemlist({:command => provider_gem_cmd, :justme => 'bundler'})).to eq(expected)
+        end
+      end
+
+      context "searching a remote source" do
+        it "passes --clear-sources before --source" do
+          expect(described_class).to receive(:execute_gem_command).
+            with(provider_gem_cmd, ['list', '--remote', '--clear-sources', '--source', 'http://foo.bar.baz/gems', '\\Abundler\\z']).
+            and_return(File.read(my_fixture('gem-list-single-package')))
+          expected = {:name=>"bundler", :provider=>:gem, :ensure=>["1.6.2"]}
+          expect(described_class.gemlist({:command => provider_gem_cmd, :justme => 'bundler', :source => 'http://foo.bar.baz/gems', :clear_sources => true})).to eq(expected)
+        end
+
+        it "does not clear the sources unless asked" do
+          expect(described_class).to receive(:execute_gem_command).
+            with(provider_gem_cmd, ['list', '--remote', '--source', 'http://foo.bar.baz/gems', '\\Abundler\\z']).
+            and_return(File.read(my_fixture('gem-list-single-package')))
+          described_class.gemlist({:command => provider_gem_cmd, :justme => 'bundler', :source => 'http://foo.bar.baz/gems'})
         end
       end
     end
