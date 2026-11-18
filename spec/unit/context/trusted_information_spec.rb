@@ -3,7 +3,7 @@ require 'puppet/certificate_factory'
 
 require 'puppet/context/trusted_information'
 
-describe Puppet::Context::TrustedInformation, :unless => RUBY_PLATFORM == 'java' do
+describe Puppet::Context::TrustedInformation do
   let(:key) { OpenSSL::PKey::RSA.new(Puppet[:keylength]) }
 
   let(:csr) do
