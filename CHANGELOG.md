@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [9.4.1](https://github.com/openvoxproject/openvox/tree/9.4.1) (2026-11-18)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/9.4.0...9.4.1)
+
+**Fixed bugs:**
+
+- Promote openfact 6.2.3 into main [\#794](https://github.com/OpenVoxProject/openvox/pull/794) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Build the gemspec's file list without changing directory [\#793](https://github.com/OpenVoxProject/openvox/pull/793) ([nmburgan](https://github.com/nmburgan))
+- Honor --clear-sources in the gem provider's latest check [\#764](https://github.com/OpenVoxProject/openvox/pull/764) ([miharp](https://github.com/miharp))
+- Fix Puppet::Type.clear\_misses and make type registry / loader lookups thread-safe [\#739](https://github.com/OpenVoxProject/openvox/pull/739) ([vkusnopuknul](https://github.com/vkusnopuknul))
+
+**Merged pull requests:**
+
+- JRuby spec fixes [\#800](https://github.com/OpenVoxProject/openvox/pull/800) ([nmburgan](https://github.com/nmburgan))
+- Promote puppet-runtime 2026.11.17.1 into main [\#796](https://github.com/OpenVoxProject/openvox/pull/796) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Remove packaging configuration for Fedora 42 [\#776](https://github.com/OpenVoxProject/openvox/pull/776) ([Sharpie](https://github.com/Sharpie))
+- Take the FIPS provider from puppet-runtime [\#715](https://github.com/OpenVoxProject/openvox/pull/715) ([nmburgan](https://github.com/nmburgan))
+
 ## [9.4.0](https://github.com/openvoxproject/openvox/tree/9.4.0) (2026-11-13)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/9.3.0...9.4.0)
@@ -29,6 +47,10 @@ All notable changes to this project will be documented in this file.
 **Security fixes:**
 
 - Read event data hashes with the stringifying converter [\#765](https://github.com/OpenVoxProject/openvox/pull/765) ([nmburgan](https://github.com/nmburgan))
+
+**Closed issues:**
+
+- \[Bug\]: gem provider ignores `--clear-sources` in the `ensure => latest` check, so the resource changes on every run [\#759](https://github.com/OpenVoxProject/openvox/issues/759)
 
 ## [9.2.1](https://github.com/openvoxproject/openvox/tree/9.2.1) (2026-10-23)
 
