@@ -347,6 +347,8 @@ describe Puppet::SSL::SSLProvider do
     if Puppet::Util::Package.versioncmp(OpenSSL::OPENSSL_LIBRARY_VERSION.split[1], '1.1.1h') != 0
       it 'raises if root cert signature is invalid', if: defined?(OpenSSL::X509::V_FLAG_CHECK_SS_SIGNATURE) do
         ca = global_cacerts.first
+        # JRuby loads a parsed cert's public key on first read, and sign fails without it
+        ca.public_key
         ca.sign(wrong_key, OpenSSL::Digest::SHA256.new)
 
         expect {
