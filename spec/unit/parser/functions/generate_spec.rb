@@ -1,25 +1,5 @@
 require 'spec_helper'
-
-def with_executor
-  return yield unless Puppet::Util::Platform.jruby?
-
-  begin
-    Puppet::Util::ExecutionStub.set do |command, options, stdin, stdout, stderr|
-      require 'open3'
-      # simulate what puppetserver does
-      Dir.chdir(options[:cwd]) do
-        out, err, _status = Open3.capture3(*command)
-        stdout.write(out)
-        stderr.write(err)
-        # execution api expects stdout to be returned
-        out
-      end
-    end
-    yield
-  ensure
-    Puppet::Util::ExecutionStub.reset
-  end
-end
+require 'puppet_spec/execution'
 
 describe "the generate function" do
   include PuppetSpec::Files
@@ -51,9 +31,11 @@ describe "the generate function" do
     expect { scope.function_generate([File.expand_path('/com mand')]) }.to raise_error(Puppet::ParseError)
   end
 
-  it "should not accept a command containing '..'", :unless => RUBY_PLATFORM == 'java' do
-    command = File.expand_path("/command/../")
-    expect { scope.function_generate([command]) }.to raise_error(Puppet::ParseError)
+  it "should not accept a command containing '..'" do
+    PuppetSpec::Execution.with_executor do
+      command = File.expand_path("/command/../")
+      expect { scope.function_generate([command]) }.to raise_error(Puppet::ParseError)
+    end
   end
 
   it "should execute the generate script with the correct working directory" do
@@ -83,7 +65,7 @@ describe "the generate function" do
       END
       expect(scope.function_generate([command]).chomp).to match(cwd.gsub('/', '\\'))
     else
-      with_executor do
+      PuppetSpec::Execution.with_executor do
         command = File.join(cwd, 'echo.sh')
         File.write(command, <<~END)
           #!/bin/sh
@@ -142,7 +124,11 @@ describe "the generate function" do
     end
   end
 
-  describe "function_generate", :unless => RUBY_PLATFORM == 'java' do
+  describe "function_generate" do
+    around(:each) do |example|
+      PuppetSpec::Execution.with_executor { example.run }
+    end
+
     let :command do
       script_containing('function_generate',
         :windows => '@echo off' + "\n" + 'echo a-%1 b-%2',

@@ -2,6 +2,7 @@ require 'spec_helper'
 
 require 'puppet/indirector/file_bucket_file/file'
 require 'puppet/util/platform'
+require 'puppet_spec/execution'
 
 describe Puppet::FileBucketFile::File, :uses_checksums => true do
   include PuppetSpec::Files
@@ -284,12 +285,15 @@ describe Puppet::FileBucketFile::File, :uses_checksums => true do
     end
 
     describe "when diffing files", :unless => Puppet::Util::Platform.windows? do
+      around(:each) do |example|
+        PuppetSpec::Execution.with_executor { example.run }
+      end
+
       with_digest_algorithms do
         let(:not_bucketed_plaintext) { "other stuff" }
         let(:not_bucketed_checksum) { digest(not_bucketed_plaintext) }
 
         it "should generate an empty string if there is no diff" do
-          skip("usage of fork(1) no supported on this platform") if RUBY_PLATFORM == 'java'
           if Puppet::Util::Platform.windows? && (['sha512', 'sha384'].include? digest_algorithm)
             skip "PUP-8257: Skip file bucket test on windows for #{digest_algorithm} due to long path names"
           else
@@ -299,7 +303,6 @@ describe Puppet::FileBucketFile::File, :uses_checksums => true do
         end
 
         it "should generate a proper diff if there is a diff" do
-          skip("usage of fork(1) no supported on this platform") if RUBY_PLATFORM == 'java'
           if Puppet::Util::Platform.windows? && (['sha512', 'sha384'].include? digest_algorithm)
             skip "PUP-8257: Skip file bucket test on windows for #{digest_algorithm} due to long path names"
           else
