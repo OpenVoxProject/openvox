@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [8.33.1](https://github.com/openvoxproject/openvox/tree/8.33.1) (2026-11-18)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.33.0...8.33.1)
+
+**Fixed bugs:**
+
+- Promote openfact 5.7.4 into 8.x [\#801](https://github.com/OpenVoxProject/openvox/pull/801) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- \[Backport 8.x\] Fix Puppet::Type.clear\_misses and make type registry / loader lookups thread-safe [\#799](https://github.com/OpenVoxProject/openvox/pull/799) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- \[Backport 8.x\] Honor --clear-sources in the gem provider's latest check [\#798](https://github.com/OpenVoxProject/openvox/pull/798) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+
+**Merged pull requests:**
+
+- Promote puppet-runtime 2026.11.17.1 into 8.x [\#797](https://github.com/OpenVoxProject/openvox/pull/797) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+- Test that puppetserver can load the vendored multi\_json [\#773](https://github.com/OpenVoxProject/openvox/pull/773) ([miharp](https://github.com/miharp))
+- Take the FIPS provider from puppet-runtime [\#716](https://github.com/OpenVoxProject/openvox/pull/716) ([nmburgan](https://github.com/nmburgan))
+
 ## [8.33.0](https://github.com/openvoxproject/openvox/tree/8.33.0) (2026-11-13)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/8.32.0...8.33.0)
@@ -28,6 +44,10 @@ All notable changes to this project will be documented in this file.
 **Security fixes:**
 
 - Read event data hashes with the stringifying converter [\#766](https://github.com/OpenVoxProject/openvox/pull/766) ([nmburgan](https://github.com/nmburgan))
+
+**Closed issues:**
+
+- \[Bug\]: gem provider ignores `--clear-sources` in the `ensure => latest` check, so the resource changes on every run [\#759](https://github.com/OpenVoxProject/openvox/issues/759)
 
 ## [8.31.2](https://github.com/openvoxproject/openvox/tree/8.31.2) (2026-10-29)
 
