@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [9.5.0](https://github.com/openvoxproject/openvox/tree/9.5.0) (2026-11-19)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/9.4.1...9.5.0)
+
+**Security fixes:**
+
+- Promote puppet-runtime 2026.11.19.1 into main [\#805](https://github.com/OpenVoxProject/openvox/pull/805) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+
 ## [9.4.1](https://github.com/openvoxproject/openvox/tree/9.4.1) (2026-11-18)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/9.4.0...9.4.1)
