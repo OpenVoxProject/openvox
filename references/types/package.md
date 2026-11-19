@@ -915,7 +915,7 @@ is not a valid URL, it will be interpreted as the path to a local gem file.
 If source is not present at all, the gem will be installed from the default
 gem repositories.
 
-* Confined to: `feature == hocon`, `fips_enabled == false`
+* Confined to: `feature == hocon`
 * Supported features: `install_options`, `uninstall_options`, `versionable`
 
 #### rpm {#package-provider-rpm}
