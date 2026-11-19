@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [8.34.0](https://github.com/openvoxproject/openvox/tree/8.34.0) (2026-11-19)
+
+[Full Changelog](https://github.com/openvoxproject/openvox/compare/8.33.1...8.34.0)
+
+**Security fixes:**
+
+- Promote puppet-runtime 2026.11.19.1 into 8.x [\#804](https://github.com/OpenVoxProject/openvox/pull/804) ([OpenVoxProjectBot](https://github.com/OpenVoxProjectBot))
+
 ## [8.33.1](https://github.com/openvoxproject/openvox/tree/8.33.1) (2026-11-18)
 
 [Full Changelog](https://github.com/openvoxproject/openvox/compare/8.33.0...8.33.1)
