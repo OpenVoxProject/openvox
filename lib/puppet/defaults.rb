@@ -1580,7 +1580,7 @@ EOT
         For control over logging destinations, see the `--logdest` command line
         option in the manual pages for puppet server, puppet agent, and puppet
         apply. You can see man pages by running `puppet <SUBCOMMAND> --help`,
-        or read them online at https://docs.openvoxproject.org/openvox/latest/man/."
+        or read them online at https://docs.openvoxproject.org/openvox/latest/man/overview.html."
     },
     :deviceconfdir => {
       :default  => "$confdir/devices",

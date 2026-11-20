@@ -64,7 +64,7 @@ class Hiera::PuppetFunction < Puppet::Functions::InternalFunction
     unless Puppet[:strict] == :off
       # TRANSLATORS 'lookup' is a puppet function and should not be translated
       message = _("The function '%{class_name}' is deprecated in favor of using 'lookup'.") % { class_name: self.class.name }
-      message += ' ' + _("See https://docs.openvoxproject.org/openvox/latest/deprecated_language.html")
+      message += ' ' + _("See https://docs.openvoxproject.org/openvox/latest/hiera_migrate.html#updated-classic-hiera-function-calls")
       Puppet.warn_once('deprecations', self.class.name, message)
     end
     lookup_invocation = Puppet::Pops::Lookup::Invocation.new(scope, {}, {})
