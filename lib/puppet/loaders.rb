@@ -13,6 +13,7 @@ module Puppet
       require_relative '../puppet/pops/loader/gem_support'
       require_relative '../puppet/pops/loader/module_loaders'
       require_relative '../puppet/pops/loader/dependency_loader'
+      require_relative '../puppet/pops/loader/plugin_modules_loader'
       require_relative '../puppet/pops/loader/static_loader'
       require_relative '../puppet/pops/loader/runtime3_type_loader'
       require_relative '../puppet/pops/loader/ruby_function_instantiator'

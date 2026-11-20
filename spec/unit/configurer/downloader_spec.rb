@@ -244,4 +244,84 @@ describe Puppet::Configurer::Downloader do
       }.to raise_error(Puppet::Error, /testing/)
     end
   end
+
+  describe "when checking whether the source exists" do
+    let(:env) { Puppet::Node::Environment.remote('production') }
+    let(:dest) { tmpfile('pluginmodules') }
+
+    def downloader_for(source)
+      Puppet::Configurer::Downloader.new("pluginmodules", dest, source, Puppet[:pluginsignore], env)
+    end
+
+    def metadata_json(path)
+      metadata = Puppet::FileServing::Metadata.new(path, :relative_path => '.')
+      metadata.collect
+      metadata.to_data_hash
+    end
+
+    context "with a local source" do
+      it "returns true and keeps the search results when the source exists" do
+        source = dir_containing('source', 'mod' => { 'types' => { 'a.pp' => '' } })
+        dler = downloader_for(source)
+
+        expect(dler.source_exists?).to eq(true)
+        result = dler.catalog.recursive_metadata[dest].values.first
+        expect(result.map(&:relative_path)).to contain_exactly('.', 'mod', 'mod/types', 'mod/types/a.pp')
+      end
+
+      it "returns false when the source does not exist" do
+        dler = downloader_for(tmpfile('missing'))
+
+        expect(dler.source_exists?).to eq(false)
+        expect(dler.catalog.recursive_metadata).to be_empty
+      end
+
+      it "downloads the source after checking it" do
+        source = dir_containing('source', 'mod' => { 'types' => { 'a.pp' => 'type Mod::A = Integer' } })
+        dler = downloader_for(source)
+
+        expect(dler.source_exists?).to eq(true)
+        dler.evaluate
+
+        expect(File.read(File.join(dest, 'mod', 'types', 'a.pp'))).to eq('type Mod::A = Integer')
+      end
+    end
+
+    context "with a source on the server" do
+      let(:source) { 'puppet:///pluginmodules' }
+
+      before(:each) do
+        Puppet[:server] = 'puppet.example.com'
+      end
+
+      it "returns false when the server does not have the mount" do
+        body = "{\"message\":\"Not Found: Could not find file_metadatas pluginmodules\",\"issue_kind\":\"RESOURCE_NOT_FOUND\"}"
+        stub_request(:get, %r{/puppet/v3/file_metadatas/pluginmodules}).to_return(
+          status: 404, body: body, headers: {'Content-Type' => 'application/json'}
+        )
+
+        expect(downloader_for(source).source_exists?).to eq(false)
+      end
+
+      it "raises a Puppet::Error when the server fails" do
+        stub_request(:get, %r{/puppet/v3/file_metadatas/pluginmodules}).to_return(status: 500, body: 'boom')
+
+        expect { downloader_for(source).source_exists? }.to raise_error(Puppet::Error, /Failed to retrieve pluginmodules: .*boom/)
+      end
+
+      it "does not make any more requests than downloading without checking would" do
+        stub_request(:get, %r{/puppet/v3/file_metadatas/pluginmodules}).to_return(
+          status: 200, body: [metadata_json(tmpdir('served'))].to_json, headers: {'Content-Type' => 'application/json'}
+        )
+        dler = downloader_for(source)
+
+        expect(dler.source_exists?).to eq(true)
+        dler.evaluate
+
+        expect(a_request(:get, %r{/puppet/v3/file_metadatas/pluginmodules})).to have_been_made.once
+        expect(a_request(:get, %r{/puppet/v3/file_metadata/})).not_to have_been_made
+        expect(File.directory?(dest)).to eq(true)
+      end
+    end
+  end
 end
