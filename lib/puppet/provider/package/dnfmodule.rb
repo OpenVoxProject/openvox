@@ -36,7 +36,15 @@ Puppet::Type.type(:package).provide :dnfmodule, :parent => :dnf do
   def self.instances
     packages = []
     cmd = "#{command(:dnf)} module list -y"
-    execute(cmd).each_line do |line|
+    begin
+      output = execute(cmd)
+    rescue Puppet::ExecutionFailure => e
+      # dnf5 builds without the module plugin (e.g. Amazon Linux 2027) have no modules to list
+      return packages if e.message.include?('Unknown argument "module"')
+
+      raise
+    end
+    output.each_line do |line|
       # select only lines with actual packages since DNF clutters the output
       next unless line =~ /\[[eix]\][, ]/
 

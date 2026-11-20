@@ -272,5 +272,21 @@ describe Puppet::Type.type(:package).provider(:dnfmodule) do
 
       expect(enabled_packages).to eql(expected_packages)
     end
+
+    it "returns no modules when dnf has no module command" do
+      allow(Puppet::Util::Execution).to receive(:execute)
+        .with("/usr/bin/dnf module list -y")
+        .and_raise(Puppet::ExecutionFailure, 'Execution of \'/usr/bin/dnf module list -y\' returned 2: Unknown argument "module" for command "dnf5".')
+
+      expect(described_class.instances).to eq([])
+    end
+
+    it "raises other dnf failures" do
+      allow(Puppet::Util::Execution).to receive(:execute)
+        .with("/usr/bin/dnf module list -y")
+        .and_raise(Puppet::ExecutionFailure, 'Execution of \'/usr/bin/dnf module list -y\' returned 1: Error')
+
+      expect { described_class.instances }.to raise_error(Puppet::ExecutionFailure)
+    end
   end
 end
