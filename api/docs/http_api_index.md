@@ -91,8 +91,8 @@ formatted as JSON and respond with JSON (MIME type of `application/json`).
 
 OpenVox Server adds additional `/puppet/v3/` endpoints:
 
-* [Static File Content](https://docs.openvoxproject.org/openvox-server/latest/puppet-api/v3/static_file_content.md)
-* [Environment Classes](https://docs.openvoxproject.org/openvox-server/latest/puppet-api/v3/environment_classes.md)
+* [Static File Content](https://docs.openvoxproject.org/openvox-server/latest/puppet-api/v3/static_file_content.html)
+* [Environment Classes](https://docs.openvoxproject.org/openvox-server/latest/puppet-api/v3/environment_classes.html)
 
 #### Error Responses
 
@@ -123,7 +123,7 @@ A [JSON schema for the error objects](../schemas/error.json) is also available.
 CA V1 HTTP API
 --------------
 
-The certificate authority (CA) API contains all of the endpoints supporting OpenVox's public key infrastructure (PKI) system. This endpoint is now handled entirely through OpenVox Server. See OpenVox Server's [HTTP API](https://docs.openvoxproject.org/openvox-server/latest/http_api_index.md) docs for detailed information.
+The certificate authority (CA) API contains all of the endpoints supporting OpenVox's public key infrastructure (PKI) system. This endpoint is now handled entirely through OpenVox Server. See OpenVox Server's [HTTP API](https://docs.openvoxproject.org/openvox-server/latest/http_api_index.html) docs for detailed information.
 
 Serialization Formats
 ---------------------

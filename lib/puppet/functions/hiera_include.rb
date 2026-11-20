@@ -3,7 +3,7 @@
 require 'hiera/puppet_function'
 
 # Assigns classes to a node using an
-# [array merge lookup](https://puppet.com/docs/hiera/latest/lookup_types.html#array-merge)
+# [array merge lookup](https://docs.openvoxproject.org/openvox/latest/hiera_merging.html#unique)
 # that retrieves the value for a user-specified key from Hiera's data.
 #
 # This function is deprecated in favor of the `lookup` function in combination with `include`.
@@ -34,13 +34,13 @@ require 'hiera/puppet_function'
 #     * If this argument isn't provided and this function results in a lookup failure, OpenVox
 #     fails with a compilation error.
 # 3. The optional name of an arbitrary
-# [hierarchy level](https://puppet.com/docs/hiera/latest/hierarchy.html) to insert at the
+# [hierarchy level](https://docs.openvoxproject.org/openvox/latest/hiera_intro.html#hiera-hierarchies) to insert at the
 # top of the hierarchy. This lets you temporarily modify the hierarchy for a single lookup.
 #     * If Hiera doesn't find a matching key in the overriding hierarchy level, it continues
 #     searching the rest of the hierarchy.
 #
 # The function uses an
-# [array merge lookup](https://puppet.com/docs/hiera/latest/lookup_types.html#array-merge)
+# [array merge lookup](https://docs.openvoxproject.org/openvox/latest/hiera_merging.html#unique)
 # to retrieve the `classes` array, so every node gets every class from the hierarchy.
 #
 # @example Using `hiera_include`

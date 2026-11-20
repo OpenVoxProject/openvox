@@ -32,7 +32,7 @@ require_relative 'puppet/defaults'
 #
 # To create a new function, see {Puppet::Functions}.
 #
-# To access OpenVox's REST APIs, see https://docs.openvoxproject.org/openvox/latest/http_api/http_api_index.html.
+# To access OpenVox's REST APIs, see https://docs.openvoxproject.org/openvox-server/latest/http_api_index.html.
 #
 # @api public
 module Puppet

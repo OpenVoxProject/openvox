@@ -17,7 +17,7 @@ require 'hiera/puppet_function'
 #     * If this argument isn't provided and this function results in a lookup failure, OpenVox
 #     fails with a compilation error.
 # 3. The optional name of an arbitrary
-# [hierarchy level](https://puppet.com/docs/hiera/latest/hierarchy.html) to insert at the
+# [hierarchy level](https://docs.openvoxproject.org/openvox/latest/hiera_intro.html#hiera-hierarchies) to insert at the
 # top of the hierarchy. This lets you temporarily modify the hierarchy for a single lookup.
 #     * If Hiera doesn't find a matching key in the overriding hierarchy level, it continues
 #     searching the rest of the hierarchy.

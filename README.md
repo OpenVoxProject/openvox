@@ -13,7 +13,7 @@ Documentation is available at [the OpenVox documentation site](https://docs.open
 
 ### HTTP API
 
-[HTTP API Index](https://docs.openvoxproject.org/openvox/latest/http_api/http_api_index.html)
+[HTTP API Index](https://docs.openvoxproject.org/openvox-server/latest/http_api_index.html)
 
 ## Installation
 
