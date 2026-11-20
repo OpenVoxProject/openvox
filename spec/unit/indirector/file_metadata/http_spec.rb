@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'digest'
 
 require 'puppet/indirector/file_metadata'
 require 'puppet/indirector/file_metadata/http'
@@ -23,25 +24,57 @@ describe Puppet::Indirector::FileMetadata::Http do
   # Digest::MD5.base64digest("") => "1B2M2Y8AsgTpgAmY7PhCfg=="
   let(:content_md5) { {"Content-MD5" => "1B2M2Y8AsgTpgAmY7PhCfg=="} }
   let(:last_modified) { {"Last-Modified" => "Wed, 01 Jan 2020 08:00:00 GMT"} }
+  let(:content) { "test content" }
 
   before :each do
     described_class.indirection.terminus_class = :http
   end
 
   context "when finding" do
-    it "returns http file metadata" do
+    it "returns http file metadata and fetches content to compute checksum when no headers available" do
       stub_request(:head, key)
         .to_return(status: 200, headers: DEFAULT_HEADERS)
+      stub_request(:get, key)
+        .to_return(status: 200, body: content)
 
       result = model.indirection.find(key)
       expect(result.ftype).to eq('file')
       expect(result.path).to eq('/dev/null')
       expect(result.relative_path).to be_nil
       expect(result.destination).to be_nil
-      expect(result.checksum).to match(%r{mtime})
+      expect(result.checksum_type).to eq(:sha256)
+      expect(result.checksum).to eq("{sha256}#{Digest::SHA256.hexdigest(content)}")
       expect(result.owner).to be_nil
       expect(result.group).to be_nil
       expect(result.mode).to be_nil
+    end
+
+    it "computes the content checksum using the requested checksum type" do
+      stub_request(:head, key)
+        .to_return(status: 200, headers: DEFAULT_HEADERS)
+      stub_request(:get, key)
+        .to_return(status: 200, body: content)
+
+      result = model.indirection.find(key, checksum_type: :sha512)
+      expect(result.checksum_type).to eq(:sha512)
+      expect(result.checksum).to eq("{sha512}#{Digest::SHA512.hexdigest(content)}")
+    end
+
+    it "returns nil if fetching the content to compute a checksum fails" do
+      stub_request(:head, key)
+        .to_return(status: 200, headers: DEFAULT_HEADERS)
+      stub_request(:get, key)
+        .to_return(status: 500)
+
+      expect(model.indirection.find(key)).to be_nil
+    end
+
+    it "does not fetch the content when the response has a checksum header" do
+      stub_request(:head, key)
+        .to_return(status: 200, headers: DEFAULT_HEADERS.merge(content_md5))
+
+      model.indirection.find(key)
+      expect(a_request(:get, key)).not_to have_been_made
     end
 
     it "reports an md5 checksum if present in the response" do
@@ -84,9 +117,12 @@ describe Puppet::Indirector::FileMetadata::Http do
       etag_md5 = "f5ffec8d8d16b43d5e9ac6ad4330c445"
       stub_request(:head, key)
         .to_return(status: 200, headers: DEFAULT_HEADERS.merge("ETag" => %("#{etag_md5}")))
+      stub_request(:get, key)
+        .to_return(status: 200, body: content)
 
       result = model.indirection.find(key)
-      expect(result.checksum_type).to eq(:mtime)
+      expect(result.checksum_type).to eq(:sha256)
+      expect(result.checksum).to eq("{sha256}#{Digest::SHA256.hexdigest(content)}")
     end
 
     it "uses ETag as md5 when checksum_type is etag" do
@@ -118,9 +154,12 @@ describe Puppet::Indirector::FileMetadata::Http do
         .to_return(status: 200, headers: DEFAULT_HEADERS.merge(
           "ETag" => 'W/"f5ffec8d8d16b43d5e9ac6ad4330c445"'
         ))
+      stub_request(:get, key)
+        .to_return(status: 200, body: content)
 
       result = model.indirection.find(key, checksum_type: :etag)
-      expect(result.checksum_type).to eq(:mtime)
+      expect(result.checksum_type).to eq(:sha256)
+      expect(result.checksum).to eq("{sha256}#{Digest::SHA256.hexdigest(content)}")
     end
 
     it "leniently parses base64" do
@@ -143,6 +182,7 @@ describe Puppet::Indirector::FileMetadata::Http do
 
     it "sends query parameters" do
       stub_request(:head, key).with(query: {'a' => 'b'})
+      stub_request(:get, key).with(query: {'a' => 'b'})
 
       model.indirection.find("#{key}?a=b")
     end
@@ -170,12 +210,14 @@ describe Puppet::Indirector::FileMetadata::Http do
 
     it "accepts all content types" do
       stub_request(:head, key).with(headers: {'Accept' => '*/*'})
+      stub_request(:get, key).with(headers: {'Accept' => '*/*'})
 
       model.indirection.find(key)
     end
 
     it "sets puppet user-agent" do
       stub_request(:head, key).with(headers: {'User-Agent' => Puppet[:http_user_agent]})
+      stub_request(:get, key).with(headers: {'User-Agent' => Puppet[:http_user_agent]})
 
       model.indirection.find(key)
     end
@@ -183,8 +225,10 @@ describe Puppet::Indirector::FileMetadata::Http do
     it "tries to persist the connection" do
       # HTTP/1.1 defaults to persistent connections, so check for
       # the header's absence
-      stub_request(:head, key).with do |request|
-        expect(request.headers).to_not include('Connection')
+      [:head, :get].each do |method|
+        stub_request(method, key).with do |request|
+          expect(request.headers).to_not include('Connection')
+        end
       end
 
       model.indirection.find(key)
@@ -192,11 +236,13 @@ describe Puppet::Indirector::FileMetadata::Http do
 
     it "follows redirects" do
       new_url = "https://example.com/different/path"
-      redirect = { status: 200, headers: { 'Location' => new_url }, body: ""}
+      redirect = { status: 302, headers: { 'Location' => new_url }, body: ""}
       stub_request(:head, key).to_return(redirect)
       stub_request(:head, new_url)
+        .to_return(status: 200, headers: DEFAULT_HEADERS.merge(content_md5))
 
-      model.indirection.find(key)
+      result = model.indirection.find(key)
+      expect(result.checksum).to eq("{md5}d41d8cd98f00b204e9800998ecf8427e")
     end
 
     it "falls back to partial GET if HEAD is not allowed" do
