@@ -1,0 +1,3 @@
+Updating and loading repositories:
+Repositories loaded.
+curl.x86_64 8.15.0-10.fc43 updates
