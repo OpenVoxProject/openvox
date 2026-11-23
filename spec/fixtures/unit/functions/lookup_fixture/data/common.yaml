@@ -12,6 +12,10 @@ abc::f:
   k2:
     s3: global_f23
 
+abc::g:
+  k2:
+    1: global_g2
+
 bca::e:
   k1: global_e1
 
