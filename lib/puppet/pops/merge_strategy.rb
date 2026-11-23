@@ -268,7 +268,7 @@ module Puppet::Pops
     protected
 
     def value_t
-      @value_t ||= Types::TypeParser.singleton.parse('Hash[String,Data]')
+      @value_t ||= Types::TypeParser.singleton.parse('Hash[String,Any]')
     end
 
     MergeStrategy.add_strategy(self)

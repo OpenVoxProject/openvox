@@ -13,7 +13,7 @@ describe 'The lookup function' do
   # the string 'no_block_present', it will be passed as a lambda to the lookup. The assembled code will declare
   # a notify resource with a name that is formed by interpolating the result into a format string.
   #
-  # The method performs the folloging steps.
+  # The method performs the following steps.
   #
   # - Build the code that:
   #    - sets the $args variable from _lookup_args_
@@ -134,6 +134,12 @@ describe 'The lookup function' do
     it "can pass merge parameter in the form of a hash with 'strategy=>hash'" do
       resources = assemble_and_compile('${r[k1]}_${r[k2]}_${r[k3]}', "'abc::e'", 'Hash[String,String]', "{strategy => 'hash'}")
       expect(resources).to include('env_e1_module_e2_env_e3')
+    end
+
+    it "can 'hash' merge values whose contents contain Hash[Int,Any]" do
+      Puppet.settings[:hiera_config] = File.join(my_fixture_dir, 'hiera.yaml')
+      resources = assemble_and_compile('${r[k1][1]}_${r[k2][1]}_${r[k3][1]}', "'abc::g'", 'Hash[String,Any]', "'hash'")
+      expect(resources).to include('env_g1_global_g2_module_g3')
     end
 
     it "can pass merge parameter in the form of a hash with a 'strategy=>deep'" do
