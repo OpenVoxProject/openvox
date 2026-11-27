@@ -1580,17 +1580,20 @@ Generated on #{Time.now}.
     end
 
     def include?(name)
-      if Puppet::Settings::EnvironmentConf::VALID_SETTINGS.include?(name) && conf
-        return true
-      end
+      return false unless Puppet::Settings::EnvironmentConf::VALID_SETTINGS.include?(name) && conf
+      return true if Puppet::Settings::EnvironmentConf::ENVIRONMENT_CONF_ONLY_SETTINGS.include?(name)
 
-      false
+      # The remaining settings (environment_timeout, static_catalogs and
+      # rich_data) also exist in puppet.conf, and environment.conf may override
+      # them. When environment.conf doesn't set one, EnvironmentConf falls back
+      # to Puppet.settings in the current run mode rather than the section
+      # being searched, so don't answer for it here; let the search continue
+      # on to the requested section.
+      !conf.raw_setting(name).nil?
     end
 
     def lookup(name)
-      return nil unless Puppet::Settings::EnvironmentConf::VALID_SETTINGS.include?(name)
-
-      conf.send(name) if conf
+      conf.send(name) if include?(name)
     end
 
     def conf
