@@ -6,7 +6,7 @@ describe Puppet::Type.type(:package).provider(:appdmg) do
 
   describe "when installing an appdmg" do
     let(:fake_mountpoint) { "/tmp/dmg.foo" }
-    let(:fake_hdiutil_plist) { {"system-entities" => [{"mount-point" => fake_mountpoint}]} }
+    let(:fake_diskutil_plist) { {"system-entities" => [{"mount-point" => fake_mountpoint}]} }
 
     before do
       fh = double('filehandle', path: '/tmp/foo')
@@ -31,8 +31,13 @@ describe Puppet::Type.type(:package).provider(:appdmg) do
           expect(args[1]).to include(tmpdir)
           expect(args).not_to include("-k")
         end
-        allow(described_class).to receive(:hdiutil).and_return('a plist')
-        expect(Puppet::Util::Plist).to receive(:parse_plist).with('a plist').and_return(fake_hdiutil_plist)
+        expect(described_class).to receive(:diskutil)
+          .with("image", "attach", "--plist", "--mountOptions", "nobrowse", "--readOnly", "/tmp/foo")
+          .and_return('a plist')
+        expect(described_class).to receive(:diskutil)
+          .with("eject", fake_mountpoint)
+          .and_return(0)
+        expect(Puppet::Util::Plist).to receive(:parse_plist).with('a plist').and_return(fake_diskutil_plist)
         expect(described_class).to receive(:installapp)
 
         provider.install

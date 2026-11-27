@@ -21,7 +21,7 @@ describe Puppet::Type.type(:package).provider(:pkgdmg) do
   # These tests shouldn't be this messy. The pkgdmg provider needs work...
   describe "when installing a pkgdmg" do
     let(:fake_mountpoint) { "/tmp/dmg.foo" }
-    let(:fake_hdiutil_plist) { {"system-entities" => [{"mount-point" => fake_mountpoint}]} }
+    let(:fake_diskutil_plist) { {"system-entities" => [{"mount-point" => fake_mountpoint}]} }
 
     before do
       fh = double('filehandle')
@@ -33,23 +33,23 @@ describe Puppet::Type.type(:package).provider(:pkgdmg) do
     end
 
     it "should fail when a disk image with no system entities is mounted" do
-      allow(described_class).to receive(:hdiutil).and_return('empty plist')
+      allow(described_class).to receive(:diskutil).and_return('empty plist')
       expect(Puppet::Util::Plist).to receive(:parse_plist).with('empty plist').and_return({})
       expect { provider.install }.to raise_error(Puppet::Error, /No disk entities/)
     end
 
-    it "should call hdiutil to mount and eject the disk image" do
+    it "should call diskutil to attach and eject the disk image" do
       allow(Dir).to receive(:entries).and_return([])
-      expect(provider.class).to receive(:hdiutil).with("eject", fake_mountpoint).and_return(0)
-      expect(provider.class).to receive(:hdiutil).with("mount", "-plist", "-nobrowse", "-readonly", "-mountrandom", "/tmp", '/tmp/foo').and_return('a plist')
-      expect(Puppet::Util::Plist).to receive(:parse_plist).with('a plist').and_return(fake_hdiutil_plist)
+      expect(provider.class).to receive(:diskutil).with("eject", fake_mountpoint).and_return(0)
+      expect(provider.class).to receive(:diskutil).with("image", "attach", "--plist", "--mountOptions", "nobrowse", "--readOnly", '/tmp/foo').and_return('a plist')
+      expect(Puppet::Util::Plist).to receive(:parse_plist).with('a plist').and_return(fake_diskutil_plist)
       provider.install
     end
 
     it "should call installpkg if a pkg/mpkg is found on the dmg" do
       allow(Dir).to receive(:entries).and_return(["foo.pkg"])
-      allow(provider.class).to receive(:hdiutil).and_return('a plist')
-      expect(Puppet::Util::Plist).to receive(:parse_plist).with('a plist').and_return(fake_hdiutil_plist)
+      allow(provider.class).to receive(:diskutil).and_return('a plist')
+      expect(Puppet::Util::Plist).to receive(:parse_plist).with('a plist').and_return(fake_diskutil_plist)
       expect(provider.class).to receive(:installpkg).with("#{fake_mountpoint}/foo.pkg", resource[:name], "foo.dmg").and_return("")
       provider.install
     end
@@ -70,8 +70,8 @@ describe Puppet::Type.type(:package).provider(:pkgdmg) do
           expect(args).to include("--fail")
           expect(args).not_to include("-k")
         end
-        allow(described_class).to receive(:hdiutil).and_return('a plist')
-        expect(Puppet::Util::Plist).to receive(:parse_plist).with('a plist').and_return(fake_hdiutil_plist)
+        allow(described_class).to receive(:diskutil).and_return('a plist')
+        expect(Puppet::Util::Plist).to receive(:parse_plist).with('a plist').and_return(fake_diskutil_plist)
         expect(described_class).to receive(:installpkg)
 
         provider.install
@@ -87,8 +87,8 @@ describe Puppet::Type.type(:package).provider(:pkgdmg) do
           expect(args).to include('some_host:some_port')
           expect(args).to include('--proxy')
         end
-        allow(described_class).to receive(:hdiutil).and_return('a plist')
-        expect(Puppet::Util::Plist).to receive(:parse_plist).with('a plist').and_return(fake_hdiutil_plist)
+        allow(described_class).to receive(:diskutil).and_return('a plist')
+        expect(Puppet::Util::Plist).to receive(:parse_plist).with('a plist').and_return(fake_diskutil_plist)
         expect(described_class).to receive(:installpkg)
 
         provider.install
@@ -104,8 +104,8 @@ describe Puppet::Type.type(:package).provider(:pkgdmg) do
           expect(args).to include('some_host')
           expect(args).to include('--proxy')
         end
-        allow(described_class).to receive(:hdiutil).and_return('a plist')
-        expect(Puppet::Util::Plist).to receive(:parse_plist).with('a plist').and_return(fake_hdiutil_plist)
+        allow(described_class).to receive(:diskutil).and_return('a plist')
+        expect(Puppet::Util::Plist).to receive(:parse_plist).with('a plist').and_return(fake_diskutil_plist)
         expect(described_class).to receive(:installpkg)
 
         provider.install
@@ -122,8 +122,8 @@ describe Puppet::Type.type(:package).provider(:pkgdmg) do
           expect(args).not_to include('--proxy')
           true
         end
-        allow(described_class).to receive(:hdiutil).and_return('a plist')
-        expect(Puppet::Util::Plist).to receive(:parse_plist).with('a plist').and_return(fake_hdiutil_plist)
+        allow(described_class).to receive(:diskutil).and_return('a plist')
+        expect(Puppet::Util::Plist).to receive(:parse_plist).with('a plist').and_return(fake_diskutil_plist)
         expect(described_class).to receive(:installpkg)
 
         provider.install

@@ -22,7 +22,7 @@ Puppet::Type.type(:package).provide(:appdmg, :parent => Puppet::Provider::Packag
   confine 'os.name' => :darwin
   confine :feature => :cfpropertylist
 
-  commands :hdiutil => "/usr/bin/hdiutil"
+  commands :diskutil => "/usr/sbin/diskutil"
   commands :curl => "/usr/bin/curl"
   commands :ditto => "/usr/bin/ditto"
 
@@ -69,7 +69,7 @@ Puppet::Type.type(:package).provide(:appdmg, :parent => Puppet::Provider::Packag
       end
 
       File.open(cached_source) do |dmg|
-        xml_str = hdiutil "mount", "-plist", "-nobrowse", "-readonly", "-mountrandom", "/tmp", dmg.path
+        xml_str = diskutil "image", "attach", "--plist", "--mountOptions", "nobrowse", "--readOnly", dmg.path
         ptable = Puppet::Util::Plist.parse_plist(xml_str)
         # JJM Filter out all mount-paths into a single array, discard the rest.
         mounts = ptable['system-entities'].collect { |entity|
@@ -87,7 +87,7 @@ Puppet::Type.type(:package).provide(:appdmg, :parent => Puppet::Provider::Packag
           end
           Puppet.debug "Unable to find .app in .appdmg. #{name} will not be installed." unless found_app
         ensure
-          hdiutil "eject", mounts[0]
+          diskutil "eject", mounts[0]
         end
       end
     ensure
