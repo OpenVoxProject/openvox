@@ -6,6 +6,13 @@
         <dict>
                 <key>LANG</key>
                 <string>en_US.UTF-8</string>
+                <!-- Disable unified logging (os_log) for the agent. On macOS 26 and
+                     later, the forked child of a long-running agent crashes in
+                     os_log when it resolves an IPv4-only hostname. Note that this
+                     also silences syslog(3), so keep logging on the console/file
+                     below (see https://github.com/OpenVoxProject/openvox/issues/538). -->
+                <key>OS_ACTIVITY_MODE</key>
+                <string>disable</string>
         </dict>
         <key>Label</key>
         <string>puppet</string>
