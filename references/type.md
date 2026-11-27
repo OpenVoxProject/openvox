@@ -2472,7 +2472,7 @@ installed on the machine, the resource will fail with an error message.
 
 Package management which copies application bundles to a target.
 
-* Required binaries: `/usr/bin/curl`, `/usr/bin/ditto`, `/usr/bin/hdiutil`.
+* Required binaries: `/usr/bin/curl`, `/usr/bin/ditto`, `/usr/sbin/diskutil`.
 * Supported features: `installable`.
 
 #### apple {#package-provider-apple}
@@ -2722,7 +2722,7 @@ Notes:
   whether a package has been installed. Thus, to install new a version of a
   package, you must create a new DMG with a different filename.
 
-* Required binaries: `/usr/bin/curl`, `/usr/bin/hdiutil`, `/usr/sbin/installer`.
+* Required binaries: `/usr/bin/curl`, `/usr/sbin/diskutil`, `/usr/sbin/installer`.
 * Default for `os.name` == `darwin`.
 * Supported features: `installable`.
 

@@ -41,7 +41,7 @@ Puppet::Type.type(:package).provide :pkgdmg, :parent => Puppet::Provider::Packag
   confine :feature => :cfpropertylist
   defaultfor 'os.name' => :darwin
   commands :installer => "/usr/sbin/installer"
-  commands :hdiutil => "/usr/bin/hdiutil"
+  commands :diskutil => "/usr/sbin/diskutil"
   commands :curl => "/usr/bin/curl"
 
   # JJM We store a cookie for each installed .pkg.dmg in /var/db
@@ -105,11 +105,11 @@ Puppet::Type.type(:package).provide :pkgdmg, :parent => Puppet::Provider::Packag
       if source =~ /\.dmg$/i
         # If you fix this to use open-uri again, you must update the docs above. -NF
         File.open(cached_source) do |dmg|
-          xml_str = hdiutil "mount", "-plist", "-nobrowse", "-readonly", "-mountrandom", "/tmp", dmg.path
-          hdiutil_info = Puppet::Util::Plist.parse_plist(xml_str)
-          raise Puppet::Error, _("No disk entities returned by mount at %{path}") % { path: dmg.path } unless hdiutil_info.has_key?("system-entities")
+          xml_str = diskutil "image", "attach", "--plist", "--mountOptions", "nobrowse", "--readOnly", dmg.path
+          diskutil_info = Puppet::Util::Plist.parse_plist(xml_str)
+          raise Puppet::Error, _("No disk entities returned by mount at %{path}") % { path: dmg.path } unless diskutil_info.has_key?("system-entities")
 
-          mounts = hdiutil_info["system-entities"].filter_map { |entity|
+          mounts = diskutil_info["system-entities"].filter_map { |entity|
             entity["mount-point"]
           }
           begin
@@ -122,7 +122,7 @@ Puppet::Type.type(:package).provide :pkgdmg, :parent => Puppet::Provider::Packag
             end
           ensure
             mounts.each do |mountpoint|
-              hdiutil "eject", mountpoint
+              diskutil "eject", mountpoint
             end
           end
         end
